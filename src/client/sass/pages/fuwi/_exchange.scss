@@ -1,0 +1,201 @@
+@use "../../variables" as v;
+
+.f-exchange {
+  .box {
+    max-width: 600px;
+    .nav {
+      background-color: v.$sgreen;
+      border-bottom: 1px solid v.$black;
+      .left {
+        .title {
+          color: v.$white;
+        }
+      }
+      .right {
+        .btn-close {
+          text-shadow: 0 0 10px v.$black;
+        }
+      }
+    }
+    .con {
+      width: 100%;
+      height: calc(100% - (50px + 20px));
+      .form {
+        display: block;
+        width: 100%;
+        max-height: 100%;
+        overflow: hidden;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        padding: 20px;
+        background-color: rgba($color: v.$card_primary, $alpha: 0.8);
+        border: 1px solid v.$sgreen;
+        border-radius: 10px;
+        .field {
+          margin-bottom: 20px;
+          .economies {
+            display: flex;
+            justify-content: right;
+            align-items: center;
+            gap: 20px;
+            .eco {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              gap: 5px;
+              img {
+                image-rendering: pixelated;
+                width: 30px;
+              }
+            }
+          }
+          .con-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            .img {
+              width: 50px;
+              height: 50px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              img {
+                image-rendering: pixelated;
+                width: 100%;
+              }
+            }
+            p {
+              font-size: 1.5em;
+            }
+          }
+          .text-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            padding: 10px;
+            background-color: rgba($color: v.$sgreen, $alpha: 0.5);
+            border-radius: 5px;
+            img {
+              image-rendering: pixelated;
+              width: 40px;
+            }
+            span {
+              font-size: 1.2em;
+            }
+          }
+          .price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            .text {
+              font-size: 1.2em;
+            }
+            .object {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              gap: 5px;
+              img {
+                width: 40px;
+                image-rendering: pixelated;
+              }
+              span {
+                font-size: 1.2em;
+                &.minus {
+                  color: v.$cred;
+                }
+              }
+            }
+          }
+          .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            .btn {
+              width: calc(100% / 2);
+              padding: 10px;
+              background-color: v.$sgray;
+              text-align: center;
+              border-radius: 5px;
+              &.btn-ok {
+                background-color: v.$sgreen;
+              }
+            }
+            &.single {
+              .btn {
+                width: 100%;
+              }
+            }
+          }
+          .input-manager {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            .btn {
+              background-color: v.$sgray;
+              padding: 5px 10px;
+              border-radius: 10px;
+              font-size: 1.2em;
+            }
+            .inp {
+              width: calc(100% - (35px * 2));
+              input[type="range"] {
+                width: 100%;
+                appearance: none;
+                -moz-appearance: none;
+                -webkit-appearance: none;
+                cursor: pointer;
+                background-color: v.$sgray;
+                height: 3px;
+              }
+              input[type=range]::-webkit-slider-thumb {
+                 appearance: none;
+                 -webkit-appearance: none;
+                 -moz-appearance: none;
+                 background: v.$cgreen;
+                 width: 14px;
+                 height: 14px;
+                 border-radius: 50%;
+              }
+              input[type=range]::-ms-thumb {
+                 background: v.$cgreen;
+                 width: 14px;
+                 height: 14px;
+                 border-radius: 50%;
+              }
+              input[type=range]::-moz-range-thumb {
+                 background: v.$cgreen;
+                 width: 14px;
+                 height: 14px;
+                 border-radius: 50%;
+              }
+              input[type="range"]::-webkit-slider-thumb:hover {
+                 box-shadow: 0 0 0 5px rgba($color: v.$sgreen, $alpha: 0.5);
+              }
+              input[type="range"]:active::-webkit-slider-thumb {
+                 outline: solid 2px v.$cgreen;
+                 outline-offset: 3px;
+              }
+              input[type="range"]::-moz-range-thumb:hover {
+                 box-shadow: 0 0 0 5px rgba($color: v.$sgreen, $alpha: 0.5);
+              }
+              input[type="range"]:active::-moz-range-thumb { 
+                 outline: solid 2px v.$cgreen;
+                 outline-offset: 3px;
+              }
+            }
+          }
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}

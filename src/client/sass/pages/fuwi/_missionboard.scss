@@ -1,0 +1,136 @@
+@use "../../variables" as v;
+
+.f-missionboard {
+  .box {
+    max-width: 800px;
+    .nav {
+      background: linear-gradient(150deg, v.$neonpink, v.$neonpurple);
+      border-color: v.$black;
+      .left {
+        .title {
+          color: v.$white;
+        }
+      }
+      .right {
+        .btn-close {
+          color: v.$white;
+        }
+      }
+    }
+    .con {
+      .economies {
+        display: flex;
+        justify-content: right;
+        align-items: center;
+        gap: 20px;
+        .eco {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 3px;
+          background-color: rgba($color: v.$card_primary, $alpha: 0.8);
+          padding: 3px;
+          padding-right: 6px;
+          border-radius: 10px;
+          img {
+            image-rendering: pixelated;
+            width: 30px;
+          }
+        }
+      }
+      .boards {
+        height: calc(100% - (50px + 100px));
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 20px;
+        margin: 20px 0;
+        .board {
+          width: calc(100% / 2);
+          height: 100%;
+          .board-title {
+            background-color: rgba($color: v.$card_primary, $alpha: 0.8);
+            color: v.$white;
+            width: 100%;
+            height: 50px;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-weight: bold;
+          }
+          .board-list {
+            width: 100%;
+            height: calc(100% - 50px);
+            overflow: hidden;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            .card {
+              margin-top: 10px;
+              background: rgba($color: v.$card_primary, $alpha: 0.8);
+              padding: 5px;
+              cursor: pointer;
+              .card-title {
+                padding: 15px;
+                text-align: center;
+                font-size: 1.2em;
+              }
+              .card-req {
+                padding: 3px 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 5px;
+                background: linear-gradient(90deg, rgba($color: v.$neonpurple, $alpha: 0.8), rgba($color: v.$neonpink, $alpha: 0.8));
+                .req {
+                  font-size: 0.8em;
+                  i { font-style: normal; }
+                }
+                .req-price {
+                  display: flex;
+                  justify-content: right;
+                  align-items: center;
+                  gap: 3px;
+                  img {
+                    width: 30px;
+                    image-rendering: pixelated;
+                  }
+                }
+              }
+              &.dev {
+                .card-req {
+                  background: v.$sgray;
+                }
+              }
+              &.selected {
+                background: linear-gradient(90deg, v.$neonpurple, v.$neonpink);
+                border-color: v.$sblue;
+                .card-req {
+                  background: rgba($color: v.$card_primary, $alpha: 0.5);
+                }
+              }
+            }
+          }
+        }
+      }
+      .actions {
+        width: 100%;
+        .btn-start {
+          width: 100%;
+          height: 50px;
+          padding: 10px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          background: linear-gradient(150deg, v.$neonpurple, v.$neonpink);
+          &.disabled {
+            color: v.$softwhite;
+            background: v.$sgray;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,116 @@
+@use "../variables" as v;
+
+:root {
+  --border-color: #291d4d;
+  --dialog-background: #fff3b4;
+
+  --menu-background: #ffe8d2;
+  --menu-border-color: #a48465;
+  --menu-font-color: #3a160d;
+  --menu-selected-background: #7fc2ff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+html {
+  height: 100dvh;
+  scroll-behavior: smooth;
+  scrollbar-color: v.$blurple v.$card_secondary;
+  scrollbar-width: thin;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  background: v.$bg;
+  color: v.$white;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+button, input, textarea, select {
+  display: block;
+  border: none;
+  outline: none;
+  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    sans-serif;
+  font-size: 1rem;
+}
+textarea {
+  resize: none;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.btn,
+button {
+  cursor: pointer;
+}
+img {
+  pointer-events: none;
+}
+.app {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  .canvas {
+    width: 100%;
+    image-rendering: pixelated;
+    &.mission-complete {
+      animation: canvas_completed 0.5s forwards;
+    }
+    &.title-screen {
+      animation: fade_in 1s;
+      transform: scale(2) translateX(16px * (-6)) translateY(16px * (-2));
+      &.out {
+        animation: fix_screen 2s forwards;
+      }
+    }
+  }
+  .center {
+    text-align: center;
+  }
+}
+.avatar {
+  width: 125px;
+  height: 125px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  .hero {
+    width: 16px;
+    height: 32px;
+    transform: scale(3);
+    image-rendering: pixelated;
+    overflow: hidden;
+    img {
+      display: block;
+      position: absolute;
+      transform: translate(-48px);
+      pointer-events: none;
+    }
+  }
+}

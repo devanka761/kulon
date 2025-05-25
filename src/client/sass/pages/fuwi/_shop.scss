@@ -1,0 +1,210 @@
+@use "../../variables" as v;
+
+.f-shop {
+  .box {
+    max-width: 1000px;
+    .nav {
+      border-color: v.$blurple;
+      .left {
+        .title {
+          color: v.$blurple;
+        }
+      }
+    }
+    .con {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 20px;
+      height: calc(100% - (50px + 20px));
+      .con-list {
+        width: 200px;
+        height: 100%;
+        border-radius: 10px;
+        background-color: rgba($color: v.$card_primary, $alpha: 0.7);
+        overflow-y: auto;
+        scrollbar-width: thin;
+        padding: 10px;
+        .card {
+          padding: 10px;
+          border-radius: 5px;
+          cursor: pointer;
+          &.selected {
+            background-color: rgba($color: v.$black, $alpha: 0.5);
+          }
+        }
+      }
+      .board {
+        position: relative;
+        width: calc(100% - 200px);
+        border-radius: 10px;
+        height: 100%;
+        .economies {
+          position: absolute;
+          top: 0;right: 0;
+          width: 100%;
+          display: flex;
+          justify-content: right;
+          align-items: center;
+          gap: 10px;
+          .eco {
+            background-color: rgba($color: v.$card_primary, $alpha: 0.7);
+            padding: 3px 10px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3px;
+            img {
+              image-rendering: pixelated;
+              width: 20px;
+            }
+            i {
+              font-style: normal;
+            }
+          }
+        }
+        .item-container {
+          position: absolute;
+          top: 41px;left: 0;
+          width: 100%;
+          height: calc(100% - (150px + 31px + 10px));
+          background-color: rgba($color: v.$card_primary, $alpha: 0.7);
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
+          .item-list {
+            width: 100%;
+            max-height: 100%;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            .card {
+              position: relative;
+              background-color: rgba($color: v.$card_primary, $alpha: 0.4);
+              border-radius: 5px;
+              font-size: 0.9em;
+              cursor: pointer;
+              overflow: hidden;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-direction: column;
+              .expire::after {
+                content: "\f017";
+                font-family: "Font Awesome 6 Pro";
+                font-weight: 400;
+                position: absolute;
+                top: 5px;left: 5px;
+                font-size: 0.7em;
+              }
+              .amount {
+                width: 100%;
+                text-align: center;
+                font-style: italic;
+                background-color: rgba($color: v.$black, $alpha: 0.5);
+              }
+              .icon {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 5px 20px;
+                min-height: 90px;
+                img {
+                  image-rendering: pixelated;
+                  display: block;
+                  width: 65px;
+                }
+              }
+              .price {
+                width: 100%;
+                padding: 2px 0;
+                text-align: center;
+                background-color: rgba($color: v.$blurple, $alpha: 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                img {
+                  display: block;
+                  width: 20px;
+                }
+              }
+              &:active {
+                background: rgba($color: v.$blurple, $alpha: 0.5);
+              }
+              &.selected {
+                box-shadow: 0 0 0 1px rgba($color: v.$blurple, $alpha: 0.5);
+              }
+            }
+          }
+        }
+        .detail {
+          position: absolute;
+          bottom: 0;left: 0;
+          width: 100%;
+          height: 150px;
+          background-color: rgba($color: v.$card_primary, $alpha: 0.9);
+          padding: 10px;
+          border-bottom-left-radius: 10px;
+          border-bottom-right-radius: 10px;
+          overflow: hidden;
+          .field {
+            width: 100%;
+            height: 100%;
+            .item-name {
+              font-weight: 600;
+            }
+            .item-desc {
+              text-align: justify;
+              text-align-last: left;
+            }
+            .item-note {
+              color: v.$syellow;
+              font-style: italic;
+              margin-top: 10px;
+            }
+            .item-actions {
+              margin-top: 10px;
+              display: flex;
+              justify-content: right;
+              align-items: center;
+              gap: 10px;
+              .btn {
+                padding: 5px 10px;
+                font-weight: 600;
+                border-radius: 5px;
+                &.btn-buy {
+                  background-color: v.$sgreen;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  &.f-backpack {
+    .box {
+      .con {
+        .board {
+          .item-container {
+            .item-list {
+              .card {
+                .icon {
+                  padding: 10px 20px;
+                }
+                .price {
+                  background-color: rgba($color: v.$black, $alpha: 0.5);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "name": "kulon",
+  "version": "1.0.0",
+  "description": "Multiplayer Puzzle Game",
+  "main": "./src/server/server.js",
+  "scripts": {
+    "start": "node ./server/bundle/server.js",
+    "dev": "nodemon .",
+    "dev:start": "nodemon .",
+    "build": "webpack --config webpack.prod.js",
+    "dev:build": "webpack --config webpack.dev.js",
+    "server:build": "webpack --config webpack.server.js",
+    "imp:start": "node .",
+    "imp:build": "echo Server Bundling Started ... && webpack --config webpack.server.js && echo Server Bundling Completed! && node ./server/bundle/assets.js && echo Client Bundling Started ... && webpack --config webpack.prod.js && echo Client Bundling Completed! && echo We are good to go!",
+    "dev:sass": "sass --watch ./client/scss/app.scss ./client/bundle/koelonapp.css --style compressed",
+    "dev:sass2": "sass --watch ./client/scss/editor.scss ./client/bundle/koeloneditor.css --style compressed",
+    "dev:sass3": "sass --watch ./client/scss/home.scss ./client/bundle/koelonhome.css --style compressed",
+    "assets": "node ./server/bundle/assets.js"
+  },
+  "author": "Devanka761 <devanka@protonmail.com> (https://devanka.id/)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devanka761/kulon.git"
+  },
+  "bugs": {
+    "url": "https://github.com/devanka761/kulon/issues"
+  },
+  "homepage": "https://github.com/devanka761/kulon#readme",
+  "nodemonConfig": {
+    "ignore": [
+      "**.json",
+      "client/**"
+    ]
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "midtrans-client": "^1.4.2",
+    "nodemailer": "^6.9.16",
+    "peer": "^1.0.2",
+    "peerjs": "^1.5.4",
+    "qrcode": "^1.5.4",
+    "session-file-store": "^1.5.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "babel-loader": "^9.2.1",
+    "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.6.3",
+    "mini-css-extract-plugin": "^2.9.2",
+    "sass": "^1.81.0",
+    "sass-loader": "^16.0.3",
+    "webpack": "^5.96.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-node-externals": "^3.0.0"
+  }
+}

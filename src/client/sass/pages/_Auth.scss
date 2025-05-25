@@ -1,0 +1,187 @@
+@use "../variables" as v;
+.Auth {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("../../../client/assets/ui/other/landing.png");
+  background-size: cover;
+  background-position: center center;
+  .none {
+    i {
+      color: #00000001;
+    }
+  }
+  .box {
+    width: calc(100% - 40px);
+    max-width: 500px;
+    max-height: calc(100% - 40px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    background-color: rgba($color: v.$card_primary, $alpha: 0.7);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    border-radius: 10px;
+    animation: popup_in 0.5s;
+    .top {
+      padding: 20px;
+      // background-color: rgba($color: v.$black, $alpha: 0.6);
+      background: linear-gradient(150deg, v.$neonpurple, v.$neonpink);
+      color: v.$white;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .form {
+      padding: 20px;
+      .field {
+        width: 100%;
+        margin-bottom: 10px;
+        a {
+          color: v.$yellow;
+        }
+        .btn-lang {
+          margin: 0 auto;
+          width: fit-content;
+          padding: 10px;
+          padding-top: 0;
+          border-bottom: 1px solid v.$white;
+          border-radius: 10px;
+        }
+        .labels {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 10px;
+          label {
+            line-height: 1.5;
+          }
+          .btn-help {
+            color: v.$yellow;
+          }
+        }
+        .inp {
+          width: 100%;
+          input {
+            width: 100%;
+            background-color: rgba($color: v.$black, $alpha: 0.6);
+            color: v.$white;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            border: 1px solid v.$black;
+            transition: 200ms;
+            &.otp {
+              letter-spacing: 5px;
+            }
+            &:focus {
+              border-color: rgba($color: v.$darkcream, $alpha: 0.9);
+            }
+          }
+          .btn {
+            width: 100%;
+            font-weight: bold;
+            color: v.$white;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            background: v.$card_primary;
+            display: block;
+            text-decoration: none;
+            &.btn-login {
+              // background-color: rgba($color: v.$darkcream, $alpha: 0.9);
+              background: linear-gradient(150deg, v.$neonpink, v.$neonpurple);
+            }
+            &.btn-google {
+              color: v.$cred;
+            }
+            &.btn-discord {
+              margin-top: 5px;
+              color: v.$blurple;
+            }
+            &.btn-github {
+              display: block;
+              margin-top: 5px;
+            }
+          }
+        }
+        .btn-headback {
+          color: v.$yellow;
+          text-decoration: underline;
+        }
+        .sm {
+          font-size: 0.9rem;
+          text-align: justify;
+          text-align-last: left;
+          color: v.$softwhite;
+        }
+        .btn-start-over {
+          text-align: center;
+          a {
+            color: v.$darkcream;
+            text-decoration: none;
+            border-bottom: 1px solid v.$darkcream;
+          }
+        }
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+    &.out {
+      animation: popup_out 0.5s forwards;
+    }
+  }
+}
+.DesktopTest {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: v.$card_primary;
+  .box {
+    background: linear-gradient(120deg, #272b30, #3f464e, #272b30);
+    padding: 20px;
+    max-width: 500px;
+    max-height: 100%;
+    text-align: center;
+    border-radius: 20px;
+    &.wait {
+      background: linear-gradient(150deg, v.$neonpurple, v.$neonpink);
+    }
+    .dl-summary {
+      p {
+        margin-bottom: 10px;
+      }
+    }
+    .dl-test {
+      padding: 40px 0;
+      .btn {
+        padding: 10px;
+        background-color: v.$card_primary;
+        border-radius: 10px;
+        display: block;
+        width: 100%;
+        text-decoration: none;
+        color: v.$white;
+      }
+    }
+    .dl-actions {
+      .btn {
+        padding: 10px;
+        background-color: v.$card_primary;
+        border-radius: 10px;
+        display: block;
+        width: 100%;
+        text-decoration: none;
+        color: v.$cred;
+      }
+    }
+  }
+}

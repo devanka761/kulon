@@ -1,0 +1,34 @@
+{
+  "groups": [
+    {"id":"1", "name":{"id":"kontrol","en":"controls"}},
+    {"id":"2", "name":{"id":"notifikasi", "en":"notifications"}},
+    {"id":"3", "name":{"id":"akun", "en":"account"}},
+    {"id":"4", "name":{"id":"language", "en":"language"}}
+  ],
+  "items": [
+    {"id": "101", "group":"1","name":{"id":"Bergerak ke Depan", "en":"Walk Forward"},"type":"string","default":"w"},
+    {"id": "102", "group":"1","name":{"id":"Bergerak ke Belakang", "en":"Walk Backward"},"type":"string","default":"s"},
+    {"id": "103", "group":"1","name":{"id":"Bergerak ke Kiri", "en":"Walk to the Left"},"type":"string","default":"a"},
+    {"id": "104", "group":"1","name":{"id":"Bergerak ke Kanan", "en":"Walk to the Right"},"type":"string","default":"d"},
+    {"id": "105", "group":"1","name":{"id":"Buka Ponsel", "en":"Open Phone"},"type":"string","default":"p"},
+    {"id": "106", "group":"1","name":{"id":"Interaksi", "en":"Interaction"},"type":"string","default":"e"},
+    {"id": "107", "group":"1","name":{"id":"Lewati Dialog", "en":"Skip Dialog"},"type":"string","default":"enter"},
+    {"id": "108", "group":"1","name":{"id":"Buka Chat In-game", "en":"Open In-game Chat"},"type":"string","default":"t"},
+    {"id": "109", "group":"1","value":{"id":"Restore Default", "en":"Restore Default"},"type":"func", "uniq": "writeRestoreDefault", "cl": "br"},
+
+    {"id": "205", "bold": true, "group":"2","name":{"id":"Notifikasi In-game", "en":"In-game Notifications"},"type":"text"},
+    {"id": "201", "group":"2","name":{"id":"Surat", "en":"Mails"},"type":"boolean","default":true},
+    {"id": "202", "group":"2","name":{"id":"Pencapaian", "en":"Achievements"},"type":"boolean","default":true},
+    {"id": "203", "group":"2", "name":{"id":"Permintaan Pertemanan", "en":"Friend Requests"},"type":"boolean","default":true},
+    {"id": "204", "group":"2","name":{"id":"Undangan Job", "en":"Job Invitations"},"type":"boolean","default":true},
+
+    {"id": "301","group":"3","value":{"id":"KELUAR DARI AKUN", "en":"LOGOUT"},"type":"func","cl":"r", "uniq":"writeLogout"},
+
+    {"id": "405", "bold": false, "group":"4","name":{"id":"Saat ini: Bahasa Indonesia", "en":"Current: English"},"type":"text"},
+    {"id": "401", "group":"4","name":{"id":"Language","en": "Language"},"type":"option","default":"id", "uniq":"writeLanguage", "list": [
+      {"id":"null", "label":"Select Language"},
+      {"id":"id", "label":"Bahasa Indonesia"},
+      {"id":"en", "label":"English"}
+    ]}
+  ]
+}

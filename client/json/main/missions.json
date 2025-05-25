@@ -1,0 +1,194 @@
+[
+  {
+    "id": "1001",
+    "map": "strange_distric",
+    "name": "Strange Distric Beta",
+    "desc": {
+      "id": "Kamu dan kru hendak berlibur ke sebuah tempat yang belum pernah dikunjungi sebelumnya. Bisakah kalian sampai ke lokasi sesuai dengan rencana?",
+      "en": "You and your crew are heading out on a trip to a place you've never been before. But will you really make it there as planned?"
+    },
+    "beta": false,
+    "memory": [],
+    "mode": 1,
+    "group": 1,
+    "min": 1,
+    "max": 4,
+    "ready": 1,
+    "price": ["CL00003", 1],
+    "spawn": {
+      "area": "kulonFirstRoad",
+      "x": 75,
+      "y": 55,
+      "direction": "down",
+      "inc": "y"
+    },
+    "bag": [{ "id": "J00003", "amount": 1 }],
+    "payout": {
+      "fail": [
+        { "id": "69", "amount": 0 },
+        { "id": "420", "amount": 0 }
+      ],
+      "success": [
+        { "id": "69", "amount": 20 },
+        { "id": "420", "amount": 80 }
+      ]
+    }
+  },
+  {
+    "id": "1002",
+    "map": "strange_distric",
+    "name": "Strange Distric",
+    "desc": {
+      "id": "Kamu dan kru hendak berlibur ke sebuah tempat yang belum pernah dikunjungi sebelumnya. Bisakah kalian sampai ke lokasi sesuai dengan rencana?",
+      "en": "You and your crew are heading out on a trip to a place you've never been before. But will you really make it there as planned?"
+    },
+    "memory": [
+      {
+        "ts": 1000,
+        "text": {
+          "id": "Beberapa pemuda tengah menikmati perjalanan ke suatu danau yang jauh dari kota.",
+          "en": "Some young guys are on a trip to a lake, far away from the city, just enjoying the ride."
+        }
+      },
+      {
+        "ts": 2000,
+        "text": {
+          "id": "Mereka tidak membawa perlengkapan terlalu banyak. Beberapa benda yang dirasa berguna sudah mereka simpan di bagasi.",
+          "en": "They didn't bring too much gear. Just a few useful things stashed in the trunk."
+        }
+      },
+      {
+        "ts": 3000,
+        "text": {
+          "id": "Hingga saat akan melintasi sebuah wilayah yang belum pernah dilewati, mereka sadar ada yang tidak beres dengan mobil yang mereka gunakan.",
+          "en": "Just as they were about to cross an unfamiliar area, they realized something was off with their car."
+        }
+      },
+      {
+        "ts": 2500,
+        "text": {
+          "id": "Saat mereka menepi, hendak mencari permasalahan di mobil tersebut. Nampak mobil kehilangan tenaga untuk memulai mesinnya kembali.",
+          "en": "As they pulled over to check what was wrong, the car seemed to have lost all power, refusing to start back up."
+        }
+      },
+      {
+        "ts": 2000,
+        "text": {
+          "id": "Tak tinggal diam, mereka tadi mencari cara agar mereka dapat melanjutkan perjalanan dan keluar dari wilayah tersebut.",
+          "en": "Wasting no time, they started looking for a way to get the car running and get out of there."
+        }
+      },
+      {
+        "ts": 0,
+        "text": {
+          "id": "Dan inilah...",
+          "en": "And so it begins..."
+        }
+      }
+    ],
+    "mode": 1,
+    "group": 1,
+    "min": 1,
+    "max": 4,
+    "ready": 1,
+    "price": ["CL00003", 1],
+    "spawn": {
+      "area": "kulonFirstRoad",
+      "x": 75,
+      "y": 55,
+      "direction": "down",
+      "inc": "y"
+    },
+    "bag": [{ "id": "J00003", "amount": 1 }],
+    "payout": {
+      "fail": [
+        { "id": "69", "amount": 0 },
+        { "id": "420", "amount": 0 }
+      ],
+      "success": [
+        { "id": "69", "amount": 20 },
+        { "id": "420", "amount": 80 }
+      ]
+    }
+  },
+  {
+    "id": "2001",
+    "name": "Fingerprint Cracker",
+    "desc": {
+      "id": "Pecahkan sidik jari dengan menyamakan komponen-komponen yang teracak",
+      "en": "Solve fingerprint hacks by matching some components"
+    },
+    "mode": 0,
+    "group": 2,
+    "min": 1,
+    "max": 1,
+    "ready": 1,
+    "events": [
+      { "id":"fingcra","type":"minigame" },
+      { "type":"textMessage","text": {"id": "Minigame Berhasil", "en":"Minigame Completed"} }
+    ],
+    "price": ["420", 10],
+    "payout": {
+      "win": [
+        { "id": "69", "amount": 1 },
+        { "id": "420", "amount": 15 }
+      ],
+      "lose": [
+        { "id": "69", "amount": 0 },
+        { "id": "420", "amount": 0 }
+      ]
+    }
+  },
+  {
+    "id": "2002",
+    "name": "Fingerprint Cloner",
+    "desc": {
+      "id": "Pecahkan sidik jari dengan menduplikat tiruan",
+      "en": "Solve fingerprint hacks by making its cloning"
+    },
+    "mode": 0,
+    "group": 2,
+    "min": 1,
+    "max": 1,
+    "ready": 1,
+    "events": [
+      { "id":"fingclo","type":"minigame" },
+      { "type":"textMessage","text": {"id": "Minigame Berhasil", "en":"Minigame Completed"} }
+    ],
+    "price": ["420", 10],
+    "payout": {
+      "win": [
+        { "id": "69", "amount": 1 },
+        { "id": "420", "amount": 15 }
+      ],
+      "lose": [
+        { "id": "69", "amount": 0 },
+        { "id": "420", "amount": 0 }
+      ]
+    }
+  },
+  {
+    "id": "2003",
+    "name": "TIC TAC TOE",
+    "desc": {
+      "id": "Bermain tic tac toe bersama teman mungkin sudah cukup familiar. Tapi, bagaimana jika target untuk menang bukanlah 3, melainkan 5? Markicob, mari kita cobaaaa!",
+      "en": "Bermain tic tac toe bersama teman mungkin sudah cukup familiar. Tapi, bagaimana jika target untuk menang bukanlah 3, melainkan 5? Markicob, mari kita cobaaaa!"
+    },
+    "mode": 2,
+    "group": 2,
+    "min": 2,
+    "max": 2,
+    "ready": 0,
+    "price": ["CL00004", 1],
+    "payout": {
+      "win": [
+        { "id": "69", "amount": 1 },
+        { "id": "420", "amount": 15 }
+      ],
+      "lose": [
+        { "id": "69", "amount": 0 },
+        { "id": "420", "amount": 5 }
+      ]
+    }
+  }
+]

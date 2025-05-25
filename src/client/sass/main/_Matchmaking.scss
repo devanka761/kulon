@@ -1,0 +1,178 @@
+@use "../variables" as v;
+
+.Matchmaking {
+  z-index: 20;
+  position: absolute;
+  top: 0;left: 0;
+  width: 100%;
+  height: 100%;
+  .box {
+    width: 100%;
+    height: 100%;
+    max-width: 1080px;
+    padding: 20px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    .nav {
+      width: 100%;
+      margin-bottom: 20px;
+      animation: slide_down_in 0.5s;
+      .nav-title {
+        font-size: 1.3em;
+        font-weight: bold;
+        color: v.$white;
+        text-shadow: v.$textoutline;
+      }
+      .nav-desc {
+        color: v.$white;
+        text-shadow: v.$textoutline;
+        text-align: left;
+      }
+    }
+    .actions {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin-top: 20px;
+      animation: slide_up_in 0.5s;
+      .btn {
+        width: calc(100% / 2);
+        font-weight: bold;
+        text-align: center;
+        padding: 10px;
+        &.btn-cancel {
+          background-color: v.$card_primary;
+          color: v.$cred;
+        }
+        &.btn-start {
+          background: linear-gradient(150deg, v.$neonpurple, v.$neonpink);
+          color: v.$white;
+          &.disabled {
+            background: v.$sgray;
+            color: v.$softwhite;
+          }
+        }
+      }
+    }
+    .con {
+      width: 100%;
+      height: calc(100% - (225px));
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 20px;
+      animation: slide_right_in 0.5s;
+      .board {
+        width: calc(100% / 3);
+        height: 100%;
+        .board-title {
+          margin-bottom: 5px;
+          background: linear-gradient(90deg, rgba($color: v.$neonpurple, $alpha: 0.8), rgba($color: v.$neonpink, $alpha: 0.8));
+          padding: 10px;
+          text-align: center;
+          font-weight: bold;
+        }
+        .board-content {
+          width: 100%;
+          height: calc(100% - 50px);
+          overflow: hidden;
+          overflow-y: auto;
+          scrollbar-width: thin;
+          .card {
+            padding: 10px;
+            background-color: rgba($color: v.$card_primary, $alpha: 0.8);
+            margin-bottom: 5px;
+            &.lr {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              cursor: pointer;
+              &::after, &::before {
+                content: "";
+                font-family: "Font Awesome 6 Pro";
+                font-weight: 400;
+              }
+              &::before {
+                content: "\f053";
+                left: 0;
+              }
+              &::after {
+                content: "\f054";
+                right: 0;
+              }
+            }
+            &.long {
+              text-align: left;
+              word-break: break-all;
+              word-break: break-word;
+              hyphens: auto;
+            }
+            &.usr {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              gap: 10px;
+              cursor: pointer;
+              span {
+                word-break: break-all;
+                word-break: break-word;
+                &.ita {
+                  font-style: italic;
+                  color: v.$softwhite;
+                }
+              }
+              i {
+                color: v.$cred;
+              }
+              .st {
+                padding: 3px 5px;
+                font-size: 0.8em;
+                text-transform: uppercase;
+                border-radius: 5px;
+                color: v.$white;
+                background: linear-gradient(150deg, v.$neonpink, v.$neonpurple);
+                &.o {
+                  background: v.$sgray;
+                }
+                &.j {
+                  background: v.$sgreen;
+                }
+                &.y {
+                  background: v.$syellow;
+                }
+                &.b {
+                  background: v.$cred;
+                }
+                &.gb {
+                  color: v.$black;
+                  background: v.$cgreen;
+                }
+              }
+            }
+            &:last-child {
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+  &.out {
+    .box {
+      .nav {
+        animation: slide_down_out 0.5s forwards;
+      }
+      .actions {
+        animation: slide_up_out 0.5s forwards;
+      }
+      .con {
+        animation: slide_left_out 0.5s forwards;
+      }
+    }
+  }
+}

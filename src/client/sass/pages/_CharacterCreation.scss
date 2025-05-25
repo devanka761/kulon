@@ -1,0 +1,190 @@
+@use "../variables" as v;
+
+$citizen_width: 400px;
+
+.CharacterCreation {
+  position: absolute;
+  top: 0;left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("../../../client/assets/ui/other/landing.png");
+  background-size: cover;
+  background-position: center center;
+  animation: fade_in 1s;
+  .outer {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    background-color: rgba($color: v.$black, $alpha: 0.8);
+    .citizen {
+      width: $citizen_width;
+      padding: 20px;
+      .citizen-detail {
+        width: 100%;
+        gap: 20px;
+        .title {
+          text-align: center;
+          color: v.$darkcream;
+          margin-bottom: 20px;
+          font-size: 1.5rem;
+          font-weight: bold;
+        }
+        .avatar {
+          margin: 0 auto;
+          background-color: rgba($color: v.$bg, $alpha: 0.8);
+          border: 1px solid v.$white;
+          border-radius: 10px;
+          background-image: url("../../../client/assets/ui/creation/charbg.png");
+        }
+        .citizen-data {
+          width: 100%;
+          margin-top: 20px;
+          .field {
+            margin-bottom: 10px;
+            width: 100%;
+            p {
+              font-size: 1rem;
+            }
+            input {
+              width: 100%;
+              padding: 3px 0;
+              background-color: transparent;
+              border-bottom: 1px solid v.$sgray;
+              color: v.$yellow;
+            }
+            input:focus {
+              border-color: v.$darkcream;
+              color: v.$white;
+            }
+          }
+          .field:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+      .citizen-actions {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        margin-top: 20px;
+        button {
+          text-align: center;
+          background-color: v.$darkcream;
+          color: v.$white;
+          font-size: 1.5rem;
+          border-radius: 10px;
+          padding: 10px 20px;
+        }
+      }
+      .citizen-done {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        width: calc($citizen_width - (20px * 2));
+        .btn-continue {
+          font-weight: bold;
+          color: v.$white;
+          border-radius: 10px;
+          background-color: v.$sgreen;
+          padding: 10px;
+          text-align: center;
+        }
+      }
+    }
+    .editor {
+      width: calc(100% - $citizen_width);
+      height: 100%;
+      padding: 20px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      .field {
+        width: 100%;
+        margin-bottom: 10px;
+        border-bottom: 1px solid rgba($color: v.$sgray, $alpha: 0.5);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        .text {
+          font-size: 1.2rem;
+        }
+        .actions {
+          width: 150px;
+          .act {
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: right;
+            align-items: center;
+            gap: 10px;
+            .value {
+              width: 20px;
+              text-align: center;
+            }
+            button {
+              width: 40px;
+              height: 40px;
+              border-radius: 10px;
+              color: v.$white;
+              background-color: v.$darkcream;
+              font-size: 1rem;
+            }
+          }
+          .act:last-child {
+            margin-bottom: 0;
+          }
+        }
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+  &.out {
+    animation: fade_out 1s forwards;
+  }
+  &.appearance {
+    z-index: 20;
+    background-image: none;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    animation: fade_in 0.5s;
+    .outer {
+      .citizen {
+        .citizen-done {
+          position: absolute;
+          bottom: 20px;
+          left: 20px;
+          width: calc($citizen_width - (20px * 2));
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          align-items: center;
+          gap: 10px;
+          .btn {
+            width: 100%;
+          }
+          .btn-cancel {
+            font-weight: bold;
+            color: v.$cred;
+            border-radius: 10px;
+            background-color: v.$card_primary;
+            padding: 10px;
+            text-align: center;
+          }
+        }
+      }
+    }
+    &.out {
+      animation: fade_out 0.5s forwards;
+    }
+  }
+}

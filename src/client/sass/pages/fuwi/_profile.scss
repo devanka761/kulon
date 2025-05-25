@@ -1,0 +1,104 @@
+@use "../../variables" as v;
+
+.f-profile {
+  .box {
+    max-width: 600px;
+    .nav {
+      background: linear-gradient(150deg, v.$neonpink, v.$neonpurple);
+      border-bottom: 1px solid v.$black;
+      .left {
+        .title {
+          color: v.$white;
+        }
+      }
+      .right {
+        .btn-close {
+          color: v.$white;
+        }
+      }
+    }
+  }
+  .box {
+    .con {
+      width: 100%;
+      background: linear-gradient(150deg, v.$neonpink, v.$neonpurple);
+      border-radius: 20px;
+      overflow: hidden;
+      padding: 20px;
+      height: fit-content;
+      .profile {
+        width: 100%;
+        .avatar {
+          margin: 0 auto;
+          margin-bottom: 20px;
+          width: 70px;
+          height: 70px;
+          background-color: rgba($color: v.$softwhite, $alpha: 0.5);
+          border-radius: 50%;
+          .hero {
+            transform: scale(3.2);
+          }
+        }
+        .user {
+          .uname {
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 1.25rem;
+            word-break: break-all;
+            word-break: break-word;
+            hyphens: none;
+          }
+          .userid {
+            text-align: center;
+            color: v.$yellow;
+          }
+        }
+      }
+      .fact {
+        text-align: center;
+        margin: 20px 0;
+      }
+      .actions {
+        .btn, span {
+          display: block;
+          width: 100%;
+          max-width: 300px;
+          text-align: center;
+          padding: 5px;
+          margin: 0 auto;
+          margin-bottom: 10px;
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+        .btn {
+          background-color: rgba($color: v.$card_primary, $alpha: 0.75);
+          border-radius: 5px;
+          &.btn-add {
+            i {
+              color: v.$blurple;
+            }
+          }
+          &.btn-accept {
+            i {
+              color: v.$cgreen;
+            }
+          }
+          &.btn-location {
+            i {
+              color: v.$yellow;
+            }
+          }
+          &.btn-decline, &.btn-unfriend, &.btn-cancel {
+            i {
+              color: v.$cred;
+            }
+          }
+        }
+        span {
+          color: v.$yellow;
+        }
+      }
+    }
+  }
+}

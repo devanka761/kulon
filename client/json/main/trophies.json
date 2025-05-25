@@ -1,0 +1,128 @@
+{
+  "playtime": {
+    "r": 14400000,
+    "a": 4,
+    "rw": 75,
+    "g": "1",
+    "t": {
+      "en": "Founding Trailblazer",
+      "id": "Aku adalah Seorang Perintis"
+    },
+    "d": {
+      "en": "Have total more than 4 hours play time",
+      "id": "Total waktu bermain lebih dari 4 jam"
+    }
+  },
+  "friendreqs": {
+    "r": 5,
+    "a": 5,
+    "rw": 10,
+    "g": "1",
+    "t": {
+      "en": "Friend or Foe",
+      "id": "Kawan atau Lawan"
+    },
+    "d": {
+      "en": "Send 5 friend requests",
+      "id": "Kirim 5 permintaan pertemanan"
+    }
+  },
+  "friendaccs": {
+    "r": 3,
+    "a": 3,
+    "rw": 10,
+    "g": "1",
+    "t": {
+      "en": "Trust.. But Should You?",
+      "id": "Haruskah Ku Percaya?"
+    },
+    "d": {
+      "en": "Accept 3 friend requests",
+      "id": "Terima 3 permintaan pertemanan"
+    }
+  },
+  "firsthost": {
+    "r": 1,
+    "a": 1,
+    "rw": 5,
+    "g": "2",
+    "t": {
+      "en": "The Guiding Light",
+      "id": "Pimpinan Kru"
+    },
+    "d": {
+      "en": "First time being a Host in job (Story Mode)",
+      "id": "Selesaikan perjalanan untuk pertama kalinya sebagai Host Job (Story Mode)"
+    }
+  },
+  "firstcrew": {
+    "r": 1,
+    "a": 1,
+    "rw": 5,
+    "g": "2",
+    "t": {
+      "en": "The Unsung Hero",
+      "id": "Anak Buah Sejati"
+    },
+    "d": {
+      "en": "First time being a Crew in job (Story Mode)",
+      "id": "Selesaikan perjalanan untuk pertama kalinya sebagai Crew Job (Story Mode)"
+    }
+  },
+  "steptaken1": {
+    "r": 10000,
+    "a": 10000,
+    "rw": 10,
+    "g": "1",
+    "t": {
+      "en": "Into the Unknown",
+      "id": "Menuju Tak Terbatas Dan Melampauinya"
+    },
+    "d": {
+      "en": "Runs a total of over 10,000 tiles in any mode",
+      "id": "Berjalan dengan total lebih dari 10.000 petak di mode apapun"
+    }
+  },
+  "onjobleft": {
+    "r": 1,
+    "a": 1,
+    "rw": 5,
+    "g": "3",
+    "t": {
+      "en": "And Then There Were None...",
+      "id": "Dan Yasudahlah..."
+    },
+    "d": {
+      "en": "Exit a Job that is still in progress",
+      "id": "Keluar dari Job yang sedang berlangsung"
+    }
+  },
+  "itemexpired": {
+    "r": 1,
+    "a": 1,
+    "rw": 5,
+    "g": "3",
+    "t": {
+      "en": "Best Before... Too Late",
+      "id": "Baik Digunakan Sebelum... Terlambat"
+    },
+    "d": {
+      "en": "Witness an item becoming expired",
+      "id": "Menyaksikan sebuah item menjadi kadaluarsa"
+    }
+  },
+  "firstphone": {
+    "r": 1,
+    "a": 1,
+    "rw": 5,
+    "g": "3",
+    "t": {
+      "en": "Oh.. There's a Phone!",
+      "id": "Oh.. Aku punya Ponsel!"
+    },
+    "d": {
+      "en": "Open your phone for the first time",
+      "id": "Buka ponsel untuk pertama kalinya"
+    }
+  }
+}

@@ -1,0 +1,222 @@
+@use "../variables" as v;
+
+$bg: #3f464e;
+
+.newArea {
+  position: absolute;
+  top: 0;left: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba($color: v.$card_primary, $alpha: 0.5);
+  .form {
+    padding: 20px;
+    background-color: $bg;
+    border-radius: 10px;
+    width: calc(100% - 40px);
+    max-width: 500px;
+    max-height: calc(100% - 40px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    animation: popup_in 0.5s;
+    .hasFlag {
+      width: 100%;
+    }
+    & > {
+      .field:last-child {
+        margin-bottom: 0;
+        margin-top: 20px;
+      }
+    }
+    .field {
+      margin-bottom: 10px;
+      .desc {
+        text-align: center;
+      }
+      .title {
+        font-weight: 600;
+        text-align: center;
+        font-size: 1.2em;
+      }
+      .txts {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        .btn {
+          color: v.$cred;
+        }
+      }
+      label {
+        display: block;
+        line-height: 1.5;
+      }
+      textarea {
+        width: 100%;
+        padding: 10px;
+        background-color: rgba($color: v.$card_primary, $alpha: 0.5);
+        border: 1px solid #00000000;
+        border-radius: 5px;
+        color: v.$white;
+        &:focus, &:active {
+          border-color: v.$blurple;
+        }
+      }
+      input, select {
+        width: 100%;
+        padding: 10px;
+        background-color: rgba($color: v.$card_primary, $alpha: 0.5);
+        border: 1px solid #00000000;
+        border-radius: 5px;
+        color: v.$white;
+        &:focus, &:active {
+          border-color: v.$blurple;
+        }
+      }
+      option {
+        background-color: v.$card_primary;
+      }
+      .evt-inp {
+        color: v.$fuchsia;
+      }
+      .radios {
+        width: 100%;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        gap: 10px;
+        .radio {
+          width: calc(100% / 2);
+          display: flex;
+          justify-content: left;
+          align-items: center;
+          gap: 10px;
+          padding: 10px;
+          border-radius: 5px;
+          background-color: rgba($color: v.$card_primary, $alpha: 0.5);
+          input {
+            width: fit-content;
+          }
+          label {
+            flex-grow: 1;
+            cursor: pointer;
+          }
+          &:has(:checked) {
+            background-color: v.$blurple;
+          }
+        }
+        &.triple {
+          .radio {
+            width: calc(100% / 3);
+          }
+        }
+      }
+      .btn-add-opt, .btn-add-hasflag {
+        padding: 10px;
+        margin: 20px 0;
+        border-bottom: 2px solid v.$cgreen;
+        border-radius: 10px;
+        text-align: center;
+        color: v.$cgreen;
+        font-weight: 600;
+      }
+      .opts {
+        width: 100%;
+        .opt {
+          width: 100%;
+          margin-bottom: 5px;
+          &:last-child {
+            margin-bottom: 0;
+          }
+          .opt-actions {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            .opt-next {
+              display: flex;
+              justify-content: left;
+              align-items: center;
+              gap: 5px;
+              input {
+                width: fit-content;
+              }
+            }
+            .opt-remove {
+              color: v.$cred;
+            }
+          }
+        }
+      }
+      .evt-inp {
+        margin-bottom: 3px;
+      }
+      .evt {
+        .card {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          background-color: rgba($color: v.$card_primary, $alpha: 0.5);
+          padding: 10px;
+          border-radius: 5px;
+          margin-bottom: 3px;
+          &:last-child {
+            margin-bottom: 0;
+          }
+          .card-desc {
+            flex-grow: 1;
+            font-style: italic;
+          }
+          .card-act {
+            color: v.$cred;
+          }
+        }
+      }
+      .btn-evt {
+        color: v.$cgreen;
+        font-weight: 600;
+      }
+      .buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        .btn {
+          width: calc(100% / 2);
+          display: block;
+          text-align: center;
+          padding: 10px;
+          border-radius: 5px;
+          font-weight: 600;
+          &.btn-cancel {
+            background-color: v.$card_primary;
+            color: v.$cred;
+          }
+          &.btn-ok {
+            background-color: v.$sgreen;
+            color: v.$white;
+          }
+          &.btn-remove {
+            background-color: v.$sred;
+            color: v.$white;
+          }
+        }
+        &.triple {
+          .btn {
+            width: calc(100% / 3);
+          }
+        }
+      }
+    }
+  }
+  &.out {
+    .form {
+      animation: popup_out 0.5s forwards;
+    }
+  }
+}
