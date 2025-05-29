@@ -123,16 +123,18 @@ function sendEmailCode(emailIndex, user_email, gen_code) {
     return setTimeout(() => sendEmailCode(emailIndex, user_email, gen_code), 200);
   }
 
-  const transport = nodemailer.createTransport({
+  const transportConfig = {
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT),
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS
     }
-  });
+  }
 
-  const email_file = fs.readFileSync("./server/html/email_otp.txt", "utf-8").replace(/{GEN_CODE}/g, gen_code);
+  const transport = nodemailer.createTransport(transportConfig);
+
+  const email_file = fs.readFileSync("./src/server/html/email_otp.txt", "utf-8").replace(/{GEN_CODE}/g, gen_code);
 
   transport.sendMail({
     from: `"Kulon" <${process.env.SMTP_USER}>`,

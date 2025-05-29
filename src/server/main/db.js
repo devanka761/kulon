@@ -1,5 +1,5 @@
 const fs = require("fs");
-const dbpath = "./server/db";
+const dbpath = "./dist/db";
 
 const file_folders = ["mails", "trophies", "backpack", "house", "order", "maps"];
 

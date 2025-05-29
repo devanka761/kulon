@@ -21,10 +21,10 @@ npm install
 Karena ukuran asset gambar dan audio yang tidak sedikit, harap download asset-asset tersebut melalui link ekternal berikut:
 - Download [VIa Google Drive](https://drive.google.com/file/d/1MQnNpsrXLIvR9aspebHmfFhX91DwV2fy/view?usp=sharing)
 
-Extract folder `assets`, `audio`, dan `images` dari yang sudah didownload tersebut ke dalam folder `./client`
+Extract folder `assets`, `audio`, dan `images` dari yang sudah didownload tersebut ke dalam folder `./public`
 #### Visual struktur folder asset:
 ```shell
-client
+public
 ├───assets
 │   ├───characters
 │   │   ├───Bodies
@@ -81,7 +81,7 @@ npm run dev:start
 
 #### Server Bundling, Assets Verifying, Client Bundling
 ```shell
-npm run imp:build
+npm run build
 ```
 #### Start Server
 

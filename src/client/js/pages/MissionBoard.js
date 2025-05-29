@@ -1,5 +1,5 @@
 import { klang, lang } from "../helper/lang.js";
-import cloud_items from "../../../../client/json/items/cloud_items.json";
+import cloud_items from "../../../../public/json/items/cloud_items.json";
 import modal from "../helper/modal.js";
 import xhr from "../helper/xhr.js";
 import Kaudio from "../manager/Kaudio.js";
@@ -42,9 +42,10 @@ function loadingCard(text) {
 }
 
 export default class MissionBoard {
-  constructor({onComplete, map}) {
+  constructor({onComplete, map, isFirst}) {
      this.onComplete = onComplete;
      this.map = map;
+     this.isFirst = isFirst;
      this.items = null;
      this.choosen = null;
   }
@@ -128,7 +129,7 @@ export default class MissionBoard {
     missions.forEach(s => {
       const card = missionCard(s);
       card.onmousedown = () => {
-        if(!s.ready) return;
+        if(!s.ready || this.isFirst) return;
         Kaudio.play("sfx", "phone_selected");
         this.updateChoices(card, s);
       }
@@ -142,7 +143,7 @@ export default class MissionBoard {
     missions.forEach(s => {
       const card = missionCard(s);
       card.onmousedown = () => {
-        if(!s.ready) return;
+        if(!s.ready || this.isFirst) return;
         Kaudio.play("sfx", "phone_selected");
         this.updateChoices(card, s);
       }
@@ -202,6 +203,13 @@ export default class MissionBoard {
     db.job = {};
     this.onComplete();
   }
+  async tutorial() {
+    await modal.waittime(3000);
+    await modal.alert(lang.MB_TR_01);
+    await modal.waittime(1500);
+    await modal.alert(lang.MB_TR_02);
+    this.destroy();
+  }
   destroy(next) {
     return new Promise(async resolve => {
       if(this.isLocked) return;
@@ -223,7 +231,8 @@ export default class MissionBoard {
     this.createElement();
     document.querySelector(".app").append(this.el);
     this.updateEconomies();
-    this.btnListener();
     this.writeData();
+    if(this.isFirst) return this.tutorial();
+    this.btnListener();
   }
 }

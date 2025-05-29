@@ -1,4 +1,4 @@
-import cloud_items from "../../../../client/json/items/cloud_items.json";
+import cloud_items from "../../../../public/json/items/cloud_items.json";
 import asset from "../manager/asset.js";
 import modal from "../helper/modal.js";
 import db from "../manager/db.js";

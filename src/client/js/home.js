@@ -42,7 +42,7 @@ function draw(img) {
 }
 async function renderImage() {
   const sprite = await spriteImage();
-  await new Promise(resolve => setTimeout(resolve, 500));
+  await new Promise(resolve => setTimeout(resolve, 1000));
   icon_placeholder.style.display = "none";
   canvas.style.display = "block";
   draw(sprite);

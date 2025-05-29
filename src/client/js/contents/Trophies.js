@@ -1,4 +1,4 @@
-import trophy_list from "../../../../client/json/main/trophies.json";
+import trophy_list from "../../../../public/json/main/trophies.json";
 import asset from "../manager/asset.js";
 import modal from "../helper/modal.js";
 import playerState from "../manager/PlayerState.js";

@@ -1,7 +1,7 @@
 const fs = require("fs");
 const db = require("../main/db");
 const { validate } = require("../main/helper");
-const cloud_items = require("../../../client/json/items/cloud_items.json");
+const cloud_items = require("../../../public/json/items/cloud_items.json");
 
 module.exports = {
   getEditorMapData() {
@@ -23,9 +23,9 @@ module.exports = {
     const mdb = db.ref.m;
     if(mdb[s.project_name]) return {code:400, msg: "The Project Name Has Already Been Used"};
     db.ref.m[s.project_name] = Date.now();
-    fs.writeFileSync(`./client/json/maps/mp_${s.project_name}.json`, JSON.stringify({}), "utf-8");
-    fs.writeFileSync(`./client/json/assets/st_${s.project_name}.json`, JSON.stringify([]), "utf-8");
-    fs.writeFileSync(`./client/json/scenes/cs_${s.project_name}.json`, JSON.stringify([]), "utf-8");
+    fs.writeFileSync(`./public/json/maps/mp_${s.project_name}.json`, JSON.stringify({}), "utf-8");
+    fs.writeFileSync(`./public/json/assets/st_${s.project_name}.json`, JSON.stringify([]), "utf-8");
+    fs.writeFileSync(`./public/json/scenes/cs_${s.project_name}.json`, JSON.stringify([]), "utf-8");
     db.save("m");
     return {code:200};
   },
@@ -51,12 +51,12 @@ module.exports = {
       return {code:413,msg:"FAILED: Request Entity Too Large"}
     }
 
-    const folderExists = fs.existsSync(`./client/assets/maps/${s.folder}`);
-    if(!folderExists) fs.mkdirSync(`./client/assets/maps/${s.folder}`);
-    const fileExists = fs.existsSync(`./client/assets/maps/${s.folder}/${s.name}${s.extension}`);
-    const assetPath = `./client/json/assets/st_${s.project_name}.json`;
+    const folderExists = fs.existsSync(`./public/assets/maps/${s.folder}`);
+    if(!folderExists) fs.mkdirSync(`./public/assets/maps/${s.folder}`);
+    const fileExists = fs.existsSync(`./public/assets/maps/${s.folder}/${s.name}${s.extension}`);
+    const assetPath = `./public/json/assets/st_${s.project_name}.json`;
     if(!fs.existsSync(assetPath)) return {code:404, msg:"Asset List File Does Not Exist"};
-    if(!fileExists) fs.writeFileSync(`./client/assets/maps/${s.folder}/${s.name}${s.extension}`, buffer);
+    if(!fileExists) fs.writeFileSync(`./public/assets/maps/${s.folder}/${s.name}${s.extension}`, buffer);
 
     const assetFile = fs.readFileSync(assetPath, "utf-8");
     const waitingFile = JSON.parse(assetFile);
@@ -73,14 +73,14 @@ module.exports = {
     const mdb = db.ref.m[s.project_name];
     if(!mdb) return {code:400, msg: "The Project Is Not Available or Has Been Deleted"};
 
-    const assetPath = `./client/json/assets/st_${s.project_name}.json`;
+    const assetPath = `./public/json/assets/st_${s.project_name}.json`;
     if(!fs.existsSync(assetPath)) return {code:404, msg: "The Project Is Not Available or Has Been Deleted"};
 
     const assetBuffer = fs.readFileSync(assetPath, "utf-8");
     const assetList = JSON.parse(assetBuffer);
     const currAsset = assetList.find(st => st.id === s.filename);
     if(!currAsset) return {code:400, msg: "Asset Does Not Exist or Has Been Deleted"};
-    const currPath = `./client${currAsset.path}`;
+    const currPath = `./public${currAsset.path}`;
     if(fs.existsSync(currPath)) fs.unlinkSync(currPath);
     const newAssetList = assetList.filter(st => st.id !== currAsset.id);
     fs.writeFileSync(assetPath, JSON.stringify(newAssetList), "utf-8");
@@ -95,9 +95,9 @@ module.exports = {
     const mdb = db.ref.m[s.project_name];
     if(!mdb) return {code:400, msg: "The Project Is Not Available or Has Been Deleted"};
 
-    const projectPath = `./client/json/maps/mp_${s.project_name}.json`;
+    const projectPath = `./public/json/maps/mp_${s.project_name}.json`;
     if(!fs.existsSync(projectPath)) return {code:400, msg: "The Project Is Not Available or Has Been Deleted"};
-    const finishedPath = `./client/json/scenes/cs_${s.project_name}.json`;
+    const finishedPath = `./public/json/scenes/cs_${s.project_name}.json`;
     if(!fs.existsSync(finishedPath)) return {code:400, msg: "The Project Is Not Available or Has Been Deleted"};
 
     fs.writeFileSync(projectPath, s.file1, "utf-8");

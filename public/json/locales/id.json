@@ -212,5 +212,7 @@
   "ST_NOT_READY": "Fitur ini masih dalam tahap pengembangan",
   "TC_JOINED": "terhubung ke team chat",
   "TC_LEFT": "terputus dari team chat",
-  "PAYOUT_COMPLETED": "BERHASIL"
+  "PAYOUT_COMPLETED": "BERHASIL",
+  "MB_TR_01": "Di sini kamu bisa bermain \"Story Mode\" bersama teman atau melakukan \"Minigame\" melawan player",
+  "MB_TR_02": "Untuk sekarang, ayo kita selesaikan dulu tutorialnya!"
 }

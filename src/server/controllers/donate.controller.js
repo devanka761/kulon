@@ -2,8 +2,8 @@ const MidtransClient = require("midtrans-client");
 const qr = require("qrcode");
 const db = require("../main/db");
 const { validate, rNumber } = require("../main/helper");
-const shop_items = require("../../../client/json/items/shop_items.json");
-const cloud_items = require("../../../client/json/items/cloud_items.json");
+const shop_items = require("../../../public/json/items/shop_items.json");
+const cloud_items = require("../../../public/json/items/cloud_items.json");
 const webhook = require("../main/webhook");
 
 const prodMid = (process.env.MIDTRANS_PRODUCTION).toString() === "true" ? true : false;

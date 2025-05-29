@@ -11,7 +11,7 @@ router.get("/zonk/users/:userid", cdUser, isAdmin, (req, res) => {
   return res.json(hadmin.peekUsers(req.params.userid));
 });
 router.get("/zonk", isAdmin, (req, res) => {
-  return res.sendFile("./client/zonk.html", { root: "./" });
+  return res.sendFile("./public/zonk.html", { root: "./" });
 });
 
 router.use(cdUser);

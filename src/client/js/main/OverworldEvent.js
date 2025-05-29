@@ -1,4 +1,4 @@
-import cloud_items from "../../../../client/json/items/cloud_items.json";
+import cloud_items from "../../../../public/json/items/cloud_items.json";
 import utils from "./utils.js";
 import TextMessage from "./TextMessage.js";
 import SceneTransition from "./SceneTransition.js";
@@ -208,6 +208,7 @@ export default class OverworldEvent {
   missionBoard(resolve) {
     const missionBoard = new MissionBoard({
       map: this.map,
+      isFirst: this.event.first || false,
       onComplete: () => {
         resolve();
       }

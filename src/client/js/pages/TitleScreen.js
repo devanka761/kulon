@@ -1,4 +1,4 @@
-import bigDB from "../../../../server/db/v.json";
+import bigDB from "../../../../dist/db/v.json";
 import { lang } from "../helper/lang.js";
 import utils from "../main/utils.js";
 import ClientData from "../manager/clientData.js";

@@ -1,5 +1,5 @@
-import cloud_items from "../../../../client/json/items/cloud_items.json";
-import trophy_list from "../../../../client/json/main/trophies.json";
+import cloud_items from "../../../../public/json/items/cloud_items.json";
+import trophy_list from "../../../../public/json/main/trophies.json";
 import { klang, lang } from "../helper/lang.js";
 import modal from "../helper/modal.js";
 import notip from "../helper/notip.js";

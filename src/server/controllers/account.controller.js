@@ -1,9 +1,11 @@
 const db = require("../main/db");
 const { validate, genHex, peerKey, isProd, trophyParse } = require("../main/helper");
-const skinlist = require("../../../client/json/skins/skin_list.json").map(sk => sk.id);
-const shop_items = require("../../../client/json/items/shop_items.json");
-const cloud_items = require("../../../client/json/items/cloud_items.json");
-const trophy_list = require("../../../client/json/main/trophies.json");
+const hprof = require("./profile.controller");
+const hjob = require("./job.controller");
+const skinlist = require("../../../public/json/skins/skin_list.json").map(sk => sk.id);
+const shop_items = require("../../../public/json/items/shop_items.json");
+const cloud_items = require("../../../public/json/items/cloud_items.json");
+const trophy_list = require("../../../public/json/main/trophies.json");
 const webhook = require("../main/webhook");
 const tob = require("../main/tob");
 
@@ -45,37 +47,11 @@ module.exports = {
     if(udb.req && udb.req.length >= 1) {
       data.char.requests = {};
       udb.req.forEach(k => {
-        data.char.requests[k] = this.getUser(uid, k);
+        data.char.requests[k] = hprof.getUser(uid, k);
       })
     }
     data.friends = this.getFriends(uid);
-    this.exitFromJob(uid);
-    return data;
-  },
-  getUser(uid, userid) {
-    if(userid === uid) return null;
-    const udb = db.ref.u[userid];
-    if(!udb) return null;
-    if(!udb.uname || !udb.skin) return;
-    const data = {};
-    data.id = userid;
-    data.username = udb.uname;
-    data.joined = udb.j;
-    data.trophies = udb.t || [];
-    const currSkin = {...udb.skin};
-    if(udb.skin.Hairstyles && udb.skin.Hats) {
-      currSkin.Hairstyles = "Hairstyle_01_" + udb.skin.Hairstyles.substring((udb.skin.Hairstyles.length - 2), (udb.skin.Hairstyles.length));
-    }
-    data.skin = Object.values(currSkin);
-    if(udb.peer) data.peer = udb.peer;
-    if(udb.req && udb.req.includes(uid)) data.myReq = true;
-    const mdb = db.ref.u[uid];
-    if(mdb.req && mdb.req.includes(userid)) data.theirReq = true;
-    const isFriend = Object.keys(db.ref.f).find(k => {
-      return db.ref.f[k].includes(uid) && db.ref.f[k].includes(userid);
-    });
-    if(isFriend) data.isFriend = true;
-
+    hjob.exitFromJob(uid);
     return data;
   },
   getFriends(uid) {
@@ -84,7 +60,7 @@ module.exports = {
     if(fdb.length >= 1) {
       fdb.forEach(k => {
         const friend_id = db.ref.f[k].find(user_id => user_id !== uid);
-        friend_list[friend_id] = this.getUser(uid, friend_id);
+        friend_list[friend_id] = hprof.getUser(uid, friend_id);
       });
     }
     return friend_list;
@@ -402,42 +378,5 @@ module.exports = {
       itemfrom: { name: cloud_items.find(itm => itm.id === curbackpack[req_key].id).name.en, amount: s.price_amount },
     });
     return {ok:true, code:200, data};
-  },
-  exitFromJob(uid) {
-    const jdb = db.ref.j;
-
-    const otherKeys = Object.keys(jdb).filter(k => jdb[k].players && jdb[k].players[uid]);
-    otherKeys.forEach(k => {
-      if(!jdb[k].left) db.ref.j[k].left = uid;
-      const cjdb = db.ref.j[k];
-      if(cjdb.status >= 4) this.jobCompleted(uid, cjdb);
-      if(cjdb.status > 1 && cjdb.status < 4) this.jobFailed(uid, cjdb);
-      Object.keys(cjdb.players).filter(usr => usr !== uid).forEach(usr => {
-        const udb = db.ref.u[usr];
-        if(!udb.zzz) db.ref.u[usr].zzz = [];
-        db.ref.u[usr].zzz.push({
-          "type": "job_leave",
-          "id": uid,
-          "job_id": k
-        });
-      });
-      if((Object.keys(cjdb.players).length <= 1) || (cjdb.status > 1) || (cjdb.host === uid)) {
-        setTimeout(() => {
-          delete db.ref.j[k];
-        }, 7000);
-      }
-      delete db.ref.j[k].players[uid];
-    });
-    return true;
-  },
-  jobFailed(uid, s) {
-    if(s.left !== uid) return;
-    const udb = db.ref.u[uid];
-    if(!tob[uid].data["onjobleft"]) tob[uid].data["onjobleft"] = {r:0,a:0};
-    if(tob[uid].data["onjobleft"].done) return;
-    if(!udb.t) db.ref.u[uid].t = [];
-    if(udb.t.includes("onjobleft")) return;
-    tob[uid].data["onjobleft"].r++;
-    trophyParse(uid, "onjobleft", udb.f);
   }
 }

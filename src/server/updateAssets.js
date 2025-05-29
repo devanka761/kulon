@@ -1,8 +1,10 @@
 const fs = require("fs");
 const db = require("./main/db");
 
+if(!fs.existsSync("./dist")) fs.mkdirSync("./dist");
+
 function getCharCreate() {
-   const skins = require("../../client/json/skins/skin_list.json");
+   const skins = require("../../public/json/skins/skin_list.json");
 
    let charCreateList = {
       Bodies: [],
@@ -68,9 +70,9 @@ function getCharCreate() {
 async function createCharCreateData() {
    console.log("2/3 LOADING (CHARACTERS)");
    const skinlist = getCharCreate();
-   const skinFolderPath = fs.existsSync("./client/json/skins");
-   if(!skinFolderPath) fs.mkdirSync("./client/json/skins");
-   let skinDataPath = "./client/json/skins/character_creation_list.json";
+   const skinFolderPath = fs.existsSync("./public/json/skins");
+   if(!skinFolderPath) fs.mkdirSync("./public/json/skins");
+   let skinDataPath = "./public/json/skins/character_creation_list.json";
 
    fs.writeFileSync(skinDataPath, JSON.stringify(skinlist), "utf-8");
    console.log("2/3 LOADED (CHARACTERS)");
@@ -78,7 +80,7 @@ async function createCharCreateData() {
 }
 
 async function getSkinFile() {
-   const skinPath = "./client/assets";
+   const skinPath = "./public/assets";
    let skinlist = [];
 
    const parents = fs.readdirSync(skinPath).filter(dsk => dsk !== "maps");
@@ -103,12 +105,12 @@ async function getSkinFile() {
 }
 
 async function createSkinData() {
-   const skinFolderPath = fs.existsSync("./client/json/skins");
-   if(!skinFolderPath) fs.mkdirSync("./client/json/skins");
+   const skinFolderPath = fs.existsSync("./public/json/skins");
+   if(!skinFolderPath) fs.mkdirSync("./public/json/skins");
 
    console.log("1/3 LOADING (SKINS)");
    const skinlist = await getSkinFile();
-   const skinDataPath = "./client/json/skins/skin_list.json";
+   const skinDataPath = "./public/json/skins/skin_list.json";
 
    fs.writeFileSync(skinDataPath, JSON.stringify(skinlist), "utf-8");
    console.log("1/3 LOADED (SKINS)");
@@ -117,7 +119,7 @@ async function createSkinData() {
 }
 
 function getAudioData() {
-   const audioPath = "./client/audio";
+   const audioPath = "./public/audio";
    let audioList = [];
 
    const parents = fs.readdirSync(audioPath);
@@ -138,7 +140,7 @@ function createAudioData() {
    console.log("3/3 LOADING (AUDIO)");
 
    const audiolist = getAudioData();
-   const audioDataPath = "./client/json/audio/audio.json";
+   const audioDataPath = "./public/json/audio/audio.json";
 
    fs.writeFileSync(audioDataPath, JSON.stringify(audiolist), "utf-8");
    console.log("3/3 LOADED (AUDIO)");

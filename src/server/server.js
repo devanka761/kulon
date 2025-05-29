@@ -22,8 +22,10 @@ const tob = require("./main/tob");
 
 const appConfig = require("./config.json");
 
-if (!fs.existsSync("./server/sessions")) {
-  fs.mkdirSync("./server/sessions");
+if(!fs.existsSync("./dist")) fs.mkdirSync("./dist");
+
+if (!fs.existsSync("./dist/sessions")) {
+  fs.mkdirSync("./dist/sessions");
   console.log("sessions recreated!");
 }
 
@@ -41,18 +43,18 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 1000 * 60 * 60 * 24 * 30, sameSite: "strict" },
-    store: new FileStore({ path: "./server/sessions", logFn() {} }),
+    store: new FileStore({ path: "./dist/sessions", logFn() {} }),
   })
 );
 
-app.use(express.static("client"));
+app.use(express.static("public"));
 
 const termsFile = fs.readFileSync("./templates/terms.txt", "utf-8");
 const privacyFile = fs.readFileSync("./templates/privacy.txt", "utf-8");
 const notfoundFile = fs.readFileSync("./templates/404.txt", "utf-8");
 
 app.get("/app", (req, res) => {
-  return res.sendFile("./client/app.html", { root: "./" });
+  return res.sendFile("./public/app.html", { root: "./" });
 });
 app.get("/terms", (req, res) => {
   return res.send(termsFile);
@@ -61,7 +63,7 @@ app.get("/privacy", (req, res) => {
   return res.send(privacyFile);
 });
 app.get("/editor", (req, res) => {
-  return res.sendFile("./client/editor.html", { root: "./" });
+  return res.sendFile("./public/editor.html", { root: "./" });
 });
 
 app.use("/x/auth", authRouter);
@@ -76,7 +78,7 @@ app.get("/zonk", (req, res) => {
 })
 
 app.get("/", (req, res) => {
-  return res.sendFile("./client/home.html", { root: "./" });
+  return res.sendFile("./public/home.html", { root: "./" });
 });
 
 const server = app.listen(PORT, () => {

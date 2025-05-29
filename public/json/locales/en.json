@@ -212,5 +212,7 @@
   "ST_NOT_READY": "This feature is still under development",
   "TC_JOINED": "joined the team chat",
   "TC_LEFT": "left the team chat",
-  "PAYOUT_COMPLETED": "COMPLETED"
+  "PAYOUT_COMPLETED": "COMPLETED",
+  "MB_TR_01": "Here you can play \"Story Mode\" with friends or do \"Minigames\" against players",
+  "MB_TR_02": "For now, let's just finish the tutorial first!"
 }

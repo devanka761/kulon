@@ -1,5 +1,5 @@
 const crypto = require("crypto");
-const trophy_list = require("../../../client/json/main/trophies.json");
+const trophy_list = require("../../../public/json/main/trophies.json");
 const tob = require("./tob");
 const db = require("./db");
 module.exports = {

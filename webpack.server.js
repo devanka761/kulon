@@ -9,7 +9,7 @@ module.exports = {
     assets: "./src/server/updateAssets.js",
   },
   output: {
-    path: path.resolve(__dirname, "server/bundle"),
+    path: path.resolve(__dirname, "dist/bundle"),
     filename: "[name].js",
     clean: true,
   },

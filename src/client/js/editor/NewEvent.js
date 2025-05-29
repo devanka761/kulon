@@ -1,4 +1,4 @@
-import cloud_items from "../../../../client/json/items/cloud_items.json";
+import cloud_items from "../../../../public/json/items/cloud_items.json";
 import modal from "../helper/modal.js";
 import Minigames from "../pages/Minigames.js";
 

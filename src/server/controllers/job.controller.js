@@ -1,8 +1,8 @@
 const db = require("../main/db");
-const cloud_items = require("../../../client/json/items/cloud_items.json");
-const mission_list = require("../../../client/json/main/missions.json");
-const trophy_list = require("../../../client/json/main/trophies.json");
-const haccount = require("./account.controller");
+const cloud_items = require("../../../public/json/items/cloud_items.json");
+const mission_list = require("../../../public/json/main/missions.json");
+const trophy_list = require("../../../public/json/main/trophies.json");
+const hprof = require("./profile.controller");
 const { validate, rNumber, trophyParse } = require("../main/helper");
 const tob = require("../main/tob");
 
@@ -41,7 +41,7 @@ module.exports = {
     const price = cloud_items.find(k => k.id === mission.price[0]);
 
     const backpack = db.fileGet(udb.f, "backpack") || {};
-    const job_tickets = Object.keys(backpack).filter(k => backpack[k].id === price.id && backpack[k].amount > mission.price[1] && (!backpack[k].expiry || Date.now() < backpack[k].expiry));
+    const job_tickets = Object.keys(backpack).filter(k => backpack[k].id === price.id && backpack[k].amount >= mission.price[1] && (!backpack[k].expiry || Date.now() < backpack[k].expiry));
     const job_ticket = job_tickets.find(k => backpack[k].amount >= 1);
     if(!job_ticket || (backpack[job_ticket]?.amount || 0) < 1) return {code:404, msg: NOT_ENOUGHT_TICKET};
 
@@ -156,7 +156,7 @@ module.exports = {
 
     const jobPlayers = {...jdb[s.job_id].players};
     totalPlayers.forEach(usr => {
-      jobPlayers[usr] = haccount.getUser(uid, usr) || {};
+      jobPlayers[usr] = hprof.getUser(uid, usr) || {};
       jobPlayers[usr].ts = jdb[s.job_id].players[usr];
     });
     const jobData = {...db.ref.j[s.job_id]};
@@ -190,7 +190,7 @@ module.exports = {
 
     const jobData = {...jdb[jobkey]};
     if(Object.keys(jobData.players).length < 1) return {code:404,msg:"job_disbanded"};
-    const user_data = haccount.getUser(uid, jobData.host);
+    const user_data = hprof.getUser(uid, jobData.host);
     delete jobData.id;
     if(!user_data) return {code:404,msg:"job_host_invalid"};
     jobData.inviter = user_data;
@@ -231,7 +231,7 @@ module.exports = {
     if(!jdb.players[s.user_id]) return {code:400,msg:"USER_NOT_FOUND"};
 
     if(s.user_id === uid) return {code:400,msg:"USER_NOT_FOUND"};
-    const user_data = haccount.getUser(uid, s.user_id);
+    const user_data = hprof.getUser(uid, s.user_id);
     if(!user_data) return {code:400,msg:"USER_NOT_FOUND"};
     const totalPlayers = Object.keys(jdb.players);
     const peers = [];
@@ -282,7 +282,7 @@ module.exports = {
 
     const jobPlayers = {...jdb.players};
     totalPlayers.forEach(usr => {
-      jobPlayers[usr] = haccount.getUser(uid, usr) || {};
+      jobPlayers[usr] = hprof.getUser(uid, usr) || {};
       jobPlayers[usr].ts = jdb.players[usr];
     });
     const jobData = {...db.ref.j[s.job_id]};
@@ -365,7 +365,7 @@ module.exports = {
     const price = cloud_items.find(k => k.id === mission.price[0]);
 
     const backpack = db.fileGet(udb.f, "backpack") || {};
-    const job_tickets = Object.keys(backpack).filter(k => backpack[k].id === price.id  && backpack[k].amount > mission.price[1] && (!backpack[k].expiry || Date.now() < backpack[k].expiry));
+    const job_tickets = Object.keys(backpack).filter(k => backpack[k].id === price.id  && backpack[k].amount >= mission.price[1] && (!backpack[k].expiry || Date.now() < backpack[k].expiry));
     const job_ticket = job_tickets.find(k => backpack[k].amount >= 1);
     if(!job_ticket || (backpack[job_ticket]?.amount || 0) < 1) return {ok:false, code:404, msg: NOT_ENOUGHT_TICKET};
     backpack[job_ticket].amount = backpack[job_ticket].amount - 1;

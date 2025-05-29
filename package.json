@@ -1,32 +1,31 @@
 {
-  "name": "kulon",
+  "name": "koelon",
   "version": "1.0.0",
   "description": "Multiplayer Puzzle Game",
-  "main": "./src/server/server.js",
+  "main": "./dist/bundle/server.js",
   "scripts": {
-    "start": "node ./server/bundle/server.js",
-    "dev": "nodemon .",
-    "dev:start": "nodemon .",
-    "build": "webpack --config webpack.prod.js",
+    "start": "node .",
+    "dev": "nodemon ./src/server/server.js",
+    "dev:start": "nodemon ./src/server/server.js",
+    "client:build": "webpack --config webpack.prod.js",
     "dev:build": "webpack --config webpack.dev.js",
     "server:build": "webpack --config webpack.server.js",
-    "imp:start": "node .",
-    "imp:build": "echo Server Bundling Started ... && webpack --config webpack.server.js && echo Server Bundling Completed! && node ./server/bundle/assets.js && echo Client Bundling Started ... && webpack --config webpack.prod.js && echo Client Bundling Completed! && echo We are good to go!",
-    "dev:sass": "sass --watch ./client/scss/app.scss ./client/bundle/koelonapp.css --style compressed",
-    "dev:sass2": "sass --watch ./client/scss/editor.scss ./client/bundle/koeloneditor.css --style compressed",
-    "dev:sass3": "sass --watch ./client/scss/home.scss ./client/bundle/koelonhome.css --style compressed",
-    "assets": "node ./server/bundle/assets.js"
+    "build": "echo First Try && node ./src/server/updateAssets.js && echo Server Bundling Started ... && webpack --config webpack.server.js && echo Server Bundling Completed! && node ./dist/bundle/assets.js && echo Client Bundling Started ... && webpack --config webpack.prod.js && echo Client Bundling Completed! && echo We are good to go!",
+    "dev:sass": "sass --watch ./src/client/scss/app.scss ./public/bundle/koelonapp.css --style compressed",
+    "dev:sass2": "sass --watch ./src/client/scss/editor.scss ./public/bundle/koeloneditor.css --style compressed",
+    "dev:sass3": "sass --watch ./src/client/scss/home.scss ./public/bundle/koelonhome.css --style compressed",
+    "assets": "node ./dist/bundle/assets.js"
   },
   "author": "Devanka761 <devanka@protonmail.com> (https://devanka.id/)",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/devanka761/kulon.git"
+    "url": "git+https://github.com/devanka761/koelon.git"
   },
   "bugs": {
-    "url": "https://github.com/devanka761/kulon/issues"
+    "url": "https://github.com/devanka761/koelon/issues"
   },
-  "homepage": "https://github.com/devanka761/kulon#readme",
+  "homepage": "https://github.com/devanka761/koelon#readme",
   "nodemonConfig": {
     "ignore": [
       "**.json",
@@ -34,6 +33,7 @@
     ]
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "express-session": "^1.18.1",

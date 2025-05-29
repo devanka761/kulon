@@ -8,7 +8,7 @@ import kchat from "../manager/KChat.js";
 import utils from "./utils.js";
 import playerState from "../manager/PlayerState.js";
 import Kaudio from "../manager/Kaudio.js";
-import introEvents from "../../../../client/json/main/intro.json";
+import introEvents from "../../../../public/json/main/intro.json";
 
 export default class Overworld {
  constructor(config) {

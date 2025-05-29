@@ -1,9 +1,6 @@
 {
   "FIRST": [
-    { "type": "stand", "direction": "down", "who": "hero", "time": 100},
-    { "type": "teleport", "x": 48, "y": 96, "direction": "down"},
-    { "type": "stand", "direction": "down", "who": "hero", "time": 100},
-    { "type": "teleport", "x": 48, "y": 96, "direction": "down"},
+    { "type": "stand", "direction": "down", "who": "hero", "time": 500},
     { "type": "titleScreen" },
     { "type": "textMessage", "text": {
       "id": "Selamat datang di perjalanan para Kulon!",
@@ -52,6 +49,7 @@
       "id": "Kamu bisa melihatnya dengan menekan E",
       "en": "You can take a look and opening mission board by pressing E"
     } },
+    {"type":"missionBoard", "first": true },
     { "type": "stand", "direction": "up", "who": "hero", "time": 500},
     { "type": "stand", "direction": "right", "who": "hero", "time": 700},
     { "type": "stand", "direction": "down", "who": "hero", "time": 700},

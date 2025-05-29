@@ -1,5 +1,5 @@
-import cloud_items from "../../../../client/json/items/cloud_items.json";
-import shop_items from "../../../../client/json/items/shop_items.json";
+import cloud_items from "../../../../public/json/items/cloud_items.json";
+import shop_items from "../../../../public/json/items/shop_items.json";
 import asset from "../manager/asset.js";
 import modal from "../helper/modal.js";
 import playerState from "./PlayerState.js";

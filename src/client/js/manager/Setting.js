@@ -1,4 +1,4 @@
-import setting_list from "../../../../client/json/main/settings.json";
+import setting_list from "../../../../public/json/main/settings.json";
 import { klang, lang } from "../helper/lang.js";
 import modal from "../helper/modal.js";
 import xhr from "../helper/xhr.js";

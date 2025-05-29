@@ -45,7 +45,7 @@ Object.values(appConfig.entries).forEach((entryInfo, entryName) => {
   plugins.push(
     new HtmlWebpackPlugin({
       title: entryInfo.title,
-      filename: path.join(__dirname, "./client/" + entryInfo.filename),
+      filename: path.join(__dirname, "./public/" + entryInfo.filename),
       template: "./templates/" + entryInfo.template,
       chunks: entryInfo.chunks,
       publicPath: "/bundle",
@@ -72,7 +72,7 @@ module.exports = {
   },
   entry,
   output: {
-    path: path.resolve(__dirname, "client/bundle"),
+    path: path.resolve(__dirname, "public/bundle"),
     filename: "[name]-[contenthash].js",
     clean: true,
   },

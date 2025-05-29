@@ -1,4 +1,4 @@
-import shop_items from "../../../../client/json/items/shop_items.json";
+import shop_items from "../../../../public/json/items/shop_items.json";
 import db from "./db.js";
 import playerState from "./PlayerState.js";
 import modal from "../helper/modal.js";

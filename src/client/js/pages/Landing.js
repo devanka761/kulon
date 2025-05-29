@@ -1,8 +1,8 @@
 import modal from "../helper/modal.js";
 import xhr from "../helper/xhr.js";
 import Preload from "./Preload.js";
-import allSkins from "../../../../client/json/skins/skin_list.json";
-import allSounds from "../../../../client/json/audio/audio.json";
+import allSkins from "../../../../public/json/skins/skin_list.json";
+import allSounds from "../../../../public/json/audio/audio.json";
 import ForceClose from "./ForceClose.js";
 import * as klang from "../helper/lang.js";
 

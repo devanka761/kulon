@@ -1,8 +1,8 @@
 const db = require("./db");
-const haccount = require("../controllers/account.controller");
+const hprof = require("../controllers/profile.controller");
 const hjob = require("../controllers/job.controller");
-const trophy_list = require("../../../client/json/main/trophies.json");
-const missions = require("../../../client/json/main/missions.json");
+const trophy_list = require("../../../public/json/main/trophies.json");
+const missions = require("../../../public/json/main/missions.json");
 const tob = require("./tob");
 const helper = require("./helper");
 
@@ -23,7 +23,7 @@ const hbMethod = {
     const fdb = db.ref.f[s.friend_id];
     if(!fdb) return not_found;
     if(!fdb.includes(uid) && !fdb.includes(s.id)) return not_found;
-    const user_data = haccount.getUser(uid, s.id);
+    const user_data = hprof.getUser(uid, s.id);
     if(!user_data) return not_found;
     return {key:"acceptedfriend", _id: s.id, result: user_data};
   },
@@ -32,7 +32,7 @@ const hbMethod = {
     if(!udb.req || udb.req.length < 1) return not_found;
     const req_exists = udb.req.find(user_id => s.id === user_id);
     if(!req_exists) return not_found;
-    const user_data = haccount.getUser(uid, s.id);
+    const user_data = hprof.getUser(uid, s.id);
     if(!user_data) return not_found;
     return {key: "requests", _id: s.id, result: user_data};
   },
@@ -41,19 +41,19 @@ const hbMethod = {
     if(udb.req && udb.req.length >= 1) return not_found;
     const req_exists = udb.req.find(user_id => s.id === user_id);
     if(req_exists) return not_found;
-    const user_data = haccount.getUser(uid, s.id);
+    const user_data = hprof.getUser(uid, s.id);
     if(!user_data) return not_found;
     return {key: "cancelrequest", _id: s.id, result: user_data};
   },
   unfriend(uid, s) {
-    const user_data = haccount.getUser(uid, s.id);
+    const user_data = hprof.getUser(uid, s.id);
     if(!user_data) return not_found;
     return {key: "unfriend", _id: s.id, result: user_data};
   },
   job_invitation(uid, s) {
     const jdb = db.ref.j;
     if(!jdb[s.job_id]) return not_found;
-    const user_data = haccount.getUser(uid, s.id);
+    const user_data = hprof.getUser(uid, s.id);
     if(!user_data) return not_found;
     const data = {...jdb[s.job_id]};
     data.inviter = user_data;
@@ -64,7 +64,7 @@ const hbMethod = {
     if(!jdb[s.job_id]) return not_found;
     if(!jdb[s.job_id].players[uid]) return not_found;
     if(!jdb[s.job_id].players[s.id]) return not_found;
-    const user_data = haccount.getUser(uid, s.id);
+    const user_data = hprof.getUser(uid, s.id);
     user_data.ts = jdb[s.job_id].players[s.id];
     if(!user_data) return not_found;
     return {key:"job_accept", _id: s.id, result: user_data};
@@ -73,7 +73,7 @@ const hbMethod = {
     const jdb = db.ref.j;
     if(!jdb[s.job_id]) return not_found;
     if(!jdb[s.job_id].players[uid]) return not_found;
-    const user_data = haccount.getUser(uid, s.id);
+    const user_data = hprof.getUser(uid, s.id);
     if(!user_data) return not_found;
     return {key:"job_leave", _id: s.id, result: user_data};
   },
@@ -81,7 +81,7 @@ const hbMethod = {
     const jdb = db.ref.j;
     if(!jdb[s.job_id]) return not_found;
     if(!jdb[s.job_id].players[uid]) return not_found;
-    const user_data = haccount.getUser(uid, s.id);
+    const user_data = hprof.getUser(uid, s.id);
     if(!user_data) return not_found;
     return {key:"job_disband", _id: s.id, result: user_data};
   },
@@ -92,7 +92,7 @@ const hbMethod = {
     const jobData = {...jdb};
     const jobPlayers = {};
     jobData.onduty.forEach(usr => {
-      jobPlayers[usr] = usr === uid ? {} : haccount.getUser(uid, usr) || {error:1};
+      jobPlayers[usr] = usr === uid ? {} : hprof.getUser(uid, usr) || {error:1};
       jobPlayers[usr].ts = jdb.players[usr];
     });
     jobData.players = jobPlayers;
@@ -103,7 +103,7 @@ const hbMethod = {
   job_kick(uid, s) {
     const jdb = db.ref.j;
     if(!jdb[s.job_id]) return not_found;
-    const user_data = s.user_id === uid ? {id:uid} : haccount.getUser(uid, s.user_id);
+    const user_data = s.user_id === uid ? {id:uid} : hprof.getUser(uid, s.user_id);
     if(!user_data) return not_found;
     return {key:"job_kick", _id: s.id, result: user_data};
   },
@@ -111,7 +111,7 @@ const hbMethod = {
     const jdb = db.ref.j[s.job_id];
     if(!jdb) return not_found;
     if(!jdb.players[uid]) return not_found;
-    const user_data = haccount.getUser(uid, s.id);
+    const user_data = hprof.getUser(uid, s.id);
     if(!user_data) return not_found;
     return {key:"prepare_ready", _id: s.id, result: user_data};
   },
@@ -286,7 +286,7 @@ const ordMethod = {
     if(!jobKey) return null;
     const jdb = db.ref.j[jobKey];
     const isCompleted = hjob.jobCompleted(jdb.host, jdb);
-    if(!isCompleted) return null;
+    if(!isCompleted || !isCompleted.ok) return null;
     const players = Object.keys(jdb.players);
     players.filter(k => k !== uid).forEach(k => {
       const udb = db.ref.u[k];
