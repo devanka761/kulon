@@ -5,8 +5,7 @@ module.exports = {
   mode: "production",
   target: "node",
   entry: {
-    server: "./src/server/server.js",
-    assets: "./src/server/updateAssets.js",
+    server: "./src/server/server.js"
   },
   output: {
     path: path.resolve(__dirname, "dist/bundle"),

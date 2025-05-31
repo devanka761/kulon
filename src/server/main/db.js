@@ -18,6 +18,7 @@ class DvnkzDatabase {
     fs.writeFileSync(`${dbpath}/${file_folder}/${file_key}.json`, JSON.stringify(new_file_data), "utf-8");
   }
   load() {
+    if(!fs.existsSync("./dist")) fs.mkdirSync("./dist");
     if(!fs.existsSync(dbpath)) fs.mkdirSync(dbpath);
     for(const file_folder of file_folders) {
       if(!fs.existsSync(`${dbpath}/${file_folder}`)) fs.mkdirSync(`${dbpath}/${file_folder}`);

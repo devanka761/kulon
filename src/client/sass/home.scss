@@ -8,6 +8,10 @@
   height: 100%;
   overflow: visible;
 }
+html {
+  height: 100svh;
+  scrollbar-color: v.$darkcream #302f2b;
+}
 body {
   overflow: visible;
 }
@@ -16,8 +20,8 @@ body {
   position: fixed;
   top: 10px;right: 10px;
   background-color: #1E1F2280;
-  border-bottom: 1px solid v.$blurple;
-  border-left: 1px solid v.$blurple;
+  border-bottom: 1px solid v.$darkcream;
+  border-left: 1px solid v.$darkcream;
   border-radius: 10px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -49,7 +53,7 @@ body {
         width: calc(100% + 20px);
         transform: translateX(-20px);
         background-color: v.$card_primary;
-        border-color: v.$blurple;
+        border-color: v.$darkcream;
       }
       &:active {
         background-color: v.$bar_active;
@@ -64,7 +68,7 @@ body {
     .btn-menu {
       border-radius: 10px;
       &:active{
-        background-color: v.$blurple;
+        background-color: v.$darkcream;
       }
     }
     .nav-list {
@@ -78,17 +82,20 @@ body {
 .main {
   width: 100%;
   height: 100%;
-  background: linear-gradient(120deg, #272b30, #3f464e, #272b30);
+  background-image: url("../../../public/assets/ui/other/landing.png");
+  background-size: cover;
+  background-position: center center;
   .sect {
     &#home {
       position: relative;
       padding: 10px;
       width: 100%;
-      min-height: 100dvh;
+      min-height: 100svh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      background: linear-gradient(120deg, rgba($color: #21211e, $alpha: 0.9), rgba($color: #292621, $alpha: 0.9), rgba($color: #21211e, $alpha: 0.9));
       .card {
         width: 100%;
         height: 100%;
@@ -134,23 +141,23 @@ body {
           .btn {
             margin-bottom: 10px;
             color: v.$white;
-            border: 1px solid v.$blurple;
+            border: 1px solid v.$darkcream;
             border-radius: 10px;
             overflow: hidden;
             &:last-child {
               margin-bottom: 0;
             }
             a {
-              background-color: v.$blurple;
+              background-color: v.$darkcream;
               min-width: 150px;
               max-width: 100%;
               display: block;
               padding: 10px 20px;
-              color: v.$white;
+              color: #fffffd;
               font-weight: bold;
               text-decoration: none;
               &.joined {
-                background-color: #272b30;
+                background-color: #21211e;
                 color: v.$white;
               }
             }
@@ -166,7 +173,7 @@ body {
         animation: slide_right_in 2s;
         p {
           a {
-            color: v.$blurple;
+            color: v.$darkcream;
             font-weight: bold;
             text-shadow: 1px 0 1px v.$card_primary,
             0 1px 1px v.$card_primary,
@@ -181,54 +188,56 @@ body {
       }
     }
     &#credits, &#requirements {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      background-color: v.$card_primary;
+      background-color: #1b1b1b;
       padding: 20px;
-      font-size: 16px;
-      color: v.$softwhite;
+      color: #dedede;
       a {
-        color: v.$blurple;
+        color: v.$darkcream;
         text-decoration: none;
       }
       .box {
         max-width: 800px;
         margin: 0 auto;
         .cre {
-          margin-bottom: 10px;
-          &:last-child {
-            margin-bottom: 0;
-          }
           img {
             padding: 40px 0;
             display: block;
             margin: 0 auto;
           }
           p {
-            line-height: 1.5;
+            padding: 10px 0;
+            line-height: 2;
             text-align: justify;
             text-align-last: left;
           }
           ul {
+            padding-bottom: 10px;
             margin-left: var(--fa-li-margin, 2.5em);
             li {
-              line-height: 1.5;
+              line-height: 2;
+              .fa-li:has(.fa-music) {
+                color: v.$darkcream;
+              }
+            }
+          }
+          &:last-child {
+            p, ul {
+              padding-top: 10px;
+              padding-bottom: 0;
             }
           }
         }
       }
     }
     &#requirements {
-      border-bottom: 1px solid v.$sgray;
+      background: linear-gradient(120deg, #21211e, #292621, #21211e);
     }
     &#footer {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      background-color: v.$card_primary;
-      font-size: 16px;
+      background: #1b1b1b;
       color: v.$softwhite;
       .links {
+        background: linear-gradient(120deg, #21211e, #292621, #21211e);
         padding: 20px;
-        border-top: 1px solid v.$sgray;
-        border-bottom: 1px solid v.$sgray;
         display: flex;
         flex-wrap: wrap;
         -ms-flex-wrap: wrap;

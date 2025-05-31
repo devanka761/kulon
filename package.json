@@ -1,5 +1,5 @@
 {
-  "name": "koelon",
+  "name": "kulon",
   "version": "1.0.0",
   "description": "Multiplayer Puzzle Game",
   "main": "./dist/bundle/server.js",
@@ -10,7 +10,7 @@
     "client:build": "webpack --config webpack.prod.js",
     "dev:build": "webpack --config webpack.dev.js",
     "server:build": "webpack --config webpack.server.js",
-    "build": "echo First Try && node ./src/server/updateAssets.js && echo Server Bundling Started ... && webpack --config webpack.server.js && echo Server Bundling Completed! && node ./dist/bundle/assets.js && echo Client Bundling Started ... && webpack --config webpack.prod.js && echo Client Bundling Completed! && echo We are good to go!",
+    "build": "node ./src/server/updateAssets.js && echo Server Bundling Started ... && webpack --config webpack.server.js && echo Server Bundling Completed! && echo Client Bundling Started ... && webpack --config webpack.prod.js && echo Client Bundling Completed! && echo We are good to go!",
     "dev:sass": "sass --watch ./src/client/scss/app.scss ./public/bundle/koelonapp.css --style compressed",
     "dev:sass2": "sass --watch ./src/client/scss/editor.scss ./public/bundle/koeloneditor.css --style compressed",
     "dev:sass3": "sass --watch ./src/client/scss/home.scss ./public/bundle/koelonhome.css --style compressed",

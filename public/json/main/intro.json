@@ -15,8 +15,8 @@
       "en": "1. You can move by pressing W A S D on keyboard"
     } },
     { "type": "textMessage", "who": "TUTORIAL", "text": {
-      "id": "2. Tekan P jika kamu ingin membuka Menu Ponsel",
-      "en": "2. Press P to open Phone Menu"
+      "id": "2. Tekan P atau Escape jika kamu ingin membuka Menu Ponsel",
+      "en": "2. Press P or Escape to open Phone Menu"
     } },
     { "type": "textMessage", "who": "TUTORIAL", "text": {
       "id": "3. Untuk berinteraksi, tekan E",

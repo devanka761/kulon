@@ -13,6 +13,7 @@ const jobRouter = require("./routes/job.route");
 const donateRouter = require("./routes/donate.route");
 const adminRouter = require("./routes/admin.route");
 const db = require("./main/db");
+db.load();
 
 const h = require("./main/helper");
 const xcloud = require("./main/xcloud");
@@ -22,14 +23,11 @@ const tob = require("./main/tob");
 
 const appConfig = require("./config.json");
 
-if(!fs.existsSync("./dist")) fs.mkdirSync("./dist");
-
 if (!fs.existsSync("./dist/sessions")) {
   fs.mkdirSync("./dist/sessions");
   console.log("sessions recreated!");
 }
 
-db.load();
 if(!db.ref.v.version) db.ref.v.version = 1;
 if(appConfig.update) db.ref.v.version++, db.save("v");
 

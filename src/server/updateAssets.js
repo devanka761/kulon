@@ -1,8 +1,6 @@
 const fs = require("fs");
 const db = require("./main/db");
 
-if(!fs.existsSync("./dist")) fs.mkdirSync("./dist");
-
 function getCharCreate() {
    const skins = require("../../public/json/skins/skin_list.json");
 

@@ -78,6 +78,13 @@ export default class Overworld {
     ]);
     }
   });
+  new KeyPressListener("escape", () => {
+    if (!this.map.isCutscenePlaying && !kchat.formOpened) {
+    this.map.startCutscene([
+      { type: "phone" }
+    ]);
+    }
+  });
   new KeyPressListener("t", () => {
     kchat.open();
   });

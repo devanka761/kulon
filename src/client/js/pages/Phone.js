@@ -202,6 +202,7 @@ export default class Phone {
       this.pos.classList.add('out');
       await modal.waittime(500, 5);
       this.esc?.unbind();
+      this.p?.unbind();
       this.el.remove();
       this.pos.remove();
       this.isLocked = false;
@@ -220,6 +221,10 @@ export default class Phone {
     this.btnListener();
     await modal.waittime(500);
     this.esc = new KeyPressListener("p", () => {
+      Kaudio.play("sfx", "phone_closed");
+      this.destroy();
+    });
+    this.p = new KeyPressListener("escape", () => {
       Kaudio.play("sfx", "phone_closed");
       this.destroy();
     });
