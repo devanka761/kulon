@@ -18,6 +18,8 @@ class KulonLangs {
   async load() {
     const file = this.read();
     this.currLang = file?.lang === "en" ? "en" : "id";
+    document.documentElement.setAttribute("lang", this.currLang);
+    document.documentElement.lang = this.currLang;
     const newLang = await xhr.get(`/json/locales/${this.currLang}.json`);
     Object.keys(newLang).forEach(k => lang[k] = newLang[k]);
   }

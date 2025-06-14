@@ -32,7 +32,6 @@ export default class TitleScreen {
       <div class="menus">
         <div class="btn btn-start">${lang.TS_START}</div>
         <div class="btn btn-setting">${lang.TS_SETTING}</div>
-        <a class="btn btn-editor" href="/editor?skipSplash=1">MAP EDITOR</a>
       </div>
     </div>
     <div class="user">

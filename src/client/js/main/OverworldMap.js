@@ -7,6 +7,7 @@ import { StaticCloud, StaticLocal } from "./StaticProps.js";
 import modal from "../helper/modal.js";
 import db from "../manager/db.js";
 import mapList from "../manager/mapList.js";
+import kulonpad from "../mobile/KulonPad.js";
 
 export default class OverworldMap {
   constructor(config) {
@@ -102,6 +103,7 @@ export default class OverworldMap {
   }
 
   async startCutscene(events) {
+    kulonpad.hide();
     this.isCutscenePlaying = true;
 
     for (let i=0; i<events.length; i++) {
@@ -115,6 +117,7 @@ export default class OverworldMap {
       }
     }
     this.isCutscenePlaying = false;
+    kulonpad.show();
   }
 
   checkForActionCutscene() {

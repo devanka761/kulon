@@ -2,6 +2,7 @@ import setting_list from "../../../../public/json/main/settings.json";
 import { klang, lang } from "../helper/lang.js";
 import modal from "../helper/modal.js";
 import xhr from "../helper/xhr.js";
+import kulonpad from "../mobile/KulonPad.js";
 import Kaudio from "./Kaudio.js";
 import playerState from "./PlayerState.js";
 
@@ -141,10 +142,10 @@ export default class Setting {
     const items = setting_list.items.filter(itm => itm.group === this.page);
     items.forEach(itm => {
       const card = itemCard[itm.type](itm);
-      if(itm.uniq) this[itm.uniq](card);
-      if(itm.type === "boolean") this.writeCheckBox(card, itm);
-      if(itm.type === "string") this.writeString(card);
       list.append(card);
+      if(itm.uniq) return this[itm.uniq](card, itm);
+      if(itm.type === "boolean") return this.writeCheckBox(card, itm);
+      if(itm.type === "string") return this.writeString(card);
     });
     this.ebottom.append(list);
   }
@@ -203,12 +204,30 @@ export default class Setting {
       this.isLocked = true;
       klang.currLang = eselect.value;
       klang.save();
+      document.documentElement.setAttribute("lang", eselect.value);
+      document.documentElement.lang = eselect.value;
       await modal.loading(klang.load());
       this.isLocked = false;
       const updateSetting = new Setting({
         onComplete:this.onComplete, map:this.map, classBefore:this.classBefore, page: this.page
       });
       await this.destroy(updateSetting);
+    }
+  }
+  writeTouchPad(card, s) {
+    const inp = card.querySelector("input");
+    inp.onchange = () => {
+      const boolStatus = s.default ? inp.checked !== true : inp.checked === true;
+      playerState.setting[s.id] = boolStatus;
+      if(!boolStatus) delete playerState.setting[s.id];
+      this.map.overworld.progress.save();
+      if(!boolStatus) {
+        kulonpad.enable();
+        Kaudio.play("sfx", "phone_selected");
+      } else {
+        kulonpad.disable();
+        Kaudio.play("sfx", "phone_closed");
+      }
     }
   }
   destroy(next) {

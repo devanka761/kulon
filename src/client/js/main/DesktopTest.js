@@ -56,9 +56,9 @@ export default class DesktopTest {
   }
   async init() {
     desktopTest = this;
-    if(window.innerWidth < 720 || window.innerHeight < 480) {
+    if(window.innerWidth < 720 || window.innerHeight < 360) {
       const confExit = await modal.confirm({
-        msg: `Your screen/browser/window size (<b>${window.innerWidth} x ${window.innerHeight}</b>) is too small to play this game<br/><br/>Please resize to at least <b>720 x 480</b>`,
+        msg: `Your screen/browser/window size (<b>${window.innerWidth} x ${window.innerHeight}</b>) is too small to play this game<br/><br/>Please resize to at least <b>720 x 360</b>`,
         okx: "RELOAD",
         cancelx: "EXIT"
       });

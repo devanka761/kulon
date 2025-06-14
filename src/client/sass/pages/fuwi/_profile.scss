@@ -26,6 +26,7 @@
       overflow: hidden;
       padding: 20px;
       height: fit-content;
+      max-height: calc(100% - (50px + 20px));
       .profile {
         width: 100%;
         .avatar {

@@ -18,6 +18,7 @@ import notip from "../helper/notip.js";
 import { klang } from "../helper/lang.js";
 import Kaudio from "../manager/Kaudio.js";
 import Mails from "../contents/Mails.js";
+import kulonpad from "../mobile/KulonPad.js";
 
 export default class OverworldEvent {
   constructor({ map, event}) {
@@ -103,6 +104,7 @@ export default class OverworldEvent {
     menu.run();
   }
   changeMap(resolve) {
+    kulonpad.hide();
     if(this.map.overworld.map) this.map = this.map.overworld.map;
     Object.values(this.map.gameObjects).forEach(obj => {
       obj.isMounted = false;
@@ -114,12 +116,14 @@ export default class OverworldEvent {
     }
     const sceneTransition = new SceneTransition();
     sceneTransition.init(document.querySelector(".app"), () => {
+      kulonpad.hide();
       this.map.overworld.startMap( mapList[this.event.map], {
         x: this.event.x,
         y: this.event.y,
         direction: this.event.direction,
       });
       resolve();
+      kulonpad.show();
       sceneTransition.fadeOut();
     })
   }

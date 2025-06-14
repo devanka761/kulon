@@ -11,6 +11,7 @@ import LoadAssets from "../manager/LoadAssets.js";
 import SetNextMap from "../manager/SetNextMaps.js";
 import ForceClose from "./ForceClose.js";
 import { lang } from "../helper/lang.js";
+import kulonpad from "../mobile/KulonPad.js";
 
 let voteInterval = null;
 
@@ -144,9 +145,13 @@ export default class Result {
       this.leaveMap();
       await this.destroy();
       if(playerState.journey) playerState.journey.end();
-      this.map.startCutscene([
+
+      this.map.isCutscenePlaying = true;
+      kulonpad.disable();
+      await this.map.startCutscene([
         { type: "changeMap",  map: "kulonSafeHouse", x: utils.withGrid(3), y: utils.withGrid(4), direction: "down" }
       ]);
+      kulonpad.enable();
       kchat.clear();
       kchat.add(db.char.id, lang.TC_LEFT, true);
     } else {
@@ -154,7 +159,9 @@ export default class Result {
       this.restartMap();
       await this.destroy();
       const usrIdx = db.job.onduty.findIndex(usr_id => usr_id === db.char.id);
-      this.map.startCutscene([
+      this.map.isCutscenePlaying = true;
+      kulonpad.disable();
+      await this.map.startCutscene([
         {
           type: "changeMap",  map: this.mission.spawn.area,
           x: utils.withGrid(this.mission.spawn.x),
@@ -162,6 +169,7 @@ export default class Result {
           [this.mission.spawn.inc]: utils.withGrid(this.mission.spawn[this.mission.spawn.inc] + (usrIdx + 2)),
          }
       ]);
+      kulonpad.enable();
     }
   }
   doneVoting() {
@@ -247,16 +255,20 @@ export default class Result {
     });
   }
   async init() {
+    kulonpad.hide();
     playerState.pmc = this;
     this.map = this.map.overworld.map;
     this.map.isPaused = true;
     await modal.waittime(1000);
+    kulonpad.hide();
     if(this.modal_text) {
+      kulonpad.hide();
       await modal.alert(this.modal_text);
     }
     this.createElement();
     document.querySelector(".app").append(this.el);
     this.writePlayers();
     this.checkRestart();
+    kulonpad.hide();
   }
 }

@@ -101,7 +101,7 @@ class SignEmail {
         </div>
       </div>
       <div class="field center">
-        <div class="txt center">atau</div>
+        <div class="txt center">${lang.OR}</div>
       </div>
       <div class="field">
         <div class="inp">
@@ -149,6 +149,8 @@ class SignEmail {
       formData.forEach((val, _) => this.email = val);
       klang.klang.currLang = newLang;
       klang.klang.save();
+      document.documentElement.setAttribute("lang", newLang);
+      document.documentElement.lang = newLang;
       await modal.loading(klang.klang.load());
       lang = klang.lang;
       this.isLocked = false;
@@ -257,6 +259,8 @@ class SignCode {
       }
       klang.klang.currLang = newLang;
       klang.klang.save();
+      document.documentElement.setAttribute("lang", newLang);
+      document.documentElement.lang = newLang;
       await modal.loading(klang.klang.load());
       lang = klang.lang;
       this.isLocked = false;

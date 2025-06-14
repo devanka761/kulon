@@ -9,6 +9,7 @@ import utils from "./utils.js";
 import playerState from "../manager/PlayerState.js";
 import Kaudio from "../manager/Kaudio.js";
 import introEvents from "../../../../public/json/main/intro.json";
+import kulonpad from "../mobile/KulonPad.js";
 
 export default class Overworld {
  constructor(config) {
@@ -72,13 +73,6 @@ export default class Overworld {
     }
   });
   new KeyPressListener("p", () => {
-    if (!this.map.isCutscenePlaying && !kchat.formOpened) {
-    this.map.startCutscene([
-      { type: "phone" }
-    ]);
-    }
-  });
-  new KeyPressListener("escape", () => {
     if (!this.map.isCutscenePlaying && !kchat.formOpened) {
     this.map.startCutscene([
       { type: "phone" }
@@ -151,6 +145,8 @@ export default class Overworld {
 
   this.directionInput = new DirectionInput();
   this.directionInput.init();
+
+  kulonpad.init(this.map, this.directionInput);
 
   this.startGameLoop();
 

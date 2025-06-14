@@ -8,6 +8,7 @@ import Intros from "./pages/Intros.js";
  * });
  * overworld.init();
  */
-
+document.documentElement.setAttribute("lang", navigator.language);
+document.documentElement.lang = navigator.language;
 const intros = new Intros();
 window.onload = () => intros.init();

@@ -56,7 +56,7 @@ body {
         border-color: v.$darkcream;
       }
       &:active {
-        background-color: v.$bar_active;
+        background-color: rgba($color: v.$darkcream, $alpha: 0.75);
       }
       &:last-child {
         margin-bottom: 0;
@@ -138,28 +138,28 @@ body {
           text-align: center;
           margin-top: 40px;
           animation: slide_down_in 1s;
-          .btn {
-            margin-bottom: 10px;
+          a.btn {
+            display: block;
+            padding: 10px 20px;
+            font-weight: bold;
+            text-decoration: none;
+            background-color: rgba($color: v.$darkcream, $alpha: 0.75);
+            min-width: 150px;
+            max-width: 100%;
             color: v.$white;
             border: 1px solid v.$darkcream;
             border-radius: 10px;
             overflow: hidden;
+            margin-bottom: 10px;
             &:last-child {
               margin-bottom: 0;
             }
-            a {
-              background-color: v.$darkcream;
-              min-width: 150px;
-              max-width: 100%;
-              display: block;
-              padding: 10px 20px;
-              color: #fffffd;
-              font-weight: bold;
-              text-decoration: none;
-              &.joined {
-                background-color: #21211e;
-                color: v.$white;
-              }
+            &.joined {
+              background-color: rgba($color: #21211e, $alpha: 0.75);
+              color: v.$white;
+            }
+            &.hide {
+              display: none;
             }
           }
         }

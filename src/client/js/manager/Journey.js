@@ -1,5 +1,6 @@
 import { lang } from "../helper/lang.js";
 import utils from "../main/utils.js";
+import kulonpad from "../mobile/KulonPad.js";
 import db from "./db.js";
 import mapList from "./mapList.js";
 import playerState from "./PlayerState.js";
@@ -10,6 +11,7 @@ export default class Journey {
     this.mission = mission;
   }
   showUnfinished(showType=0, data=null) {
+    kulonpad.hide();
     if(this.map.isCutscenePlaying) return setTimeout(() => this.showUnfinished(showType, data), 250);
 
     if(showType === -1) {

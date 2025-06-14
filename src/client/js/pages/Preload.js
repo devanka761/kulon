@@ -41,6 +41,14 @@ export default class Preload {
     const ebox = this.el.querySelector(".box");
     const btnLoad = this.el.querySelector(".assetload-action");
     btnLoad.onclick = () => {
+      const docEl = document.documentElement;
+      if (docEl.requestFullscreen) {
+        docEl.requestFullscreen().catch(() => {});
+      } else if (docEl.webkitRequestFullscreen) {
+        docEl.webkitRequestFullscreen().catch(() => {});;
+      } else if (docEl.msRequestFullscreen) {
+        docEl.msRequestFullscreen().catch(() => {});;
+      }
       btnLoad.remove();
       const eloadel = document.createElement("div");
       eloadel.classList.add("assets-load");

@@ -51,4 +51,39 @@ async function renderImage() {
     draw(sprite);
   }, 100);
 }
+let installPWA = null;
+let readyPWA = false;
+
+const btnInstall = document.getElementById("btn-install");
+btnInstall.onclick = async(e) => {
+  e.preventDefault();
+  if(window.matchMedia("(display-mode: fullscreen)").matches) {
+    window.location.href = "/app";
+  }
+  if(readyPWA) {
+    window.location.href = "/app";
+    return;
+  }
+  if(installPWA) {
+    const installChosen = await installPWA.prompt();
+    if(installChosen.outcome === "accepted") {
+      readyPWA = true;
+      // btnInstall.classList.add("hide");
+    }
+  }
+}
+window.addEventListener("appinstalled", () => {
+  btnInstall.classList.add("hide");
+});
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  installPWA = e;
+
+  if(window.matchMedia("(display-mode: fullscreen)").matches) {
+    readyPWA = true;
+  }
+
+  btnInstall.classList.remove("hide");
+});
+
 window.onload = () => renderImage();

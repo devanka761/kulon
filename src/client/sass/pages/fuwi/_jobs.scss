@@ -79,9 +79,11 @@
       }
       .board {
         width: calc(100% - 300px);
+        max-height: 100%;
         background-color: rgba($color: v.$card_primary, $alpha: 0.7);
         border-radius: 10px;
-        overflow: hidden;
+        overflow-x: hidden;
+        overflow-y: auto;
         .field {
           width: 100%;
           .snippet {
@@ -108,7 +110,6 @@
           }
           .summary {
             padding: 10px;
-            max-height: 150px;
             border-top: 1px solid v.$sgray;
             border-bottom: 1px solid v.$sgray;
             overflow-y: auto;

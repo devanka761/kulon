@@ -79,12 +79,9 @@
               <p>Multiplayer Survival Puzzle RPG<br/>Play with friends</p>
             </div>
             <div class="actions">
-              <div class="btn">
-                <a href="/app" class="play-now">PLAY NOW</a>
-              </div>
-              <div class="btn">
-                <a class="joined" href="/editor" target="_blank"><i class="fa-duotone fa-regular fa-up-right-from-square fa-fw"></i> KULON MAP EDITOR</a>
-              </div>
+              <a href="/app" class="btn"><i class="fa-solid fa-play fa-fw"></i> PLAY NOW</a>
+              <a href="/app?install=1" class="btn hide" id="btn-install"><i class="fa-duotone fa-regular fa-mobile"></i> INSTALL</a>
+              <a class="btn joined" href="/editor" target="_blank"><i class="fa-duotone fa-regular fa-up-right-from-square fa-fw"></i> KULON MAP EDITOR</a>
             </div>
           </div>
           <div class="author">
@@ -99,9 +96,6 @@
             </h3>
             <br/>
             <div class="req-content">
-              <div class="cre">
-                <p><i class="fa-duotone fa-light fa-triangle-exclamation"></i> <b>Physical Keyboard Required</b></p>
-              </div>
               <div class="cre">
                 <p>Minimum:</p>
                 <ul class="fa-ul">
@@ -121,7 +115,7 @@
                     <span class="fa-li">
                       <i class="fa-duotone fa-light fa-hard-drive fa-fw"></i>
                     </span>
-                    Storage: 500 MB available space (only if webapp downloaded)
+                    Storage: -
                   </li>
                 </ul>
               </div>
@@ -144,7 +138,7 @@
                     <span class="fa-li">
                       <i class="fa-duotone fa-light fa-hard-drive fa-fw"></i>
                     </span>
-                    Storage: 500 MB available space (only if webapp downloaded)
+                    Storage: -
                   </li>
                 </ul>
               </div>

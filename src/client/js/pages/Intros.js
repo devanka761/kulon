@@ -2,6 +2,7 @@ import Peer from "peerjs";
 import Landing from "./Landing.js";
 import ForceClose from "./ForceClose.js";
 import DesktopTest from "../main/DesktopTest.js";
+import modal from "../helper/modal.js";
 
 function waittime(ts = 500, tsa = null) {
   const ms = ts - tsa || 0;
@@ -29,11 +30,28 @@ export default class Intros {
       resolve();
     });
   }
+  async desktopTest(tempPeer) {
+    if(window.innerWidth < 720 || window.innerHeight < 480) {
+      const confExit = await modal.confirm({
+        msg: `Your screen/browser/window size (<b>${window.innerWidth} x ${window.innerHeight}</b>) is too small to play this game<br/><br/>Please resize to at least <b>720 x 480</b>`,
+        okx: "RELOAD",
+        cancelx: "EXIT"
+      });
+      if(confExit) {
+        window.location.reload();
+        return;
+      }
+      window.location.href = "/";
+      return;
+    }
+    return new Landing().init(tempPeer);
+  }
   async writeAllInfo(tempPeer) {
     await this.writeImage("./images/dvnkz.png", "Devanka: Tipsy Corvus Studio");
     await this.writeImage("./images/Kulon.png", "Devanka: Kulon");
     this.el.remove();
-    new DesktopTest({peer: tempPeer}).init();
+    this.desktopTest(tempPeer);
+    // new DesktopTest({peer: tempPeer}).init();
   }
   init() {
     let tempPeer = new Peer();
