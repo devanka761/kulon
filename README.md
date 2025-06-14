@@ -91,7 +91,7 @@ npm run start
 ```
 ##### B.2. Dengan PM2 Script
 ```shell
-pm2 start npm --name "kulon-app" -- start --max-memory-restart 8G
+pm2 start npm --name "kulon-app" -- start && pm2 restart "kulon-app" --max-memory-restart 8G
 ```
 > Unit bisa dengan K (Kilobyte), M (Megabyte), G (Gigabyte)
 
