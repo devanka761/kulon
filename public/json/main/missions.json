@@ -7,7 +7,7 @@
       "id": "Kamu dan kru hendak berlibur ke sebuah tempat yang belum pernah dikunjungi sebelumnya. Bisakah kalian sampai ke lokasi sesuai dengan rencana?",
       "en": "You and your crew are heading out on a trip to a place you've never been before. But will you really make it there as planned?"
     },
-    "beta": false,
+    "beta": true,
     "memory": [],
     "mode": 1,
     "group": 1,

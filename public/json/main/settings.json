@@ -6,6 +6,9 @@
     {"id":"4", "name":{"id":"language", "en":"language"}}
   ],
   "items": [
+    {"id": "129", "bold": true, "group":"1","name":{"id":"Touch Screen", "en":"Touch Screen"},"type":"text"},
+    {"id": "130", "group": "1", "name":{"id":"Kulon Touch Pad", "en":"Kulon Touch Pad"},"type":"boolean","default":true,"uniq": "writeTouchPad"},
+    {"id": "131", "bold": true, "group":"1","name":{"id":"Keyboard", "en":"Keyboard"},"type":"text"},
     {"id": "101", "group":"1","name":{"id":"Bergerak ke Depan", "en":"Walk Forward"},"type":"string","default":"w"},
     {"id": "102", "group":"1","name":{"id":"Bergerak ke Belakang", "en":"Walk Backward"},"type":"string","default":"s"},
     {"id": "103", "group":"1","name":{"id":"Bergerak ke Kiri", "en":"Walk to the Left"},"type":"string","default":"a"},

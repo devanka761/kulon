@@ -1,5 +1,13 @@
 {
  "name": "Kulon",
+ "short_name": "Kulon",
+ "description": "Multiplayer Survival Puzzle RPG. Play with friends!",
+ "theme_color": "#5865f1",
+ "background_color": "#313338",
+ "display": "fullScreen",
+ "orientation": "landscape",
+ "start_url": "/app",
+ "scope": "/app",
  "icons": [
   {
    "src": "\/android-icon-36x36.png",
