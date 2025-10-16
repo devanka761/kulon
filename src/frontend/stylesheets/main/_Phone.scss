@@ -3,9 +3,9 @@
 .Phone {
   z-index: 20;
   position: absolute;
-  bottom: 20px;
-  right: 20px;
-  height: calc(100% - 60px);
+  bottom: v.$bigPadding;
+  right: v.$bigPadding;
+  height: calc(100% - (v.$bigPadding * 2));
   max-height: 600px;
   border-radius: 20px;
   box-shadow: 0 0 10px v.$black;
@@ -16,16 +16,21 @@
   box-shadow:
     0 0 0 4px v.$px1,
     0 8px 16px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 0;
   .profile {
-    width: 100%;
-    max-width: 400px;
-    height: 110px;
+    flex-shrink: 0;
+    width: clamp(300px, 80vh, 400px);
+    // height: 110px;
     background-color: v.$pm2;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 30px;
-    padding: 20px;
+    padding: v.$bigPadding;
     .detail {
       flex-grow: 1;
       display: flex;
@@ -45,7 +50,6 @@
       }
       .user {
         flex-grow: 1;
-        overflow: hidden;
         overflow: hidden;
         .username {
           font-size: v.$dialogueSize;
@@ -75,9 +79,14 @@
           align-items: center;
           gap: 5px;
           .uid {
+            flex-grow: 1;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
             font-family: v.$monofont;
           }
           .btn-copy {
+            flex-shrink: 0;
             font-size: 1rem;
             .keyinfo {
               display: inline;
@@ -92,24 +101,28 @@
       justify-content: space-between;
       align-items: center;
       .btn-close {
-        font-size: 2rem;
+        font-size: calc(v.$defaultSize * 1.4);
         color: v.$cred;
       }
     }
   }
   .apps {
-    width: 400px;
-    height: calc(100% - 110px);
+    width: clamp(300px, 80vh, 400px);
+    flex-grow: 1;
+    max-height: 100%;
+    min-height: 0;
+    // height: calc(100% - 110px);
     background-color: v.$px1;
     .list {
       width: 100%;
       max-height: 100%;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-      gap: 20px;
+      // grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: v.$bigPadding;
       overflow-y: auto;
       scrollbar-width: thin;
-      padding: 20px;
+      padding: v.$bigPadding;
       .btn {
         display: block;
         position: relative;

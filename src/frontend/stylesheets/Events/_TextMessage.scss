@@ -8,7 +8,7 @@ $textButton: v.$px1;
 
 .TextMessage {
   position: absolute;
-  bottom: 50px;
+  bottom: v.$largeMargin;
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
@@ -29,7 +29,7 @@ $textButton: v.$px1;
   .TextMessage_box {
     background: $bgColor;
     border-radius: 8px;
-    padding: 20px;
+    padding: v.$bigPadding;
     border: 4px solid $borderColor;
     box-shadow:
       0 0 0 4px $bgColor,
@@ -38,7 +38,7 @@ $textButton: v.$px1;
     .who {
       color: $highlightColor;
       font-size: v.$dialogueSize;
-      margin-bottom: 10px;
+      margin-bottom: v.$mediumPadding;
       text-shadow: 2px 2px 0 #000;
       display: flex;
       align-items: center;
@@ -81,7 +81,6 @@ $textButton: v.$px1;
       color: $textColor;
       font-size: v.$dialogueSize;
       line-height: 1.5;
-      min-height: 60px;
       text-shadow: 1px 1px 0 #000;
       span {
         display: none;
@@ -100,7 +99,7 @@ $textButton: v.$px1;
         background: $borderColor;
         color: $textButton;
         border: none;
-        padding: 8px 20px;
+        padding: v.$smallPadding 20px;
         font-size: v.$dialogueSize;
         font-family: v.$gamefont;
         font-weight: bold;

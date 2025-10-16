@@ -1,7 +1,7 @@
 @use "../variables" as v;
 
 $citizen_width: 400px;
-$textSize: clamp(1.5rem, calc(1vw + 1rem), 15rem);
+$textSize: clamp(1.5rem, calc(3vh + 1rem), 15rem);
 
 .CharacterCreation {
   position: absolute;
@@ -24,20 +24,20 @@ $textSize: clamp(1.5rem, calc(1vw + 1rem), 15rem);
       min-width: 300px;
       height: 100%;
       flex-shrink: 0;
-      padding: 20px;
+      padding: v.$bigPadding;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      gap: v.$bigPadding;
       .citizen-detail {
         flex-grow: 1;
         width: 100%;
-        gap: 20px;
+        gap: v.$bigPadding;
         .title {
           text-align: center;
           color: v.$pm1;
-          margin-bottom: 20px;
+          margin-bottom: v.$bigPadding;
           font-size: $textSize;
         }
         .avatar {
@@ -49,9 +49,9 @@ $textSize: clamp(1.5rem, calc(1vw + 1rem), 15rem);
         }
         .citizen-data {
           width: 100%;
-          margin-top: 20px;
+          margin-top: v.$bigPadding;
           .field {
-            margin-bottom: 10px;
+            margin-bottom: v.$mediumPadding;
             width: 100%;
             p {
               font-size: $textSize;
@@ -62,7 +62,7 @@ $textSize: clamp(1.5rem, calc(1vw + 1rem), 15rem);
             input {
               font-size: $textSize;
               width: 100%;
-              padding: 10px 0;
+              padding: v.$mediumPadding 0;
               background-color: transparent;
               border-bottom: 1px solid v.$sgray;
               color: v.$pm1;
@@ -81,8 +81,8 @@ $textSize: clamp(1.5rem, calc(1vw + 1rem), 15rem);
           display: flex;
           justify-content: center;
           align-items: center;
-          gap: 20px;
-          margin-top: 20px;
+          gap: v.$bigPadding;
+          margin-top: v.$bigPadding;
           button {
             background-color: #00000000;
             .keyinfo {
@@ -95,7 +95,7 @@ $textSize: clamp(1.5rem, calc(1vw + 1rem), 15rem);
               color: v.$px1;
               font-size: $textSize;
               border-radius: 10px;
-              padding: 10px 20px;
+              padding: v.$mediumPadding v.$bigPadding;
             }
           }
         }
@@ -118,7 +118,7 @@ $textSize: clamp(1.5rem, calc(1vw + 1rem), 15rem);
           color: v.$white;
           border-radius: 10px;
           background-color: v.$sgreen;
-          padding: 10px;
+          padding: v.$mediumPadding;
           text-align: center;
         }
         .btn-cancel {
@@ -136,7 +136,7 @@ $textSize: clamp(1.5rem, calc(1vw + 1rem), 15rem);
       flex-grow: 1;
       width: calc(100% - $citizen_width);
       height: 100%;
-      padding: 20px 0;
+      padding: v.$bigPadding 0;
       overflow-x: hidden;
       overflow-y: auto;
       scrollbar-width: thin;
@@ -145,7 +145,7 @@ $textSize: clamp(1.5rem, calc(1vw + 1rem), 15rem);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 10px;
+        padding: v.$bigPadding;
         border-radius: 20px;
         .text {
           flex-grow: 1;
@@ -161,15 +161,15 @@ $textSize: clamp(1.5rem, calc(1vw + 1rem), 15rem);
             justify-content: right;
             align-items: center;
             border-radius: 10px;
-            gap: 10px;
-            padding: 10px;
+            gap: v.$mediumPadding;
+            padding: v.$mediumPadding;
             .value {
               font-size: $textSize;
-              width: 20px;
+              width: min(50px, 10vh);
               text-align: center;
             }
             button {
-              padding: 10px;
+              padding: v.$mediumPadding;
               border-radius: 10px;
               color: v.$px1;
               background-color: v.$pm1;

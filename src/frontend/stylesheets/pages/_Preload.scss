@@ -13,13 +13,13 @@
     align-items: center;
     animation: fade_in 2s ease;
     .title {
-      margin-bottom: calc(40px + 20px);
+      margin-bottom: calc(40px + v.$bigPadding);
     }
     .assetload-data {
       text-align: center;
       width: 100%;
       font-family: v.$systemfont;
-      font-size: 1rem;
+      // font-size: 1rem;
       .load-data-title {
         line-height: 1.5;
       }
@@ -35,7 +35,7 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 40px;
+    padding: min(40px, 4vh);
     .info {
       width: 100%;
       max-width: 600px;

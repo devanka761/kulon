@@ -144,20 +144,20 @@ export default class Preload {
     }
   }
   beginLoadingImage(fileID, fileName, assetProgress, loadscreen) {
-    // const img = new Image()
-    // img.classList.add("hidden-preload")
-    // img.onerror = () => {
-    //   this.launchIfReady(assetProgress, loadscreen, fileID)
-    //   img.remove()
-    // }
-    // img.onload = () => {
-    //   this.launchIfReady(assetProgress, loadscreen, fileID)
-    //   img.remove()
-    // }
-    // img.src = fileName
-    // this.el.append(img)
+    const img = new Image()
+    img.classList.add("hidden-preload")
+    img.onerror = () => {
+      this.launchIfReady(assetProgress, loadscreen, fileID)
+      img.remove()
+    }
+    img.onload = () => {
+      this.launchIfReady(assetProgress, loadscreen, fileID)
+      img.remove()
+    }
+    img.src = fileName
+    this.el.append(img)
 
-    this.launchIfReady(assetProgress, loadscreen, fileID)
+    // this.launchIfReady(assetProgress, loadscreen, fileID)
     asset[fileID] = { src: fileName }
   }
   beginLoadingAudio(fileID, fileName, assetProgress, loadscreen) {

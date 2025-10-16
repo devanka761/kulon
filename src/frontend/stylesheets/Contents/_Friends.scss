@@ -10,7 +10,7 @@
       align-items: center;
       justify-content: space-between;
       min-height: 0;
-      gap: 20px;
+      gap: v.$bigPadding;
       .search {
         flex-shrink: 0;
         width: 100%;
@@ -29,17 +29,17 @@
             0 4px 8px rgba(0, 0, 0, 0.5);
           .inp-help {
             background-color: v.$px1;
-            padding: 10px;
+            padding: v.$mediumPadding;
             padding-right: 0;
             flex-shrink: 0;
             .v2 {
-              padding-right: 10px;
+              padding-right: v.$mediumPadding;
               background-color: v.$pm1;
             }
           }
           input {
             flex-grow: 1;
-            padding: 10px;
+            padding: v.$mediumPadding;
             height: 100%;
             background-color: v.$px1;
             color: v.$white;
@@ -62,7 +62,7 @@
               display: none;
             }
             flex-shrink: 0;
-            padding: 10px;
+            padding: v.$mediumPadding;
             height: 100%;
             background: v.$pm1;
             color: v.$px1;
@@ -76,7 +76,7 @@
         justify-content: space-between;
         min-height: 0;
         align-items: start;
-        gap: 20px;
+        gap: v.$bigPadding;
         .board {
           background-color: v.$px1;
           width: calc(100% / 2);
@@ -93,7 +93,7 @@
           .board-title {
             flex-shrink: 0;
             width: 100%;
-            padding: 10px;
+            padding: v.$mediumPadding;
             background: v.$pm1;
             color: v.$px1;
             text-align: center;
@@ -108,7 +108,7 @@
             overflow-y: auto;
             scrollbar-width: thin;
             .empty {
-              padding: 10px;
+              padding: v.$mediumPadding;
             }
             .card {
               display: block;
@@ -116,8 +116,8 @@
               display: flex;
               justify-content: left;
               align-items: center;
-              gap: 14px;
-              padding: 14px;
+              gap: min(14px, 1.5vh);
+              padding: min(14px, 1.5vh);
               background-color: v.$px1;
               color: v.$white;
               text-align: left;
@@ -177,7 +177,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      gap: v.$bigPadding;
       min-height: 0;
       .search {
         width: 100%;
@@ -197,17 +197,17 @@
             0 4px 8px rgba(0, 0, 0, 0.5);
           .inp-help {
             background-color: v.$px1;
-            padding: 10px;
+            padding: v.$mediumPadding;
             padding-right: 0;
             flex-shrink: 0;
             .v2 {
-              padding-right: 10px;
+              padding-right: v.$mediumPadding;
               background-color: v.$pm1;
             }
           }
           input {
             flex-grow: 1;
-            padding: 10px;
+            padding: v.$mediumPadding;
             height: 100%;
             background-color: v.$px1;
             color: v.$white;
@@ -230,7 +230,7 @@
               display: none;
             }
             flex-shrink: 0;
-            padding: 10px;
+            padding: v.$mediumPadding;
             height: 100%;
             background: v.$pm1;
             color: v.$px1;
@@ -260,8 +260,8 @@
             display: flex;
             justify-content: left;
             align-items: center;
-            gap: 14px;
-            padding: 14px;
+            gap: min(14px, 1.5vh);
+            padding: min(14px, 1.5vh);
             color: v.$white;
             background-color: v.$px1;
             text-align: left;

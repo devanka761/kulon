@@ -20,8 +20,12 @@ $cred: #ff6e6e;
 $cgreen: #6ccc71;
 $cblue: #2b6fb9;
 
-$defaultSize: clamp(1rem, calc(5vw + 1rem), 1.2rem);
-$dialogueSize: clamp(1rem, calc(10vw + 1rem), 1.6rem);
+$defaultSize: clamp(1rem, 5vh, 1.2rem);
+$dialogueSize: clamp(1rem, 5vh, 1.6rem);
+$bigPadding: min(20px, 2vh);
+$smallPadding: min(8px, 1vh);
+$mediumPadding: min(10px, 1vh);
+$largeMargin: min(50px, 3vh);
 
 $textoutline:
   -1px -1px 0 #000,

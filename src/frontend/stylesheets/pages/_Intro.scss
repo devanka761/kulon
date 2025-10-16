@@ -14,7 +14,8 @@
     justify-content: center;
     align-items: center;
     img {
-      max-width: 500px;
+      max-width: min(500px, calc(100% - 5px));
+      max-height: 100%;
     }
     &.show {
       animation: fade_in 0.5s ease forwards;
