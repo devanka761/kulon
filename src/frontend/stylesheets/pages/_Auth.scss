@@ -1,0 +1,175 @@
+@use "../variables" as v;
+
+.Auth {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: v.$px1;
+  .splash {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    animation: fade_in 1s ease;
+    p {
+      line-height: 1.5;
+      font-size: v.$dialogueSize;
+      i {
+        color: v.$blurple;
+      }
+    }
+    &.out {
+      animation: fade_out 1s ease forwards;
+    }
+  }
+  .none {
+    i {
+      color: #00000001;
+    }
+  }
+  .box {
+    z-index: 1;
+    width: calc(100% - 40px);
+    max-width: 500px;
+    max-height: calc(100% - 40px);
+    scrollbar-width: thin;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: v.$px2;
+    border-radius: 10px;
+    animation: popup_in 0.3s;
+    border: 1px solid v.$pm1;
+    .top {
+      padding: 20px;
+      background: v.$pm1;
+      color: v.$black;
+      text-align: center;
+      font-size: v.$dialogueSize;
+      font-weight: bold;
+    }
+    .form {
+      padding: 20px;
+      .field {
+        width: 100%;
+        margin-bottom: 10px;
+        a {
+          color: v.$pm1;
+        }
+        .btn-lang {
+          margin: 0 auto;
+          width: fit-content;
+          padding: 10px;
+          padding-top: 0;
+          border-bottom: 1px solid v.$white;
+          border-radius: 10px;
+        }
+        .labels {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 10px;
+          label {
+            line-height: 1.5;
+          }
+          .btn-help {
+            color: v.$pm1;
+          }
+        }
+        .inp {
+          width: 100%;
+          input {
+            width: 100%;
+            background-color: v.$px1;
+            color: v.$white;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            border: 1px solid v.$black;
+            transition: 200ms;
+            &.otp {
+              letter-spacing: 5px;
+            }
+            &:focus {
+              border-color: v.$pm1;
+            }
+          }
+          input:-webkit-autofill,
+          input:-webkit-autofill:hover,
+          input:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0 1000px v.$px1 inset !important;
+            -webkit-text-fill-color: v.$white !important;
+            transition: none;
+            font-family: v.$gamefont;
+          }
+          .btn {
+            width: 100%;
+            color: v.$white;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            text-transform: capitalize;
+            background-color: v.$px1;
+            border: 1px solid v.$px1;
+            display: block;
+            text-decoration: none;
+            margin-bottom: 5px;
+            &:focus {
+              border-color: v.$pm1;
+            }
+            &.btn-login {
+              background-color: v.$pm1;
+              color: v.$black;
+              &:focus {
+                background-color: v.$pm2;
+                color: v.$white;
+                border-color: v.$pm1;
+              }
+            }
+            &.btn-google {
+              color: v.$cred;
+            }
+            &.btn-discord {
+              // margin-top: 5px;
+              color: v.$blurple;
+            }
+            &.btn-github {
+              margin-top: 5px;
+            }
+            &.btn-guest {
+              color: v.$syellow;
+              margin-top: 0;
+            }
+          }
+        }
+        .btn-headback {
+          color: v.$pm1;
+          text-decoration: underline;
+        }
+        .sm {
+          font-size: 0.9rem;
+          text-align: justify;
+          text-align-last: left;
+          color: v.$softwhite;
+        }
+        .btn-start-over {
+          text-align: center;
+          a {
+            color: v.$pm1;
+            text-decoration: none;
+            border-bottom: 1px solid v.$pm1;
+          }
+        }
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+    &.out {
+      animation: popup_out 0.3s forwards;
+    }
+  }
+}

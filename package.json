@@ -1,61 +1,81 @@
 {
   "name": "kulon",
-  "version": "1.0.0",
-  "description": "Multiplayer Puzzle Game",
-  "main": "./dist/bundle/server.js",
+  "version": "1.0.1",
+  "description": "Multiplayer 2D Pixel Survival Puzzle Game",
+  "main": "dist/backend/server.js",
   "scripts": {
-    "start": "node .",
-    "dev": "nodemon ./src/server/server.js",
-    "dev:start": "nodemon ./src/server/server.js",
-    "client:build": "webpack --config webpack.prod.js",
-    "dev:build": "webpack --config webpack.dev.js",
-    "server:build": "webpack --config webpack.server.js",
-    "build": "node ./src/server/updateAssets.js && echo Server Bundling Started ... && webpack --config webpack.server.js && echo Server Bundling Completed! && echo Client Bundling Started ... && webpack --config webpack.prod.js && echo Client Bundling Completed! && echo We are good to go!",
-    "dev:sass": "sass --watch ./src/client/sass/app.scss ./public/bundle/koelonapp.css --style compressed",
-    "dev:sass2": "sass --watch ./src/client/sass/editor.scss ./public/bundle/koeloneditor.css --style compressed",
-    "dev:sass3": "sass --watch ./src/client/sass/home.scss ./public/bundle/koelonhome.css --style compressed",
-    "assets": "node ./dist/bundle/assets.js"
+    "start": "node dist/backend/server.js",
+    "dev": "nodemon src/backend/server.ts",
+    "build": "echo Updating Assets && tsx src/backend/updateAssets.ts && echo Bundling Frontend && webpack --config webpack.prod.cjs && echo Compiling Backend && rm -rf ./dist && tsc -p . --extendedDiagnostics && echo Done!",
+    "dev:build": "webpack --config webpack.dev.cjs",
+    "c:build": "echo Updating Assets && tsx src/backend/updateAssets.ts && webpack --config webpack.test.cjs",
+    "s:build": "rm -rf ./dist && tsgo -p . --extendedDiagnostics",
+    "init:build": "echo Updating Assets && tsx src/backend/updateAssets.ts && echo Testing Frontend && webpack --config webpack.test.cjs && echo Testing Backend && rm -rf ./dist && tsgo -p . --extendedDiagnostics",
+    "assets": "tsx src/backend/updateAssets.ts",
+    "sass": "sass --watch ./src/frontend/stylesheets/app.scss ./public/bundle/app.css --style compressed",
+    "format": "prettier --write .",
+    "check": "prettier --check .",
+    "type-check": "tsgo -p . --pretty --noEmit",
+    "lint": "eslint --ext ts --ext js",
+    "prepare": "husky"
   },
-  "author": "Devanka761 <devanka@protonmail.com> (https://devanka.id/)",
-  "license": "MIT",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npx pretty-quick --staged ng lint ng test",
+      "pre-push": "ng build --aot true"
+    }
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/devanka761/koelon.git"
+    "url": "git+https://github.com/devanka761/kulon.git"
   },
+  "keywords": [],
+  "author": "Devanka761 <contact@devanka.id> (https://devanka.id/)",
+  "license": "GPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/devanka761/koelon/issues"
+    "url": "https://github.com/devanka761/kulon/issues"
   },
-  "homepage": "https://github.com/devanka761/koelon#readme",
-  "nodemonConfig": {
-    "ignore": [
-      "**.json",
-      "public/**",
-      "src/client/**"
-    ]
-  },
+  "homepage": "https://github.com/devanka761/kulon#readme",
   "dependencies": {
-    "bcrypt": "^5.1.1",
-    "dotenv": "^16.4.5",
-    "express": "^4.21.1",
-    "express-session": "^1.18.1",
-    "midtrans-client": "^1.4.2",
-    "nodemailer": "^6.9.16",
-    "peer": "^1.0.2",
-    "peerjs": "^1.5.4",
+    "connect-mongo": "^5.1.0",
+    "dotenv": "^17.2.2",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "express-ws": "^5.0.2",
+    "mongoose": "^8.18.1",
+    "nodemailer": "^7.0.6",
     "qrcode": "^1.5.4",
-    "session-file-store": "^1.5.0"
+    "webrtc-adapter": "^9.0.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.26.0",
-    "@babel/preset-env": "^7.26.0",
-    "babel-loader": "^9.2.1",
+    "@babel/core": "^7.28.4",
+    "@babel/preset-env": "^7.28.3",
+    "@babel/preset-typescript": "^7.27.1",
+    "@eslint/js": "^9.35.0",
+    "@types/express": "^5.0.3",
+    "@types/express-session": "^1.18.2",
+    "@types/express-ws": "^3.0.5",
+    "@types/node": "^24.4.0",
+    "@types/nodemailer": "^7.0.1",
+    "@typescript/native-preview": "^7.0.0-dev.20250923.1",
+    "babel-loader": "^10.0.0",
+    "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^7.1.2",
-    "html-webpack-plugin": "^5.6.3",
-    "mini-css-extract-plugin": "^2.9.2",
-    "sass": "^1.81.0",
-    "sass-loader": "^16.0.3",
-    "webpack": "^5.96.1",
-    "webpack-cli": "^5.1.4",
-    "webpack-node-externals": "^3.0.0"
+    "eslint": "^9.35.0",
+    "globals": "^16.4.0",
+    "html-webpack-plugin": "^5.6.4",
+    "husky": "^9.1.7",
+    "mini-css-extract-plugin": "^2.9.4",
+    "prettier": "^3.6.2",
+    "pretty-quick": "^4.2.2",
+    "raw-loader": "^4.0.2",
+    "sass": "^1.92.1",
+    "sass-loader": "^16.0.5",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.43.0",
+    "webpack": "^5.101.3",
+    "webpack-cli": "^6.0.1"
   }
 }

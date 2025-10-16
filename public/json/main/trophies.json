@@ -1,128 +1,142 @@
 {
   "playtime": {
-    "r": 14400000,
-    "a": 4,
-    "rw": 75,
-    "g": "1",
-    "t": {
+    "taken": 14400000,
+    "display": 240,
+    "reward": 75,
+    "group": "1",
+    "title": {
       "en": "Founding Trailblazer",
       "id": "Aku adalah Seorang Perintis"
     },
-    "d": {
-      "en": "Have total more than 4 hours play time",
-      "id": "Total waktu bermain lebih dari 4 jam"
+    "desc": {
+      "en": "Have total more than 240 minutes (4 hours) play time",
+      "id": "Total waktu bermain lebih dari 240 menit (4 jam)"
     }
   },
-  "friendreqs": {
-    "r": 5,
-    "a": 5,
-    "rw": 10,
-    "g": "1",
-    "t": {
-      "en": "Friend or Foe",
-      "id": "Kawan atau Lawan"
-    },
-    "d": {
-      "en": "Send 5 friend requests",
-      "id": "Kirim 5 permintaan pertemanan"
-    }
-  },
-  "friendaccs": {
-    "r": 3,
-    "a": 3,
-    "rw": 10,
-    "g": "1",
-    "t": {
+  "befriends": {
+    "taken": 3,
+    "display": 3,
+    "reward": 25,
+    "group": "1",
+    "title": {
       "en": "Trust.. But Should You?",
       "id": "Haruskah Ku Percaya?"
     },
-    "d": {
-      "en": "Accept 3 friend requests",
-      "id": "Terima 3 permintaan pertemanan"
+    "desc": {
+      "en": "Be friends with at least 3 players",
+      "id": "Berteman dengan 3 player"
     }
   },
   "firsthost": {
-    "r": 1,
-    "a": 1,
-    "rw": 5,
-    "g": "2",
-    "t": {
+    "taken": 1,
+    "display": 1,
+    "reward": 35,
+    "group": "2",
+    "title": {
       "en": "The Guiding Light",
       "id": "Pimpinan Kru"
     },
-    "d": {
-      "en": "First time being a Host in job (Story Mode)",
-      "id": "Selesaikan perjalanan untuk pertama kalinya sebagai Host Job (Story Mode)"
+    "desc": {
+      "en": "Complete a job as host for the first time (Story Mode)",
+      "id": "Selesaikan job untuk pertama kalinya sebagai host (Story Mode)"
     }
   },
   "firstcrew": {
-    "r": 1,
-    "a": 1,
-    "rw": 5,
-    "g": "2",
-    "t": {
+    "taken": 1,
+    "display": 1,
+    "reward": 15,
+    "group": "2",
+    "title": {
       "en": "The Unsung Hero",
       "id": "Anak Buah Sejati"
     },
-    "d": {
-      "en": "First time being a Crew in job (Story Mode)",
-      "id": "Selesaikan perjalanan untuk pertama kalinya sebagai Crew Job (Story Mode)"
+    "desc": {
+      "en": "Complete a job as crew for the first time (Story Mode)",
+      "id": "Selesaikan job untuk pertama kalinya sebagai crew (Story Mode)"
     }
   },
-  "steptaken1": {
-    "r": 10000,
-    "a": 10000,
-    "rw": 10,
-    "g": "1",
-    "t": {
-      "en": "Into the Unknown",
-      "id": "Menuju Tak Terbatas Dan Melampauinya"
+  "reborn": {
+    "taken": 1,
+    "display": 1,
+    "reward": 10,
+    "group": "1",
+    "title": {
+      "en": "Reborn",
+      "id": "Terlahir Kembali"
     },
-    "d": {
-      "en": "Runs a total of over 10,000 tiles in any mode",
-      "id": "Berjalan dengan total lebih dari 10.000 petak di mode apapun"
+    "desc": {
+      "en": "Update username for the first time",
+      "id": "Memperbarui username untuk pertama kalinya"
     }
   },
-  "onjobleft": {
-    "r": 1,
-    "a": 1,
-    "rw": 5,
-    "g": "3",
-    "t": {
+  "newlook": {
+    "taken": 2,
+    "display": 2,
+    "reward": 25,
+    "group": "1",
+    "title": {
+      "id": "Bukanlah Diriku Yang Dulu",
+      "en": "Not The Same Person Anymore"
+    },
+    "desc": {
+      "id": "Ganti penampilan sebanyak 2 kali",
+      "en": "Change appearance twice"
+    }
+  },
+  "jobleft": {
+    "taken": 1,
+    "display": 1,
+    "reward": 5,
+    "group": "3",
+    "title": {
       "en": "And Then There Were None...",
       "id": "Dan Yasudahlah..."
     },
-    "d": {
-      "en": "Exit a Job that is still in progress",
-      "id": "Keluar dari Job yang sedang berlangsung"
+    "desc": {
+      "en": "Exit a job that is still in progress",
+      "id": "Keluar dari job yang sedang berlangsung"
     }
   },
   "itemexpired": {
-    "r": 1,
-    "a": 1,
-    "rw": 5,
-    "g": "3",
-    "t": {
+    "taken": 1,
+    "display": 1,
+    "reward": 50,
+    "group": "3",
+    "title": {
       "en": "Best Before... Too Late",
       "id": "Baik Digunakan Sebelum... Terlambat"
     },
-    "d": {
+    "desc": {
       "en": "Witness an item becoming expired",
       "id": "Menyaksikan sebuah item menjadi kadaluarsa"
     }
   },
   "firstphone": {
-    "r": 1,
-    "a": 1,
-    "rw": 5,
-    "g": "3",
-    "t": {
+    "taken": 1,
+    "display": 1,
+    "reward": 10,
+    "group": "3",
+    "title": {
       "en": "Oh.. There's a Phone!",
       "id": "Oh.. Aku punya Ponsel!"
     },
-    "d": {
+    "desc": {
       "en": "Open your phone for the first time",
       "id": "Buka ponsel untuk pertama kalinya"
+    }
+  },
+  "sawercoy": {
+    "taken": 1,
+    "display": 69,
+    "reward": 69,
+    "group": "3",
+    "title": {
+      "en": "Lemme see... 💸💸",
+      "id": "Mari kita cek... 💸💸"
+    },
+    "desc": {
+      "en": "Mencoba menu donasi",
+      "id": "Try the donation system"
     }
   }
 }

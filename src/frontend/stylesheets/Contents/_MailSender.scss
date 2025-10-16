@@ -1,0 +1,85 @@
+@use "../variables" as v;
+
+.mailsender {
+  .box {
+    max-width: 720px;
+    .con {
+      width: 100%;
+      height: calc(100% - (50px + 20px));
+      .form {
+        background-color: v.$px2;
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        border: 4px solid v.$pm1;
+        box-shadow:
+          0 0 0 4px v.$px2,
+          0 8px 16px rgba(0, 0, 0, 0.5);
+        .field {
+          margin-bottom: 10px;
+          &:last-child {
+            margin-bottom: 0;
+          }
+          label {
+            display: block;
+            width: 100%;
+          }
+          input,
+          textarea {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: v.$px1;
+            color: v.$white;
+            border-bottom: 1px solid v.$sgray;
+            border-left: 1px solid v.$sgray;
+            border-radius: 5px;
+            &:focus,
+            &:active {
+              border-color: v.$pm1;
+            }
+          }
+          .actions {
+            width: 100%;
+            .btn {
+              display: block;
+              padding: 10px;
+              width: 100%;
+              text-align: center;
+              background-color: v.$px1;
+              border-radius: 5px;
+              &.btn-add-rw {
+                border-bottom: 1px solid v.$cgreen;
+                border-left: 1px solid v.$cgreen;
+                color: v.$cgreen;
+              }
+              &.btn-submit {
+                background-color: v.$sgreen;
+                color: v.$white;
+                font-weight: 600;
+              }
+            }
+          }
+          &.rw-field {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            input {
+              flex-grow: 1;
+            }
+            .btn {
+              color: v.$cred;
+            }
+          }
+        }
+        .rewards-field {
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+}

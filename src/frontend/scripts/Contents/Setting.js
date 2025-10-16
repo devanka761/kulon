@@ -1,0 +1,433 @@
+import setting_list from "../../../../public/json/main/settings.json"
+import db from "../data/db"
+import lang from "../data/language"
+import LocalList from "../data/LocalList"
+import { eroot, futor, kel, qutor } from "../lib/kel"
+import { localeChanger } from "../lib/localeChanger"
+import modal from "../lib/modal"
+import waittime from "../lib/waittime"
+import { KeyPressListener } from "../main/KeyPressListener"
+import xhr from "../lib/xhr"
+import localSave from "../manager/storage"
+import audio from "../lib/AudioHandler"
+import backsong from "../APIs/BackSongAPI"
+
+const itemCard = {
+  string(s) {
+    const card = kel("div", "item")
+    card.innerHTML = `
+    <div class="item-title">
+      <p>${s.name[LocalList.lang]}</p>
+    </div>
+    <div class="item-value">
+      <span class="keyinfo">enter</span>
+      <span class="btn-string string">${s.default}</span>
+    </div>`
+    return card
+  },
+  range(s) {
+    const card = kel("div", "item")
+    card.innerHTML = `
+    <div class="item-title">
+      <p>${s.name[LocalList.lang]}</p>
+    </div>
+    <div class="item-value">
+      <span class="keyinfo keyinfo-wide"><i class="fa-solid fa-chevron-left"></i></span>
+      <span class="keyinfo keyinfo-wide"><i class="fa-solid fa-chevron-right"></i></span>
+      <span class="range-value-text">5</span>
+      <div class="range-outer">
+        <input type="range" name="${s.id}" id="${s.id}" min="${s.min || 0}" max="${s.max || 10}" step="${s.step || 1}" />
+      </div>
+    </div>`
+
+    return card
+  },
+  boolean(s) {
+    const card = kel("div", "item")
+    card.innerHTML = `
+    <div class="item-title">
+      <p>${s.name[LocalList.lang]}</p>
+    </div>
+    <div class="item-value">
+      <span class="keyinfo">enter</span>
+      <input type="checkbox" name="${s.id}" id="${s.id}" />
+    </div>`
+    const inp = qutor("input", card)
+    if (s.default) {
+      if (!LocalList[s.id]) inp.checked = true
+    } else {
+      if (LocalList[s.id]) inp.checked = true
+    }
+    return card
+  },
+  option(s) {
+    const card = kel("div", "item")
+    card.innerHTML = `
+    <div class="item-title">
+      <p>${s.name[LocalList.lang]}</p>
+    </div>
+    <div class="item-value">
+      <span class="keyinfo">enter</span>
+      <div class="select">${s.label[LocalList.lang]}</div>
+    </div>`
+    return card
+  },
+  text(s) {
+    const card = kel("div", "item")
+    if (s.breaker) card.classList.add("breaker")
+    card.innerHTML = `
+    <div class="item-title">
+      <p>${s.name[LocalList.lang]}</p>
+    </div>`
+    return card
+  },
+  func(s) {
+    const card = kel("div", "item")
+    card.innerHTML = `
+    <div class="item-title">
+      <p>${s.name?.[LocalList.lang] || ""}</p>
+    </div>
+    <div class="item-value">
+      <span class="keyinfo">enter</span>
+      <div class="btn btn-${s.id}${s.cl ? " " + s.cl : " b"}">${s.value[LocalList.lang]}</div>
+    </div>`
+    return card
+  }
+}
+
+export default class Setting {
+  constructor(config) {
+    this.id = "setting"
+    this.game = config.game
+    this.onComplete = config.onComplete
+    this.classBefore = config.classBefore
+    this.page = config.page || "2"
+    this.isLocked = false
+    this.navKeyHandler = null
+  }
+  createElement() {
+    this.el = kel("div", "fuwi f-setting")
+    this.el.innerHTML = `
+    <div class="box">
+      <div class="nav">
+        <div class="left">
+          <div class="title"><i class="fa-solid fa-gear"></i> ${lang.PHONE_SETTING}</div>
+        </div>
+        <div class="right">
+          <span class="keyinfo">esc</span>
+          <div class="btn btn-close"><i class="fa-solid fa-circle-x"></i></div>
+        </div>
+      </div>
+      <div class="con">
+        <div class="menus">
+          <div class="menu-chooser chooser-left">
+            <i class="fa-solid fa-chevron-left"></i> <span class="keyinfo">q</span>
+          </div>
+          <div class="menu-list"></div>
+          <div class="menu-chooser chooser-right">
+            <span class="keyinfo">e</span>
+            <i class="fa-solid fa-chevron-right"></i>
+          </div>
+        </div>
+        <div class="board"></div>
+      </div>
+    </div>`
+    this.board = qutor(".board", this.el)
+    this.menus = qutor(".menu-list", this.el)
+  }
+  selectedBtn() {
+    return this.menus.querySelectorAll(".btn.selected")
+  }
+  btnListener() {
+    const btnClose = qutor(".btn-close", this.el)
+    btnClose.onclick = () => {
+      if (this.isLocked) return
+      this.destroy(this.classBefore)
+    }
+
+    this.esc = new KeyPressListener("escape", () => {
+      btnClose.click()
+    })
+
+    const chooserLeft = qutor(".chooser-left", this.el)
+    chooserLeft.onclick = () => {
+      if (this.isLocked) return
+      this.navigateMenu("left")
+    }
+
+    const chooserRight = qutor(".chooser-right", this.el)
+    chooserRight.onclick = () => {
+      if (this.isLocked) return
+      this.navigateMenu("right")
+    }
+
+    setting_list.groups.forEach((itm) => {
+      const card = kel("div", "btn")
+      if (itm.id === this.page) card.classList.add("selected")
+      card.innerHTML = `<i class="${itm.icon}"></i> ${itm.name[LocalList.lang]}`
+      this.menus.append(card)
+      card.onclick = () => {
+        if (itm.id === this.page) return
+        this.page = itm.id
+        this.selectedBtn().forEach((oldbtn) => oldbtn.classList.remove("selected"))
+        card.classList.add("selected")
+
+        audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: Date.now().toString() } })
+        this.writeList()
+      }
+    })
+  }
+  writeList() {
+    const listBefore = qutor(".item-list", this.el)
+    if (listBefore) listBefore.remove()
+    const list = kel("div", "item-list")
+    const items = setting_list.items.filter((itm) => itm.group === this.page)
+    items.forEach((itm) => {
+      const card = itemCard[itm.type](itm)
+      list.append(card)
+      card.onmousedown = () => {
+        if (card.classList.contains("breaker")) return
+        list.querySelectorAll(".selected").forEach((el) => el.classList.remove("selected"))
+        card.classList.add("selected")
+      }
+      if (itm.uniq) return this[itm.uniq](card, itm)
+      if (itm.type === "range") return this.writeRange(card, itm)
+      if (itm.type === "boolean") return this.writeCheckBox(card, itm)
+      if (itm.type === "string") return this.writeString(card)
+    })
+    this.board.append(list)
+    this.selectFirstItem()
+  }
+  selectFirstItem() {
+    this.board.querySelector(".item.selected")?.classList.remove("selected")
+    const firstItem = this.board.querySelector(".item:not(.breaker)")
+    firstItem?.classList.add("selected")
+  }
+  writeString(card) {
+    card.onclick = async () => {
+      if (this.isLocked) return
+      this.isLocked = true
+      audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+      await modal.alert(lang.ST_NOT_READY)
+      this.isLocked = false
+    }
+  }
+  writeRange(card, s) {
+    const inp = qutor("input", card)
+    const rangeVal = qutor(".range-value-text", card)
+    const curSave = typeof LocalList[s.id] === "number" ? LocalList[s.id] : s.default
+    const curVal = curSave >= (s.min ?? 0) && curSave <= (s.max ?? 10) ? Number(curSave) : Number(s.default)
+    inp.value = curVal
+    rangeVal.innerHTML = curVal.toString().padStart(2, " ")
+
+    inp.oninput = () => {
+      const newValue = Number(inp.value)
+      rangeVal.innerHTML = newValue.toString().padStart(2, " ")
+      LocalList[s.id] = newValue
+      if (s.func) this[s.func](s.id, newValue)
+      localSave.save()
+      audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+    }
+  }
+  audioSettings(id, newValue) {
+    audio.commitChange(id, newValue)
+    backsong.adjust(id, newValue)
+  }
+  analogSettings(_, __) {
+    this.game.kulonPad.updateAnalog()
+  }
+  interactSettings(_, __) {
+    this.game.kulonPad.updateInteract()
+  }
+  writeRestoreDefault(card) {
+    card.onclick = async () => {
+      audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+      if (this.isLocked) return
+      this.isLocked = true
+      await modal.alert(lang.ST_NOT_READY)
+      this.isLocked = false
+    }
+  }
+  writeCheckBox(card, s) {
+    const inp = qutor("input", card)
+    inp.onchange = () => {
+      const boolStatus = s.default ? inp.checked !== true : inp.checked === true
+      LocalList[s.id] = boolStatus
+      if (!boolStatus) delete LocalList[s.id]
+      localSave.save()
+    }
+    card.onclick = (e) => {
+      if (inp.contains(e.target)) return
+      audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+      inp.click()
+    }
+  }
+  writeProvider(card) {
+    const p = futor("p", card)
+    p.innerHTML = `${db.provider.email ? db.provider.email + " " : ""}(${db.provider.name})`
+  }
+  writeLogout(card) {
+    card.onclick = async () => {
+      if (this.isLocked) return
+      audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+      this.isLocked = true
+      const confLogout = await modal.confirm(lang.ST_TXT_LOGOUT)
+      if (!confLogout) {
+        this.isLocked = false
+        return
+      }
+      await modal.loading(xhr.get("/x/auth/logout?r=app&s=1"), "LOGGING OUT")
+      this.isLocked = false
+      window.location.href = "/x/auth/logout?r=app&s=1"
+    }
+  }
+  writeLanguage(card, s) {
+    const itemList = s.list.map((itm) => ({
+      id: itm.id,
+      label: itm.label,
+      activated: LocalList[s.saveId] && LocalList[s.saveId] === itm.id
+    }))
+
+    card.onclick = async () => {
+      if (this.isLocked) return
+      audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+      this.isLocked = true
+      const newLang = await modal.select({
+        ic: "language",
+        msg: "Language",
+        items: itemList
+      })
+      if (!newLang || newLang === LocalList.lang) {
+        this.isLocked = false
+        return
+      }
+      LocalList.lang = newLang
+      localSave.save()
+      await modal.loading(localeChanger())
+      this.isLocked = false
+
+      const updateSetting = new Setting({
+        onComplete: this.onComplete,
+        game: this.game,
+        classBefore: this.classBefore,
+        page: this.page
+      })
+      await this.destroy(updateSetting)
+    }
+  }
+  writeKulonPad(card, s) {
+    const inp = qutor("input", card)
+    inp.onchange = () => {
+      const boolStatus = s.default ? inp.checked !== true : inp.checked === true
+      LocalList[s.id] = boolStatus
+      if (!boolStatus) delete LocalList[s.id]
+      this.game.kulonPad.setEnable()
+      localSave.save()
+    }
+    card.onclick = (e) => {
+      if (inp.contains(e.target)) return
+      audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+      inp.click()
+    }
+  }
+  navigateMenu(direction) {
+    const buttons = Array.from(this.menus.querySelectorAll(".btn"))
+    if (buttons.length < 1) return
+
+    const currentIndex = buttons.findIndex((btn) => btn.classList.contains("selected"))
+
+    let nextIndex
+    if (direction === "right") {
+      nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % buttons.length
+    } else {
+      nextIndex = currentIndex <= 0 ? buttons.length - 1 : currentIndex - 1
+    }
+
+    const nextButton = buttons[nextIndex]
+    if (nextButton) {
+      nextButton.click()
+      nextButton.scrollIntoView({ behavior: "smooth", block: "center", container: "nearest" })
+    }
+  }
+  navKeyListener() {
+    this.navKeyHandler = (e) => {
+      const key = e.key.toLowerCase()
+      if (!["q", "e", "arrowup", "arrowdown", "arrowleft", "arrowright", "enter"].includes(key)) return
+      if (this.isLocked) return
+      e.preventDefault()
+
+      if (key === "q" || key === "e") {
+        this.navigateMenu(key === "e" ? "right" : "left")
+        return
+      }
+
+      const list = qutor(".item-list", this.board)
+      if (!list) return
+
+      if (key === "enter") {
+        const activeItem = list.querySelector(".item.selected")
+        activeItem?.click()
+        return
+      }
+
+      if (key === "arrowleft" || key === "arrowright") {
+        const activeItem = list.querySelector(".item.selected")
+        const rangeInput = activeItem?.querySelector('input[type="range"]')
+        if (rangeInput) {
+          const step = Number(rangeInput.step) || 1
+          const currentValue = Number(rangeInput.value)
+          const newValue = key === "arrowright" ? currentValue + step : currentValue - step
+          if (newValue >= Number(rangeInput.min) && newValue <= Number(rangeInput.max)) {
+            rangeInput.value = newValue
+            rangeInput.dispatchEvent(new Event("input", { bubbles: true }))
+          }
+          return
+        }
+        return
+      }
+
+      const items = Array.from(list.querySelectorAll(".item:not(.breaker)"))
+      if (items.length < 1) return
+
+      const currentIndex = items.findIndex((item) => item.classList.contains("selected"))
+      let nextIndex
+
+      if (key === "arrowdown") {
+        nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % items.length
+      } else {
+        nextIndex = currentIndex <= 0 ? items.length - 1 : currentIndex - 1
+      }
+
+      audio.emit({ action: "play", type: "ui", src: "phone_menu_move", options: { id: Date.now().toString() } })
+
+      items[currentIndex]?.classList.remove("selected")
+      const nextItem = items[nextIndex]
+      nextItem?.classList.add("selected")
+      nextItem?.scrollIntoView({ behavior: "smooth", block: "center", container: "nearest" })
+    }
+    document.addEventListener("keydown", this.navKeyHandler)
+  }
+  async destroy(next) {
+    if (this.isLocked) return
+    this.isLocked = true
+    document.removeEventListener("keydown", this.navKeyHandler)
+    this.esc?.unbind()
+    this.el.classList.add("out")
+    audio.emit({ action: "play", type: "ui", src: "phone_close", options: { id: "phone_close" } })
+    await waittime()
+    this.el.remove()
+    this.isLocked = false
+    db.pmc = null
+    if (!next) return this.onComplete()
+    if (typeof next !== "string") return next.init()
+  }
+  init() {
+    db.pmc = this
+    audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
+    this.createElement()
+    eroot().append(this.el)
+    this.btnListener()
+    this.writeList()
+    this.navKeyListener()
+  }
+}

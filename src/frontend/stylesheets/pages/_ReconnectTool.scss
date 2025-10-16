@@ -1,0 +1,75 @@
+@use "../variables" as v;
+
+.ReconnectTool {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  background-color: rgba(v.$px1, 0.5);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px;
+  .box {
+    background-color: v.$px2;
+    max-width: 100%;
+    max-height: 100%;
+    padding: 40px;
+    border: 4px solid v.$yellow;
+    box-shadow:
+      0 0 0 4px v.$px2,
+      0 8px 16px rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    transition: 1s;
+    .icon {
+      text-align: center;
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      color: v.$yellow;
+    }
+    .title {
+      text-align: center;
+      font-size: v.$dialogueSize;
+      line-height: 1.5;
+      color: v.$softwhite;
+    }
+  }
+  &.reconnecting {
+    .box {
+      animation: zoominout 1s ease;
+    }
+  }
+  &.connected {
+    .box {
+      border-color: v.$cgreen;
+      .icon {
+        color: v.$cgreen;
+      }
+    }
+  }
+  &.disconnected {
+    .box {
+      border-color: v.$sred;
+      animation: slide_down_in 0.5s;
+      .icon {
+        color: v.$cred;
+      }
+    }
+  }
+  &.out {
+    .box {
+      animation: slide_up_out 0.5s;
+    }
+  }
+}
+@keyframes zoominout {
+  0%,
+  100% {
+    transform: rotate(0) scale(1);
+  }
+  50% {
+    transform: rotate(25deg) scale(1.2);
+  }
+}
