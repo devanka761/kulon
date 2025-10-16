@@ -24,5 +24,5 @@ async function startServer() {
   })
 }
 
-const mongoConnection = new MongoConnection(cfg.DB_URI)
+const mongoConnection = new MongoConnection(cfg.DB_URI, cfg.DB_NAME)
 mongoConnection.connect(startServer)
