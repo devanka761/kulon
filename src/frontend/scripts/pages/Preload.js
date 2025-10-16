@@ -52,26 +52,26 @@ export default class Preload {
     const btnLoad = qutor(".assetload-action", this.el)
     btnLoad.onclick = async () => {
       this.enter.unbind()
-      const docEl = document.documentElement
+      // const docEl = document.documentElement
 
-      if (docEl.requestFullscreen) {
-        await docEl.requestFullscreen({ navigationUI: "hide" })
-      } else if ("webkitRequestFullscreen" in docEl && typeof docEl["webkitRequestFullscreen"] === "function") {
-        await docEl["webkitRequestFullscreen"]()
-      } else if ("msRequestFullscreen" in docEl && typeof docEl["msRequestFullscreen"] === "function") {
-        await docEl["msRequestFullscreen"]()
-      }
+      // if (docEl.requestFullscreen) {
+      //   await docEl.requestFullscreen({ navigationUI: "hide" })
+      // } else if ("webkitRequestFullscreen" in docEl && typeof docEl["webkitRequestFullscreen"] === "function") {
+      //   await docEl["webkitRequestFullscreen"]()
+      // } else if ("msRequestFullscreen" in docEl && typeof docEl["msRequestFullscreen"] === "function") {
+      //   await docEl["msRequestFullscreen"]()
+      // }
 
-      if (screen.orientation && "lock" in screen.orientation && typeof screen.orientation["lock"] === "function") {
-        try {
-          await screen.orientation["lock"]("landscape")
-        } catch (_err) {
-          // console.warn("Gagal rotate:", err)
-        }
-      }
+      // if (screen.orientation && "lock" in screen.orientation && typeof screen.orientation["lock"] === "function") {
+      //   try {
+      //     await screen.orientation["lock"]("landscape")
+      //   } catch (_err) {
+      //     // console.warn("Gagal rotate:", err)
+      //   }
+      // }
 
       btnLoad.remove()
-      await waittime(500)
+      // await waittime(500)
       const eloadel = kel("div", "assets-load")
       eloadel.innerHTML = `
       <div class="info">
@@ -82,7 +82,7 @@ export default class Preload {
         <div class="inner-loader"></div>
       </div>`
       this.el.append(eloadel)
-      await waittime(1000)
+      // await waittime(1000)
       this.loadPrepare()
     }
     this.enter = new KeyPressListener("enter", () => btnLoad.click())
@@ -144,19 +144,20 @@ export default class Preload {
     }
   }
   beginLoadingImage(fileID, fileName, assetProgress, loadscreen) {
-    const img = new Image()
-    img.classList.add("hidden-preload")
-    img.onerror = () => {
-      this.launchIfReady(assetProgress, loadscreen, fileID)
-      img.remove()
-    }
-    img.onload = () => {
-      this.launchIfReady(assetProgress, loadscreen, fileID)
-      img.remove()
-    }
-    img.src = fileName
-    this.el.append(img)
-    // this.launchIfReady(assetProgress, loadscreen, fileID)
+    // const img = new Image()
+    // img.classList.add("hidden-preload")
+    // img.onerror = () => {
+    //   this.launchIfReady(assetProgress, loadscreen, fileID)
+    //   img.remove()
+    // }
+    // img.onload = () => {
+    //   this.launchIfReady(assetProgress, loadscreen, fileID)
+    //   img.remove()
+    // }
+    // img.src = fileName
+    // this.el.append(img)
+
+    this.launchIfReady(assetProgress, loadscreen, fileID)
     asset[fileID] = { src: fileName }
   }
   beginLoadingAudio(fileID, fileName, assetProgress, loadscreen) {

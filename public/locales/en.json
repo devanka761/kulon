@@ -95,6 +95,7 @@
   "PHONE_MAIL_SENDER": "Mail Sender",
   "PHONE_TELEPORT": "Teleport",
   "PHONE_MODERATION": "Moderation",
+  "PHONE_EXITGAME": "Close Game",
   "PROF_JOINED_TIME": "Joined on {DATE}",
   "FW_FRIENDS_LIST": "Friend List",
   "FW_FRIENDS_REQS": "Friend Request(s)",

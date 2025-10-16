@@ -7,6 +7,8 @@
       background-color: v.$pm2;
       border-radius: 20px;
       overflow: hidden;
+      overflow-y: auto;
+      min-height: 0;
       padding: 20px;
       border: 4px solid v.$pm1;
       box-shadow:
