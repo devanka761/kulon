@@ -128,6 +128,20 @@ const phonelist = [
       new Setting(config).init()
     }
   }
+  // {
+  //   id: "exitgame",
+  //   g: [1],
+  //   n: "PHONE_EXITGAME",
+  //   ic: "fa-solid fa-right-from-bracket",
+  //   async r(config) {
+  //     const confirmExit = await modal.confirm(lang.PHONE_EXITGAME + "?")
+  //     if (confirmExit) {
+  //       window.close()
+  //       window.location.href = "about:blank"
+  //     }
+  //     config.onComplete()
+  //   }
+  // }
 ]
 
 export default phonelist
