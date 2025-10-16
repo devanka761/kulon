@@ -57,13 +57,13 @@ export class GameMap {
 
   drawBottomImage(ctx) {
     if (this.isLoaded) {
-      ctx.drawImage(this.bottomImage, 0, 0, this.bottomImage.width, this.bottomImage.height)
+      ctx.drawImage(this.bottomImage, 0, 0)
     }
   }
 
   drawTopImage(ctx) {
     if (this.isLoaded) {
-      ctx.drawImage(this.topImage, 0, 0, this.topImage.width, this.topImage.height)
+      ctx.drawImage(this.topImage, 0, 0)
     }
   }
 

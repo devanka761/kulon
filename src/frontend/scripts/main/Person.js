@@ -146,10 +146,11 @@ export class Person {
     this.movingProgressRemaining -= moveAmount
 
     if (this.movingProgressRemaining <= 0) {
+      const stopTime = this.isRemote ? 200 : 50
       const behavior = this.behaviorLoop.shift()
       this.walkStopTimer = setTimeout(() => {
         this.isMoving = false
-      }, 50)
+      }, stopTime)
       if (behavior && behavior.onComplete) {
         behavior.onComplete()
       }

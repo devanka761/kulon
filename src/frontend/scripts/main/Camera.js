@@ -19,6 +19,6 @@ export class Camera {
   }
 
   apply(ctx) {
-    ctx.translate(-this.x, -this.y)
+    ctx.translate(Math.round(-this.x), Math.round(-this.y))
   }
 }
