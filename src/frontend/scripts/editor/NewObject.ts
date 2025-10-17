@@ -558,7 +558,7 @@ export default class NewObject {
         Object.keys(flgEvt).forEach((flagKey) => {
           const recog = s["flag-type"] === "local" ? "local_req" : "required"
           const ereqs = futor(`#talk-${flagKey}`, this.el) as HTMLInputElement
-          data.talk.push({
+          data.talk?.push({
             [recog]: ereqs.value.replace(/\s/g, "").split(","),
             events: Object.values(flgEvt[flagKey].events || {})
           })

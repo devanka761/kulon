@@ -1,4 +1,14 @@
-const directions = {
+type IDirection = "up" | "down" | "left" | "right"
+type IArrow = "w" | "s" | "a" | "d"
+
+type IKeyPress = {
+  [key in IDirection]: IArrow
+}
+type IKeyHold = {
+  [key in IArrow]: boolean
+}
+
+const directions: IKeyPress = {
   up: "w",
   down: "s",
   left: "a",
@@ -6,16 +16,15 @@ const directions = {
 }
 
 export class InputHandler {
-  constructor() {
-    this.keys = { w: false, s: false, a: false, d: false }
-    this.startWalkHandler = null
-    this.stopWalkHandler = null
-  }
-  movePad(direction) {
+  keys: IKeyHold = { w: false, s: false, a: false, d: false }
+  private startWalkHandler!: (ev: KeyboardEvent) => void
+  private stopWalkHandler!: (ev: KeyboardEvent) => void
+  constructor() {}
+  movePad(direction: IDirection) {
     const ekey = directions[direction]
     if (ekey) this.keys[ekey] = true
   }
-  releasePad(direction) {
+  releasePad(direction: IDirection) {
     const ekey = directions[direction]
     if (ekey) this.keys[ekey] = false
   }
@@ -27,14 +36,14 @@ export class InputHandler {
     this.startWalkHandler = (e) => {
       if (!e.key) return
       if (Object.prototype.hasOwnProperty.call(this.keys, e.key.toLowerCase())) {
-        this.keys[e.key.toLowerCase()] = true
+        this.keys[e.key.toLowerCase() as IArrow] = true
       }
     }
     window.addEventListener("keydown", this.startWalkHandler)
     this.stopWalkHandler = (e) => {
       if (!e.key) return
       if (Object.prototype.hasOwnProperty.call(this.keys, e.key.toLowerCase())) {
-        this.keys[e.key.toLowerCase()] = false
+        this.keys[e.key.toLowerCase() as IArrow] = false
       }
     }
     window.addEventListener("keyup", this.stopWalkHandler)

@@ -18,38 +18,48 @@ import socket from "../lib/Socket"
 import KulonUI from "../manager/KulonUI"
 import KulonPad from "./KulonPad"
 import { Prop } from "./Prop"
+import { Player } from "./Player"
+import { GameObjectData, IObjectEvent, IObjectTalk } from "../types/maps.types"
+
+export interface GameObjectMain {
+  update: (deltaTime: number, keys: InputHandler["keys"], walls: GameMap["walls"], game: Game) => void
+}
 
 export class Game {
-  constructor(canvas, viewportWidth) {
+  private ctx: CanvasRenderingContext2D
+  map!: GameMap
+
+  inputHandler: InputHandler = new InputHandler()
+  kulonPad: KulonPad = new KulonPad(150)
+
+  player!: Player
+  camera!: Camera
+
+  isPaused: boolean = false
+  isCutscenePlaying: boolean = false
+  lastTriggeredCutsceneKey: string | null = null
+
+  wasMoving: boolean = false
+  lastMoveTime: number = 0
+
+  keyListeners: KeyPressListener[] = []
+  kulonUI: KulonUI = new KulonUI()
+
+  lastTime: number = 0
+  animationFrameId: number | null = null
+
+  constructor(
+    private canvas: HTMLCanvasElement,
+    private VIEWPORT_WIDTH: number
+  ) {
     this.canvas = canvas
-    this.ctx = this.canvas.getContext("2d")
+    this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D
     this.ctx.imageSmoothingEnabled = false
-    this.VIEWPORT_WIDTH = viewportWidth
 
-    this.map = null
-
-    this.inputHandler = new InputHandler()
-    this.kulonPad = new KulonPad(150)
-
-    this.player = null
-    this.camera = null
-
-    this.isPaused = false
-    this.isCutscenePlaying = false
-    this.lastTriggeredCutsceneKey = null
-
-    this.wasMoving = false
-    this.lastMoveTime = 0
-
-    this.keyListeners = []
-    this.kulonUI = new KulonUI()
-
-    this.lastTime = 0
-    this.animationFrameId = null
     window.addEventListener("resize", this.resizeCanvas.bind(this))
   }
 
-  keypressAction() {
+  private keypressAction(): void {
     this.keyListeners.push(new KeyPressListener("escape", () => this.openPhone()), new KeyPressListener("t", () => chat.open()), new KeyPressListener("e", this.checkForInteraction.bind(this)))
 
     this.kulonUI.phone.onClick(() => this.openPhone())
@@ -61,27 +71,27 @@ export class Game {
     this.kulonPad.setOnInteract(this.checkForInteraction.bind(this))
   }
 
-  pause() {
+  pause(): void {
     this.isPaused = true
   }
 
-  resume() {
+  resume(): void {
     this.isPaused = false
   }
 
-  openPhone() {
+  private openPhone(): void {
     if (!this.isCutscenePlaying && !db.pmc && !chat.formOpened) {
       this.startCutscene([{ type: "phone" }])
     }
   }
 
-  async startGame() {
+  async startGame(): Promise<void> {
     this.inputHandler.init()
 
     this.map = new GameMap(MapList[localSave.mapId])
     await this.map.loadPromise
 
-    this.player = this.map.getPlayer()
+    this.player = this.map.getPlayer() as Player
     this.camera = new Camera(this.canvas, this.map.bottomImage.width, this.map.bottomImage.height)
     this.resizeCanvas()
 
@@ -110,7 +120,7 @@ export class Game {
     }
   }
 
-  resizeCanvas() {
+  private resizeCanvas(): void {
     const scale = window.innerWidth / this.VIEWPORT_WIDTH
     this.canvas.style.width = `${window.innerWidth}px`
     const newHeight = Math.floor(window.innerHeight / scale)
@@ -120,7 +130,7 @@ export class Game {
     this.ctx.imageSmoothingEnabled = false
   }
 
-  gameLoop(currentTime = 0) {
+  private gameLoop(currentTime = 0): void {
     if (!this.lastTime) {
       this.lastTime = currentTime
     }
@@ -136,8 +146,9 @@ export class Game {
     this.animationFrameId = requestAnimationFrame(this.gameLoop.bind(this))
   }
 
-  update(deltaTime) {
-    Object.values(this.map.gameObjects).forEach((obj) => {
+  private update(deltaTime: number): void {
+    //
+    Object.values(this.map.gameObjects as GameObjectData).forEach((obj: GameObjectMain) => {
       obj.update(deltaTime, this.inputHandler.keys, this.map.walls, this)
     })
     this.camera.update(this.player)
@@ -145,7 +156,7 @@ export class Game {
     this.checkForCutscene()
   }
 
-  checkForInteraction() {
+  private checkForInteraction(): void {
     if (this.isCutscenePlaying || this.isPaused) {
       return
     }
@@ -164,7 +175,8 @@ export class Game {
     const interactionGridX = Math.floor(interactionX / TILE_SIZE)
     const interactionGridY = Math.floor(interactionY / TILE_SIZE)
 
-    const target = Object.values(this.map.gameObjects).find((obj) => {
+    //
+    const target = Object.values(this.map.gameObjects as GameObjectData).find((obj) => {
       if (obj === this.player) return false
       const objGridX = Math.floor(obj.x / TILE_SIZE)
       const objGridY = Math.floor(obj.y / TILE_SIZE)
@@ -179,7 +191,7 @@ export class Game {
     }
   }
 
-  draw() {
+  private draw(): void {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
     if (!this.map || !this.map.isLoaded) {
@@ -190,14 +202,15 @@ export class Game {
     this.camera.apply(this.ctx)
     this.map.drawBottomImage(this.ctx)
 
-    const sortedGameObjects = Object.values(this.map.gameObjects).sort((a, b) => a.y - b.y)
+    //
+    const sortedGameObjects = Object.values(this.map.gameObjects as GameObjectData).sort((a, b) => a.y - b.y)
     sortedGameObjects.forEach((obj) => obj.draw(this.ctx))
 
     this.map.drawTopImage(this.ctx)
     this.ctx.restore()
   }
 
-  checkForCutscene() {
+  private checkForCutscene(): void {
     if (this.isCutscenePlaying) {
       return
     }
@@ -222,7 +235,7 @@ export class Game {
         return propGridX === playerFeetGridX && propGridY === playerFeetGridY && obj.talk
       }
       return false
-    })
+    }) as Prop
 
     if (propTrigger && this.lastTriggeredCutsceneKey !== `prop_${propTrigger.x},${propTrigger.y}`) {
       this.lastTriggeredCutsceneKey = `prop_${propTrigger.x},${propTrigger.y}`
@@ -235,7 +248,7 @@ export class Game {
     }
   }
 
-  findAndStartScenario(scenarios) {
+  private findAndStartScenario(scenarios: IObjectTalk[]): void {
     for (const scenario of scenarios) {
       const requirementsMet = (scenario.local_req || scenario.required || []).every((state) => {
         return SaveList[state]
@@ -247,10 +260,10 @@ export class Game {
       }
     }
   }
-  forceCutscene(newBool) {
+  forceCutscene(newBool: boolean): void {
     this.isCutscenePlaying = newBool
   }
-  async startCutscene(events) {
+  async startCutscene(events: IObjectEvent[]): Promise<void> {
     this.isCutscenePlaying = true
     this.kulonUI.hide()
     this.kulonPad.hide()
@@ -269,16 +282,18 @@ export class Game {
     this.isCutscenePlaying = false
   }
 
-  destroy() {
+  destroy(): void {
     window.removeEventListener("resize", this.resizeCanvas.bind(this))
     this.inputHandler.destroy()
     this.kulonPad.destroy()
     this.kulonUI.destroy()
     this.keyListeners.forEach((listener) => listener.unbind())
     this.keyListeners = []
-    cancelAnimationFrame(this.animationFrameId)
+    if (typeof this.animationFrameId === "number") {
+      cancelAnimationFrame(this.animationFrameId)
+    }
   }
-  async init() {
+  async init(): Promise<void> {
     await this.startGame()
   }
 }

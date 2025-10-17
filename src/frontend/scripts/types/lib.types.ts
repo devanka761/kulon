@@ -1,5 +1,10 @@
 export type SSKelement = HTMLElementTagNameMap[keyof HTMLElementTagNameMap]
 
+export interface ILocale {
+  id: string
+  en: string
+}
+
 export interface KelementAttr {
   c?: string
   class?: string

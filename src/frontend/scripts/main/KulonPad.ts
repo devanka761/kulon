@@ -43,7 +43,7 @@ export default class KulonPad {
   private boundHandleMove: (event: TouchEvent | MouseEvent) => void
   private boundHandleUp: () => void
 
-  private constructor(initialSize?: number) {
+  constructor(initialSize?: number) {
     if (initialSize) this.size = Math.max(initialSize, 75)
 
     this.boundResizeHandler = this._onResize.bind(this)

@@ -1,14 +1,8 @@
 import { kel } from "../lib/kel"
 
 export default class SceneTransition {
-  constructor() {
-    this.el = null
-  }
-  createElement() {
-    this.el = kel("div", "SceneTransition")
-  }
-
-  fadeOut() {
+  private el: HTMLDivElement = kel("div", "SceneTransition")
+  fadeOut(): void {
     this.el.classList.add("fade-out")
     this.el.addEventListener(
       "animationend",
@@ -19,10 +13,8 @@ export default class SceneTransition {
     )
   }
 
-  init(container, callback) {
-    this.createElement()
+  init(container: HTMLDivElement, callback: () => void): void {
     container.appendChild(this.el)
-
     this.el.addEventListener(
       "animationend",
       () => {
