@@ -17,6 +17,7 @@ import LocalList from "../data/LocalList"
 import socket from "../lib/Socket"
 import KulonUI from "../manager/KulonUI"
 import KulonPad from "./KulonPad"
+import { Prop } from "./Prop"
 
 export class Game {
   constructor(canvas, viewportWidth) {
@@ -170,7 +171,7 @@ export class Game {
       return objGridX === interactionGridX && objGridY === interactionGridY
     })
 
-    if (target && target.talk) {
+    if (target && target.talk && target instanceof Prop === false) {
       if (typeof target.facePlayer === "function") {
         target.facePlayer(this.player.direction)
       }
@@ -207,20 +208,31 @@ export class Game {
 
     const key = `${playerFeetGridX},${playerFeetGridY}`
 
-    if (key !== this.lastTriggeredCutsceneKey) {
+    const cutsceneTrigger = this.map.cutscenes && this.map.cutscenes[key]
+    if (cutsceneTrigger && this.lastTriggeredCutsceneKey !== key) {
+      this.lastTriggeredCutsceneKey = key
+      this.findAndStartScenario(cutsceneTrigger)
+      return
+    }
+
+    const propTrigger = Object.values(this.map.gameObjects).find((obj) => {
+      if (obj instanceof Prop) {
+        const propGridX = Math.floor(obj.x / TILE_SIZE)
+        const propGridY = Math.floor(obj.y / TILE_SIZE)
+        return propGridX === playerFeetGridX && propGridY === playerFeetGridY && obj.talk
+      }
+      return false
+    })
+
+    if (propTrigger && this.lastTriggeredCutsceneKey !== `prop_${propTrigger.x},${propTrigger.y}`) {
+      this.lastTriggeredCutsceneKey = `prop_${propTrigger.x},${propTrigger.y}`
+      this.findAndStartScenario(propTrigger.talk)
+      return
+    }
+
+    if (!cutsceneTrigger && !propTrigger) {
       this.lastTriggeredCutsceneKey = null
     }
-
-    const cutsceneTrigger = this.map.cutscenes && this.map.cutscenes[key]
-    if (!cutsceneTrigger) {
-      return
-    }
-    if (this.lastTriggeredCutsceneKey) {
-      return
-    }
-
-    this.lastTriggeredCutsceneKey = key
-    this.findAndStartScenario(cutsceneTrigger)
   }
 
   findAndStartScenario(scenarios) {

@@ -64,6 +64,7 @@ export default class NewObject {
         <datalist id="objs-type">
           <option value="Person"></option>
           <option value="Interactable"></option>
+          <option value="Prop"></option>
         </datalist>
       </div>
       <div class="field onObject">

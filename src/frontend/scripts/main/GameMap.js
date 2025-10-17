@@ -5,6 +5,7 @@ import peers from "../data/Peers"
 import { Interactable } from "./Interactable"
 import { Teleporter } from "./Teleporter"
 import audio from "../lib/AudioHandler"
+import { Prop } from "./Prop"
 
 const TILE_SIZE = 16
 
@@ -101,6 +102,14 @@ export class GameMap {
         }
 
         gameObject = new Interactable(pixelConfig)
+      } else if (objectConfig.type === "Prop") {
+        const pixelConfig = {
+          ...objectConfig,
+          x: objectConfig.x * TILE_SIZE,
+          y: objectConfig.y * TILE_SIZE
+        }
+
+        gameObject = new Prop(pixelConfig)
       } else if (objectConfig.type === "Teleporter") {
         const pixelConfig = {
           ...objectConfig,

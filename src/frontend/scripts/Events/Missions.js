@@ -1,7 +1,7 @@
+import mission_list from "../../../../public/json/main/missions.json"
 import cloud_items from "../../../../public/json/items/cloud_items.json"
 import modal from "../lib/modal"
 import lang from "../data/language"
-import xhr from "../lib/xhr"
 import { eroot, kel, qutor } from "../lib/kel"
 import db from "../data/db"
 import LocalList from "../data/LocalList"
@@ -128,14 +128,14 @@ export default class Missions {
     estory.innerHTML = xstory
     eminigame.innerHTML = xminigame
   }
-  async writeData() {
+  writeData() {
     this.eboard1 = qutor(".boards .board .list-story", this.el)
     this.eboard2 = qutor(".boards .board .list-minigame", this.el)
     const card1 = loadingCard()
     const card2 = loadingCard()
     this.eboard1.append(card1)
     this.eboard2.append(card2)
-    this.mission_list = await xhr.get("/json/main/missions.json")
+    this.mission_list = mission_list
     card1.remove()
     card2.remove()
     this.writeStory()
@@ -279,7 +279,7 @@ export default class Missions {
     this.createElement()
     eroot().append(this.el)
     this.updateEconomies()
-    await this.writeData()
+    this.writeData()
     if (this.isFirst) return this.tutorial()
     this.btnListener()
     this.navKeyListener()
