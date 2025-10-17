@@ -62,12 +62,12 @@ class PeerMessage {
       remotePlayer.targetX = data.x
       remotePlayer.targetY = data.y
       remotePlayer.direction = data.direction
-      remotePlayer.isMoving = data.isMoving
+      // remotePlayer.isMoving = data.isMoving
     } else {
       remotePlayer.targetX = -1000
       remotePlayer.targetY = -1000
       remotePlayer.direction = data.direction
-      remotePlayer.isMoving = data.isMoving
+      // remotePlayer.isMoving = data.isMoving
     }
   }
 

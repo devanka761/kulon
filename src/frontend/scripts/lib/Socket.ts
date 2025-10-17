@@ -75,7 +75,7 @@ class Socket {
     if (!newUser.ok) {
       const icon = newUser.msg == "CLOUD_TIMEOUT" ? "wifi-slash" : "sign-posts-wrench"
       const text = newUser.msg == "CLOUD_TIMEOUT" ? "RELOAD" : "UPDATE APP"
-      this._endGameProcess()
+      this.endGameProcess()
       new ForceClose({
         msg_1: `<i class="fa-duotone fa-solid fa-${icon}"></i>`,
         msg_2: lang[newUser.msg],
@@ -110,7 +110,7 @@ class Socket {
       this.ws.send(JSON.stringify(data))
     }
   }
-  private _endGameProcess(): void {
+  endGameProcess(): void {
     audio.stopAll()
     db.pmc?.destroy?.()
     this.game.destroy()

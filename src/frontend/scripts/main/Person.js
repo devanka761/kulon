@@ -88,9 +88,18 @@ export class Person {
     if (distance > 1) {
       this.x += dx * lerpFactor
       this.y += dy * lerpFactor
-    } else {
-      this.isMoving = false
+      this.isMoving = true
+      if (this.walkStopTimer) {
+        clearTimeout(this.walkStopTimer)
+        this.walkStopTimer = null
+      }
+      this.walkStopTimer = setTimeout(() => {
+        this.isMoving = false
+      }, 100)
     }
+    // else {
+    //   setTimeout(() => (this.isMoving = false), 150)
+    // }
   }
 
   updateBehavior(deltaTime, game) {
@@ -146,11 +155,10 @@ export class Person {
     this.movingProgressRemaining -= moveAmount
 
     if (this.movingProgressRemaining <= 0) {
-      const stopTime = this.isRemote ? 200 : 50
       const behavior = this.behaviorLoop.shift()
       this.walkStopTimer = setTimeout(() => {
         this.isMoving = false
-      }, stopTime)
+      }, 50)
       if (behavior && behavior.onComplete) {
         behavior.onComplete()
       }
