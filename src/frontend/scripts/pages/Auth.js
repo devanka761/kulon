@@ -118,9 +118,11 @@ class SignEmail {
     this.isLocked = false
 
     const urlParams = new URLSearchParams(window.location.search)
-    const returnPage = urlParams.get("r")
     const pageQueries = ["s=1"]
-    pageQueries.push("r=" + (returnPage || "app"))
+    const queryR = urlParams.get("r")
+    pageQueries.push("r=" + (queryR || "app"))
+    const queryPwa = urlParams.get("pwa")
+    if (queryPwa) pageQueries.push("pwa=" + queryPwa)
     this.queries = pageQueries.join("&")
   }
   createElement() {

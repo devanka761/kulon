@@ -7,7 +7,10 @@ export async function checkScreenSize(): Promise<void> {
   const size = `${width} x ${height}`
   const message = lang.SCREEN_SIZE.replace("{SIZE}", size)
 
-  if (width < 720 || height < 480) {
+  const urlParams = new URLSearchParams(window.location.search)
+  const pwa = urlParams.get("pwa")
+
+  if ((width < 720 || height < 480) && !pwa) {
     await modal.alert({ ic: "mobile-rotate", msg: message, okx: lang.DN_TXT_CONTINUE })
 
     const docEl = document.documentElement

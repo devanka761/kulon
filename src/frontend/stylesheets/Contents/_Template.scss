@@ -17,7 +17,8 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    gap: v.$bigPadding;
+    // gap: min(20px, 3vh);
+    gap: v.$majorGap;
     .nav {
       width: 100%;
       flex-shrink: 0;
@@ -47,7 +48,7 @@
         align-items: center;
         gap: v.$mediumPadding;
         .btn-close {
-          font-size: v.$dialogueSize;
+          font-size: calc(v.$dialogueSize * 1.4);
         }
       }
     }

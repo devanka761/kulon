@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import cfg from "../../config/cfg"
 import { isProd } from "../lib/generators"
+import { IQueryParam } from "../types/auth.types"
 
 const HOST: string = isProd ? `https://${cfg.APP_HOST}` : `http://localhost:${cfg.APP_PORT}`
 
@@ -140,8 +141,8 @@ export function isProviderValid(provider: string): boolean {
   if (valid_provider.find((k) => k === provider)) return true
   return false
 }
-export function getOAuthUrl(provider: "google" | "github" | "discord", r: string, s: string) {
-  const state = Buffer.from(JSON.stringify({ r, s })).toString("base64")
+export function getOAuthUrl(provider: "google" | "github" | "discord", queries: IQueryParam) {
+  const state = Buffer.from(JSON.stringify(queries)).toString("base64")
   const redirectUrl = CallBackURL[provider][isProd ? "prod" : "dev"](state)
   return redirectUrl
 }

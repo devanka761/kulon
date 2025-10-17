@@ -7,7 +7,7 @@
       display: flex;
       justify-content: space-between;
       align-items: start;
-      gap: 20px;
+      gap: v.$bigPadding;
       min-height: 0;
       .con-list {
         flex-shrink: 0;
@@ -23,7 +23,7 @@
         .card-help {
           line-height: 1.2;
           text-align: center;
-          padding: 20px 10px;
+          padding: v.$bigPadding v.$mediumPadding;
           color: v.$softwhite;
           .keyinfo {
             display: inline;
@@ -33,7 +33,7 @@
           background-color: v.$px1;
           color: v.$softwhite;
           display: block;
-          padding: 10px 20px;
+          padding: v.$mediumPadding v.$bigPadding;
           width: 100%;
           cursor: pointer;
           &.selected {
@@ -49,20 +49,21 @@
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
+        min-height: 0;
         height: 100%;
-        gap: 20px;
+        gap: v.$bigPadding;
         .economies {
           flex-shrink: 0;
           width: 100%;
           display: flex;
           justify-content: right;
           align-items: center;
-          gap: 20px;
+          gap: v.$bigPadding;
           .eco {
-            font-size: 1rem;
+            font-size: calc(v.$defaultSize * 0.9);
             flex-shrink: 0;
             background-color: v.$px1;
-            padding: 10px;
+            padding: v.$mediumPadding;
             border-radius: 10px;
             display: flex;
             justify-content: center;
@@ -97,12 +98,15 @@
           max-height: 100%;
           .item-list {
             width: 100%;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
+            min-height: 0;
+            padding: v.$bigPadding;
+            // display: flex;
+            // justify-content: center;
+            // align-items: center;
+            // flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(clamp(50px, 20vh, 150px), 1fr));
+            gap: v.$bigPadding;
             .card {
               position: relative;
               background-color: v.$px2;
@@ -113,6 +117,8 @@
               align-items: center;
               justify-content: center;
               flex-direction: column;
+              min-height: 0;
+              height: 100%;
               .expire::after {
                 content: "\f017";
                 font-family: "Font Awesome 7 Pro";
@@ -123,40 +129,44 @@
                 font-size: 0.7rem;
               }
               .amount {
+                flex-shrink: 0;
                 width: 100%;
                 padding: 2px 0;
                 font-family: v.$monofont;
                 text-align: center;
                 background-color: v.$pm2;
-                font-size: 0.8rem;
+                font-size: calc(v.$defaultSize * 0.8);
               }
               .icon {
+                min-height: 0;
+                height: 100%;
+                flex-grow: 1;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                padding: 5px 20px;
-                min-height: 90px;
+                padding: v.$smallPadding;
                 img {
                   image-rendering: pixelated;
                   display: block;
-                  width: 65px;
+                  width: clamp(35px, 10vh, 65px);
                 }
               }
               .price {
+                flex-shrink: 0;
                 width: 100%;
-                padding: 3px 0;
+                padding: 2px;
                 text-align: center;
                 background-color: v.$pm2;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 font-family: v.$monofont;
-                font-size: 1rem;
-                gap: 3px;
+                font-size: calc(v.$defaultSize * 0.8);
+                gap: 2px;
                 img {
-                  padding: 3px 0;
+                  padding: 0;
                   display: block;
-                  width: 20px;
+                  width: clamp(16px, 4vh, 20px);
                 }
               }
               &.selected {
@@ -175,7 +185,7 @@
           flex-shrink: 0;
           width: 100%;
           background-color: v.$px1;
-          padding: 10px;
+          padding: v.$mediumPadding;
           border-radius: 10px;
           border: 4px solid v.$pm1;
           box-shadow:
@@ -189,8 +199,8 @@
               display: flex;
               justify-content: center;
               align-items: center;
-              gap: 5px;
-              padding: 20px;
+              gap: v.$smallPadding;
+              padding: v.$bigPadding;
             }
             .item-name {
               font-size: v.$dialogueSize;
@@ -202,16 +212,16 @@
             .item-note {
               color: v.$syellow;
               font-style: italic;
-              margin-top: 10px;
+              margin-top: v.$mediumPadding;
             }
             .item-actions {
-              margin-top: 10px;
+              margin-top: v.$mediumPadding;
               display: flex;
               justify-content: right;
               align-items: end;
-              gap: 5px;
+              gap: v.$smallPadding;
               .btn {
-                padding: 5px 10px;
+                padding: v.$smallPadding v.$mediumPadding;
                 border-radius: 5px;
                 &.btn-buy {
                   background-color: v.$pm1;

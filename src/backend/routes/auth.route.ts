@@ -4,6 +4,7 @@ import { rep } from "../lib/generators"
 import { IAccount } from "../types/account.types"
 import { getOAuthUrl, getOAuthUser, isProviderValid } from "../controller/oauth.controller"
 import { isAccount } from "../main/middlewares"
+import { IQueryParam } from "../types/auth.types"
 
 const router: Router = express.Router()
 
@@ -42,11 +43,17 @@ router.post("/verify", async (req: Request, res: Response) => {
 })
 
 router.get("/logout", (req: Request, res: Response) => {
-  const { r, s } = req.query
-  const redirectUrl = "/" + (r ? r.toString() : "app") + (s ? "?s=" + s : "")
+  const { r, s, pwa } = req.query
+
+  const url = "/" + (r?.toString() || "app")
+  const queries: string[] = []
+  if (s) queries.push("s=" + s)
+  if (pwa) queries.push("pwa=" + pwa)
+
+  const redirectURL = url + (queries.length >= 1 ? "?" + queries.join("&") : "")
 
   req.session.destroy(() => {
-    res.redirect(redirectUrl)
+    res.redirect(redirectURL)
     return
   })
 })
@@ -88,10 +95,16 @@ router.get("/:provider/redirect", async (req: Request, res: Response) => {
   const { state } = req.query
   if (!state) return res.redirect("/app")
 
-  const states = JSON.parse(Buffer.from(state.toString(), "base64").toString())
+  const states = JSON.parse(Buffer.from(state.toString(), "base64").toString()) as IQueryParam
 
-  const redirectUrl = states.r + (states.s ? "?s=" + states.s : "")
-  return res.redirect(redirectUrl)
+  const url = states.r
+  const queries: string[] = []
+  if (states.s) queries.push("s=" + states.s)
+  if (states.pwa) queries.push("pwa=" + states.pwa)
+
+  const redirectURL = url + (queries.length >= 1 ? "?" + queries.join("&") : "")
+
+  return res.redirect(redirectURL)
 })
 
 router.post("/guest", async (req: Request, res: Response) => {
@@ -127,12 +140,13 @@ router.get("/:provider", (req: Request, res: Response) => {
     return res.render("404")
   }
 
-  const { r, s } = req.query
+  const { r, s, pwa } = req.query
 
-  const returnPage = r ? "/" + r.toString() : "/app"
-  const introSkip = s?.toString() || "sadasd"
+  const states: IQueryParam = { r: r ? "/" + r.toString() : "/app" }
+  if (s) states.s = s.toString()
+  if (pwa) states.pwa = pwa.toString()
 
-  return res.redirect(getOAuthUrl(provider as "github" | "google" | "discord", returnPage, introSkip))
+  return res.redirect(getOAuthUrl(provider as "github" | "google" | "discord", states))
 })
 
 export default router

@@ -12,6 +12,34 @@ import assetSize from "../../../../public/json/skins/size.json"
 import audio from "../lib/AudioHandler"
 import { KeyPressListener } from "../main/KeyPressListener"
 
+async function forceFullScreen() {
+  const width = window.innerWidth
+  const height = window.innerHeight
+
+  const urlParams = new URLSearchParams(window.location.search)
+  const pwa = urlParams.get("pwa")
+
+  if ((width < 720 || height < 480) && !pwa) {
+    const docEl = document.documentElement
+
+    if (docEl.requestFullscreen) {
+      await docEl.requestFullscreen({ navigationUI: "hide" })
+    } else if ("webkitRequestFullscreen" in docEl && typeof docEl["webkitRequestFullscreen"] === "function") {
+      await docEl["webkitRequestFullscreen"]()
+    } else if ("msRequestFullscreen" in docEl && typeof docEl["msRequestFullscreen"] === "function") {
+      await docEl["msRequestFullscreen"]()
+    }
+
+    if (screen.orientation && "lock" in screen.orientation && typeof screen.orientation["lock"] === "function") {
+      try {
+        await screen.orientation["lock"]("landscape")
+      } catch (_err) {
+        // console.warn("Gagal rotate:", err)
+      }
+    }
+  }
+}
+
 export default class Preload {
   constructor({ skins, sounds, doodle }) {
     this.skins = skins
@@ -52,24 +80,7 @@ export default class Preload {
     const btnLoad = qutor(".assetload-action", this.el)
     btnLoad.onclick = async () => {
       this.enter.unbind()
-      const docEl = document.documentElement
-
-      if (docEl.requestFullscreen) {
-        await docEl.requestFullscreen({ navigationUI: "hide" })
-      } else if ("webkitRequestFullscreen" in docEl && typeof docEl["webkitRequestFullscreen"] === "function") {
-        await docEl["webkitRequestFullscreen"]()
-      } else if ("msRequestFullscreen" in docEl && typeof docEl["msRequestFullscreen"] === "function") {
-        await docEl["msRequestFullscreen"]()
-      }
-
-      if (screen.orientation && "lock" in screen.orientation && typeof screen.orientation["lock"] === "function") {
-        try {
-          await screen.orientation["lock"]("landscape")
-        } catch (_err) {
-          // console.warn("Gagal rotate:", err)
-        }
-      }
-
+      await forceFullScreen()
       btnLoad.remove()
       await waittime(500)
       const eloadel = kel("div", "assets-load")
@@ -144,20 +155,20 @@ export default class Preload {
     }
   }
   beginLoadingImage(fileID, fileName, assetProgress, loadscreen) {
-    const img = new Image()
-    img.classList.add("hidden-preload")
-    img.onerror = () => {
-      this.launchIfReady(assetProgress, loadscreen, fileID)
-      img.remove()
-    }
-    img.onload = () => {
-      this.launchIfReady(assetProgress, loadscreen, fileID)
-      img.remove()
-    }
-    img.src = fileName
-    this.el.append(img)
+    // const img = new Image()
+    // img.classList.add("hidden-preload")
+    // img.onerror = () => {
+    //   this.launchIfReady(assetProgress, loadscreen, fileID)
+    //   img.remove()
+    // }
+    // img.onload = () => {
+    //   this.launchIfReady(assetProgress, loadscreen, fileID)
+    //   img.remove()
+    // }
+    // img.src = fileName
+    // this.el.append(img)
 
-    // this.launchIfReady(assetProgress, loadscreen, fileID)
+    this.launchIfReady(assetProgress, loadscreen, fileID)
     asset[fileID] = { src: fileName }
   }
   beginLoadingAudio(fileID, fileName, assetProgress, loadscreen) {

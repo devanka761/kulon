@@ -11,13 +11,13 @@
     width: 100%;
     height: 100%;
     max-width: 1080px;
-    padding: 20px;
+    padding: v.$bigPadding;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
+    gap: v.$bigPadding;
     min-height: 0;
     .nav {
       flex-shrink: 0;
@@ -41,7 +41,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 20px;
+      gap: v.$bigPadding;
       animation: slide_up_in 0.3s;
       .btn {
         width: calc(100% / 2);
@@ -72,7 +72,7 @@
       display: flex;
       justify-content: space-between;
       align-items: start;
-      gap: 20px;
+      gap: v.$bigPadding;
       animation: slide_down_in 0.3s;
       min-height: 0;
       height: 100%;
@@ -84,10 +84,10 @@
         display: flex;
         flex-direction: column;
         .board-title {
-          margin-bottom: 5px;
+          margin-bottom: v.$tinyPadding;
           background: linear-gradient(135deg, v.$pm1, v.$pm1, v.$white);
           color: v.$px1;
-          padding: 10px;
+          padding: v.$mediumPadding;
           text-align: center;
         }
         .board-content {
@@ -106,9 +106,9 @@
             }
           }
           .card {
-            padding: 10px;
+            padding: v.$mediumPadding;
             background-color: rgba(v.$px1, 0.8);
-            margin-bottom: 5px;
+            margin-bottom: v.$tinyPadding;
             &.txt-tutor {
               line-height: 1.2;
               .keyinfo {
@@ -140,7 +140,7 @@
               display: flex;
               justify-content: space-between;
               align-items: center;
-              gap: 10px;
+              gap: v.$mediumPadding;
               cursor: pointer;
               span {
                 flex-grow: 1;

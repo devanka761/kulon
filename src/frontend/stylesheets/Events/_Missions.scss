@@ -8,7 +8,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      gap: v.$bigPadding;
       height: 100%;
       min-height: 0;
       .economies {
@@ -17,12 +17,12 @@
         display: flex;
         justify-content: right;
         align-items: center;
-        gap: 20px;
+        gap: v.$bigPadding;
         .eco {
-          font-size: 1rem;
+          font-size: calc(v.$defaultSize * 0.9);
           flex-shrink: 0;
           background-color: v.$px1;
-          padding: 10px;
+          padding: v.$mediumPadding;
           border-radius: 10px;
           display: flex;
           justify-content: center;
@@ -49,7 +49,7 @@
         display: flex;
         justify-content: space-between;
         align-items: start;
-        gap: 20px;
+        gap: v.$bigPadding;
         .board {
           width: calc(100% / 2);
           height: 100%;
@@ -69,32 +69,33 @@
             background-color: v.$pm1;
             color: v.$px1;
             width: 100%;
-            padding: 10px;
+            padding: v.$mediumPadding;
             text-align: center;
           }
           .board-list {
             flex-grow: 1;
             width: 100%;
+            min-height: 0;
             height: 100%;
             overflow-y: auto;
             scrollbar-width: thin;
-            padding: 10px;
+            padding: v.$mediumPadding;
             .card {
               width: 100%;
               background-color: v.$px2;
-              padding: 10px;
+              padding: v.$mediumPadding;
               cursor: pointer;
-              margin-bottom: 10px;
+              margin-bottom: v.$mediumPadding;
               border-radius: 10px;
               overflow: hidden;
               border: 2px solid v.$px1;
               .card-title {
-                padding: 20px 15px;
+                padding: v.$bigPadding v.$mediumPadding;
                 text-align: center;
                 font-size: v.$dialogueSize;
               }
               .card-req {
-                padding: 3px 10px;
+                padding: v.$smallPadding v.$mediumPadding;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -102,7 +103,7 @@
                 background-color: v.$pm2;
                 border-radius: 5px;
                 .req {
-                  font-size: 1rem;
+                  font-size: calc(v.$defaultSize * 0.9);
                   i {
                     font-style: normal;
                   }
@@ -141,14 +142,9 @@
       .actions {
         flex-shrink: 0;
         width: 100%;
-        .keyinfo {
-          display: block;
-          margin: 0 auto;
-          margin-bottom: 5px;
-        }
         .btn-start {
           width: 100%;
-          padding: 10px;
+          padding: v.$mediumPadding;
           text-align: center;
           background-color: v.$pm1;
           color: v.$px1;
@@ -158,12 +154,17 @@
             0 8px 16px rgba(0, 0, 0, 0.5);
           border-radius: 10px;
           cursor: pointer;
+          .keyinfo {
+            display: inline;
+          }
         }
         &.disabled {
-          opacity: 0;
           .btn-start {
+            // border-color: ;
+            background-color: v.$sgray;
+            color: v.$softwhite;
             cursor: not-allowed;
-            pointer-events: none;
+            box-shadow: none;
           }
         }
       }

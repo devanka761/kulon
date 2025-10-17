@@ -10,7 +10,7 @@
       align-items: center;
       justify-content: space-between;
       min-height: 0;
-      gap: v.$bigPadding;
+      gap: v.$majorGap;
       .search {
         flex-shrink: 0;
         width: 100%;
@@ -76,7 +76,7 @@
         justify-content: space-between;
         min-height: 0;
         align-items: start;
-        gap: v.$bigPadding;
+        gap: v.$majorGap;
         .board {
           background-color: v.$px1;
           width: calc(100% / 2);
@@ -177,7 +177,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      gap: v.$bigPadding;
+      gap: v.$majorGap;
       min-height: 0;
       .search {
         width: 100%;

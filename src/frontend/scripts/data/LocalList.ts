@@ -1,7 +1,6 @@
 import { ILocalList } from "../types/data.types"
 
 const LocalList: ILocalList = {
-  kulonpad_disabled: true,
   bgm_volume: 3,
   ui_volume: 5,
   sfx_volume: 7,

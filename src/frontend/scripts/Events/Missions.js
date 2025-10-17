@@ -88,8 +88,7 @@ export default class Missions {
           </div>
         </div>
         <div class="actions disabled">
-          <span class="keyinfo">enter</span>
-          <div class="btn btn-start">${lang.TS_START}</div>
+          <div class="btn btn-start"><span class="keyinfo">enter</span> ${lang.TS_START}</div>
         </div>
       </div>
     </div>`

@@ -6,7 +6,7 @@
   "background_color": "#2d3048",
   "display": "fullScreen",
   "orientation": "landscape",
-  "start_url": "/app?source=pwa",
+  "start_url": "/app?pwa=69",
   "scope": "/app",
   "icons": [
     {

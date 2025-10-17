@@ -20,12 +20,14 @@ $cred: #ff6e6e;
 $cgreen: #6ccc71;
 $cblue: #2b6fb9;
 
+$majorGap: clamp(10px, 3vh, 20px);
 $defaultSize: clamp(1rem, 5vh, 1.2rem);
 $dialogueSize: clamp(1rem, 5vh, 1.6rem);
-$bigPadding: min(20px, 2vh);
-$smallPadding: min(8px, 1vh);
-$mediumPadding: min(10px, 1vh);
-$largeMargin: min(50px, 3vh);
+$bigPadding: clamp(10px, 3vh, 20px);
+$tinyPadding: clamp(3px, 1vh, 5px);
+$smallPadding: clamp(4px, 1vh, 8px);
+$mediumPadding: clamp(5px, 1.2vh, 10px);
+$largeMargin: clamp(20px, 3vh, 50px);
 
 $textoutline:
   -1px -1px 0 #000,

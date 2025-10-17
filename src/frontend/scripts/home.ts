@@ -30,11 +30,11 @@ function setPWA(): void {
     btnInstall.onclick = async (e) => {
       e.preventDefault()
       if (window.matchMedia("(display-node: fullScreen)").matches) {
-        window.location.href = "/app"
+        window.location.href = "/app?pwa=69"
       }
 
       if (PWA_READY) {
-        window.location.href = "/app"
+        window.location.href = "/app?pwa=60"
         return
       }
 
@@ -66,7 +66,7 @@ function setOnResize(): void {
   window.addEventListener("resize", () => {
     if (PWA_READY) {
       hideInstallButton()
-      window.location.href = "/app"
+      window.location.href = "/app?pwa=69"
     }
   })
 }

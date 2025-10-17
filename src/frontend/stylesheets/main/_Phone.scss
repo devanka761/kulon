@@ -29,7 +29,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 30px;
+    gap: clamp(10px, 2vh, 30px);
     padding: v.$bigPadding;
     .detail {
       flex-grow: 1;
@@ -75,11 +75,11 @@
           font-size: v.$defaultSize;
           color: v.$cgreen;
           display: flex;
-          justify-content: left;
+          justify-content: start;
           align-items: center;
           gap: 5px;
           .uid {
-            flex-grow: 1;
+            flex-grow: 0;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -130,11 +130,11 @@
         text-align: center;
         border: 1px solid v.$sgray;
         background-color: v.$px1;
-        padding: 10px 5px;
+        padding: v.$mediumPadding v.$smallPadding;
         border-radius: 5px;
         color: v.$softwhite;
         .ic {
-          font-size: 1.75rem;
+          font-size: calc(v.$defaultSize * 1.75);
         }
         .name {
           word-break: break-all;
@@ -165,7 +165,7 @@
           gap: 10px;
           min-height: 80px;
           .name {
-            font-size: 1.2rem;
+            font-size: calc(v.$defaultSize * 1.2);
           }
           &:focus,
           &.active {

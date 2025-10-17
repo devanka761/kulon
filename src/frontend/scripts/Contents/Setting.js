@@ -267,6 +267,15 @@ export default class Setting {
     p.innerHTML = `${db.provider.email ? db.provider.email + " " : ""}(${db.provider.name})`
   }
   writeLogout(card) {
+    const urlParams = new URLSearchParams(window.location.search)
+    const pageQueries = ["s=1"]
+    const queryR = urlParams.get("r")
+    pageQueries.push("r=" + (queryR || "app"))
+    const queryPwa = urlParams.get("pwa")
+    if (queryPwa) pageQueries.push("pwa=" + queryPwa)
+    const queries = pageQueries.join("&")
+    const url = `/x/auth/logout?${queries}`
+
     card.onclick = async () => {
       if (this.isLocked) return
       audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
@@ -276,9 +285,9 @@ export default class Setting {
         this.isLocked = false
         return
       }
-      await modal.loading(xhr.get("/x/auth/logout?r=app&s=1"), "LOGGING OUT")
+      await modal.loading(xhr.get(url), "LOGGING OUT")
       this.isLocked = false
-      window.location.href = "/x/auth/logout?r=app&s=1"
+      window.location.href = url
     }
   }
   writeLanguage(card, s) {

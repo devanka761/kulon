@@ -8,3 +8,9 @@ export interface IAuth {
   rate: number
   cd: number
 }
+
+export interface IQueryParam {
+  s?: string
+  r?: string
+  pwa?: string
+}
