@@ -1,4 +1,4 @@
-import asset from "../data/assets"
+import { sound } from "../data/sound"
 import LocalList from "../data/LocalList"
 
 type BackSongAudio = string[]
@@ -19,7 +19,7 @@ class BackSongAPI {
   start(timeout?: number): void {
     const audioVolume = LocalList.bgm_volume <= 10 && LocalList.bgm_volume >= 0 ? LocalList.bgm_volume / 10 : 0.8
 
-    const audio = new Audio(asset[bgms[this.type][this.index]].src)
+    const audio = new Audio(sound[bgms[this.type][this.index]].src)
     audio.preload = "auto"
     audio.load()
     audio.volume = audioVolume

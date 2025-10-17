@@ -12,6 +12,7 @@ export function isUnifiedSupported(): ISupports {
   if (typeof RTCDataChannel === "undefined") unsupporteds.push("RTCDataChannel")
   if (typeof WebSocket === "undefined") unsupporteds.push("WebSocket")
   if (typeof AudioContext === "undefined") unsupporteds.push("AudioContext")
+  if (typeof AudioBuffer === "undefined") unsupporteds.push("AudioBuffer")
   if (typeof CanvasRenderingContext2D === "undefined") unsupporteds.push("CanvasRenderingContext2D")
 
   let tempPc: RTCPeerConnection | null = null

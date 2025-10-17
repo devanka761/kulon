@@ -1,7 +1,14 @@
-import asset from "../data/assets"
+import { sound, audioContext } from "../data/sound"
 import LocalList from "../data/LocalList"
 
-type SingleAudio = Map<string, HTMLAudioElement>
+interface PlayingSound {
+  source: AudioBufferSourceNode
+  gainNode: GainNode
+  isFading?: boolean
+  playTime: number
+}
+
+type SingleAudio = Map<string, PlayingSound>
 
 interface IOptionsConfig {
   fadeIn?: number
@@ -20,8 +27,8 @@ interface IEventConfig {
 }
 
 export class AudioHandler {
-  private bgm: HTMLAudioElement | null = null
-  private ambient: HTMLAudioElement | null = null
+  private bgm: PlayingSound | null = null
+  private ambient: PlayingSound | null = null
   private ui: SingleAudio = new Map()
   private sfx: SingleAudio = new Map()
   private footstep: SingleAudio = new Map()
@@ -29,8 +36,8 @@ export class AudioHandler {
   emit(event: IEventConfig) {
     switch (event.action) {
       case "play":
-        if (!event.src || !asset[event.src]) break
-        this._handlePlay(event.type, asset[event.src].src, event.options ?? {})
+        if (!event.src || !sound[event.src]?.buffer) break
+        this._handlePlay(event.type, event.src, event.options ?? {})
         break
       case "stop":
         this._handleStop(event.type, event.id, event.options ?? {})
@@ -38,27 +45,27 @@ export class AudioHandler {
     }
   }
 
-  _handlePlay(type: string, src: string, options: IOptionsConfig) {
+  private _handlePlay(type: string, fileID: string, options: IOptionsConfig): void {
     switch (type) {
       case "bgm":
-        this._playBGM(src, options)
+        this._playBGM(fileID, options)
         break
       case "ui":
-        this._playUI(options.id ?? src, src, options)
+        this._playUI(options.id ?? fileID, fileID, options)
         break
       case "sfx":
-        this._playSFX(options.id ?? src, src, options)
+        this._playSFX(options.id ?? fileID, fileID, options)
         break
       case "footstep":
-        this._playFootstep(options.id ?? src, src, options)
+        this._playFootstep(options.id ?? fileID, fileID, options)
         break
       case "ambient":
-        this._playAmbient(src, options)
+        this._playAmbient(fileID, options)
         break
     }
   }
 
-  _handleStop(type: string, id?: string, options: IOptionsConfig = {}) {
+  private _handleStop(type: string, id?: string, options: IOptionsConfig = {}): void {
     switch (type) {
       case "bgm":
         this._stopBGM(options.fadeOut)
@@ -90,210 +97,176 @@ export class AudioHandler {
     }
   }
 
-  _playBGM(src: string, options: IOptionsConfig = {}) {
-    this._stopBGM(options.fadeOut)
-    const kaudioVolume = options.volume ?? (LocalList.bgm_volume <= 10 && LocalList.bgm_volume >= 0 ? LocalList.bgm_volume / 10 : 0.8)
-    const kaudio = new Audio(src)
-    kaudio.loop = true
-    kaudio.volume = kaudioVolume
-    this.bgm = kaudio
+  private _createAndPlaySource(fileID: string, options: IOptionsConfig, defaultVolume: number): PlayingSound | null {
+    const audioData = sound[fileID]
+    if (!audioData?.buffer) return null
+
+    const source = audioContext.createBufferSource()
+    source.buffer = audioData.buffer
+    source.loop = options.loop ?? false
+
+    const gainNode = audioContext.createGain()
+    const volume = options.volume ?? (defaultVolume <= 10 && defaultVolume >= 0 ? defaultVolume / 10 : 0.8)
+    gainNode.gain.value = volume
+
+    source.connect(gainNode)
+    gainNode.connect(audioContext.destination)
+
+    const playTime = audioContext.currentTime
     if (options.fadeIn) {
-      kaudio.volume = 0
-      kaudio.play()
-      this._fade(kaudio, kaudioVolume, options.fadeIn)
-    } else {
-      kaudio.play()
+      gainNode.gain.setValueAtTime(0, playTime)
+      gainNode.gain.linearRampToValueAtTime(volume, playTime + options.fadeIn / 1000)
     }
+
+    if (options.loop && fileID.startsWith("ambient")) {
+      const offset = Math.random() * (source.buffer.duration * 0.85)
+      source.start(playTime, offset)
+    } else {
+      source.start(playTime)
+    }
+
+    const playingSound: PlayingSound = { source, gainNode, playTime }
+    return playingSound
   }
 
-  _stopBGM(fadeOut?: number) {
+  private _playBGM(fileID: string, options: IOptionsConfig = {}): void {
+    this._stopBGM(options.fadeOut)
+    options.loop = true
+    const playingSound = this._createAndPlaySource(fileID, options, LocalList.bgm_volume)
+    if (playingSound) this.bgm = playingSound
+  }
+
+  private _stopBGM(fadeOut?: number): void {
     if (!this.bgm) return
     const oldBgm = this.bgm
     this.bgm = null
-    if (fadeOut) {
-      this._fade(oldBgm, 0, fadeOut, () => {
-        oldBgm?.pause()
-      })
-    } else {
-      oldBgm.pause()
-    }
+    this._fadeAndStop(oldBgm, fadeOut)
   }
-  _playAmbient(src: string, options: IOptionsConfig = {}) {
+  private _playAmbient(fileID: string, options: IOptionsConfig = {}): void {
     this._stopAmbient(options.fadeOut)
-    const kaudioVolume = options.volume ?? (LocalList.ambient_volume <= 10 && LocalList.ambient_volume >= 0 ? LocalList.ambient_volume / 10 : 0.4)
-    const kaudio = new Audio(src)
-    kaudio.loop = true
-    kaudio.volume = kaudioVolume
-    this.ambient = kaudio
-
-    const startPlayback = () => {
-      if (options.fadeIn) {
-        kaudio.volume = 0
-        this._fade(kaudio, kaudioVolume, options.fadeIn)
-      }
-      kaudio.play()
-    }
-
-    kaudio.onloadedmetadata = () => {
-      kaudio.currentTime = Math.random() * (kaudio.duration * 0.85)
-    }
-
-    startPlayback()
+    options.loop = true
+    const playingSound = this._createAndPlaySource(fileID, options, LocalList.ambient_volume)
+    if (playingSound) this.ambient = playingSound
   }
 
-  _stopAmbient(fadeOut?: number) {
+  private _stopAmbient(fadeOut?: number): void {
     if (!this.ambient) return
     const oldAmbient = this.ambient
     this.ambient = null
-    if (fadeOut) {
-      this._fade(oldAmbient, 0, fadeOut, () => {
-        oldAmbient?.pause()
-      })
-    } else {
-      oldAmbient.pause()
-    }
+    this._fadeAndStop(oldAmbient, fadeOut)
   }
 
-  _playUI(id: string, src: string, options: IOptionsConfig = {}) {
+  private _playUI(id: string, fileID: string, options: IOptionsConfig = {}): void {
     this._stopUI(id)
-    const kaudioVolume = options.volume ?? (LocalList.ui_volume <= 10 && LocalList.ui_volume >= 0 ? LocalList.ui_volume / 10 : 0.7)
-    const kaudio = new Audio(src)
-    kaudio.volume = kaudioVolume
-    kaudio.loop = options.loop ?? false
-    this.ui.set(id, kaudio)
-    kaudio.onended = () => {
-      if (!kaudio.loop) this.ui.delete(id)
-    }
-    if (options.fadeIn) {
-      kaudio.volume = 0
-      kaudio.play()
-      this._fade(kaudio, kaudioVolume, options.fadeIn)
-    } else {
-      kaudio.play()
+    const playingSound = this._createAndPlaySource(fileID, options, LocalList.ui_volume)
+    if (playingSound) {
+      this.ui.set(id, playingSound)
+      if (!options.loop) {
+        playingSound.source.onended = () => {
+          if (playingSound.isFading) return
+          this.ui.delete(id)
+        }
+      }
     }
   }
 
-  _stopUI(id: string, fadeOut?: number) {
-    const kaudio = this.ui.get(id)
-    if (!kaudio) return
-    if (fadeOut) {
-      this._fade(kaudio, 0, fadeOut, () => {
-        kaudio.pause()
-        this.ui.delete(id)
-      })
-    } else {
-      kaudio.volume = 0
-      setTimeout(() => kaudio.pause(), 300)
-      this.ui.delete(id)
-    }
+  private _stopUI(id: string, fadeOut?: number): void {
+    const playingSound = this.ui.get(id)
+    if (!playingSound) return
+    this.ui.delete(id)
+    this._fadeAndStop(playingSound, fadeOut)
   }
 
-  _stopAllUI() {
-    this.ui.forEach((a) => a.pause())
+  private _stopAllUI(): void {
+    this.ui.forEach((sound) => sound.source.stop())
     this.ui.clear()
   }
 
-  _playSFX(id: string, src?: string, options: IOptionsConfig = {}) {
+  private _playSFX(id: string, fileID: string, options: IOptionsConfig = {}): void {
     this._stopSFX(id)
-    const kaudioVolume = options.volume ?? (LocalList.sfx_volume <= 10 && LocalList.sfx_volume >= 0 ? LocalList.sfx_volume / 10 : 0.7)
-    const kaudio = new Audio(src)
-    kaudio.volume = kaudioVolume
-    kaudio.loop = options.loop ?? false
-    this.sfx.set(id, kaudio)
-    kaudio.onended = () => {
-      if (!kaudio.loop) this.sfx.delete(id)
-    }
-    if (options.fadeIn) {
-      kaudio.volume = 0
-      kaudio.play()
-      this._fade(kaudio, kaudioVolume, options.fadeIn)
-    } else {
-      kaudio.play()
+    const playingSound = this._createAndPlaySource(fileID, options, LocalList.sfx_volume)
+    if (playingSound) {
+      this.sfx.set(id, playingSound)
+      if (!options.loop) {
+        playingSound.source.onended = () => {
+          if (playingSound.isFading) return
+          this.sfx.delete(id)
+        }
+      }
     }
   }
 
-  _stopSFX(id: string, fadeOut?: number) {
-    const kaudio = this.sfx.get(id)
-    if (!kaudio) return
-    if (fadeOut) {
-      this._fade(kaudio, 0, fadeOut, () => {
-        kaudio.pause()
-        this.sfx.delete(id)
-      })
-    } else {
-      kaudio.volume = 0
-      setTimeout(() => kaudio.pause(), 300)
-      this.sfx.delete(id)
-    }
+  private _stopSFX(id: string, fadeOut?: number): void {
+    const playingSound = this.sfx.get(id)
+    if (!playingSound) return
+    this.sfx.delete(id)
+    this._fadeAndStop(playingSound, fadeOut)
   }
 
-  _stopAllSFX() {
-    this.sfx.forEach((a) => a.pause())
+  private _stopAllSFX(): void {
+    this.sfx.forEach((sound) => sound.source.stop())
     this.sfx.clear()
   }
 
-  _playFootstep(id: string, src: string, options: IOptionsConfig = {}) {
+  private _playFootstep(id: string, fileID: string, options: IOptionsConfig = {}): void {
     this._stopFootstep(id)
-    const kaudioVolume = options.volume ?? (LocalList.footstep_volume <= 10 && LocalList.footstep_volume >= 0 ? LocalList.footstep_volume / 10 : 0.7)
-    const kaudio = new Audio(src)
-    kaudio.volume = kaudioVolume
-    kaudio.loop = options.loop ?? false
-    this.footstep.set(id, kaudio)
-    kaudio.onended = () => {
-      if (!kaudio.loop) this.footstep.delete(id)
-    }
-    if (options.fadeIn) {
-      kaudio.volume = 0
-      kaudio.play()
-      this._fade(kaudio, kaudioVolume, options.fadeIn)
-    } else {
-      kaudio.play()
+    const playingSound = this._createAndPlaySource(fileID, options, LocalList.footstep_volume)
+    if (playingSound) {
+      this.footstep.set(id, playingSound)
+      if (!options.loop) {
+        playingSound.source.onended = () => {
+          if (playingSound.isFading) return
+          this.footstep.delete(id)
+        }
+      }
     }
   }
 
-  _stopFootstep(id: string, fadeOut?: number) {
-    const kaudio = this.footstep.get(id)
-    if (!kaudio) return
-    if (fadeOut) {
-      this._fade(kaudio, 0, fadeOut, () => {
-        kaudio.pause()
-        this.footstep.delete(id)
-      })
-    } else {
-      kaudio.volume = 0
-      setTimeout(() => kaudio.pause(), 300)
-      this.footstep.delete(id)
-    }
+  private _stopFootstep(id: string, fadeOut?: number): void {
+    const playingSound = this.footstep.get(id)
+    if (!playingSound) return
+    this.footstep.delete(id)
+    this._fadeAndStop(playingSound, fadeOut)
   }
 
-  _stopAllFootstep() {
-    this.footstep.forEach((a) => a.pause())
+  private _stopAllFootstep(): void {
+    this.footstep.forEach((sound) => sound.source.stop())
     this.footstep.clear()
   }
 
-  _fade(kaudio: HTMLAudioElement, targetVolume: number, duration: number, onComplete?: () => void) {
-    const startVolume = kaudio.volume
-    const diff = targetVolume - startVolume
-    const steps = 30
-    let currentStep = 0
-    const interval = setInterval(() => {
-      currentStep++
-      kaudio.volume = startVolume + (diff * currentStep) / steps
-      if (currentStep >= steps) {
-        clearInterval(interval)
-        if (targetVolume === 0) kaudio.volume = 0
-        if (onComplete) onComplete()
+  private _fadeAndStop(sound: PlayingSound, duration?: number): void {
+    if (!duration) {
+      try {
+        sound.source.stop()
+      } catch (_e) {
+        // -
       }
-    }, duration / steps)
+      return
+    }
+    sound.isFading = true
+    const { gainNode, playTime } = sound
+    const currentTime = audioContext.currentTime
+    const elapsed = currentTime - playTime
+    if (elapsed < 0) return
+
+    gainNode.gain.cancelScheduledValues(currentTime)
+    gainNode.gain.setValueAtTime(gainNode.gain.value, currentTime)
+    gainNode.gain.linearRampToValueAtTime(0, currentTime + duration / 1000)
+    try {
+      sound.source.stop(currentTime + duration / 1000)
+    } catch (_e) {
+      // -
+    }
   }
+
   commitChange(targetType: string, newValue: number) {
     if (newValue < 0 || newValue > 10) return
     const newVolume = newValue / 10
-    if (targetType === "bgm_volume" && this.bgm) this.bgm.volume = newVolume
-    if (targetType === "ambient_volume" && this.ambient) this.ambient.volume = newVolume
-    if (targetType === "ui_volume") this.ui.forEach((kaudio) => (kaudio.volume = newVolume))
-    if (targetType === "sfx_volume") this.sfx.forEach((kaudio) => (kaudio.volume = newVolume))
-    if (targetType === "footstep_volume") this.footstep.forEach((kaudio) => (kaudio.volume = newVolume))
+    if (targetType === "bgm_volume" && this.bgm) this.bgm.gainNode.gain.value = newVolume
+    if (targetType === "ambient_volume" && this.ambient) this.ambient.gainNode.gain.value = newVolume
+    if (targetType === "ui_volume") this.ui.forEach((sound) => (sound.gainNode.gain.value = newVolume))
+    if (targetType === "sfx_volume") this.sfx.forEach((sound) => (sound.gainNode.gain.value = newVolume))
+    if (targetType === "footstep_volume") this.footstep.forEach((sound) => (sound.gainNode.gain.value = newVolume))
   }
   stopAll() {
     this._stopAllUI()

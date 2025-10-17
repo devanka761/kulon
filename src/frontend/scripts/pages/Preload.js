@@ -10,6 +10,7 @@ import startGame from "../manager/startGame"
 import CharCreation from "./CharCreation"
 import assetSize from "../../../../public/json/skins/size.json"
 import audio from "../lib/AudioHandler"
+import { sound, audioContext } from "../data/sound"
 import { KeyPressListener } from "../main/KeyPressListener"
 
 async function forceFullScreen() {
@@ -34,7 +35,7 @@ async function forceFullScreen() {
       try {
         await screen.orientation["lock"]("landscape")
       } catch (_err) {
-        // console.warn("Gagal rotate:", err)
+        // --
       }
     }
   }
@@ -171,32 +172,19 @@ export default class Preload {
     // this.launchIfReady(assetProgress, loadscreen, fileID)
     asset[fileID] = { src: fileName }
   }
-  beginLoadingAudio(fileID, fileName, assetProgress, loadscreen) {
-    let ready = false
-    const kaudio = new Audio(fileName)
-    kaudio.classList.add("hidden-preload")
-    kaudio.preload = "auto"
-    kaudio.load()
-    kaudio.onerror = () => {
-      if (ready) return
-      ready = true
+  async beginLoadingAudio(fileID, fileName, assetProgress, loadscreen) {
+    try {
+      const audioBuffer = await fetch(fileName)
+        .then((res) => res.arrayBuffer())
+        .then((data) => audioContext.decodeAudioData(data))
+
+      sound[fileID] = { buffer: audioBuffer, src: fileName }
+    } catch (error) {
+      console.error(`Gagal memuat audio: ${fileName}`, error)
+      // asset[fileID] = { src: fileName }
+    } finally {
       this.launchIfReady(assetProgress, loadscreen, fileID)
-      kaudio.remove()
     }
-    kaudio.oncanplaythrough = () => {
-      if (ready) return
-      ready = true
-      this.launchIfReady(assetProgress, loadscreen, fileID)
-      kaudio.remove()
-    }
-    kaudio.oncanplay = () => {
-      if (ready) return
-      ready = true
-      this.launchIfReady(assetProgress, loadscreen, fileID)
-      kaudio.remove()
-    }
-    this.el.append(kaudio)
-    asset[fileID] = { src: fileName }
   }
   async getUser() {
     const user = await xhr.get("/x/account/me")
