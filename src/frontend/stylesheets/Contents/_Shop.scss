@@ -100,12 +100,8 @@
             width: 100%;
             min-height: 0;
             padding: v.$bigPadding;
-            // display: flex;
-            // justify-content: center;
-            // align-items: center;
-            // flex-wrap: wrap;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(clamp(50px, 20vh, 150px), 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(clamp(80px, 20vh, 150px), 1fr));
             gap: v.$bigPadding;
             .card {
               position: relative;
@@ -135,7 +131,7 @@
                 font-family: v.$monofont;
                 text-align: center;
                 background-color: v.$pm2;
-                font-size: calc(v.$defaultSize * 0.8);
+                font-size: calc(v.$defaultSize * 0.7);
               }
               .icon {
                 min-height: 0;
@@ -161,7 +157,7 @@
                 justify-content: center;
                 align-items: center;
                 font-family: v.$monofont;
-                font-size: calc(v.$defaultSize * 0.8);
+                font-size: calc(v.$defaultSize * 0.7);
                 gap: 2px;
                 img {
                   padding: 0;

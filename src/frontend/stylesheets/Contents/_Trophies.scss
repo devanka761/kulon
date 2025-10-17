@@ -101,7 +101,7 @@
                 hyphens: auto;
               }
               .card-done {
-                font-size: calc(v.$defaultSize * 0.8);
+                font-size: calc(v.$defaultSize * 0.7);
                 color: v.$syellow;
               }
             }
@@ -130,7 +130,7 @@
                   bottom: 0;
                   left: 0;
                   width: 100%;
-                  font-size: calc(v.$defaultSize * 0.8);
+                  font-size: calc(v.$defaultSize * 0.7);
                   padding: 3px 0;
                   background-color: rgba($color: v.$black, $alpha: 0.5);
                   text-align: center;
@@ -139,7 +139,7 @@
               .reqs {
                 span {
                   font-family: v.$monofont;
-                  font-size: calc(v.$defaultSize * 0.8);
+                  font-size: calc(v.$defaultSize * 0.7);
                 }
                 .btn-claim {
                   text-transform: uppercase;

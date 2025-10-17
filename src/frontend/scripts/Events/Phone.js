@@ -119,7 +119,7 @@ export default class Phone {
     btnUID.onclick = async () => {
       const copiedText = await copyToClipboard(db.me.id)
       audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: "phone_menu_enter" } })
-      if (copiedText.ok) {
+      if (copiedText) {
         const copySuccess = lang.COPY_TEXT
         btnUID.innerHTML = '<i class="fa-solid fa-check"></i>'
         setTimeout(() => (btnUID.innerHTML = '<i class="fa-solid fa-copy"></i><span class="keyinfo">c</span>'), 3000)
