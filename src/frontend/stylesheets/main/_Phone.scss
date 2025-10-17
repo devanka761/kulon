@@ -72,18 +72,18 @@
         }
         .userid {
           margin-top: 5px;
-          font-size: v.$defaultSize;
+          font-size: calc(v.$defaultSize * 0.8);
           color: v.$cgreen;
           display: flex;
           justify-content: start;
           align-items: center;
           gap: 5px;
+          font-family: v.$monofont;
           .uid {
             flex-grow: 0;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-            font-family: v.$monofont;
           }
           .btn-copy {
             flex-shrink: 0;

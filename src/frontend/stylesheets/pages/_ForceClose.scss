@@ -10,7 +10,7 @@
   .box {
     padding: 20px;
     .msg {
-      font-size: 1.5em;
+      font-size: v.$dialogueSize;
       text-align: center;
       line-height: 2;
       &.msg-1 {

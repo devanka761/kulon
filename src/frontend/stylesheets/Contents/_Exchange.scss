@@ -40,7 +40,7 @@
               }
               span {
                 font-family: v.$monofont;
-                font-size: v.$defaultSize;
+                font-size: calc(v.$defaultSize * 0.8);
               }
             }
           }

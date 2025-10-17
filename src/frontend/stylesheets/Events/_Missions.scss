@@ -19,7 +19,7 @@
         align-items: center;
         gap: v.$bigPadding;
         .eco {
-          font-size: calc(v.$defaultSize * 0.9);
+          font-size: calc(v.$defaultSize * 0.7);
           flex-shrink: 0;
           background-color: v.$px1;
           padding: v.$mediumPadding;
@@ -103,12 +103,13 @@
                 background-color: v.$pm2;
                 border-radius: 5px;
                 .req {
-                  font-size: calc(v.$defaultSize * 0.9);
+                  font-size: calc(v.$defaultSize * 0.8);
                   i {
                     font-style: normal;
                   }
                 }
                 .req-price {
+                  font-size: calc(v.$defaultSize * 0.8);
                   display: flex;
                   justify-content: right;
                   align-items: center;
