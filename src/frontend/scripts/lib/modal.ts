@@ -63,7 +63,7 @@ const modal = {
         {
           ic: "circle-exclamation",
           msg: definedMsg ? definedMsg : "",
-          okx: lang.OK
+          okx: lang.OK || "OK"
         },
         typeof options === "string" ? {} : options
       )
@@ -129,8 +129,8 @@ const modal = {
         {
           ic: "circle-exclamation",
           msg: definedMsg ? definedMsg : "",
-          okx: lang.OK,
-          cancelx: lang.CANCEL
+          okx: lang.OK || "OK",
+          cancelx: lang.CANCEL || "CANCEL"
         },
         typeof options === "string" ? {} : options
       )
@@ -212,8 +212,8 @@ const modal = {
         {
           ic: "circle-exclamation",
           msg: definedMsg ? definedMsg : "",
-          okx: lang.OK,
-          cancelx: lang.CANCEL,
+          okx: lang.OK || "OK",
+          cancelx: lang.CANCEL || "CANCEL",
           tarea: false
         },
         options
@@ -317,8 +317,8 @@ const modal = {
         {
           ic: "circle-exclamation",
           msg: "",
-          okx: lang.OK,
-          cancelx: lang.CANCEL,
+          okx: lang.OK || "OK",
+          cancelx: lang.CANCEL || "CANCEL",
           items: [
             { id: "not_a", label: "Please Add Option 1", activated: false },
             { id: "not_a", label: "Please Add Option 2", activated: false }

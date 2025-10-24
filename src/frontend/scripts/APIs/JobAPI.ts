@@ -4,6 +4,7 @@ import lang from "../data/language"
 import { IJobItem, IJobToReturn, IPlayersMatchMaking, JobBag } from "../types/job.types"
 import { IMapList, IObjectEvent } from "../types/maps.types"
 import { IUser } from "../types/db.types"
+import SaveList from "../data/SaveList"
 
 export default class JobAPI {
   private data?: IJobToReturn
@@ -132,6 +133,10 @@ export default class JobAPI {
     return this.scenes
   }
   reset(): void {
+    Object.keys(SaveList).forEach((k) => {
+      delete SaveList[k]
+    })
+
     if (this.data) {
       Object.keys(this.data).forEach((k) => {
         delete this.data?.[k as keyof typeof this.data]
