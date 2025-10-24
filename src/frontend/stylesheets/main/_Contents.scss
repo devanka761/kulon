@@ -1,0 +1,22 @@
+@use "../Contents/Template";
+@use "../Contents/Friends";
+@use "../Contents/Profile";
+@use "../Contents/Shop";
+@use "../Contents/Jobs";
+@use "../Contents/Trophies";
+@use "../Contents/Exchange";
+@use "../Contents/Donate";
+@use "../Contents/Setting";
+@use "../Contents/MailSender";
+@use "../Contents/Teleporter";
+@use "../Events/TextMessage";
+@use "../Events/Appearance";
+@use "../Events/Missions";
+@use "../Events/MatchMaking";
+@use "../Events/Prepare";
+@use "../Events/Prologue";
+@use "../Events/Payout";
+@use "../Events/JumpScare";
+
+@use "../MiniGames/FingerprintCracker";
+@use "../MiniGames/FingerprintCloner";

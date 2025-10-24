@@ -1,0 +1,108 @@
+@use "../variables" as v;
+
+.notip {
+  z-index: 99;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: fit-content;
+  max-width: 400px;
+  background-color: v.$pm2;
+  color: v.$white;
+  padding: 20px;
+  margin-left: 20px;
+  border-radius: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  animation: slide_down_in 0.5s;
+  border: 2px solid v.$pm1;
+  box-shadow:
+    0 0 0 2px v.$pm2,
+    0 4px 8px rgba(0, 0, 0, 0.5);
+  .detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    border-right: 1px solid CurrentColor;
+    padding-right: 10px;
+    .icon {
+      flex-shrink: 0;
+      font-size: 2.2em;
+      img {
+        width: 44px;
+        height: 44px;
+        object-fit: cover;
+        object-position: center;
+        -o-object-fit: cover;
+        -o-object-position: center;
+        border-radius: 50%;
+      }
+    }
+    .text {
+      overflow: hidden;
+      .top {
+        width: fit-content;
+        font-weight: bold;
+        word-break: break-all;
+        word-break: break-word;
+        hyphens: auto;
+      }
+      .bottom {
+        width: fit-content;
+        word-break: break-all;
+        word-break: break-word;
+        hyphens: auto;
+        max-height: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+  .close {
+    flex-shrink: 0;
+    font-size: 2.2em;
+  }
+  &.g {
+    border-color: v.$px1;
+    box-shadow:
+      0 0 0 2px v.$sgreen,
+      0 4px 8px rgba(0, 0, 0, 0.5);
+    background-color: v.$sgreen;
+    color: v.$white;
+  }
+  &.y {
+    border-color: v.$yellow;
+    box-shadow:
+      0 0 0 2px v.$px1,
+      0 4px 8px rgba(0, 0, 0, 0.5);
+    background-color: v.$px1;
+    color: v.$yellow;
+  }
+  // &.p {
+  //   // background-color: v.$px1;
+  //   // color: v.$pm1;
+  // }
+  &.r {
+    background-color: v.$cred;
+    color: v.$white;
+    border-color: v.$white;
+    box-shadow:
+      0 0 0 2px v.$cred,
+      0 4px 8px rgba(0, 0, 0, 0.5);
+  }
+  &.rb {
+    background-color: v.$px1;
+    color: v.$cred;
+    border: 1px solid v.$cred;
+    border-color: v.$cred;
+    box-shadow:
+      0 0 0 2px v.$px1,
+      0 4px 8px rgba(0, 0, 0, 0.5);
+  }
+  &.out {
+    animation: slide_down_out 0.5s forwards;
+  }
+}

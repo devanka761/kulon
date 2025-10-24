@@ -1,0 +1,172 @@
+@use "../variables" as v;
+@use "../cursor" as c;
+
+.TitleScreen {
+  display: block;
+  position: absolute;
+  z-index: 104;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($color: v.$px1, $alpha: 0.5);
+  text-align: center;
+  align-content: center;
+  animation: fade_in 1s;
+  .user {
+    margin: auto;
+    margin-bottom: calc(16px * 8);
+    width: fit-content;
+    height: fit-content;
+    max-width: 250px;
+    background-color: v.$px2;
+    border-left: 2px solid v.$pm1;
+    border-bottom: 2px solid v.$pm1;
+    border-radius: 10px;
+    padding: 20px;
+    color: v.$pm1;
+    font-size: v.$dialogueSize;
+    p {
+      word-break: break-all;
+      word-break: break-word;
+      hyphens: none;
+    }
+    p:last-child {
+      color: v.$white;
+    }
+    &.out {
+      animation: popup_out 1s forwards;
+    }
+  }
+  .copyright {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    text-align: left;
+    font-family: v.$systemfont;
+    font-size: 1rem;
+    p {
+      line-height: 1.5;
+      text-shadow: v.$textshadow;
+      color: v.$white;
+    }
+    &.out {
+      animation: slide_up_out 1s forwards;
+    }
+  }
+  .main-menu {
+    position: absolute;
+    z-index: -1;
+    right: 0;
+    bottom: 0;
+    padding: 40px;
+    background-color: rgba($color: v.$px1, $alpha: 0.5);
+    border-left: 2px solid v.$pm1;
+    min-width: 300px;
+    height: 100%;
+    text-align: center;
+    align-content: center;
+    .game-title {
+      margin-bottom: 20px;
+    }
+    .menus {
+      .btn {
+        position: relative;
+        display: block;
+        background-color: v.$px2;
+        color: v.$white;
+        width: 100%;
+        padding: 10px 20px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        cursor: c.$cursorPointer;
+        text-decoration: none;
+        transition: 100ms;
+        border-left: 2px solid v.$pm1;
+        border-right: 2px solid v.$pm1;
+        border-top: 2px solid #00000000;
+        border-bottom: 2px solid #00000000;
+        i {
+          font-size: 1.4rem;
+          font-style: normal;
+        }
+        &:last-child {
+          margin-bottom: 0;
+        }
+        span::before,
+        span::after {
+          content: "";
+          opacity: 0;
+          position: absolute;
+          display: block;
+          width: 30px;
+          height: 30px;
+          transition: 0.5s;
+        }
+        span::before {
+          border-bottom: 4px solid v.$pm1;
+          border-left: 4px solid v.$pm1;
+          transform: rotate(45deg);
+          top: 6px;
+          left: -8px;
+        }
+        span::after {
+          border-bottom: 4px solid v.$pm1;
+          border-left: 4px solid v.$pm1;
+          transform: rotate(-135deg);
+          top: 6px;
+          right: -8px;
+        }
+        &.selected {
+          border-left-color: #00000000;
+          border-right-color: #00000000;
+          border-top-color: v.$pm1;
+          border-bottom-color: v.$pm1;
+          color: v.$pm1;
+          background-color: v.$pm2;
+          span::before {
+            opacity: 1;
+            left: -25px;
+            transform: rotate(-135deg);
+            animation: titleButtonBefore 0.75s linear infinite;
+          }
+          span::after {
+            opacity: 1;
+            right: -25px;
+            transform: rotate(45deg);
+            animation: titleButtonAfter 0.75s linear infinite;
+          }
+        }
+      }
+    }
+    &.out {
+      animation: slide_left_out 1s forwards;
+    }
+  }
+  &.out {
+    animation: fade_out 1s forwards;
+  }
+}
+
+@keyframes titleButtonBefore {
+  0% {
+    left: -25px;
+  }
+  50% {
+    left: -20px;
+  }
+  100% {
+    left: -25px;
+  }
+}
+@keyframes titleButtonAfter {
+  0% {
+    right: -25px;
+  }
+  50% {
+    right: -20px;
+  }
+  100% {
+    right: -25px;
+  }
+}

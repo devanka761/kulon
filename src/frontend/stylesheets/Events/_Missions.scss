@@ -1,0 +1,176 @@
+@use "../variables" as v;
+@use "../cursor" as c;
+
+.f-missions {
+  .box {
+    max-width: 1000px;
+    .con {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: v.$bigPadding;
+      height: 100%;
+      min-height: 0;
+      .economies {
+        flex-shrink: 0;
+        width: 100%;
+        display: flex;
+        justify-content: right;
+        align-items: center;
+        gap: v.$bigPadding;
+        .eco {
+          font-size: calc(v.$defaultSize * 0.7);
+          flex-shrink: 0;
+          background-color: v.$px1;
+          padding: v.$mediumPadding;
+          border-radius: 10px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 3px;
+          border: 2px solid v.$pm1;
+          box-shadow:
+            0 0 0 4px v.$px1,
+            0 4px 8px rgba(0, 0, 0, 0.5);
+          font-family: v.$monofont;
+          img {
+            image-rendering: pixelated;
+            width: 20px;
+          }
+          i {
+            font-style: normal;
+          }
+        }
+      }
+      .boards {
+        flex-grow: 1;
+        width: 100%;
+        min-height: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: v.$bigPadding;
+        .board {
+          width: calc(100% / 2);
+          height: 100%;
+          background-color: v.$px1;
+          border-radius: 20px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          align-items: center;
+          border: 4px solid v.$pm1;
+          box-shadow:
+            0 0 0 4px v.$px1,
+            0 8px 16px rgba(0, 0, 0, 0.5);
+          overflow: hidden;
+          .board-title {
+            flex-shrink: 0;
+            background-color: v.$pm1;
+            color: v.$px1;
+            width: 100%;
+            padding: v.$mediumPadding;
+            text-align: center;
+          }
+          .board-list {
+            flex-grow: 1;
+            width: 100%;
+            min-height: 0;
+            height: 100%;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            padding: v.$mediumPadding;
+            .card {
+              width: 100%;
+              background-color: v.$px2;
+              padding: v.$mediumPadding;
+              cursor: c.$cursorPointer;
+              margin-bottom: v.$mediumPadding;
+              border-radius: 10px;
+              overflow: hidden;
+              border: 2px solid v.$px1;
+              .card-title {
+                padding: v.$bigPadding v.$mediumPadding;
+                text-align: center;
+                font-size: v.$dialogueSize;
+              }
+              .card-req {
+                padding: v.$smallPadding v.$mediumPadding;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 5px;
+                background-color: v.$pm2;
+                border-radius: 5px;
+                .req {
+                  font-size: calc(v.$defaultSize * 0.8);
+                  i {
+                    font-style: normal;
+                  }
+                }
+                .req-price {
+                  font-size: calc(v.$defaultSize * 0.8);
+                  display: flex;
+                  justify-content: right;
+                  align-items: center;
+                  gap: 3px;
+                  font-family: v.$monofont;
+                  img {
+                    padding: 3px 0;
+                    height: 30px;
+                    image-rendering: pixelated;
+                  }
+                }
+              }
+              &.selected {
+                border-color: v.$pm1;
+              }
+              &.dev {
+                .card-req {
+                  background-color: v.$sgray;
+                }
+                &.selected {
+                  border-color: v.$cred;
+                }
+              }
+              &:last-child {
+                margin-bottom: 0;
+              }
+            }
+          }
+        }
+      }
+      .actions {
+        flex-shrink: 0;
+        width: 100%;
+        .btn-start {
+          display: block;
+          width: 100%;
+          padding: v.$mediumPadding;
+          text-align: center;
+          background-color: v.$pm1;
+          color: v.$px1;
+          border: 4px solid v.$px1;
+          box-shadow:
+            0 0 0 4px v.$pm1,
+            0 8px 16px rgba(0, 0, 0, 0.5);
+          border-radius: 10px;
+          cursor: c.$cursorPointer;
+          .keyinfo {
+            display: inline;
+          }
+        }
+        &.disabled {
+          .btn-start {
+            // border-color: ;
+            background-color: v.$sgray;
+            color: v.$softwhite;
+            cursor: c.$cursorNotAllowed;
+            box-shadow: none;
+          }
+        }
+      }
+    }
+  }
+}

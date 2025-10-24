@@ -1,0 +1,134 @@
+@use "../variables" as v;
+@use "../cursor" as c;
+
+$borderColor: v.$pm1;
+$bgColor: v.$px1;
+$textColor: v.$white;
+$highlightColor: v.$pm1;
+$textButton: v.$px1;
+
+.TextMessage {
+  position: absolute;
+  bottom: v.$largeMargin;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 800px;
+  z-index: 10;
+  opacity: 0;
+  animation: TextMessageSlideUp 0.3s ease forwards;
+  &.v2 {
+    animation: none;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    .TextMessage_box {
+      .TextMessage_actions {
+        opacity: 0;
+      }
+    }
+  }
+  .TextMessage_box {
+    background: $bgColor;
+    border-radius: 8px;
+    padding: v.$bigPadding;
+    border: 4px solid $borderColor;
+    box-shadow:
+      0 0 0 4px $bgColor,
+      0 8px 16px rgba(0, 0, 0, 0.5);
+    position: relative;
+    .who {
+      color: $highlightColor;
+      font-size: v.$dialogueSize;
+      margin-bottom: v.$mediumPadding;
+      text-shadow: 2px 2px 0 #000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .choices {
+      z-index: -1;
+      position: absolute;
+      top: -226px;
+      right: 0;
+      animation: ChoiceSlideUp 0.3s ease;
+      .choice {
+        display: block;
+        width: fit-content;
+        color: $textColor;
+        margin-bottom: 12px;
+        margin-left: auto;
+        margin-right: 0;
+        cursor: c.$cursorPointer;
+        background: $bgColor;
+        border: 4px solid $borderColor;
+        border-radius: 8px;
+        padding: 5px 10px;
+        box-shadow:
+          0 0 0 4px $bgColor,
+          0 8px 16px rgba(0, 0, 0, 0.5);
+        position: relative;
+        font-size: v.$dialogueSize;
+        &:last-child {
+          margin-bottom: 0;
+        }
+        &:hover,
+        &:focus {
+          background-color: $borderColor;
+          color: $textButton;
+        }
+      }
+    }
+    .TextMessage_p {
+      color: $textColor;
+      font-size: v.$dialogueSize;
+      line-height: 1.5;
+      text-shadow: 1px 1px 0 #000;
+      span {
+        display: none;
+      }
+      span.revealed {
+        display: inline;
+      }
+    }
+    .TextMessage_actions {
+      display: flex;
+      justify-content: end;
+      align-items: end;
+      gap: 5px;
+      .TextMessage_button {
+        display: block;
+        background: $borderColor;
+        color: $textButton;
+        border: none;
+        padding: v.$smallPadding 20px;
+        font-size: v.$dialogueSize;
+        font-family: v.$gamefont;
+        font-weight: bold;
+        cursor: c.$cursorPointer;
+        border-radius: 4px;
+        text-transform: uppercase;
+      }
+    }
+  }
+}
+
+@keyframes TextMessageSlideUp {
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+}
+@keyframes ChoiceSlideUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+}

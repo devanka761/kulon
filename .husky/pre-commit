@@ -1,0 +1,62 @@
+# Rename ESLint Config to Test
+if test -f eslint.config.ts; then
+  echo "Renaming eslint.config.ts to eslint.config.mjs"
+  mv eslint.config.ts eslint.config.mjs
+fi
+
+# Check ESLint
+npm run lint ||
+(
+    echo "ESLint Check Failed. Make the required changes listed above, add changes and try to commit again";
+    false;
+)
+
+# Check tsconfig
+npm run type-check || 
+(
+    echo "Failed type check. Make the changes require above, add changes and try to commit again";
+    false;
+)
+
+# Rename ESLint Config to Prod
+if test -f eslint.config.mjs; then
+  echo "Renaming eslint.config.mjs to eslint.config.ts"
+  mv eslint.config.mjs eslint.config.ts
+fi
+
+# Check Prettier
+npm run check ||
+(
+    echo 'Prettier Check Failed. Run npm run format, add changes and try commit again';
+    false;
+)
+
+# Check app build
+npm run init:build ||
+(
+    echo "Your build failed, view the errors above"
+    false;
+)
+
+# # Update package patch
+# npm --no-git-tag-version version patch ||
+# {
+#     echo "Patching version failed #1"
+#     false;
+# }
+
+# Write package version to frontend
+echo "{ \"version\": \""$(node -p "require('./package.json').version")"\" }" > src/config/version.json ||
+{
+    echo "Patching version failed"
+    false;
+}
+
+# Add package patch and app version changing
+git add . ||
+{
+    echo "Adding version failed"
+    false;
+}
+
+echo "Success Commit"

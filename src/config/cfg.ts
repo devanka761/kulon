@@ -1,0 +1,48 @@
+import dotenv from "dotenv"
+import discord from "./discord.json"
+dotenv.config()
+
+export default {
+  APP_PRODUCTION: process.env.APP_PRODUCTION?.toLowerCase() === "true",
+  APP_PORT: Number(process.env.APP_PORT ?? 9000),
+  APP_HOST: process.env.APP_HOST ?? "localhost",
+
+  DB_URI: process.env.DB_URI ?? "mongodb://localhost:27017/myapp",
+  DB_NAME: process.env.DB_NAME ?? "myapp",
+
+  SMTP_HOST: process.env.SMTP_HOST ?? "smtp.example.com",
+  SMTP_PORT: Number(process.env.SMTP_PORT ?? 587),
+  SMTP_USER: process.env.SMTP_USER ?? "user@example.com",
+  SMTP_PASS: process.env.SMTP_PASS ?? "password",
+
+  DISCORD_BOT_TOKEN: process.env.DISCORD_BOT_TOKEN ?? "DISCORD_BOT_TOKEN",
+  DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID ?? "DISCORD_CLIENT_ID",
+  DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET ?? "DISCORD_CLIENT_SECRET",
+
+  GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID ?? "GITHUB_CLIENT_ID",
+  GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET ?? "GITHUB_CLIENT_SECRET",
+
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID ?? "GOOGLE_CLIENT_ID",
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET ?? "GOOGLE_CLIENT_SECRET",
+
+  MIDTRANS_PRODUCTION: process.env.MIDTRANS_PRODUCTION?.toLowerCase() === "true",
+
+  SB_MIDTRANS_SERVER_KEY: process.env.SB_MIDTRANS_SERVER_KEY ?? "MIDTRANS_SERVER_KEY",
+  SB_MIDTRANS_CLIENT_KEY: process.env.SB_MIDTRANS_CLIENT_KEY ?? "MIDTRANS_CLIENT_KEY",
+
+  PR_MIDTRANS_SERVER_KEY: process.env.PR_MIDTRANS_SERVER_KEY ?? "SB_MIDTRANS_SERVER_KEY",
+  PR_MIDTRANS_CLIENT_KEY: process.env.PR_MIDTRANS_CLIENT_KEY ?? "MIDTRANS_CLIENT_KEY",
+
+  SESSION_SECRET: process.env.SESSION_SECRET ?? "secret",
+
+  USE_WEBHOOK: discord.USE_WEBHOOK,
+  DISCORD_DONATION: discord.DISCORD_DONATION,
+  DISCORD_MISSION: discord.DISCORD_MISSION,
+  DISCORD_ACHIEVEMENT: discord.DISCORD_ACHIEVEMENT,
+  DISCORD_MAIL: discord.DISCORD_MAIL,
+  DISCORD_EXCHANGE: discord.DISCORD_EXCHANGE,
+  DISCORD_USERNAME: discord.DISCORD_USERNAME,
+  DISCORD_ACCOUNTLOG: discord.DISCORD_ACCOUNTLOG,
+  DISCORD_USERLOG: discord.DISCORD_USERLOG,
+  DISCORD_DEV: discord.DISCORD_DEV
+}

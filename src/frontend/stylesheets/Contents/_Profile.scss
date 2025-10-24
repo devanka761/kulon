@@ -1,0 +1,101 @@
+@use "../variables" as v;
+
+.f-profile {
+  .box {
+    max-width: 600px;
+    justify-content: start;
+    .con {
+      flex-grow: 0;
+      background-color: v.$pm2;
+      border-radius: 20px;
+      overflow: hidden;
+      overflow-y: auto;
+      height: fit-content;
+      min-height: 0;
+      max-height: 100%;
+      padding: v.$bigPadding;
+      border: 4px solid v.$pm1;
+      box-shadow:
+        0 0 0 4px v.$pm2,
+        0 8px 16px rgba(0, 0, 0, 0.5);
+      .profile {
+        width: 100%;
+        .avatar {
+          margin: 0 auto;
+          margin-bottom: v.$bigPadding;
+          width: 70px;
+          height: 70px;
+          background-color: rgba($color: v.$softwhite, $alpha: 0.5);
+          border-radius: 50%;
+          .hero {
+            transform: scale(3.2);
+          }
+        }
+        .user {
+          .uname {
+            text-align: center;
+            font-size: v.$dialogueSize;
+            word-break: break-all;
+            word-break: break-word;
+            hyphens: none;
+          }
+          .userid {
+            text-align: center;
+            color: v.$cgreen;
+          }
+        }
+      }
+      .fact {
+        text-align: center;
+        margin: v.$bigPadding 0;
+      }
+      .actions {
+        .btn,
+        .btn-sent {
+          display: block;
+          width: 100%;
+          max-width: 300px;
+          text-align: center;
+          padding: v.$mediumPadding;
+          margin: 0 auto;
+          margin-bottom: v.$mediumPadding;
+          // &:last-child {
+          //   margin-bottom: 0;
+          // }
+        }
+        .btn-sent {
+          color: v.$yellow;
+        }
+        .btn {
+          background-color: rgba($color: v.$px1, $alpha: 0.75);
+          border-radius: 5px;
+          &.btn-add {
+            i {
+              color: v.$blurple;
+            }
+          }
+          &.btn-accept {
+            i {
+              color: v.$cgreen;
+            }
+          }
+          &.btn-location {
+            i {
+              color: v.$yellow;
+            }
+          }
+          &.btn-decline,
+          &.btn-unfriend,
+          &.btn-cancel {
+            i {
+              color: v.$cred;
+            }
+          }
+          .keyinfo {
+            display: inline;
+          }
+        }
+      }
+    }
+  }
+}

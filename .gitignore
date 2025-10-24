@@ -1,0 +1,17 @@
+.env
+node_modules
+package-lock.json
+ex
+dist
+views
+public/sw.js
+public/*.html
+public/bundle
+public/assets
+public/audio
+public/json/skins
+public/json/assets
+public/json/maps
+public/json/scenes
+public/json/audio
+public/json/build

@@ -1,0 +1,275 @@
+@use "./variables" as v;
+@use "./other/animations";
+@use "./main";
+
+.app {
+  width: 100%;
+  overflow: visible;
+}
+
+html {
+  font-family: v.$systemfont;
+  font-size: 16px;
+}
+body {
+  height: auto;
+  overflow: visible;
+  overflow-y: auto;
+  font-size: v.$defaultSize;
+}
+a,
+a:visited {
+  color: v.$pm1;
+}
+
+.main {
+  width: 100%;
+  .sect {
+    display: block;
+    position: relative;
+    &#home {
+      background-image: url("../../../public/images/home_1.png");
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      position: relative;
+      width: 100%;
+      .outer {
+        background: linear-gradient(120deg, rgba(v.$px1, 0.95), rgba(v.$pm2, 0.95), rgba(v.$px1, 0.7));
+        width: 100%;
+        .card {
+          z-index: 1;
+          position: relative;
+          min-height: calc(100svh - 3.5rem);
+          padding: 20px;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          .icon {
+            animation: slide_up_in 1s;
+            scale: 2;
+            image-rendering: pixelated;
+          }
+          .title {
+            text-align: center;
+            animation: slide_up_in 1s;
+            h1 {
+              word-break: break-all;
+              word-break: break-word;
+              hyphens: auto;
+            }
+          }
+          .actions {
+            text-align: center;
+            margin-top: 40px;
+            animation: slide_down_in 1s;
+            a.btn {
+              display: block;
+              padding: 10px 20px;
+              font-weight: bold;
+              text-decoration: none;
+              background-color: v.$pm1;
+              min-width: 200px;
+              max-width: 100%;
+              color: v.$px1;
+              border-radius: 10px;
+              overflow: hidden;
+              margin-bottom: 10px;
+              &:last-child {
+                margin-bottom: 0;
+              }
+              &.joined {
+                border: 1px solid v.$pm1;
+                background-color: v.$pm2;
+                color: v.$white;
+              }
+              &.hide {
+                display: none;
+              }
+            }
+          }
+        }
+        .toplang {
+          width: fit-content;
+          padding: 20px;
+          font-family: monospace, monospace;
+          font-size: 0.8rem;
+          border-top: 1px solid v.$pm1;
+          animation: slide_right_in 3s ease;
+          p {
+            width: fit-content;
+            line-height: 1.5;
+            i {
+              display: inline-block;
+              vertical-align: middle;
+              font-style: normal;
+              padding: 2px 3px;
+              border-radius: 5px;
+              background-color: v.$pm2;
+              color: v.$pm1;
+            }
+          }
+        }
+        .author {
+          width: 100%;
+          padding: 20px;
+          position: sticky;
+          bottom: 0;
+          left: 0;
+          text-align: left;
+          font-family: monospace, monospace;
+          font-size: 0.8rem;
+          animation: slide_right_in 2s;
+          p {
+            width: fit-content;
+            line-height: 1.5;
+            a {
+              color: v.$pm1;
+              font-weight: bold;
+            }
+          }
+        }
+      }
+    }
+    &#credits,
+    &#requirements {
+      background: v.$px1;
+      padding: 20px;
+      font-size: 1rem;
+      a {
+        color: v.$pm1;
+        text-decoration: none;
+      }
+      .box {
+        max-width: 800px;
+        margin: 0 auto;
+        .cre {
+          img {
+            padding: 40px 0;
+            display: block;
+            margin: 0 auto;
+          }
+          p {
+            padding: 10px 0;
+            line-height: 2;
+            text-align: justify;
+            text-align-last: left;
+          }
+          ul {
+            padding-bottom: 10px;
+            margin-left: var(--fa-li-margin, 2.5em);
+            li {
+              line-height: 2;
+              .fa-li:has(.fa-music) {
+                color: v.$pm1;
+              }
+            }
+          }
+          &:last-child {
+            p,
+            ul {
+              padding-top: 10px;
+              padding-bottom: 0;
+            }
+          }
+        }
+      }
+    }
+    &#requirements {
+      padding: 40px 20px;
+      .box {
+        .cre {
+          ul {
+            li {
+              .fa-li {
+                color: v.$pm1;
+              }
+            }
+          }
+        }
+      }
+    }
+    &#packages {
+      background-image: url("../../../public/images/home_2.png");
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center center;
+      background-repeat: no-repeat;
+      position: relative;
+      // padding: 10px;
+      width: 100%;
+      height: fit-content;
+      .outer {
+        width: 100%;
+        background: linear-gradient(120deg, rgba(v.$pm2, 0.8), rgba(v.$px1, 0.9), rgba(v.$pm2, 0.8));
+        min-height: 10svh;
+        padding: 40px 20px;
+        color: v.$softwhite;
+        .box {
+          max-width: 800px;
+          margin: 0 auto;
+          p {
+            text-align: center;
+          }
+          .cre {
+            margin-top: 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            a {
+              font-size: 0.8rem;
+              display: block;
+              text-decoration: none;
+              padding: 3px 5px;
+              border-radius: 5px;
+              background-color: v.$pm2;
+            }
+          }
+        }
+      }
+    }
+    &#footer {
+      color: v.$softwhite;
+      .links {
+        background: linear-gradient(135deg, v.$px2, v.$pm2);
+        backdrop-filter: blur(7px);
+        -webkit-backdrop-filter: blur(7px);
+        padding: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        font-size: 1rem;
+        a {
+          display: block;
+          text-decoration: none;
+          color: v.$softwhite;
+        }
+      }
+      .author {
+        background-color: v.$px1;
+        padding: 20px;
+        font-size: 0.8rem;
+        p {
+          line-height: 1.5;
+          text-align: center;
+          .copyleft {
+            display: inline-block;
+            vertical-align: middle;
+            transform: rotate(180deg);
+            color: v.$pm1;
+          }
+          .nodec {
+            text-decoration: none;
+          }
+        }
+      }
+    }
+  }
+}
