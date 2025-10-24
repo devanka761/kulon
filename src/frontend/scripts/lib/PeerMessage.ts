@@ -7,6 +7,7 @@ import LocalList from "../data/LocalList"
 import { Game } from "../main/Game"
 import { ISival } from "../types/lib.types"
 import Prologue from "../Events/Prologue"
+import Phone from "../Events/Phone"
 
 const INVALID_CONTROLS = ["run", "init", "constructor", "game"]
 
@@ -78,6 +79,11 @@ class PeerMessage {
   }
 
   playerMapChange(data: ISival): void {
+    if (db.pmc?.id === "phone") {
+      const pmc = db.pmc as Phone
+      pmc.updateScoreBoard(data.from, data.mapId)
+    }
+
     const remotePlayerObject = this.game.map.gameObjects[`crew_${data.from}`] as Person
     const peerData = peers.get(data.from)
 

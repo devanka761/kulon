@@ -1,5 +1,6 @@
 import cloud_items from "../../../../public/json/items/cloud_items.json"
 import asset from "../data/assets"
+import db from "../data/db"
 import lang from "../data/language"
 import audio from "../lib/AudioHandler"
 import { eroot, futor, kel } from "../lib/kel"
@@ -50,11 +51,13 @@ export default class Rewards implements IPMC {
     this.el.classList.add("out")
     this.enter?.unbind()
     await waittime(500)
+    db.pmc = undefined
     this.el.remove()
     if (!next) return this.onComplete()
     if (typeof next !== "string") return next.init()
   }
   async init() {
+    db.pmc = this
     this.createElement()
     eroot().append(this.el)
     this.writeRewards()

@@ -117,7 +117,7 @@ class SocketHandler {
       pmc.updateList()
     }
 
-    if (!LocalList["job_invite_notification_disabled"]) {
+    if (!LocalList["job_invite_notification_disabled"] && !db.invites.exists(data.user.id)) {
       notip({
         a: data.user.username,
         b: lang.NP_JOBINV_DESC,

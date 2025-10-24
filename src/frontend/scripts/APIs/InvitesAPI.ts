@@ -5,6 +5,9 @@ export default class InvitesAPI {
   get(inviteId: string, userId: string): IInvites | undefined {
     return this.data.find((invite) => invite.job.id === inviteId && invite.user.id === userId)
   }
+  exists(userId: string): boolean {
+    return this.data.some((invite) => invite.user.id === userId)
+  }
   get getAll(): IInvites[] {
     return this.data
   }

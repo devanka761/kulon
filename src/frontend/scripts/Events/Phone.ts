@@ -1,3 +1,4 @@
+import ScoreBoard from "../APIs/ScoreBoard"
 import asset from "../data/assets"
 import db from "../data/db"
 import lang from "../data/language"
@@ -14,22 +15,6 @@ import { KeyPressListener } from "../main/KeyPressListener"
 import { IPhoneApp, IPMC } from "../types/db.types"
 import { ISival, SSKelement } from "../types/lib.types"
 
-// function posCard(s) {
-//   const card = document.createElement("div")
-//   card.classList.add("u")
-//   card.innerHTML = `
-//   <div class="avatar"><div class="hero"></div></div>
-//   <div class="m">${(s.id === db.me.id ? db.me.mapId : db.job.map[s.id]).replace("kulon", "").replaceAll("_", "")}</div>`
-//   const eskin = card.querySelector(".avatar .hero")
-//   s.skin.forEach((sk) => {
-//     const img = new Image()
-//     img.src = asset[sk].src
-//     img.alt = sk
-//     eskin.append(img)
-//   })
-//   return card
-// }
-
 interface IPhoneConfig {
   onComplete: () => void
   game: Game
@@ -43,6 +28,7 @@ export default class Phone implements IPMC {
 
   private appGrid: (HTMLButtonElement | null)[][] = []
   private appCards: HTMLButtonElement[] = []
+  private scoreBoard!: ScoreBoard
 
   private navKeyHandler?: (...args: ISival) => ISival
 
@@ -312,19 +298,12 @@ export default class Phone implements IPMC {
     }
     document.addEventListener("keydown", this.navKeyHandler)
   }
-  private createPos(): void {
-    // this.pos = document.createElement("div")
-    // this.pos.classList.add("Pos")
+  private createScoreBoard(): void {
+    this.scoreBoard = new ScoreBoard(this.game.map.mapId)
   }
-  // updatePos() {
-  //   while (this.pos.lastChild) {
-  //     this.pos.lastChild.remove()
-  //   }
-  //   ;(db.job?.onduty || [db.me.id]).forEach((k) => {
-  //     const userData = k === db.me.id ? db.me : db.job.players[k]
-  //     this.pos.append(posCard(userData))
-  //   })
-  // }
+  updateScoreBoard(userId: string, mapId: string): void {
+    this.scoreBoard.update(userId, mapId)
+  }
   async destroy(next?: IPhoneApp): Promise<void> {
     if (this.isLocked) return
     if (!db.trophies.isDone("firstphone")) {
@@ -332,7 +311,7 @@ export default class Phone implements IPMC {
     }
     this.isLocked = true
     this.el.classList.add("out")
-    // this.pos.classList.add("out")
+    this.scoreBoard.destroy()
     document.removeEventListener("keydown", this.navKeyHandler!)
     this.navKeyHandler = undefined
     this.c?.unbind()
@@ -351,9 +330,9 @@ export default class Phone implements IPMC {
     db.pmc = this
     audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
     this.createElement()
-    this.createPos()
+    this.createScoreBoard()
     // this.updatePos()
-    eroot().append(this.el /* this.pos */)
+    eroot().append(this.el, this.scoreBoard.html)
     this.writeApps()
     this.navKeyListener()
     this.btnListener()

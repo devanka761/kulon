@@ -200,33 +200,45 @@
 
 .Pos {
   position: absolute;
-  top: 20px;
-  left: 20px;
-  animation: slide_right_in 0.5s;
+  position: absolute;
+  top: v.$mediumPadding;
+  left: v.$mediumPadding;
+  animation: slide_right_in 0.3s;
   &.out {
-    animation: slide_right_out 0.5s forwards;
+    animation: slide_right_out 0.3s forwards;
   }
-  .u {
+  .usr {
+    width: 100%;
+    font-size: v.$defaultSize;
+    margin-bottom: calc(v.$smallPadding + 4px);
+    background-color: v.$px1;
+    padding: v.$mediumPadding;
+    border: 2px solid v.$pm1;
+    box-shadow: 0 0 0 2px v.$px1;
+    border-radius: 10px;
     display: flex;
-    justify-content: start;
-    align-items: end;
-    gap: 10px;
-    margin-bottom: 10px;
+    justify-content: left;
+    align-items: center;
+    gap: v.$smallPadding;
     &:last-child {
       margin-bottom: 0;
     }
     .avatar {
-      width: 35px;
-      height: 35px;
-      background-color: rgba($color: v.$px1, $alpha: 0.3);
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      background-color: rgba($color: v.$softwhite, $alpha: 0.5);
       border-radius: 50%;
       .hero {
-        transform: scale(1.5);
+        transform: scale(1.85);
       }
     }
-    .m {
-      font-weight: 600;
-      text-shadow: v.$textshadow;
+    .metadata {
+      flex-grow: 1;
+      p:last-child {
+        font-size: calc(v.$defaultSize * 0.8);
+        color: v.$pm1;
+      }
     }
   }
 }

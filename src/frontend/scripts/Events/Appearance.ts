@@ -39,7 +39,7 @@ interface IApplyToCharParams {
 export default class Appearance implements IPMC {
   id: string = "appearance"
   onComplete: () => void
-  game?: Game
+  private game?: Game
   classBefore?: IPMC
   protected item_id?: string
   isLocked: boolean = false

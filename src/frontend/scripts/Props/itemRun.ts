@@ -23,7 +23,7 @@ const INVALID_CONTROLS = ["run", "init", "constructor", "game"]
 
 class ItemRun {
   readonly id = "itemrun"
-  game!: Game
+  private game!: Game
   isLocked: boolean = false
   exchange(config: ISival): void {
     return new Exchange({

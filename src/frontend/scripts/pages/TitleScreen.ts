@@ -3,8 +3,10 @@ import backsong from "../APIs/BackSongAPI"
 import Setting from "../Contents/Setting"
 import db from "../data/db"
 import lang from "../data/language"
+import LocalList from "../data/LocalList"
 import audio from "../lib/AudioHandler"
 import { eroot, kel, qutor } from "../lib/kel"
+import notip from "../lib/notip"
 import waittime from "../lib/waittime"
 import { Game } from "../main/Game"
 import { KeyPressListener } from "../main/KeyPressListener"
@@ -154,6 +156,16 @@ export default class TitleScreen implements IPMC {
       this.game.resume()
       this.onComplete()
       this.isLocked = false
+
+      const mailSize = db.mails.getAll.length
+
+      if (!LocalList["mail_notification_disabled"] && mailSize >= 1) {
+        notip({
+          a: lang.NP_MAIL_TITLE,
+          b: lang.NP_MAIL_REMAINS.replace("{amount}", mailSize.toString()),
+          ic: "envelope"
+        })
+      }
       return
     }
     this.el.classList.add("out")
