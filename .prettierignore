@@ -5,6 +5,7 @@ eslint.config.ts
 eslint.config.mjs
 .prettierrc.ts
 tsconfig.json
+renovate.json
 README.md
 public
 dist
