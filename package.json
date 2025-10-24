@@ -13,8 +13,8 @@
     "init:build": "echo Updating Assets && tsx src/backend/updateAssets.ts && echo Testing Frontend && npx --node-options=\"--import tsx\" webpack --disable-interpret --config webpack.test.ts && echo Testing Backend && rm -rf ./dist && tsgo -p . --extendedDiagnostics",
     "assets": "tsx src/backend/updateAssets.ts",
     "sass": "sass --watch ./src/frontend/stylesheets/app.scss ./public/bundle/app.css --style compressed",
-    "format": "npx --node-options=\"--import tsx\" prettier --write .",
-    "check": "npx --node-options=\"--import tsx\" prettier --check .",
+    "format": "prettier --write .",
+    "check": "prettier --check .",
     "type-check": "tsgo -p . --pretty --noEmit",
     "lint": "eslint --ext ts --ext js",
     "prepare": "husky"

@@ -1,6 +1,6 @@
-import { Config } from "prettier"
+// import { Config } from "prettier"
 
-const config: Config = {
+const config = {
   arrowParens: "always",
   printWidth: Infinity,
   semi: false,

@@ -1,7 +1,7 @@
 # Rename ESLint Config to Test
 if test -f eslint.config.ts; then
-  echo "Renaming eslint.config.ts to eslint.config.mjs"
-  mv eslint.config.ts eslint.config.mjs
+    echo "Renaming eslint.config.ts to eslint.config.mjs"
+    mv eslint.config.ts eslint.config.mjs
 fi
 
 # Check ESLint
@@ -20,8 +20,14 @@ npm run type-check ||
 
 # Rename ESLint Config to Prod
 if test -f eslint.config.mjs; then
-  echo "Renaming eslint.config.mjs to eslint.config.ts"
-  mv eslint.config.mjs eslint.config.ts
+    echo "Renaming eslint.config.mjs to eslint.config.ts"
+    mv eslint.config.mjs eslint.config.ts
+fi
+
+# Rename Prettier Config to Test
+if test -f .prettierrc.ts; then
+    echo "Renaming .prettierrc.ts to .prettierrc.mjs"
+    mv .prettierrc.ts .prettierrc.mjs
 fi
 
 # Check Prettier
@@ -30,6 +36,12 @@ npm run check ||
     echo 'Prettier Check Failed. Run npm run format, add changes and try commit again';
     false;
 )
+
+# Rename Prettier Config to Test
+if test -f .prettierrc.mjs; then
+    echo "Renaming .prettierrc.mjs to .prettierrc.ts"
+    mv .prettierrc.mjs .prettierrc.ts
+fi
 
 # Check app build
 npm run init:build ||

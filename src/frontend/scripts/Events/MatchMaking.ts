@@ -438,15 +438,17 @@ export default class MatchMaking implements IPMC {
       db.pmx = new MiniGame.default({ game: this.game, job: db.job, peers, socket })
       const STYLE_PATH = `/bundle/${this.mission.id}/main.css`
       const cssId = "css" + this.mission.id
+
       if (!document.getElementById(cssId)) {
-        const head = document.getElementsByTagName("head")[0]
-        const link = kel("link")
-        link.id = cssId
-        link.rel = "stylesheet"
-        link.type = "text/css"
-        link.href = STYLE_PATH
-        link.media = "all"
-        head.appendChild(link)
+        const cssContent = await fetch(STYLE_PATH)
+          .then((res) => res.text())
+          .then((res) => res)
+
+        const minigameStyle = kel("style")
+        minigameStyle.id = cssId
+        minigameStyle.textContent = cssContent
+
+        document.head.appendChild(minigameStyle)
       }
     }
 
