@@ -1,25 +1,10 @@
 # KULON
 
 - Live Demo: [Kulon](https://kulon.devanka.id/)
-- Tools: [Kulon Map Editor](https://kulon.devanka.id/editor)
-
-## INSTALASI
-### Via Fork/Clone
-Install semua dependencies pake **NPM**
-```shell
-npm install
-```
-### Via Download
-1. Extract dan masuk ke folder `kulon-main`
-2. Buka terminal dan arahkan ke folder `kulon-main`
-3. Instal semua dependencies pake **NPM**
-```shell
-npm install
-```
 
 ## INITIAL ASSETS
 Ukuran asset gambar dan audio terlalu besar, bisa download manual lewat link eksternal berikut:
-- Download [VIa Google Drive](https://drive.google.com/file/d/1MQnNpsrXLIvR9aspebHmfFhX91DwV2fy/view?usp=sharing)
+- Download [Via Google Drive](https://drive.google.com/file/d/1MQnNpsrXLIvR9aspebHmfFhX91DwV2fy/view?usp=sharing)
 
 Extract folder `assets`, `audio`, dan `images` dari yang sudah didownload tersebut ke folder `./public`
 #### Visual struktur folder asset:
