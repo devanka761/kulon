@@ -178,11 +178,11 @@ export default class Prepare implements IPMC {
     const prologue = new Prologue({
       onComplete: this.onComplete,
       game: this.game,
-      mission: this.mission
+      mission: this.mission,
+      startTime: this.startTime
     })
     audio.emit({ action: "play", type: "bgm", src: "mission_completed_bgm", options: { fadeIn: 1000, fadeOut: 1000, volume: 1 } })
     audio.emit({ action: "play", type: "ui", src: "act_done", options: { id: "act_done" } })
-    if (db.pmx) db.pmx.init(this.startTime)
     this.destroy(prologue)
   }
   private resumeMap(): void {

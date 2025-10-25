@@ -20,6 +20,7 @@ interface IPrologueConfig extends IPMCConfig {
   onComplete: () => void
   mission: IMissionList
   game: Game
+  startTime?: number
 }
 
 export default class Prologue implements IPMC {
@@ -28,6 +29,7 @@ export default class Prologue implements IPMC {
   onComplete: () => void
   private mission: IMissionList
   private game: Game
+  private startTime?: number
 
   private skipped: string[] = []
   private isAborted: ISival = null
@@ -47,6 +49,7 @@ export default class Prologue implements IPMC {
     this.onComplete = config.onComplete
     this.mission = config.mission
     this.game = config.game
+    this.startTime = config.startTime
   }
   private createElement(): void {
     this.el = kel("div", "Prologue")
@@ -78,14 +81,14 @@ export default class Prologue implements IPMC {
     const subs = this.mission.memory
 
     for (let i = 0; i < subs.length; i++) {
-      const p = kel("p")
+      const p = kel("div", "text")
       p.innerHTML = subs[i].text[LocalList.lang!]
       this.sub.append(p)
-      await waittime(50)
+      await waittime(100)
 
       // @ts-expect-error no default types
-      p.scrollIntoView({ behavior: "smooth", block: "end", container: "nearest" })
-      await waittime(1000)
+      p.scrollIntoView({ behavior: "smooth", block: "center", container: "nearest" })
+      await waittime(750)
     }
   }
   updateSkipped(userId: string): void {
@@ -123,7 +126,10 @@ export default class Prologue implements IPMC {
     const total = db.job?.players?.length || 69
     const text = `${amount}/${total}`
     this.desc.innerHTML = lang.PG_SKIPPED.replace("{player}", text)
-    if (amount >= total) this.drop()
+    if (amount >= total) {
+      if (db.pmx && this.startTime) db.pmx.init(Date.now())
+      this.drop()
+    }
   }
 
   private async setTitle(): Promise<void> {

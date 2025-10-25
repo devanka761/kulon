@@ -281,6 +281,9 @@ export default class Jobs implements IPMC {
     document.removeEventListener("keydown", this.listNavHandler!)
     this.boxInvite = []
     await waittime()
+    this.enter?.unbind()
+    this.del?.unbind()
+    this.esc?.unbind()
     this.el.remove()
     this.isLocked = false
     if (!next) return this.onComplete()

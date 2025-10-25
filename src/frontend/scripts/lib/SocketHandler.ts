@@ -110,19 +110,19 @@ class SocketHandler {
     }
   }
   jobInvite(data: ISival): void {
-    db.invites.add({ job: data.job, user: data.user })
-
-    if (db.pmc?.id === "jobs") {
-      const pmc = db.pmc as Jobs
-      pmc.updateList()
-    }
-
     if (!LocalList["job_invite_notification_disabled"] && !db.invites.exists(data.user.id)) {
       notip({
         a: data.user.username,
         b: lang.NP_JOBINV_DESC,
         ic: "briefcase"
       })
+    }
+
+    db.invites.add({ job: data.job, user: data.user })
+
+    if (db.pmc?.id === "jobs") {
+      const pmc = db.pmc as Jobs
+      pmc.updateList()
     }
   }
   jobJoin(data: ISival): void {

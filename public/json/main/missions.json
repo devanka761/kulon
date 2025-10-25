@@ -184,6 +184,43 @@
       "id": "Lomba mencari telur dengan jumlah terbanyak dialah pemenangnya!",
       "en": "Find eggs as many as you can and be the winner!"
     },
+    "memory": [
+      {
+        "ts": 1000,
+        "text": {
+          "id": "Beberapa pemuda tidak sengaja menemukan papan permainan ajaib.",
+          "en": "A group of young people accidentally discovered a magical game board."
+        }
+      },
+      {
+        "ts": 1000,
+        "text": {
+          "id": "Dengan penasaran, mereka mencoba membuka papan tersebut.",
+          "en": "Driven by curiosity, they decided to open the board."
+        }
+      },
+      {
+        "ts": 1000,
+        "text": {
+          "id": "Secara ajaib, raga mereka berpindah dimensi dan masuk ke dalam permainan tersebut.",
+          "en": "Magically, their bodies were transported to another dimension into the game itself."
+        }
+      },
+      {
+        "ts": 1000,
+        "text": {
+          "id": "Terdengar suara dari langit bahwa mereka harus menyelesaikan permainan tersebut untuk keluar dengan cara menemukan 12 telur yang tersebar di area tersebut.",
+          "en": "A voice echoed from the sky, telling them they must finish the game to return home by finding 12 eggs scattered across the land."
+        }
+      },
+      {
+        "ts": 1000,
+        "text": {
+          "id": "Dan dimulailah...",
+          "en": "And so it begins..."
+        }
+      }
+    ],
     "mode": 2,
     "group": 2,
     "min": 2,
