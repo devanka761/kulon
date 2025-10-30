@@ -1,0 +1,162 @@
+@keyframes popup_in {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  80% {
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes popup_out {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+}
+
+@keyframes slide_left_in {
+  0% {
+    opacity: 0;
+    transform: translateX(50%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes slide_left_out {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(50%);
+  }
+}
+@keyframes slide_right_in {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes slide_right_out {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%);
+  }
+}
+@keyframes slide_up_in {
+  0% {
+    opacity: 0;
+    transform: translateY(50%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slide_up_out {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(50%);
+  }
+}
+@keyframes slide_down_in {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slide_down_out {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes fade_in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fade_out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes flip_right {
+  0% {
+    opacity: 0;
+  }
+  49% {
+    opacity: 0;
+    transform: rotateZ(45deg) rotateY(90deg) scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: rotateZ(45deg) rotateY(90deg) scale(0.8);
+  }
+  100% {
+    transform: rotateZ(0deg) rotateY(0deg) scale(1);
+  }
+}
+
+@keyframes canvas_completed {
+  0% {
+    transform: scale(1) translateX(0) translateY(0);
+  }
+  50% {
+    transform: scale(1) translateX(0) translateY(0);
+  }
+  100% {
+    transform: scale(1.5) translateX(0) translateY(0);
+  }
+}
+
+@keyframes fix_screen {
+  0% {
+    transform: scale(1.2) translateX(16px * (10)) translateY(16px * (4));
+  }
+  60% {
+    transform: scale(2) translateX(16px * (9)) translateY(16px * (-2));
+  }
+  100% {
+    transform: scale(1) translateX(0) translateY(0);
+  }
+}

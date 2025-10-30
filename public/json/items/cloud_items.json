@@ -1,0 +1,194 @@
+[
+  {
+    "id": "null",
+    "name": {
+      "id": "Pilih item untuk dibaca",
+      "en": "Choose item to read"
+    },
+    "desc": {
+      "id": "Deskripsi item akan ditampilkan di sini",
+      "en": "Item description will be displayed here"
+    },
+    "src": "null",
+    "group": "0"
+  }, {
+    "id": "69",
+    "name": {
+      "id": "Perisma",
+      "en": "Perisma"
+    },
+    "desc": {
+      "id": "Mungkin bisa digunakan untuk sesuatu?",
+      "en": "Can be used for something? Maybe.."
+    },
+    "src": "perismato",
+    "group": "1"
+  }, {
+    "id": "420",
+    "name": {
+      "id": "Token",
+      "en": "Token"
+    },
+    "desc": {
+      "id": "Mata uang lokal untuk pembayaran umum",
+      "en": "Local currency for general payments"
+    },
+    "src": "token",
+    "group": "1"
+  }, {
+    "id": "CL00001",
+    "name": {
+      "id": "Kartu Nama",
+      "en": "Name Card"
+    },
+    "desc": {
+      "id": "Ganti username itu gampang banget loh",
+      "en": "Updating username has never been easier"
+    },
+    "src": "card_username",
+    "run": "changeName",
+    "tempable": true,
+    "group": "1"
+  }, {
+    "id": "CL00002",
+    "name": {
+      "id": "Kartu Pakaian",
+      "en": "Clothing Card"
+    },
+    "desc": {
+      "id": "Perbarui penampilan kamu biar jadi tambah oke",
+      "en": "Update your appearance to make it even better"
+    },
+    "src": "card_clothing",
+    "run": "appearance",
+    "tempable": true,
+    "group": "1"
+  }, {
+    "id": "CL00003",
+    "name": {
+      "id": "Tiket Perjalanan",
+      "en": "Story Mode Tikcet"
+    },
+    "desc": {
+      "id": "Bisa dipake buat jadi host pada job \"Story Mode\"",
+      "en": "Become a host in \"Story Mode\" and start the journey"
+    },
+    "src": "ticket_story",
+    "tempable": true,
+    "group": "1"
+  }, {
+    "id": "CL00004",
+    "name": {
+      "id": "Tiket Minigame",
+      "en": "Minigame Ticket"
+    },
+    "desc": {
+      "id": "Bisa dipake buat jadi host pada job \"Minigame\"",
+      "en": "Host a \"Minigame\" and gather Kulons"
+    },
+    "src": "ticket_minigame",
+    "tempable": true,
+    "group": "1"
+  }, {
+    "id": "CL10003",
+    "name": {
+      "id": "Buku Perjalanan",
+      "en": "The Book of Story Mode"
+    },
+    "desc": {
+      "id": "Dapat ditukarkan menjadi 2 \"Tiket Perjalanan\"",
+      "en": "Convert to get 2 of \"Story Mode Ticket\""
+    },
+    "src": "book_story",
+    "run": "exchange",
+    "tempable": true,
+    "group": "1"
+  }, {
+    "id": "CL10004",
+    "name": {
+      "id": "Buku Minigame",
+      "en": "The Book of Minigames"
+    },
+    "desc": {
+      "id": "Dapat ditukarkan menjadi 2 \"Tiket Minigame\"",
+      "en": "Convert to get 2 of \"Minigame Ticket\""
+    },
+    "run": "exchange",
+    "src": "book_minigame",
+    "tempable": true,
+    "group": "1"
+  }, {
+    "id": "J00001",
+    "name": {
+      "id": "Gunting Besi",
+      "en": "Big Scissors"
+    },
+    "desc": {
+      "id": "Mungkin bisa untuk memotong sesuatu? Kabel misalnya...",
+      "en": "Maybe it could be used to cut something... like a cable, perhaps"
+    },
+    "src": "big_scissor",
+    "group": "0"
+  }, {
+    "id": "J00002",
+    "name": {
+      "id": "Potongan Kabel",
+      "en": "Cable"
+    },
+    "desc": {
+      "id": "Tadinya mau kugunain buat benerin sesuatu",
+      "en": "I was going to use it for repairs"
+    },
+    "src": "cable",
+    "group": "0"
+  }, {
+    "id": "J00003",
+    "name": {
+      "id": "Aki Mobil",
+      "en": "Car Batery"
+    },
+    "desc": {
+      "id": "Aki Mobil..",
+      "en": "A Car Batery.."
+    },
+    "src": "car_batery",
+    "group": "0"
+  }, {
+    "id": "J00004",
+    "name": {
+      "id": "Kue Keras Berjamur",
+      "en": "Stale Moldy Cake"
+    },
+    "desc": {
+      "id": "Bisa dipake buat niruin sidik jari",
+      "en": "It can be used to lift fingerprints"
+    },
+    "src": "cookies",
+    "group": "0"
+  }, {
+    "id": "J00005",
+    "name": {
+      "id": "Kunci Pintu Toko Es Krim",
+      "en": "Ice Cream Shop Door Key"
+    },
+    "desc": {
+      "id": "Buat masuk ke dalam toko es krim",
+      "en": "Unlock and enter the ice cream shop"
+    },
+    "src": "ice_key",
+    "group": "0"
+  }, {
+    "id": "J00006",
+    "name": {
+      "id": "Catatan #69",
+      "en": "Note #69"
+    },
+    "desc": {
+      "id": "Ada hal penting yang perlu diketahui?",
+      "en": "Is there something important I missed?"
+    },
+    "run": "readnote",
+    "src": "paper",
+    "group": "0"
+  }
+]

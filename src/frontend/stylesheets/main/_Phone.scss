@@ -1,0 +1,244 @@
+@use "../variables" as v;
+@use "../cursor" as c;
+
+.Phone {
+  z-index: 20;
+  position: absolute;
+  bottom: v.$bigPadding;
+  right: v.$bigPadding;
+  height: calc(100% - (v.$bigPadding * 2));
+  max-height: 600px;
+  border-radius: 20px;
+  box-shadow: 0 0 10px v.$black;
+  overflow: hidden;
+  animation: slide_left_in 0.3s;
+  background-color: v.$px1;
+  border: 4px solid v.$pm1;
+  box-shadow:
+    0 0 0 4px v.$px1,
+    0 8px 16px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 0;
+  .profile {
+    flex-shrink: 0;
+    width: clamp(300px, 80vh, 400px);
+    // height: 110px;
+    background-color: v.$pm2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: clamp(10px, 2vh, 30px);
+    padding: v.$bigPadding;
+    .detail {
+      flex-grow: 1;
+      display: flex;
+      justify-content: left;
+      align-items: center;
+      gap: 10px;
+      overflow: hidden;
+      .avatar {
+        flex-shrink: 0;
+        width: 70px;
+        height: 70px;
+        background-color: rgba($color: v.$softwhite, $alpha: 0.5);
+        border-radius: 50%;
+        .hero {
+          transform: scale(3.5);
+        }
+      }
+      .user {
+        flex-grow: 1;
+        overflow: hidden;
+        .username {
+          font-size: v.$dialogueSize;
+          color: v.$white;
+          overflow: hidden;
+          display: flex;
+          justify-content: left;
+          align-items: center;
+          gap: 3px;
+          .uname-text {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+          .btn-rename {
+            flex-shrink: 0;
+            font-size: v.$defaultSize;
+            cursor: c.$cursorPointer;
+          }
+        }
+        .userid {
+          margin-top: 5px;
+          font-size: calc(v.$defaultSize * 0.8);
+          color: v.$cgreen;
+          display: flex;
+          justify-content: start;
+          align-items: center;
+          gap: 5px;
+          font-family: v.$monofont;
+          .uid {
+            flex-grow: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+          .btn-copy {
+            flex-shrink: 0;
+            font-size: 1rem;
+            .keyinfo {
+              display: inline;
+            }
+          }
+        }
+      }
+    }
+    .phone-actions {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .btn-close {
+        font-size: calc(v.$defaultSize * 1.4);
+        color: v.$cred;
+      }
+    }
+  }
+  .apps {
+    width: clamp(300px, 80vh, 400px);
+    flex-grow: 1;
+    max-height: 100%;
+    min-height: 0;
+    // height: calc(100% - 110px);
+    background-color: v.$px1;
+    .list {
+      width: 100%;
+      max-height: 100%;
+      display: grid;
+      // grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: v.$bigPadding;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      padding: v.$bigPadding;
+      .btn {
+        display: block;
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+        border: 1px solid v.$sgray;
+        background-color: v.$px1;
+        padding: v.$mediumPadding v.$smallPadding;
+        border-radius: 5px;
+        color: v.$softwhite;
+        .ic {
+          font-size: calc(v.$defaultSize * 1.75);
+        }
+        .name {
+          word-break: break-all;
+          word-break: break-word;
+          hyphens: auto;
+          font-size: v.$defaultSize;
+        }
+        &.unread::after {
+          content: "";
+          width: 10px;
+          height: 10px;
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          border-radius: 50%;
+          background-color: v.$cred;
+        }
+        &:focus,
+        &.active {
+          background-color: v.$pm2;
+          color: v.$pm1;
+          border-color: v.$pm1;
+        }
+        &.b-custom {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 10px;
+          min-height: 80px;
+          .name {
+            font-size: calc(v.$defaultSize * 1.2);
+          }
+          &:focus,
+          &.active {
+            background: linear-gradient(120deg, v.$pm1, v.$white);
+            color: v.$px1;
+          }
+        }
+        &.b-shop-1 {
+          flex-direction: column;
+          grid-column: 1 / 2;
+          grid-row: 2 / 4;
+        }
+        &.b-shop-2 {
+          flex-direction: row;
+          grid-column: 2 / 4;
+          grid-row: 1 / 2;
+        }
+        &.b-trophies-1 {
+          grid-column: 2 / 4;
+        }
+        &.b-trophies-2 {
+          grid-column: 1 / 3;
+        }
+      }
+    }
+  }
+  &.out {
+    animation: slide_left_out 0.3s forwards;
+  }
+}
+
+.Pos {
+  position: absolute;
+  position: absolute;
+  top: v.$mediumPadding;
+  left: v.$mediumPadding;
+  animation: slide_right_in 0.3s;
+  &.out {
+    animation: slide_right_out 0.3s forwards;
+  }
+  .usr {
+    width: 100%;
+    font-size: v.$defaultSize;
+    margin-bottom: calc(v.$smallPadding + 4px);
+    background-color: v.$px1;
+    padding: v.$mediumPadding;
+    border: 2px solid v.$pm1;
+    box-shadow: 0 0 0 2px v.$px1;
+    border-radius: 10px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: v.$smallPadding;
+    &:last-child {
+      margin-bottom: 0;
+    }
+    .avatar {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      background-color: rgba($color: v.$softwhite, $alpha: 0.5);
+      border-radius: 50%;
+      .hero {
+        transform: scale(1.85);
+      }
+    }
+    .metadata {
+      flex-grow: 1;
+      p:last-child {
+        font-size: calc(v.$defaultSize * 0.8);
+        color: v.$pm1;
+      }
+    }
+  }
+}

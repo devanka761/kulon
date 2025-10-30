@@ -1,0 +1,104 @@
+@use "../variables" as v;
+@use "../other/animations";
+
+.nav {
+  z-index: 98;
+  position: fixed;
+  min-height: 0;
+  max-height: calc(100% - 40px);
+  top: 20px;
+  right: 20px;
+  background-color: rgba($color: v.$px1, $alpha: 0.5);
+  border-bottom: 1px solid v.$pm1;
+  border-left: 1px solid v.$pm1;
+  border-radius: 10px;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  animation: nav_in 0.5s;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: end;
+  overflow-y: auto;
+  scrollbar-color: v.$pm1 rgba(v.$px1, 0.5);
+  .btn-menu {
+    flex-shrink: 0;
+    padding: 10px 20px;
+    width: fit-content;
+    position: sticky;
+    top: 10px;
+    right: 10px;
+  }
+  .nav-list {
+    display: none;
+    padding: 10px;
+    a {
+      display: block;
+      text-align: left;
+      padding: 10px;
+      text-decoration: none;
+      font-size: 1.1em;
+      color: v.$softwhite;
+      border-left: 1px solid #00000000;
+      border-bottom: 1px solid #00000000;
+      border-radius: 10px;
+      transition: 0.2s;
+      &.br {
+        margin-top: 20px;
+      }
+      &:hover {
+        background-color: v.$px1;
+        border-color: v.$pm1;
+      }
+      &:active {
+        background-color: v.$pm1;
+        color: v.$px1;
+      }
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+  &.opened {
+    min-width: 200px;
+    min-height: 0;
+    .btn-menu {
+      border-radius: 10px;
+      border-bottom: 1px solid v.$pm1;
+      border-left: 1px solid v.$pm1;
+      &:active {
+        background-color: v.$pm1;
+      }
+      &:hover {
+        background-color: v.$px1;
+      }
+    }
+    .nav-list {
+      display: block;
+    }
+  }
+  &.out {
+    animation: nav_out 0.5s forwards;
+  }
+}
+
+@keyframes nav_in {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes nav_out {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}

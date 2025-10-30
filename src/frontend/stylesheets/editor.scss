@@ -1,0 +1,342 @@
+@use "./main";
+@use "./other/animations";
+@use "./lib/modal";
+@use "./variables" as v;
+@use "./cursor" as c;
+@use "./editor/newArea";
+
+html {
+  font-size: 16px;
+}
+
+.LandingEdit {
+  text-align: center;
+  a {
+    color: v.$pm1;
+  }
+}
+.MapChooser {
+  width: calc(100% - 40px);
+  max-width: 600px;
+  height: calc(100% - 40px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  .Map-Actions {
+    width: 100%;
+    height: 55px;
+    .btn {
+      border-radius: 10px;
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      background-color: v.$pm2;
+      &:hover {
+        color: v.$white;
+      }
+    }
+  }
+  .Map-Content {
+    width: 100%;
+    height: calc(100% - (55px + 20px));
+    border: 2px solid v.$pm2;
+    border-radius: 10px;
+    overflow: hidden;
+    .Map-About {
+      width: 100%;
+      height: 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      background-color: v.$pm2;
+      padding: 10px;
+      .Map-Meta {
+        flex-grow: 1;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: center;
+        .Map-Title {
+          font-size: 1.5em;
+          font-weight: 600;
+        }
+        .Map-Desc {
+          font-size: 0.9em;
+          a {
+            text-decoration: none;
+            color: v.$yellow;
+          }
+        }
+      }
+      .Map-Back {
+        .btn {
+          display: block;
+          padding: 10px;
+          border-radius: 10px;
+          background-color: v.$px1;
+          color: v.$yellow;
+          text-decoration: none;
+        }
+      }
+    }
+    .Map-List {
+      width: 100%;
+      height: calc(100% - 80px);
+      padding: 10px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      .card {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+        &:last-child {
+          margin-bottom: 0;
+        }
+        .card-title {
+          flex-grow: 1;
+          padding: 10px;
+          background-color: v.$black;
+          border: 1px solid v.$black;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 5px;
+          border-radius: 5px;
+          cursor: c.$cursorPointer;
+          &:hover {
+            border-color: v.$pm1;
+            color: v.$pm1;
+          }
+          i {
+            font-size: 0.9em;
+          }
+        }
+        .card-actions {
+          display: flex;
+          justify-content: right;
+          align-items: center;
+          gap: 10px;
+          .btn-delete {
+            color: v.$cred;
+          }
+        }
+      }
+    }
+  }
+}
+
+.Editor {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  .mode-outer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 55px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    background-color: v.$pm2;
+    .mode-title {
+      font-weight: 600;
+    }
+    .mode-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      .mode-files {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        .btn {
+          font-size: 0.9em;
+          padding: 3px 10px;
+          border-radius: 5px;
+          background-color: v.$px1;
+        }
+      }
+      .mode-list {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        .btn {
+          padding: 3px 5px;
+          border-radius: 5px;
+          font-size: 0.9em;
+          &.selected {
+            background-color: v.$pm1;
+            color: v.$px1;
+          }
+          &.btn-help {
+            font-size: 1.1em;
+          }
+        }
+      }
+    }
+  }
+  .map-outer {
+    position: absolute;
+    top: 55px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 55px);
+    .file-outer {
+      width: 250px;
+      height: 100%;
+      .areas-outer {
+        width: 100%;
+        height: calc(100% - 95px);
+        .areas-actions {
+          width: 100%;
+          height: 70px;
+          display: flex;
+          justify-content: left;
+          align-items: center;
+          overflow-x: auto;
+          .btn {
+            width: calc(100% / 6);
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            background-color: v.$px2;
+            &.btn-add {
+              color: v.$cgreen;
+            }
+            &.btn-remove {
+              color: v.$cred;
+            }
+            &.btn-finish {
+              color: v.$yellow;
+            }
+            &.btn-sz {
+              color: v.$yellow;
+            }
+            &:hover {
+              background-color: v.$pm2;
+            }
+          }
+        }
+        .areas-list {
+          width: 100%;
+          height: calc(100% - 70px);
+          overflow-x: hidden;
+          overflow-y: auto;
+          scrollbar-width: thin;
+          background-color: v.$px2;
+          ul {
+            list-style: none;
+            li {
+              padding: 10px;
+              word-break: break-all;
+              word-break: break-word;
+              hyphens: none;
+              cursor: c.$cursorPointer;
+              &.selected {
+                background-color: v.$pm1;
+                color: v.$px1;
+              }
+            }
+          }
+        }
+      }
+      .actions-outer {
+        width: 100%;
+        height: 95px;
+        .actions-list {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          .btn {
+            width: 100%;
+            height: calc(100% / 2);
+            padding: 10px;
+            font-weight: 600;
+            text-align: center;
+            &.btn-export {
+              background-color: v.$sgreen;
+              color: v.$white;
+            }
+            &.btn-close {
+              background-color: v.$px1;
+              color: v.$cred;
+            }
+          }
+        }
+      }
+    }
+    .tile-outer {
+      position: absolute;
+      top: 0;
+      left: 250px;
+      width: calc(100% - 250px);
+      height: 100%;
+      overflow-x: auto;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      .currmap {
+        width: fit-content;
+        height: fit-content;
+        transform: scale(2);
+        transform-origin: 0 0;
+        img {
+          display: block;
+          image-rendering: pixelated;
+        }
+        .tiles {
+          position: absolute;
+          top: 0;
+          left: 0;
+          display: grid;
+          grid-gap: 0px;
+          border-right: 1px solid v.$pm2;
+          border-bottom: 1px solid v.$pm2;
+          .tile {
+            border-top: 1px solid v.$pm2;
+            border-left: 1px solid v.$pm2;
+            width: 16px;
+            height: 16px;
+            &.b {
+              background-color: rgba($color: v.$yellow, $alpha: 0.5);
+              box-shadow: inset 0 0 3px v.$px1;
+            }
+            &.w {
+              background-color: rgba($color: v.$cred, $alpha: 0.5);
+              box-shadow: inset 0 0 3px v.$px1;
+            }
+            &.s {
+              background-color: rgba($color: v.$sgreen, $alpha: 0.5);
+              box-shadow: inset 0 0 3px v.$px1;
+            }
+            &.o {
+              background-color: rgba($color: v.$blurple, $alpha: 0.5);
+              box-shadow: inset 0 0 3px v.$px1;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "name": "kulon",
+  "version": "1.0.0-dvnkz.1",
+  "description": "Multiplayer 2D Pixel Survival Puzzle Game",
+  "main": "dist/backend/server.js",
+  "scripts": {
+    "start": "node dist/backend/server.js",
+    "dev": "nodemon src/backend/server.ts",
+    "build": "echo Updating Assets && tsx src/backend/updateAssets.ts && echo Bundling Frontend && npx --node-options=\"--import tsx\" webpack --disable-interpret --config webpack.prod.ts && echo Compiling Backend && rm -rf ./dist && tsc -p . --extendedDiagnostics && echo Done!",
+    "dev:build": "npx --node-options=\"--import tsx\" webpack --disable-interpret --config webpack.dev.ts",
+    "c:build": "echo Updating Assets && tsx src/backend/updateAssets.ts && npx --node-options=\"--import tsx\" webpack --disable-interpret --config webpack.test.ts",
+    "s:build": "rm -rf ./dist && tsgo -p . --extendedDiagnostics",
+    "init:build": "echo Updating Assets && tsx src/backend/updateAssets.ts && echo Testing Frontend && npx --node-options=\"--import tsx\" webpack --disable-interpret --config webpack.test.ts && echo Testing Backend && rm -rf ./dist && tsgo -p . --extendedDiagnostics",
+    "assets": "tsx src/backend/updateAssets.ts",
+    "sass": "sass --watch ./src/frontend/stylesheets/app.scss ./public/bundle/app.css --style compressed",
+    "format": "prettier --write .",
+    "check": "prettier --check .",
+    "type-check": "tsgo -p . --pretty --noEmit",
+    "lint": "eslint --ext ts --ext js",
+    "prepare": "husky",
+    "up:patch": "npm --no-git-tag-version version patch",
+    "up:minor": "npm --no-git-tag-version version minor",
+    "up:major": "npm --no-git-tag-version version major"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npx pretty-quick --staged ng lint ng test",
+      "pre-push": "ng build --aot true"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devanka761/kulon.git"
+  },
+  "keywords": [],
+  "author": "Devanka761 <contact@devanka.id> (https://devanka.id/)",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/devanka761/kulon/issues"
+  },
+  "homepage": "https://github.com/devanka761/kulon#readme",
+  "dependencies": {
+    "connect-mongo": "^5.1.0",
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "express-ws": "^5.0.2",
+    "mongoose": "^8.19.2",
+    "nodemailer": "^7.0.10",
+    "qrcode": "^1.5.4",
+    "webrtc-adapter": "^9.0.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.5",
+    "@babel/preset-env": "^7.28.5",
+    "@babel/preset-typescript": "^7.28.5",
+    "@eslint/js": "^9.38.0",
+    "@types/express": "^5.0.4",
+    "@types/express-session": "^1.18.2",
+    "@types/express-ws": "^3.0.6",
+    "@types/node": "^24.9.1",
+    "@types/nodemailer": "^7.0.3",
+    "@types/qrcode": "^1.5.6",
+    "@typescript/native-preview": "^7.0.0-dev.20251024.1",
+    "babel-loader": "^10.0.0",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^7.1.2",
+    "eslint": "^9.38.0",
+    "globals": "^16.4.0",
+    "html-webpack-plugin": "^5.6.4",
+    "husky": "^9.1.7",
+    "mini-css-extract-plugin": "^2.9.4",
+    "prettier": "^3.6.2",
+    "pretty-quick": "^4.2.2",
+    "raw-loader": "^4.0.2",
+    "sass": "^1.93.2",
+    "sass-loader": "^16.0.6",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.2",
+    "webpack": "^5.102.1",
+    "webpack-cli": "^6.0.1"
+  }
+}

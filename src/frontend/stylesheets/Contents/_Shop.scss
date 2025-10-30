@@ -1,0 +1,234 @@
+@use "../variables" as v;
+@use "../cursor" as c;
+
+.f-shop {
+  .box {
+    max-width: 1000px;
+    .con {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: v.$bigPadding;
+      min-height: 0;
+      .con-list {
+        flex-shrink: 0;
+        border-radius: 10px;
+        background-color: v.$px1;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        height: 100%;
+        border: 4px solid v.$pm1;
+        box-shadow:
+          0 0 0 4px v.$px1,
+          0 8px 16px rgba(0, 0, 0, 0.5);
+        .card-help {
+          line-height: 1.2;
+          text-align: center;
+          padding: v.$bigPadding v.$mediumPadding;
+          color: v.$softwhite;
+          .keyinfo {
+            display: inline;
+          }
+        }
+        .card {
+          background-color: v.$px1;
+          color: v.$softwhite;
+          display: block;
+          padding: v.$mediumPadding v.$bigPadding;
+          width: 100%;
+          cursor: c.$cursorPointer;
+          &.selected {
+            background-color: v.$pm1;
+            color: v.$px1;
+          }
+        }
+      }
+      .board {
+        flex-grow: 1;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 0;
+        height: 100%;
+        gap: v.$bigPadding;
+        .economies {
+          flex-shrink: 0;
+          width: 100%;
+          display: flex;
+          justify-content: right;
+          align-items: center;
+          gap: v.$bigPadding;
+          .eco {
+            font-size: calc(v.$defaultSize * 0.7);
+            flex-shrink: 0;
+            background-color: v.$px1;
+            padding: v.$mediumPadding;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3px;
+            border: 2px solid v.$pm1;
+            box-shadow:
+              0 0 0 4px v.$px1,
+              0 4px 8px rgba(0, 0, 0, 0.5);
+            font-family: v.$monofont;
+            img {
+              image-rendering: pixelated;
+              width: 20px;
+            }
+            i {
+              font-style: normal;
+            }
+          }
+        }
+        .item-container {
+          flex-grow: 1;
+          width: 100%;
+          background-color: v.$px1;
+          border-radius: 10px;
+          border: 4px solid v.$pm1;
+          box-shadow:
+            0 0 0 4px v.$px1,
+            0 8px 16px rgba(0, 0, 0, 0.5);
+          overflow-y: auto;
+          scrollbar-width: thin;
+          min-height: 0;
+          max-height: 100%;
+          .item-list {
+            width: 100%;
+            min-height: 0;
+            padding: v.$bigPadding;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(clamp(80px, 20vh, 150px), 1fr));
+            gap: v.$bigPadding;
+            .card {
+              position: relative;
+              background-color: v.$px2;
+              border-radius: 5px;
+              cursor: c.$cursorPointer;
+              overflow: hidden;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-direction: column;
+              min-height: 0;
+              height: 100%;
+              .expire::after {
+                content: "\f017";
+                font-family: "Font Awesome 7 Pro";
+                font-weight: 400;
+                position: absolute;
+                top: 5px;
+                left: 5px;
+                font-size: 0.7rem;
+              }
+              .amount {
+                flex-shrink: 0;
+                width: 100%;
+                padding: 2px 0;
+                font-family: v.$monofont;
+                text-align: center;
+                background-color: v.$pm2;
+                font-size: calc(v.$defaultSize * 0.7);
+              }
+              .icon {
+                min-height: 0;
+                height: 100%;
+                flex-grow: 1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: v.$smallPadding;
+                img {
+                  image-rendering: pixelated;
+                  display: block;
+                  width: clamp(35px, 10vh, 65px);
+                }
+              }
+              .price {
+                flex-shrink: 0;
+                width: 100%;
+                padding: 2px;
+                text-align: center;
+                background-color: v.$pm2;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-family: v.$monofont;
+                font-size: calc(v.$defaultSize * 0.7);
+                gap: 2px;
+                img {
+                  padding: 0;
+                  display: block;
+                  width: clamp(16px, 4vh, 20px);
+                }
+              }
+              &.selected {
+                background-color: v.$pm2;
+                box-shadow: 0 0 0 1px rgba($color: v.$pm1, $alpha: 0.5);
+                .amount,
+                .price {
+                  background-color: v.$pm1;
+                  color: v.$px1;
+                }
+              }
+            }
+          }
+        }
+        .detail {
+          flex-shrink: 0;
+          width: 100%;
+          background-color: v.$px1;
+          padding: v.$mediumPadding;
+          border-radius: 10px;
+          border: 4px solid v.$pm1;
+          box-shadow:
+            0 0 0 4px v.$px1,
+            0 8px 16px rgba(0, 0, 0, 0.5);
+          overflow: hidden;
+          .field {
+            width: 100%;
+            height: 100%;
+            .card-help {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              gap: v.$smallPadding;
+              padding: v.$bigPadding;
+            }
+            .item-name {
+              font-size: v.$dialogueSize;
+            }
+            .item-desc {
+              text-align: justify;
+              text-align-last: left;
+            }
+            .item-note {
+              color: v.$syellow;
+              font-style: italic;
+              margin-top: v.$mediumPadding;
+            }
+            .item-actions {
+              margin-top: v.$mediumPadding;
+              display: flex;
+              justify-content: right;
+              align-items: end;
+              gap: v.$smallPadding;
+              .btn {
+                padding: v.$smallPadding v.$mediumPadding;
+                border-radius: 5px;
+                &.btn-buy {
+                  background-color: v.$pm1;
+                  color: v.$px1;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

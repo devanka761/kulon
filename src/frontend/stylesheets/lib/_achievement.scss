@@ -1,0 +1,182 @@
+@use "../variables" as v;
+
+.achievement-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.achievement-notification {
+  background: linear-gradient(135deg, #8e62a3 0%, v.$pm2 100%);
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  opacity: 0;
+  pointer-events: auto;
+  width: fit-content;
+  max-width: calc(100% - 40px);
+  transform: translateY(-100vh) scale(0.8);
+}
+
+.achievement-notification.show {
+  animation: fallAndZoom 7s ease forwards;
+}
+
+@keyframes fallAndZoom {
+  0% {
+    transform: translateY(-100vh) scale(0.8);
+    opacity: 0;
+  }
+  3% {
+    transform: translateY(-30vh) scale(0.8);
+    opacity: 0.5;
+  }
+  8% {
+    transform: translateY(0) scale(1.2);
+    opacity: 1;
+  }
+  20% {
+    transform: translateY(0) scale(1.2);
+  }
+  80% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(0.5);
+    opacity: 0;
+  }
+}
+
+.achievement-icon {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(45deg, v.$pm2 0%, v.$pm1 100%);
+  box-shadow: 0 0 20px rgba(v.$pm1, 0.5);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.achievement-icon::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  transform: translateX(100%) translateY(100%) rotate(45deg);
+  animation: shine 2s forwards 1.2s;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+.achievement-icon i {
+  color: v.$white;
+  font-size: 32px;
+  z-index: 1;
+}
+
+.achievement-content {
+  flex: 1;
+  text-align: left;
+}
+
+.achievement-title {
+  font-weight: 600;
+  color: v.$white;
+  margin-bottom: 5px;
+  font-size: v.$dialogueSize;
+}
+
+.achievement-description {
+  color: v.$white;
+  font-size: v.$defaultSize;
+}
+
+.particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.achievement-notification.show .particle {
+  animation: particleFloat 3s ease-out 0.3s forwards;
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) translateX(var(--x-offset));
+    opacity: 0;
+  }
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  opacity: 0;
+}
+
+.achievement-notification.show .confetti {
+  animation: confettiFall 3s ease-out 0.3s forwards;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(-20px) rotate(0deg);
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100px) rotate(720deg);
+    opacity: 0;
+  }
+}

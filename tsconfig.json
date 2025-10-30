@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "removeComments": true
+  },
+  "include": ["src/backend/**/*"],
+  "exclude": ["node_modules/*", "dist/**/*", "public/**/*", "src/backend/updateAssets.ts", "src/backend/danger/**/*", "webpack*"]
+}

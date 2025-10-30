@@ -1,0 +1,128 @@
+@use "../variables" as v;
+
+.Chat {
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  &.hide {
+    visibility: hidden;
+  }
+  &:not(:has(.hide)) {
+    z-index: 30;
+  }
+  .box {
+    width: 100%;
+    max-width: 600px;
+    height: 100%;
+    padding: 30px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    gap: 15px;
+    min-height: 0;
+    &:not(:has(.hide)) {
+      .content {
+        .list {
+          padding: 10px;
+          background-color: v.$px2;
+          overflow-y: auto;
+          scrollbar-width: thin;
+          border: 4px solid v.$pm1;
+          box-shadow:
+            0 0 0 4px v.$px2,
+            0 8px 16px rgba(0, 0, 0, 0.5);
+          border-radius: 10px;
+          .cht:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+    .chat-form {
+      flex-shrink: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: v.$px2;
+      border: 4px solid v.$pm1;
+      box-shadow:
+        0 0 0 4px v.$px2,
+        0 8px 16px rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+      overflow: hidden;
+      &.hide {
+        visibility: hidden;
+      }
+      .btn {
+        flex-shrink: 0;
+        padding: 10px;
+        text-align: center;
+        background-color: #00000000;
+        color: white;
+        display: block;
+        font-family: v.$systemfont;
+        &.btn-chat-send {
+          color: v.$cgreen;
+        }
+        &.btn-chat-cancel {
+          color: v.$cred;
+        }
+      }
+      input {
+        font-family: v.$systemfont;
+        display: block;
+        flex-grow: 1;
+        padding: 10px 0;
+        background-color: #00000000;
+        color: v.$white;
+        letter-spacing: 1px;
+      }
+    }
+    .content {
+      flex-grow: 1;
+      position: relative;
+      width: 100%;
+      height: calc(100% - 100px);
+      min-height: 0;
+      .list {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        max-height: 100%;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        scroll-behavior: smooth;
+        .cht {
+          display: block;
+          line-height: 1.5;
+          margin-bottom: 5px;
+          word-break: break-all;
+          word-break: break-word;
+          hyphens: none;
+          font-family: v.$systemfont;
+          font-weight: 600;
+          color: v.$white;
+          i {
+            font-style: normal;
+            text-shadow: v.$textoutline;
+          }
+          .uname {
+            margin-right: 5px;
+            color: v.$pm1;
+          }
+          .y {
+            color: v.$yellow;
+          }
+        }
+      }
+    }
+  }
+}

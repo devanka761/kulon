@@ -1,0 +1,51 @@
+@use "./variables" as v;
+@use "./main";
+
+.Xoxo {
+  position: absolute;
+  top: v.$bigPadding;
+  right: v.$bigPadding;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end;
+  gap: v.$bigPadding;
+  .player {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: center;
+    gap: v.$smallPadding;
+    transition: all 0.3s;
+    .time {
+      text-shadow: v.$textoutline;
+    }
+    .name {
+      display: block;
+      width: fit-content;
+      background-color: rgba(v.$px1, 0.7);
+      padding: v.$smallPadding;
+      border: 1px solid v.$pm1;
+      box-shadow: 0 0 0 2px v.$px1;
+      border-radius: 10px;
+    }
+    &.active {
+      transform: scale(1.2) translateX(calc((v.$bigPadding * 0.8) * -1));
+      background: linear-gradient(135deg, v.$pm1, v.$pm1, v.$white);
+      color: v.$px1;
+      padding: v.$smallPadding;
+      border-radius: 10px;
+      .time {
+        text-shadow: none;
+      }
+      .name {
+        padding: 0;
+        color: v.$px1;
+        background-color: #00000000;
+        border: none;
+        box-shadow: none;
+      }
+    }
+  }
+}

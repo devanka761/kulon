@@ -1,0 +1,343 @@
+@use "../variables" as v;
+@use "../cursor" as c;
+
+.FingClo {
+  z-index: 20;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  .conn {
+    width: 100%;
+    height: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    .top {
+      flex-grow: 1;
+      max-height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      min-height: 0;
+      .left,
+      .right {
+        background-color: v.$px1;
+        width: calc(100% / 2);
+        height: 100%;
+        border: 1px solid #2bab4e;
+        overflow: hidden;
+        .desc {
+          width: 100%;
+          max-height: 45px;
+          padding: 10px;
+          text-align: center;
+          border-bottom: 1px solid #2bab4e;
+          color: v.$white;
+          text-transform: uppercase;
+        }
+        .content {
+          width: 100%;
+          height: calc(100% - 45px);
+        }
+      }
+      .left {
+        .content {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 20px;
+          img {
+            max-width: 100%;
+            max-height: 100%;
+          }
+        }
+      }
+      .right {
+        .content {
+          padding: 0;
+          width: 100%;
+          height: calc(100% - 45px);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .box {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            width: 100%;
+            height: fit-content;
+            gap: 5px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            .imgcover {
+              position: relative;
+              border: 1px solid #2bab4e;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin: auto;
+              background-size: cover;
+              background-repeat: no-repeat;
+              background-position-x: 0;
+              .arrow {
+                width: calc(100% / 2);
+                height: 100%;
+                display: flex;
+                align-items: center;
+                cursor: c.$cursorPointer;
+                i {
+                  visibility: hidden;
+                }
+              }
+              &.selected {
+                border-color: v.$white;
+                .arrow {
+                  i {
+                    visibility: visible;
+                  }
+                  &.aleft {
+                    background: linear-gradient(270deg, #00000000, rgba($color: v.$px1, $alpha: 0.7), v.$px1);
+                    justify-content: left;
+                    padding-left: 10px;
+                  }
+                  &.aright {
+                    background: linear-gradient(90deg, #00000000, rgba($color: v.$px1, $alpha: 0.7), v.$px1);
+                    justify-content: right;
+                    padding-right: 10px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .bottom {
+      flex-shrink: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      .left {
+        flex-grow: 1;
+        height: 100%;
+        background-color: v.$px1;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        .title {
+          color: v.$white;
+          flex-shrink: 0;
+          text-transform: uppercase;
+          border-right: 1px solid #2bab4e;
+          height: 100%;
+          padding: 10px 20px;
+        }
+        .step {
+          flex-grow: 1;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 30px;
+          .sq {
+            border-radius: 50%;
+            width: 8px;
+            height: 8px;
+            outline: 1px solid #2bab4e;
+            outline-offset: 5px;
+          }
+          .sq.done {
+            background-color: #2bab4e;
+          }
+        }
+      }
+      .right {
+        flex-shrink: 0;
+        height: 100%;
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        gap: 10px;
+        .btn-abort,
+        .btn-help {
+          padding: 10px 20px;
+          height: 100%;
+          text-align: center;
+          background-color: v.$px1;
+          color: v.$white;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: c.$cursorPointer;
+          gap: 5px;
+        }
+        .btn-abort {
+          color: v.$cred;
+          &:active {
+            background-color: v.$sred;
+            color: v.$white;
+          }
+        }
+      }
+    }
+  }
+  .fingscan {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba($color: v.$px1, $alpha: 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .content {
+      background-color: v.$px2;
+      position: relative;
+      width: calc(100% - 40px);
+      height: calc(100% - 40px);
+      max-width: 400px;
+      max-height: 500px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: inset 0 0 10px 5px #00ffff;
+      animation: fade_in 0.5s;
+      .box {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform: scale(5);
+        .connection {
+          position: absolute;
+          width: 50px;
+          height: 50px;
+          border-radius: 150px;
+          border: 5px solid transparent;
+          border-top: 5px solid #444444;
+          animation: wifi 1s linear infinite;
+        }
+        .connection:nth-child(1) {
+          animation-delay: 0.6s;
+        }
+        .connection:nth-child(2) {
+          border-width: 6px;
+          width: 38px;
+          height: 38px;
+          animation-delay: 0.4s;
+        }
+        .connection:nth-child(3) {
+          width: 24px;
+          height: 24px;
+          animation-delay: 0.2s;
+        }
+        .connection:nth-child(4) {
+          width: 12px;
+          height: 12px;
+        }
+      }
+      .box.correct {
+        .connection {
+          border-top-color: #00ffff;
+          animation: none;
+          animation: unset;
+        }
+      }
+      .desc {
+        font-size: 2em;
+        font-weight: bold;
+      }
+      .desc.cyan {
+        color: #00ffff;
+      }
+    }
+  }
+  .fingscan.true {
+    .content {
+      background-color: #00ffff;
+      color: v.$px1;
+    }
+  }
+  .fingscan.false {
+    .content {
+      background-color: #f76767;
+      color: v.$px1;
+      box-shadow: inset 0 0 10px 5px #f76767;
+    }
+  }
+  .fingscan.out {
+    .content {
+      animation: fade_out 0.5s forwards;
+    }
+  }
+  .tutor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba($color: v.$px1, $alpha: 0.7);
+    .box {
+      width: calc(100% - 40px);
+      max-width: 500px;
+      background-color: v.$px2;
+      border: 1px solid v.$yellow;
+      padding: 20px;
+      border-radius: 10px;
+      animation: popup_in 0.5s;
+      .title {
+        text-align: center;
+        font-size: 1.2em;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      ul,
+      ol {
+        margin-bottom: 10px;
+        margin-left: 1em;
+      }
+      .btn {
+        width: 100%;
+        padding: 10px;
+        background-color: v.$sgreen;
+        text-align: center;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: c.$cursorPointer;
+      }
+    }
+  }
+  .tutor.out {
+    .box {
+      animation: popup_out 0.5s forwards;
+    }
+  }
+}
+
+@keyframes wifi {
+  70%,
+  100% {
+    border-top-color: #444444;
+  }
+  0%,
+  40% {
+    border-top-color: #aaaaaa;
+  }
+}

@@ -1,0 +1,167 @@
+@use "../variables" as v;
+
+.f-paper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .box {
+    position: relative;
+    width: calc(100% - (v.$bigPadding));
+    max-width: 800px;
+    height: calc(100% - (v.$bigPadding));
+    background: linear-gradient(to right, #dadada 0%, #e8e6e3 10%, #e8e6e3 90%, #dadada 100%);
+    border-radius: 3px;
+    box-shadow:
+      0 20px 60px rgba(0, 0, 0, 0.3),
+      0 0 100px rgba(0, 0, 0, 0.1) inset,
+      0 0 3px rgba(0, 0, 0, 0.1);
+    padding: calc(v.$bigPadding) calc((v.$bigPadding * 2) + v.$mediumPadding);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: v.$bigPadding;
+    animation: slide_up_in 0.5s;
+    &::after {
+      content: "";
+      position: absolute;
+      left: calc(v.$bigPadding * 2);
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent 0%, #ff000033 10%, #ff000033 90%, transparent 100%);
+    }
+    .actions {
+      flex-shrink: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: v.$smallPadding;
+      .act {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: v.$smallPadding;
+        &.act-1 {
+          i {
+            color: #555;
+          }
+        }
+        .keyinfo {
+          color: v.$softwhite;
+        }
+        .btn-close {
+          font-size: calc(v.$dialogueSize * 1.4);
+          color: v.$pm2;
+        }
+      }
+    }
+    .content {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 0 v.$bigPadding;
+      position: relative;
+      scroll-behavior: smooth;
+      scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.05);
+      .page {
+        display: none;
+        animation: paper_in 0.5s forwards;
+        &.active {
+          display: block;
+        }
+        h2 {
+          color: #2c3e50;
+          font-size: v.$dialogueSize;
+          margin-bottom: 20px;
+          font-weight: 300;
+          border-bottom: 2px solid #d0d0d0;
+          padding-bottom: 10px;
+        }
+
+        p {
+          color: #444;
+          line-height: 1.8;
+          margin-bottom: v.$bigPadding;
+          text-align: justify;
+          text-align-last: left;
+          span {
+            border-top-right-radius: v.$mediumPadding;
+            border-bottom-right-radius: v.$bigPadding;
+            padding: 0 v.$smallPadding;
+            background-color: v.$yellow;
+          }
+        }
+
+        p:first-of-type {
+          text-indent: 0;
+        }
+      }
+    }
+
+    .navigation {
+      flex-shrink: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .nav-btn {
+        padding: v.$smallPadding v.$bigPadding;
+        background-color: v.$pm1;
+        color: v.$px1;
+        border: 2px solid v.$px1;
+        border-radius: v.$bigPadding;
+        box-shadow:
+          0 0 0 2px v.$pm1,
+          0 2px 4px rgba(0, 0, 0, 0.5);
+
+        display: flex;
+        align-items: center;
+        gap: v.$smallPadding;
+        &.prev {
+          background-color: v.$px1;
+          color: v.$pm1;
+          border-color: v.$pm1;
+          box-shadow:
+            0 0 0 2px v.$px1,
+            0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        &:disabled {
+          opacity: 0.3;
+          cursor: not-allowed;
+          transform: none;
+        }
+      }
+
+      .page-indicator {
+        background: #00000026;
+        padding: v.$smallPadding v.$bigPadding;
+        border-radius: v.$bigPadding;
+        font-size: calc(v.$defaultSize * 0.85);
+        color: #555;
+        font-weight: 500;
+      }
+    }
+  }
+  &.out {
+    animation: slide_up_out 0.5s forwards;
+  }
+}
+
+@keyframes paper_in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

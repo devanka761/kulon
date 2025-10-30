@@ -1,0 +1,123 @@
+@use "../variables" as v;
+
+.Payout {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba($color: #64538b, $alpha: 0.8), rgba($color: #64354b, $alpha: 0.8));
+  opacity: 0;
+  transition: 1s;
+  .box {
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 800px;
+    height: 100%;
+    mix-blend-mode: overlay;
+    transform: scale(0.9);
+    transition: 0.5s;
+    overflow: hidden;
+    .completed {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 20px;
+      font-size: 5em;
+      font-weight: 900;
+      color: #fffffd;
+      display: flex;
+      justify-content: left;
+      align-items: center;
+      transform: translateY(-100%);
+      transition: 0.2s;
+    }
+    .economies,
+    .crews {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .economies {
+      top: 0;
+      height: 100%;
+      justify-content: end;
+      align-items: start;
+      transition: 1s;
+      padding: 20px;
+      .eco {
+        color: #fffffd;
+        transform: translateY(-100vh);
+        transition: 0.5s;
+        .eco-title {
+          font-weight: 400;
+          font-size: 2em;
+        }
+        .eco-desc {
+          font-weight: 900;
+          font-size: 3em;
+        }
+      }
+    }
+    .crews {
+      top: 0;
+      justify-content: end;
+      align-items: end;
+      transition: 0.25s;
+      transform: translateY(-100%);
+      .crew {
+        color: #fffffd;
+        padding-right: 20px;
+        padding-top: 20px;
+        font-weight: 400;
+        font-size: 2em;
+        i {
+          font-style: normal;
+        }
+        &:nth-child(1) {
+          i {
+            color: #fff3ad;
+          }
+        }
+        &:nth-child(2) {
+          i {
+            color: #bbffff;
+          }
+        }
+        &:nth-child(3) {
+          i {
+            color: #caae89;
+          }
+        }
+        &:nth-child(4) {
+          i {
+            color: #c98c8c;
+          }
+        }
+      }
+    }
+  }
+  .changed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, v.$pm2, v.$pm1, v.$px2);
+    opacity: 0;
+    transition: 2s;
+  }
+  &.fail {
+    .changed {
+      background: linear-gradient(135deg, v.$pm2, v.$sred, v.$px2);
+    }
+  }
+  &.out {
+    animation: fade_out 2s forwards;
+  }
+}

@@ -1,0 +1,316 @@
+@use "../variables" as v;
+@use "../cursor" as c;
+
+.f-friends {
+  .box {
+    max-width: 1000px;
+    .con {
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 0;
+      gap: v.$majorGap;
+      .search {
+        flex-shrink: 0;
+        width: 100%;
+        .inp {
+          height: 100%;
+          background-color: v.$px2;
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-radius: 10px;
+          overflow: hidden;
+          border: 2px solid v.$pm1;
+          box-shadow:
+            0 0 0 2px v.$px1,
+            0 4px 8px rgba(0, 0, 0, 0.5);
+          .inp-help {
+            background-color: v.$px1;
+            padding: v.$mediumPadding;
+            padding-right: 0;
+            flex-shrink: 0;
+            .v2 {
+              padding-right: v.$mediumPadding;
+              background-color: v.$pm1;
+            }
+          }
+          input {
+            flex-grow: 1;
+            padding: v.$mediumPadding;
+            height: 100%;
+            background-color: v.$px1;
+            color: v.$white;
+          }
+          &:has(input:focus) {
+            input {
+              background-color: v.$pm2;
+            }
+            .inp-help {
+              background-color: v.$pm2;
+            }
+            button {
+              span {
+                display: inline;
+              }
+            }
+          }
+          button {
+            span {
+              display: none;
+            }
+            flex-shrink: 0;
+            padding: v.$mediumPadding;
+            height: 100%;
+            background: v.$pm1;
+            color: v.$px1;
+          }
+        }
+      }
+      .field {
+        flex-grow: 1;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        min-height: 0;
+        align-items: start;
+        gap: v.$majorGap;
+        .board {
+          background-color: v.$px1;
+          width: calc(100% / 2);
+          height: 100%;
+          border-radius: 10px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          overflow: hidden;
+          border: 4px solid v.$pm1;
+          box-shadow:
+            0 0 0 4px v.$px1,
+            0 8px 16px rgba(0, 0, 0, 0.5);
+          .board-title {
+            flex-shrink: 0;
+            width: 100%;
+            padding: v.$mediumPadding;
+            background: v.$pm1;
+            color: v.$px1;
+            text-align: center;
+            .keyinfo {
+              display: inline;
+            }
+          }
+          .board-list {
+            width: 100%;
+            flex-grow: 1;
+            display: block;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            .empty {
+              padding: v.$mediumPadding;
+            }
+            .card {
+              display: block;
+              width: 100%;
+              display: flex;
+              justify-content: left;
+              align-items: center;
+              gap: min(14px, 1.5vh);
+              padding: min(14px, 1.5vh);
+              background-color: v.$px1;
+              color: v.$white;
+              text-align: left;
+              cursor: c.$cursorPointer;
+              overflow: hidden;
+              .uname {
+                flex-grow: 1;
+                overflow: hidden;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 5px;
+                .text {
+                  flex-grow: 1;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                }
+                .keyinfo {
+                  flex-shrink: 0;
+                  display: none;
+                }
+              }
+              .avatar {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background-color: rgba($color: v.$softwhite, $alpha: 0.5);
+                .hero {
+                  transform: scale(1.4);
+                }
+              }
+              &:hover,
+              &:focus {
+                background: v.$pm2;
+              }
+              &:focus {
+                .uname {
+                  .keyinfo {
+                    display: inline;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.f-people {
+  .box {
+    max-width: 750px;
+    .con {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: v.$majorGap;
+      min-height: 0;
+      .search {
+        width: 100%;
+        flex-shrink: 0;
+        .inp {
+          height: 100%;
+          background-color: v.$px2;
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-radius: 10px;
+          overflow: hidden;
+          border: 2px solid v.$pm1;
+          box-shadow:
+            0 0 0 2px v.$px1,
+            0 4px 8px rgba(0, 0, 0, 0.5);
+          .inp-help {
+            background-color: v.$px1;
+            padding: v.$mediumPadding;
+            padding-right: 0;
+            flex-shrink: 0;
+            .v2 {
+              padding-right: v.$mediumPadding;
+              background-color: v.$pm1;
+            }
+          }
+          input {
+            flex-grow: 1;
+            padding: v.$mediumPadding;
+            height: 100%;
+            background-color: v.$px1;
+            color: v.$white;
+          }
+          &:has(input:focus) {
+            input {
+              background-color: v.$pm2;
+            }
+            .inp-help {
+              background-color: v.$pm2;
+            }
+            button {
+              span {
+                display: inline;
+              }
+            }
+          }
+          button {
+            span {
+              display: none;
+            }
+            flex-shrink: 0;
+            padding: v.$mediumPadding;
+            height: 100%;
+            background: v.$pm1;
+            color: v.$px1;
+          }
+        }
+      }
+      .board {
+        flex-grow: 1;
+        background-color: v.$px1;
+        width: 100%;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 4px solid v.$pm1;
+        box-shadow:
+          0 0 0 4px v.$px1,
+          0 8px 16px rgba(0, 0, 0, 0.5);
+        .board-list {
+          width: 100%;
+          max-height: 100%;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          overflow-y: auto;
+          scrollbar-width: thin;
+          .card {
+            display: block;
+            width: 100%;
+            display: flex;
+            justify-content: left;
+            align-items: center;
+            gap: min(14px, 1.5vh);
+            padding: min(14px, 1.5vh);
+            color: v.$white;
+            background-color: v.$px1;
+            text-align: left;
+            cursor: c.$cursorPointer;
+            overflow: hidden;
+            .uname {
+              flex-grow: 1;
+              overflow: hidden;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              gap: 5px;
+              overflow: hidden;
+              .text {
+                flex-grow: 1;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
+              .keyinfo {
+                flex-shrink: 0;
+                display: none;
+              }
+            }
+            .avatar {
+              flex-shrink: 0;
+              width: 30px;
+              height: 30px;
+              border-radius: 50%;
+              background-color: rgba($color: v.$softwhite, $alpha: 0.5);
+              .hero {
+                transform: scale(1.4);
+              }
+            }
+            &:hover,
+            &:focus {
+              background: v.$pm2;
+            }
+            &:focus {
+              .uname {
+                .keyinfo {
+                  display: inline;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

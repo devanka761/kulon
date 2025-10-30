@@ -1,0 +1,103 @@
+@use "../variables" as v;
+@use "../cursor" as c;
+
+.KulonUI {
+  position: absolute;
+  z-index: 19;
+  top: 0;
+  left: 0;
+  padding: 18px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 18px;
+  transition: 0.3s;
+  animation: slide_down_in 0.3s;
+  .kui {
+    background-color: v.$pm2;
+    padding: 10px;
+    border-radius: 10px;
+    color: v.$pm1;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+    border: 2px solid v.$pm1;
+    box-shadow:
+      0 0 0 4px v.$pm2,
+      0 4px 8px rgba(0, 0, 0, 0.5);
+    transition: 0.3s;
+    .keyboard {
+      transition: 0.3s;
+      color: v.$pm1;
+      text-transform: capitalize;
+    }
+    &.disabled,
+    &:disabled {
+      opacity: 0.5;
+      background-color: v.$sgray;
+      border-color: v.$softwhite;
+      color: v.$softwhite;
+      .keyboard {
+        color: v.$softwhite;
+      }
+    }
+  }
+  &.hide {
+    transform: translateY(-100%);
+    animation: none;
+  }
+}
+
+.KulonPad {
+  visibility: visible;
+  position: absolute;
+  z-index: 18;
+  bottom: 0;
+  left: 0;
+  animation: fade_in 0.3s;
+  transition: 0.3s;
+  &.hide {
+    visibility: hidden;
+    animation: fade_out 0.3s;
+  }
+  &.disabled {
+    visibility: hidden;
+    transition: none;
+  }
+}
+.KulonInteract {
+  visibility: visible;
+  position: absolute;
+  z-index: 18;
+  width: 75px;
+  height: 75px;
+  bottom: 100px;
+  right: 100px;
+  border-radius: 50%;
+  animation: fade_in 0.3s;
+  transition: 0.3s;
+  background-color: #18223690;
+  border: 2px solid v.$pm1;
+  box-shadow:
+    0 0 0 4px v.$px1,
+    0 8px 16px rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: c.$cursorPointer;
+  &::before {
+    content: " \21";
+    font-family: "Font Awesome 7 Pro";
+    font-size: v.$dialogueSize;
+  }
+  &.hide {
+    visibility: hidden;
+    animation: fade_out 0.3s;
+  }
+  &.disabled {
+    visibility: hidden;
+    transition: none;
+  }
+}

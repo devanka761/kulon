@@ -1,0 +1,20 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":assignAndReview(devanka761)"],
+  "labels": ["dependencies"],
+  "assignees": ["devanka761"],
+  "packageRules": [
+    {
+      "matchDepTypes": ["devDependencies"],
+      "addLabels": ["dev-dependencies"],
+      "automerge": true,
+      "automergeType": "branch"
+    },
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true,
+      "automergeType": "branch"
+    }
+  ]
+}

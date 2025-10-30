@@ -1,0 +1,71 @@
+@use "../variables" as v;
+
+.fuwi {
+  z-index: 20;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  .box {
+    padding: v.$bigPadding;
+    padding-top: 0;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    // gap: min(20px, 3vh);
+    gap: v.$majorGap;
+    .nav {
+      width: 100%;
+      flex-shrink: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: v.$pm1;
+      box-shadow: 0 0 5px v.$px1;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      padding: v.$mediumPadding;
+      animation: slide_down_in 0.3s;
+      gap: v.$mediumPadding;
+      font-size: v.$dialogueSize;
+      color: v.$px1;
+      .left {
+        flex-grow: 1;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        gap: v.$mediumPadding;
+      }
+      .right {
+        flex-shrink: 0;
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        gap: v.$mediumPadding;
+        .btn-close {
+          font-size: calc(v.$dialogueSize * 1.4);
+        }
+      }
+    }
+    .con {
+      flex-grow: 1;
+      width: 100%;
+      animation: slide_up_in 0.3s;
+    }
+  }
+  &.out {
+    .box {
+      .nav {
+        animation: slide_down_out 0.3s forwards;
+      }
+      .con {
+        animation: slide_up_out 0.3s forwards;
+      }
+    }
+  }
+}

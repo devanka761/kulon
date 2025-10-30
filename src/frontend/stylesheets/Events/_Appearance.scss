@@ -1,0 +1,202 @@
+@use "../variables" as v;
+
+$citizen_width: 400px;
+$textSize: clamp(1.5rem, calc(3vh + 1rem), 15rem);
+
+.CharacterCreation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fade_in 1s;
+  .outer {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    .citizen {
+      min-width: 300px;
+      height: 100%;
+      flex-shrink: 0;
+      padding: v.$bigPadding;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: v.$bigPadding;
+      .citizen-detail {
+        flex-grow: 1;
+        width: 100%;
+        gap: v.$bigPadding;
+        .title {
+          text-align: center;
+          color: v.$pm1;
+          margin-bottom: v.$bigPadding;
+          font-size: $textSize;
+        }
+        .avatar {
+          margin: 0 auto;
+          background-color: rgba($color: v.$px1, $alpha: 0.8);
+          border: 1px solid v.$white;
+          border-radius: 10px;
+          background-image: url("../../../public/assets/ui/creation/charbg.png");
+        }
+        .citizen-data {
+          width: 100%;
+          margin-top: v.$bigPadding;
+          .field {
+            margin-bottom: v.$mediumPadding;
+            width: 100%;
+            p {
+              font-size: $textSize;
+              .keyinfo {
+                display: inline;
+              }
+            }
+            input {
+              font-size: $textSize;
+              width: 100%;
+              padding: v.$mediumPadding 0;
+              background-color: transparent;
+              border-bottom: 1px solid v.$sgray;
+              color: v.$pm1;
+            }
+            input:focus {
+              border-color: v.$pm1;
+              color: v.$white;
+            }
+          }
+          .field:last-child {
+            margin-bottom: 0;
+          }
+        }
+        .citizen-actions {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: v.$bigPadding;
+          margin-top: v.$bigPadding;
+          button {
+            background-color: #00000000;
+            .keyinfo {
+              margin: 0 auto;
+              margin-bottom: 5px;
+            }
+            .icon {
+              text-align: center;
+              background-color: v.$pm1;
+              color: v.$px1;
+              font-size: $textSize;
+              border-radius: 10px;
+              padding: v.$mediumPadding v.$bigPadding;
+            }
+          }
+        }
+      }
+      .citizen-done {
+        flex-shrink: 0;
+        width: 100%;
+        .btn {
+          width: 100%;
+          font-size: $textSize;
+          color: v.$white;
+          border-radius: 10px;
+          background-color: v.$sgreen;
+          padding: v.$mediumPadding;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: v.$mediumPadding;
+          &.btn-cancel {
+            color: v.$cred;
+            background-color: v.$black;
+            margin-bottom: 10px;
+          }
+          &.btn-continue {
+            color: v.$white;
+            background-color: v.$sgreen;
+          }
+        }
+      }
+    }
+    .editor {
+      flex-grow: 1;
+      width: calc(100% - $citizen_width);
+      height: 100%;
+      padding: v.$bigPadding 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      .field {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: v.$bigPadding;
+        border-radius: 20px;
+        .text {
+          flex-grow: 1;
+          font-size: $textSize;
+          .variety {
+            font-size: v.$defaultSize;
+          }
+        }
+        .actions {
+          flex-shrink: 0;
+          .act {
+            display: flex;
+            justify-content: right;
+            align-items: center;
+            border-radius: 10px;
+            gap: v.$mediumPadding;
+            padding: v.$mediumPadding;
+            .value {
+              font-size: $textSize;
+              width: min(50px, 10vh);
+              text-align: center;
+            }
+            button {
+              padding: v.$mediumPadding;
+              border-radius: 10px;
+              color: v.$px1;
+              background-color: v.$pm1;
+              font-size: $textSize;
+            }
+            &.active {
+              background-color: v.$px1;
+            }
+          }
+        }
+        &:has(.actions .act.active) {
+          background-color: rgba($color: v.$pm1, $alpha: 0.3);
+          .text {
+            color: v.$white;
+          }
+        }
+      }
+    }
+  }
+  &.out {
+    animation: fade_out 1s forwards;
+  }
+  &.appearance {
+    z-index: 20;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    background-color: rgba($color: v.$px1, $alpha: 0.7);
+    animation: fade_in 0.5s;
+    .data-username {
+      display: none;
+    }
+    &.out {
+      animation: fade_out 0.5s forwards;
+    }
+  }
+}

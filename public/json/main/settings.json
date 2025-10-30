@@ -1,0 +1,397 @@
+{
+  "groups": [
+    {
+      "id": "1",
+      "icon": "fa-jelly fa-regular fa-volume",
+      "name": {
+        "id": "audio",
+        "en": "audio"
+      }
+    },
+    {
+      "id": "2",
+      "icon": "fa-jelly fa-regular fa-gamepad",
+      "name": {
+        "id": "kontrol",
+        "en": "controls"
+      }
+    },
+    {
+      "id": "3",
+      "icon": "fa-jelly fa-regular fa-bell",
+      "name": {
+        "id": "notifikasi",
+        "en": "notifications"
+      }
+    },
+    {
+      "id": "4",
+      "icon": "fa-jelly fa-regular fa-face-smile",
+      "name": {
+        "id": "akun",
+        "en": "account"
+      }
+    },
+    {
+      "id": "5",
+      "icon": "fa-jelly fa-regular fa-language",
+      "name": {
+        "id": "language",
+        "en": "language"
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "1111",
+      "group": "1",
+      "type": "text",
+      "breaker": true,
+      "name": {
+        "id": "Volume Audio In-game",
+        "en": "In-game Audio Volume"
+      }
+    },
+    {
+      "id": "bgm_volume",
+      "group": "1",
+      "type": "range",
+      "default": 3,
+      "func": "audioSettings",
+      "name": {
+        "id": "Musik Latar Belakang",
+        "en": "Background Music"
+      }
+    },
+    {
+      "id": "ui_volume",
+      "group": "1",
+      "type": "range",
+      "default": 5,
+      "func": "audioSettings",
+      "name": {
+        "id": "Suara UI",
+        "en": "UI Sound"
+      }
+    },
+    {
+      "id": "sfx_volume",
+      "group": "1",
+      "type": "range",
+      "default": 7,
+      "func": "audioSettings",
+      "name": {
+        "id": "Efek Suara",
+        "en": "Sound Effects"
+      }
+    },
+    {
+      "id": "ambient_volume",
+      "group": "1",
+      "type": "range",
+      "default": 4,
+      "func": "audioSettings",
+      "name": {
+        "id": "Lingkungan",
+        "en": "Ambient"
+      }
+    },
+    {
+      "id": "footstep_volume",
+      "group": "1",
+      "type": "range",
+      "default": 2,
+      "func": "audioSettings",
+      "name": {
+        "id": "Langkah Kaki",
+        "en": "Footstep"
+      }
+    },
+    {
+      "id": "2222",
+      "group": "2",
+      "type": "text",
+      "breaker": true,
+      "name": {
+        "id": "Touch Screen",
+        "en": "Touch Screen"
+      }
+    },
+    {
+      "id": "kulonpad_disabled",
+      "group": "2",
+      "type": "boolean",
+      "default": true,
+      "uniq": "writeKulonPad",
+      "name": {
+        "id": "Gunakan UI Kontroler Analog",
+        "en": "Enable Analog Controller UI"
+      }
+    },
+    {
+      "id": "kulonpad_x",
+      "group": "2",
+      "type": "range",
+      "min": 0,
+      "max": 500,
+      "step": 10,
+      "default": 50,
+      "func": "analogSettings",
+      "name": {
+        "id": "Posisi Kontroler Analog Horizontal",
+        "en": "Horizontal Analog Controller Position"
+      }
+    },
+    {
+      "id": "kulonpad_y",
+      "group": "2",
+      "type": "range",
+      "min": 0,
+      "max": 500,
+      "step": 10,
+      "default": 50,
+      "func": "analogSettings",
+      "name": {
+        "id": "Posisi Kontroler Analog Vertikal",
+        "en": "Vertical Analog Controller Position"
+      }
+    },
+    {
+      "id": "kulonbutton_x",
+      "group": "2",
+      "type": "range",
+      "min": 0,
+      "max": 500,
+      "step": 10,
+      "default": 150,
+      "func": "interactSettings",
+      "name": {
+        "id": "Posisi Tombol Interaksi Horizontal",
+        "en": "Horizontal Interaction Button Position"
+      }
+    },
+    {
+      "id": "kulonbutton_y",
+      "group": "2",
+      "type": "range",
+      "min": 0,
+      "max": 500,
+      "step": 10,
+      "default": 90,
+      "func": "interactSettings",
+      "name": {
+        "id": "Posisi Tombol Interaksi Vertikal",
+        "en": "Vertical Interaction Button Position"
+      }
+    },
+    {
+      "id": "2223",
+      "group": "2",
+      "type": "text",
+      "breaker": true,
+      "name": {
+        "id": "Keyboard",
+        "en": "Keyboard"
+      }
+    },
+    {
+      "id": "move_up",
+      "group": "2",
+      "type": "string",
+      "default": "w",
+      "name": {
+        "id": "Bergerak ke Depan",
+        "en": "Move Up"
+      }
+    },
+    {
+      "id": "move_down",
+      "group": "2",
+      "type": "string",
+      "default": "s",
+      "name": {
+        "id": "Bergerak ke Belakang",
+        "en": "Move Down"
+      }
+    },
+    {
+      "id": "move_left",
+      "group": "2",
+      "type": "string",
+      "default": "a",
+      "name": {
+        "id": "Bergerak ke Kiri",
+        "en": "Move Left"
+      }
+    },
+    {
+      "id": "move_right",
+      "group": "2",
+      "type": "string",
+      "default": "d",
+      "name": {
+        "id": "Bergerak ke Kanan",
+        "en": "Move Right"
+      }
+    },
+    {
+      "id": "open_menu",
+      "group": "2",
+      "type": "string",
+      "default": "esc",
+      "name": {
+        "id": "Buka/Tutup Menu",
+        "en": "Open/Close Phone Menu"
+      }
+    },
+    {
+      "id": "interact",
+      "group": "2",
+      "type": "string",
+      "default": "e",
+      "name": {
+        "id": "Interaksi / Gunakan",
+        "en": "Interact / Use"
+      }
+    },
+    {
+      "id": "dialogue_skip",
+      "group": "2",
+      "type": "string",
+      "default": "enter",
+      "name": {
+        "id": "Lewati Dialog",
+        "en": "Skip Dialogue"
+      }
+    },
+    {
+      "id": "ingame_chat",
+      "group": "2",
+      "type": "string",
+      "default": "t",
+      "name": {
+        "id": "Buka Chat In-game",
+        "en": "Open In-game Chat"
+      }
+    },
+    {
+      "id": "2224",
+      "group": "2",
+      "type": "func",
+      "uniq": "writeRestoreDefault",
+      "cl": "br",
+      "value": {
+        "id": "Kembalikan ke Default",
+        "en": "Restore Default"
+      }
+    },
+    {
+      "id": "3333",
+      "group": "3",
+      "type": "text",
+      "breaker": true,
+      "name": {
+        "id": "Notifikasi In-game",
+        "en": "In-game Notifications"
+      }
+    },
+    {
+      "id": "mail_notification_disabled",
+      "group": "3",
+      "type": "boolean",
+      "default": true,
+      "name": {
+        "id": "Surat",
+        "en": "Mails"
+      }
+    },
+    {
+      "id": "achievement_notification_disabled",
+      "group": "3",
+      "type": "boolean",
+      "default": true,
+      "name": {
+        "id": "Pencapaian",
+        "en": "Achievements"
+      }
+    },
+    {
+      "id": "friend_request_notification_disabled",
+      "group": "3",
+      "type": "boolean",
+      "default": true,
+      "name": {
+        "id": "Permintaan Pertemanan",
+        "en": "Friend Requests"
+      }
+    },
+    {
+      "id": "job_invite_notification_disabled",
+      "group": "3",
+      "type": "boolean",
+      "default": true,
+      "name": {
+        "id": "Undangan Job",
+        "en": "Job Invitations"
+      }
+    },
+    {
+      "id": "4444",
+      "group": "4",
+      "type": "text",
+      "breaker": true,
+      "uniq": "writeProvider",
+      "name": {
+        "id": "Masuk Sebagai",
+        "en": "Logged In As"
+      }
+    },
+    {
+      "id": "account_logout",
+      "group": "4",
+      "type": "func",
+      "cl": "r",
+      "uniq": "writeLogout",
+      "value": {
+        "id": "KELUAR DARI AKUN",
+        "en": "LOGOUT"
+      }
+    },
+    {
+      "id": "5555",
+      "group": "5",
+      "type": "text",
+      "breaker": true,
+      "name": {
+        "id": "Saat ini: Bahasa Indonesia",
+        "en": "Current: English"
+      }
+    },
+    {
+      "id": "lang_select",
+      "group": "5",
+      "type": "option",
+      "default": "id",
+      "uniq": "writeLanguage",
+      "saveId": "lang",
+      "name": {
+        "id": "Language",
+        "en": "Language"
+      },
+      "label": {
+        "id": "Select Language",
+        "en": "Select Language"
+      },
+      "list": [
+        {
+          "id": "id",
+          "label": "Bahasa Indonesia"
+        },
+        {
+          "id": "en",
+          "label": "English"
+        }
+      ]
+    }
+  ]
+}

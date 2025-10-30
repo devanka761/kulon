@@ -1,0 +1,103 @@
+@use "../variables" as v;
+
+.Rewards {
+  position: absolute;
+  z-index: 101;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(v.$pm1, 0.9), rgba(v.$white, 0.7));
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  animation: fade_in 0.5s;
+  .box {
+    width: 100%;
+    max-width: 600px;
+    height: fit-content;
+    .rewards-title {
+      animation: fade_in 2s;
+      p {
+        color: v.$px1;
+        font-size: v.$dialogueSize;
+        text-align: center;
+      }
+    }
+    .desc {
+      animation: fade_in 2s;
+      p {
+        color: v.$px1;
+        text-align: center;
+        .keyinfo {
+          display: inline;
+        }
+      }
+    }
+    .list {
+      padding: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin: 40px 0;
+      .card {
+        position: relative;
+        background: v.$pm1;
+        width: 75px;
+        height: 75px;
+        padding: 10px;
+        border: 1px solid v.$black;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        animation: flip_right 1.25s ease;
+        .expire {
+          position: absolute;
+          top: 0;
+          left: 0;
+          padding: 3px;
+          border-bottom-right-radius: 5px;
+          color: v.$px1;
+          &::after {
+            content: "\f017";
+            font-family: "Font Awesome 7 Pro";
+            font-weight: 400;
+            font-size: 0.7rem;
+            color: v.$px1;
+          }
+        }
+        img {
+          width: 100%;
+          image-rendering: pixelated;
+        }
+        .number {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          background-color: rgba(v.$px2, 0.8);
+          font-family: v.$monofont;
+          text-align: center;
+          font-size: 1rem;
+          padding: 2px 0;
+        }
+        &.minus {
+          background-color: v.$cred;
+          .number {
+            background-color: rgba(v.$black, 0.8);
+            color: v.$cred;
+          }
+        }
+      }
+    }
+  }
+  &.out {
+    animation: fade_out 0.5s forwards;
+  }
+}
