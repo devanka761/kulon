@@ -19,9 +19,10 @@
       text-align: center;
       width: 100%;
       font-family: v.$systemfont;
-      // font-size: 1rem;
+      font-size: calc(v.$defaultSize * 0.8);
       .load-data-title {
         line-height: 1.5;
+        margin-bottom: v.$smallPadding;
       }
       .load-data-list {
         .load-data-card {

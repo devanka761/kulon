@@ -1,6 +1,6 @@
 {
   "name": "kulon",
-  "version": "1.0.0-dvnkz.1",
+  "version": "1.0.0-wip.21",
   "description": "Multiplayer 2D Pixel Survival Puzzle Game",
   "main": "dist/backend/server.js",
   "scripts": {
@@ -20,7 +20,11 @@
     "prepare": "husky",
     "up:patch": "npm --no-git-tag-version version patch",
     "up:minor": "npm --no-git-tag-version version minor",
-    "up:major": "npm --no-git-tag-version version major"
+    "up:major": "npm --no-git-tag-version version major",
+    "prepatch": "npm --no-git-tag-version version prepatch && npm --no-git-tag-version version prerelease --preid wip",
+    "preminor": "npm --no-git-tag-version version preminor && npm --no-git-tag-version version prerelease --preid wip",
+    "premajor": "npm --no-git-tag-version version premajor && npm --no-git-tag-version version prerelease --preid wip",
+    "prerelease": "npm --no-git-tag-version version prerelease"
   },
   "husky": {
     "hooks": {
