@@ -29,6 +29,6 @@ export class Camera {
   }
 
   apply(ctx: CanvasRenderingContext2D) {
-    ctx.translate(Math.round(-this.x), Math.floor(-this.y))
+    ctx.translate(Math.round(-this.x), Math.round(-this.y))
   }
 }

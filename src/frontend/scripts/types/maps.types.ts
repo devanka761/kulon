@@ -178,4 +178,5 @@ export interface ISpawnRule {
   y: number
   direction: DirectionType
   inc: "x" | "y"
+  size?: number
 }
