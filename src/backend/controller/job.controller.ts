@@ -14,7 +14,7 @@ import cfg from "../../config/cfg"
 export async function createJob(uid: string, s: { mission_id: string }): Promise<IRepTempB> {
   if (!validate(["mission_id"], s)) return { code: 400, msg: "MM_JOB_INVALID" }
   const mission = mission_list.find((m) => m.id === s.mission_id)
-  if (!mission) return { code: 404, msg: "MM_JOB_INVALID" }
+  if (!mission || mission.ready < 1 || mission.beta) return { code: 404, msg: "MM_JOB_INVALID" }
 
   const price_id = mission.price[0]
   const price_amount = mission.price[1]

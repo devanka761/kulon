@@ -1,3 +1,4 @@
+import asset from "../data/assets"
 import db from "../data/db"
 import lang from "../data/language"
 import LocalList from "../data/LocalList"
@@ -16,7 +17,7 @@ interface IPaperConfig extends IPMCConfig {
 }
 
 const spanRegex = /\*(.*?)\*/g
-// const imgRegex = /\_(.*?)\_/g
+const imgRegex = /\^(.*?)\^/g
 
 export default class Paper implements IPMC {
   id: string = "paper"
@@ -98,8 +99,10 @@ export default class Paper implements IPMC {
       const h2 = kel("h2", null, { e: this.name[LocalList.lang!] })
       const parts = fulltext[LocalList.lang!].split("\n")
       const paragraphs = parts.map((part) => {
-        const text = part.replace(spanRegex, "<span>$1</span>")
+        const text = part.replace(spanRegex, "<span>$1</span>").replace(imgRegex, '<img alt="$1" src="/assets/maps/props/null.png" />')
         const p = kel("p", null, { e: text })
+        const imgs = p.querySelectorAll("img")
+        imgs.forEach((img) => (img.src = asset[img.alt].src))
         return p
       })
       page.append(h2, ...paragraphs)

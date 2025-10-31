@@ -1,6 +1,6 @@
 {
   "name": "kulon",
-  "version": "1.0.0-wip.21",
+  "version": "1.0.0-wip.22",
   "description": "Multiplayer 2D Pixel Survival Puzzle Game",
   "main": "dist/backend/server.js",
   "scripts": {

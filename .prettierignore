@@ -8,6 +8,8 @@ eslint.config.mjs
 tsconfig.json
 renovate.json
 README.md
+LICENSE
 public
 dist
 ex
+views
