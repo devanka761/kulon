@@ -39,8 +39,8 @@ export default class KulonPad {
   private animationFrameId: number | null = null
 
   private boundResizeHandler: () => void
-  private boundHandleDown: (event: PointerEvent) => void
-  private boundHandleMove: (event: PointerEvent) => void
+  private boundHandleDown: (event: TouchEvent | MouseEvent) => void
+  private boundHandleMove: (event: TouchEvent | MouseEvent) => void
   private boundHandleUp: () => void
 
   constructor(initialSize?: number) {
@@ -84,21 +84,30 @@ export default class KulonPad {
   private _bindEvents(): void {
     window.addEventListener("resize", this.boundResizeHandler)
 
-    this.canvas.addEventListener("pointerdown", this.boundHandleDown)
-    this.canvas.addEventListener("pointermove", this.boundHandleMove)
-    this.canvas.addEventListener("pointerup", this.boundHandleUp)
-    this.canvas.addEventListener("pointerleave", this.boundHandleUp)
+    this.canvas.addEventListener("mousedown", this.boundHandleDown)
+    this.canvas.addEventListener("mousemove", this.boundHandleMove)
+    this.canvas.addEventListener("mouseup", this.boundHandleUp)
+    this.canvas.addEventListener("mouseleave", this.boundHandleUp)
+
+    this.canvas.addEventListener("touchstart", this.boundHandleDown, {
+      passive: true
+    })
+    this.canvas.addEventListener("touchmove", this.boundHandleMove, {
+      passive: true
+    })
+    this.canvas.addEventListener("touchend", this.boundHandleUp)
   }
 
-  private _getEventPosition(event: PointerEvent): IStickPosition | null {
-    if ("clientX" in event && event.clientX && event.clientY) {
+  private _getEventPosition(event: TouchEvent | MouseEvent): IStickPosition | null {
+    if ("touches" in event && event.touches && event.touches.length > 0) {
+      return { x: event.touches[0].clientX, y: event.touches[0].clientY }
+    } else if ("clientX" in event && event.clientX && event.clientY) {
       return { x: event.clientX, y: event.clientY }
     }
-
     return null
   }
 
-  private _handleDown(event: PointerEvent): void {
+  private _handleDown(event: TouchEvent | MouseEvent): void {
     event.preventDefault()
     const pos = this._getEventPosition(event)
     if (!pos) return
@@ -115,7 +124,7 @@ export default class KulonPad {
     }
   }
 
-  private _handleMove(event: PointerEvent): void {
+  private _handleMove(event: TouchEvent | MouseEvent): void {
     if (!this.isActive) return
 
     event.preventDefault()
@@ -286,10 +295,15 @@ export default class KulonPad {
     }
 
     window.removeEventListener("resize", this.boundResizeHandler)
-    this.canvas.removeEventListener("pointerdown", this.boundHandleDown)
-    this.canvas.removeEventListener("pointermove", this.boundHandleMove)
-    this.canvas.removeEventListener("pointerup", this.boundHandleUp)
-    this.canvas.removeEventListener("pointerleave", this.boundHandleUp)
+
+    this.canvas.removeEventListener("mousedown", this.boundHandleDown)
+    this.canvas.removeEventListener("mousemove", this.boundHandleMove)
+    this.canvas.removeEventListener("mouseup", this.boundHandleUp)
+    this.canvas.removeEventListener("mouseleave", this.boundHandleUp)
+    this.canvas.removeEventListener("touchstart", this.boundHandleDown)
+    this.canvas.removeEventListener("touchmove", this.boundHandleMove)
+    this.canvas.removeEventListener("touchend", this.boundHandleUp)
+
     this.el.onpointerdown = null
 
     this.canvas.remove()
