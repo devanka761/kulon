@@ -329,7 +329,7 @@
     ],
     "spawn": {
       "area": "kulonshore",
-      "size": 384,
+      "size": 352,
       "x": 21,
       "y": 20,
       "direction": "down",

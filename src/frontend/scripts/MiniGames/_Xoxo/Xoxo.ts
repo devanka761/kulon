@@ -8,6 +8,7 @@ import { Game } from "../../main/Game"
 import { playRandomPop } from "../../manager/randomPlays"
 import { IPlayers, IPMX, IPMXConfig } from "../../types/db.types"
 import { ISival } from "../../types/lib.types"
+import { IObjectEvent } from "../../types/maps.types"
 import Participant from "./_Participant"
 import { getByGrid, getGrid } from "./XoxoBoardAPI"
 
@@ -123,17 +124,18 @@ export default class Xoxo implements IPMX {
       [1, -1]
     ]
 
-    const coors: string[] = []
-    coors.push(`${lastCol},${lastRow}`)
+    const coors: string[][] = [[], [], [], []]
+    let isWin: number = -1
 
-    for (const [dRow, dCol] of directions) {
+    directions.forEach(([dRow, dCol], idx) => {
+      coors[idx].push(`${lastCol},${lastRow}`)
       let count = 1
 
       let r = lastRow + dRow
       let c = lastCol + dCol
       while (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE && this.board[r][c] === player) {
         count++
-        coors.push(`${c},${r}`)
+        coors[idx].push(`${c},${r}`)
         r += dRow
         c += dCol
       }
@@ -142,19 +144,32 @@ export default class Xoxo implements IPMX {
       c = lastCol - dCol
       while (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE && this.board[r][c] === player) {
         count++
-        coors.push(`${c},${r}`)
+        coors[idx].push(`${c},${r}`)
         r -= dRow
         c -= dCol
       }
 
       if (count >= WIN_COND) {
-        this.setWinner(lastPlayer, coors)
+        isWin = idx
       }
+    })
+    if (isWin > -1) {
+      const winCoors = coors[isWin].sort((a, b) => {
+        const [aX, aY] = a.split(",")
+        const [bX, bY] = b.split(",")
+        if (aX > bX) return 1
+        if (aX < bX) return -1
+        if (aY > bY) return 1
+        if (aY < bY) return -1
+        return 0
+      })
+      this.setWinner(lastPlayer, winCoors)
     }
-
     coors.splice(0, coors.length)
   }
   async setWinner(userId: string, coors?: string[]): Promise<void> {
+    const onShot = userId === this.me
+
     this.Participants.forEach((player) => {
       player.destroy()
     })
@@ -164,8 +179,11 @@ export default class Xoxo implements IPMX {
         return `XOXO_${gridX},${gridY}`
       })
 
-      const centerGrid = getByGrid(coors[2])!
-      const [posX, posY] = centerGrid.coor[0].split(",").map(Number)!
+      const tpEvents: IObjectEvent[] = coors.map((coor) => {
+        const centerGrid = getByGrid(coor)!
+        const [posX, posY] = centerGrid.coor[0].split(",").map(Number)!
+        return { who: "hero", x: posX + (onShot ? 0 : 1), y: posY + (onShot ? 0 : 1), direction: "down", type: "teleport" }
+      })
 
       const checkCutscene = async (resolve: Resolve) => {
         if (this.game?.isCutscenePlaying) {
@@ -177,12 +195,16 @@ export default class Xoxo implements IPMX {
 
       const allowed = await new Promise((resolve) => checkCutscene(resolve))
       if (!allowed) return
-
-      const onShot = userId === this.me
       await this.game!.startCutscene([
-        { who: "hero", x: posX + (onShot ? 0 : 1), y: posY + (onShot ? 0 : 1), direction: "down", type: "teleport" },
+        tpEvents[2],
         { who: "hero", direction: "down", type: "stand", time: 1000 },
-        { states, type: "addLocalFlags" },
+        {
+          states,
+          type: "addLocalFlags"
+        },
+        { who: "hero", direction: "down", type: "stand", time: 1000 },
+        ...tpEvents,
+        tpEvents[2],
         { who: "hero", direction: "down", type: "stand", time: 500 },
         { who: "hero", direction: onShot ? "right" : "left", type: "stand", time: 1500 },
         { who: "hero", direction: "down", type: "stand", time: 1000 }

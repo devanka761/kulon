@@ -31,6 +31,8 @@ import { Game } from "./Game"
 import { Person } from "./Person"
 import { paperAdd, paperGet } from "../data/notes"
 import Paper from "../Events/Paper"
+import { Prop } from "./Prop"
+import { Interactable } from "./Interactable"
 
 type Resolve = (val?: string) => void
 
@@ -229,9 +231,9 @@ export class GameEvent {
 
     if (!who || !x || !y) return resolve()
 
-    const person = this.game.map.gameObjects[who] as Person
+    const person = this.game.map.gameObjects[who]
 
-    if (person) {
+    if (person instanceof Person && who === "hero") {
       person.x = x * TILE_SIZE
       person.y = y * TILE_SIZE
       person.direction = direction || "down"
@@ -242,6 +244,16 @@ export class GameEvent {
         y: y * TILE_SIZE,
         direction: direction
       })
+    } else if (person instanceof Prop || person instanceof Interactable) {
+      person.x = x * TILE_SIZE
+      person.y = y * TILE_SIZE
+
+      peers.send("objMapChange", {
+        who,
+        mapId: this.game.map.mapId,
+        x,
+        y
+      })
     }
     await waittime(500)
     resolve()
@@ -251,9 +263,9 @@ export class GameEvent {
     const { who, teleporter } = this.event
     if (!who || !teleporter) return resolve()
 
-    const player = this.game.map.gameObjects[who] as Person
+    const player = this.game.map.gameObjects[who]
 
-    if (player && teleporter && teleporter.from) {
+    if (player instanceof Person && teleporter && teleporter.from) {
       const playerDirection = player.direction
       const destination = teleporter.from[playerDirection]
 
@@ -286,7 +298,10 @@ export class GameEvent {
     const item = cloud_items.find((itm) => itm.id === id)
     if (!item) return resolve()
 
+    peers.send("addItem", { itemId: id, amount })
+
     db.job.setItem({ id, amount })
+
     notip({
       ic: "backpack",
       a: item.name[LocalList.lang!],

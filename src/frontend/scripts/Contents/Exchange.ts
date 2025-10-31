@@ -255,8 +255,8 @@ export class Exchange implements IPMC {
     this.erange.value = this.erange.min
 
     this.erange.oninput = () => this.updateExchangeValues()
-    btnMinus.onmousedown = () => this.decrementRange()
-    btnPlus.onmousedown = () => this.incrementRange()
+    btnMinus.onpointerdown = () => this.decrementRange()
+    btnPlus.onpointerdown = () => this.incrementRange()
 
     const btnSubmit = futor(".outer-ok", this.el)
     btnSubmit.onclick = async () => {

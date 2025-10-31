@@ -12,6 +12,7 @@ import Phone from "../Events/Phone"
 import MapList from "../data/MapList"
 import notip from "./notip"
 import { paperAdd } from "../data/notes"
+import { Interactable } from "../main/Interactable"
 
 const INVALID_CONTROLS = ["run", "init", "constructor", "game"]
 
@@ -46,6 +47,20 @@ class PeerMessage {
 
     data.states.forEach((state: string) => delete SaveList[state])
   }
+  addItem(data: ISival): void {
+    const { itemId, amount } = data
+    if (!itemId || !amount) return
+    const item = cloud_items.find((itm) => itm.id === itemId)
+    if (!item) return
+
+    db.job.setItem({ id: itemId, amount })
+
+    notip({
+      ic: "backpack",
+      a: item.name[LocalList.lang!],
+      b: `+${amount}`
+    })
+  }
 
   requestPosition(data: ISival): void {
     peers.sendOne(data.from, "playerMapChange", {
@@ -79,6 +94,23 @@ class PeerMessage {
       remotePlayer.targetY = -1000
       remotePlayer.direction = data.direction
       // remotePlayer.isMoving = data.isMoving
+    }
+  }
+
+  objMapChange(data: ISival): void {
+    const { who, mapId, x, y } = data
+    if (!who || !mapId || !x || !y) return
+
+    const propObject = this.game.map.gameObjects[who] as Interactable
+
+    if (mapId === this.game.map.mapId) {
+      if (propObject) {
+        propObject.x = x * 16
+        propObject.y = y * 16
+      }
+    } else if (MapList[mapId].configObjects[who]) {
+      MapList[mapId].configObjects[who].x = x
+      MapList[mapId].configObjects[who].y = y
     }
   }
 
@@ -141,7 +173,7 @@ class PeerMessage {
     const talk = gameObj.talk
     if (!talk) return
 
-    const scenario = talk.find((scenario) => scenario.events.length >= 1)
+    const scenario = talk.find((scenario) => scenario.events.length >= 1 && scenario.events.find((evt) => evt.type === "addnote"))
     if (!scenario) return
 
     const evt = scenario.events.find((evt) => evt.type === "addnote")
