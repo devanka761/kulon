@@ -3,6 +3,7 @@ import lang from "../data/language"
 import peers from "../data/Peers"
 import audio from "../lib/AudioHandler"
 import { eroot, futor, kel, qutor } from "../lib/kel"
+import socket from "../lib/Socket"
 import waittime from "../lib/waittime"
 
 const pmcWhiteList = ["prepare", "matchmaking", "minigame", "payout", "prologue"]
@@ -200,6 +201,7 @@ class Chat {
       this.hide()
 
       peers.send("chatMessage", { text: user_text })
+      socket.send("igc", { text: user_text, username: db.me.username })
     }
   }
   run() {

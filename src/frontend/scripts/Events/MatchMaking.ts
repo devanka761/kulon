@@ -114,6 +114,9 @@ export default class MatchMaking implements IPMC {
     this.btnStart = qutor(".btn-start", this.el) as HTMLDivElement
   }
   private setupBoards(): void {
+    const actions = futor(".actions", this.el)
+    actions.prepend(this.game.kulonUI.chat.html)
+
     // this.boards = Array.from(futor(".con", this.el).querySelectorAll(".board-content"))
     this.selectInitialCard()
   }
@@ -493,6 +496,7 @@ export default class MatchMaking implements IPMC {
     this.keyQ?.unbind()
     this.space?.unbind()
     await waittime()
+    this.game.kulonUI.restore()
     this.el.remove()
     this.isLocked = false
     db.pmc = undefined

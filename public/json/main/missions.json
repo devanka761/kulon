@@ -237,7 +237,6 @@
     ],
     "spawn": {
       "area": "kulongraveyard",
-      "size": 336,
       "x": 8,
       "y": 31,
       "direction": "down",

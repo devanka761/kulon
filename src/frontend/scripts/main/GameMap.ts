@@ -104,7 +104,7 @@ export class GameMap {
         if ((pixelConfig as IGameObjectPerson).canControlled) {
           gameObject = new Player(pixelConfig as IGameObjectPerson, this.footstep)
         } else {
-          gameObject = new Person(pixelConfig as IGameObjectPerson)
+          gameObject = new Person(pixelConfig as IGameObjectPerson, this.footstep)
         }
       } else if (objectConfig.type === "Interactable") {
         const pixelConfig = {
@@ -141,14 +141,17 @@ export class GameMap {
   mountRemotePlayers(): void {
     peers.getAll().forEach((peer) => {
       if (peer.mapId === this.mapId) {
-        const peerObject = new Person({
-          type: "Person",
-          x: peer.x,
-          y: peer.y,
-          direction: peer.direction,
-          src: Object.values(peer.skin),
-          isRemote: true
-        })
+        const peerObject = new Person(
+          {
+            type: "Person",
+            x: peer.x,
+            y: peer.y,
+            direction: peer.direction,
+            src: Object.values(peer.skin),
+            isRemote: true
+          },
+          this.footstep
+        )
         this.gameObjects[`crew_${peer.user.id}`] = peerObject
       }
     })

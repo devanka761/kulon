@@ -28,7 +28,7 @@
       min-height: 0;
       .left,
       .right {
-        background-color: v.$px1;
+        background-color: rgba(v.$px1, 0.8);
         width: calc(100% / 2);
         height: 100%;
         border: 1px solid #2bab4e;
@@ -83,6 +83,7 @@
               justify-content: space-between;
               align-items: center;
               margin: auto;
+              background-color: rgba(v.$px1, 0.7);
               background-size: cover;
               background-repeat: no-repeat;
               background-position-x: 0;
@@ -129,7 +130,7 @@
       .left {
         flex-grow: 1;
         height: 100%;
-        background-color: v.$px1;
+        background-color: rgba(v.$px1, 0.8);
         display: flex;
         justify-content: start;
         align-items: center;
@@ -172,7 +173,7 @@
           padding: 10px 20px;
           height: 100%;
           text-align: center;
-          background-color: v.$px1;
+          background-color: rgba(v.$px1, 0.8);
           color: v.$white;
           display: flex;
           justify-content: center;

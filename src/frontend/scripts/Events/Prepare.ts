@@ -80,10 +80,12 @@ export default class Prepare implements IPMC {
         <div class="con">
         </div>
         <div class="actions">
-          <div class="ts">
-            <i></i>
+          <div class="mission">
+            <div class="ts">
+              <i></i>
+            </div>
+            <div class="btn btn-ready"><span class="keyinfo">enter</span> ${lang.PRP_BE_READY}</div>
           </div>
-          <div class="btn btn-ready"><span class="keyinfo">enter</span> ${lang.PRP_BE_READY}</div>
         </div>
       </div>`
     this.elist = qutor(".con", this.el) as HTMLDivElement
@@ -91,6 +93,10 @@ export default class Prepare implements IPMC {
   }
   private writeDetail(): void {
     db.onduty = 2
+
+    const eactions = futor(".actions", this.el)
+    eactions.prepend(this.game.kulonUI.chat.html)
+
     const etitle = futor(".nav-title", this.el)
     etitle.innerHTML = this.mission.name
     let isValid = sdate.remain(this.startTime, true)
@@ -203,6 +209,7 @@ export default class Prepare implements IPMC {
     this.el.classList.add("out")
     this.enter?.unbind()
     await waittime()
+    this.game.kulonUI.restore()
     this.meReady = false
     this.readylist = []
     this.el.remove()

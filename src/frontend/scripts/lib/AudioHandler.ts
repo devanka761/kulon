@@ -59,6 +59,9 @@ export class AudioHandler {
       case "footstep":
         this._playFootstep(options.id ?? fileID, fileID, options)
         break
+      case "peerfootstep":
+        this._playPeerFootstep(options.id ?? fileID, fileID, options)
+        break
       case "ambient":
         this._playAmbient(fileID, options)
         break
@@ -211,6 +214,19 @@ export class AudioHandler {
   private _playFootstep(id: string, fileID: string, options: IOptionsConfig = {}): void {
     this._stopFootstep(id)
     const playingSound = this._createAndPlaySource(fileID, options, LocalList.footstep_volume)
+    if (playingSound) {
+      this.footstep.set(id, playingSound)
+      if (!options.loop) {
+        playingSound.source.onended = () => {
+          if (playingSound.isFading) return
+          this.footstep.delete(id)
+        }
+      }
+    }
+  }
+  private _playPeerFootstep(id: string, fileID: string, options: IOptionsConfig = {}): void {
+    this._stopFootstep(id)
+    const playingSound = this._createAndPlaySource(fileID, options, (LocalList.footstep_volume * 35) / 100)
     if (playingSound) {
       this.footstep.set(id, playingSound)
       if (!options.loop) {

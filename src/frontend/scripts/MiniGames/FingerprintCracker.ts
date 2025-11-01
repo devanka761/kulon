@@ -4,6 +4,7 @@ import audio from "../lib/AudioHandler"
 import { eroot, futor, kel, qutor } from "../lib/kel"
 import modal from "../lib/modal"
 import waittime from "../lib/waittime"
+import chat from "../manager/Chat"
 import { IPMC, IPMCConfig } from "../types/db.types"
 import { ISival, SSKelement } from "../types/lib.types"
 
@@ -392,6 +393,7 @@ export default class FingerprintCracker implements IPMC {
   private navKeyListener(): void {
     this.navKeyHandler = (e) => {
       if (this.isLocked) return
+      if (chat.formOpened) return
       const key = e.key
 
       if (!["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Escape", "i", "I", "Enter", "Tab"].includes(key)) return

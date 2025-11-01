@@ -233,17 +233,19 @@ export class GameEvent {
 
     const person = this.game.map.gameObjects[who]
 
-    if (person instanceof Person && who === "hero") {
+    if (person instanceof Person) {
       person.x = x * TILE_SIZE
       person.y = y * TILE_SIZE
       person.direction = direction || "down"
 
-      peers.send("playerMapChange", {
-        mapId: this.game.map.mapId,
-        x: x * TILE_SIZE,
-        y: y * TILE_SIZE,
-        direction: direction
-      })
+      if (who === "hero") {
+        peers.send("playerMapChange", {
+          mapId: this.game.map.mapId,
+          x: x * TILE_SIZE,
+          y: y * TILE_SIZE,
+          direction: direction
+        })
+      }
     } else if (person instanceof Prop || person instanceof Interactable) {
       person.x = x * TILE_SIZE
       person.y = y * TILE_SIZE

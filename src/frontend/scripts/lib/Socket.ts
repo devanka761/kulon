@@ -48,16 +48,28 @@ class Socket {
     if (db.pmc?.id === "prologue") {
       const pmc = db.pmc as Prologue
       pmc.aborted(db.me)
+      await waittime(500)
     }
     if (db.pmc?.id === "prepare") {
       const pmc = db.pmc as Prepare
       pmc.aborted(db.me)
+      await waittime(500)
     }
     if (db.pmc?.id === "matchmaking") {
       const pmc = db.pmc as MatchMaking
       pmc.aborted()
+      await waittime(500)
     }
-    await waittime(500)
+
+    const checkTitleScreen = async (resolve: ISival) => {
+      if (this.game.isPaused && db.pmc?.id !== "appearance") {
+        await waittime(1000)
+        return checkTitleScreen(resolve)
+      }
+      return resolve()
+    }
+
+    await new Promise((resolve) => checkTitleScreen(resolve))
 
     let oldPmcId: string = "none"
     const checkPmc = async (resolve: ISival) => {

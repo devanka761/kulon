@@ -36,27 +36,52 @@
     .actions {
       width: 100%;
       display: flex;
-      justify-content: right;
+      justify-content: space-between;
       align-items: center;
       animation: slide_up_in 0.5s;
       gap: 10px;
-      .ts > i {
-        font-style: normal;
-      }
-      .btn-ready {
-        text-transform: uppercase;
-        min-width: 250px;
-        padding: 10px;
-        border-radius: 10px;
-        background-color: v.$sgreen;
-        color: v.$white;
+      .kui {
+        flex-shrink: 0;
+        height: 100%;
+        padding: 10px 20px;
         text-align: center;
-        .keyinfo {
-          display: inline;
+        text-transform: uppercase;
+        background-color: v.$pm2;
+        color: v.$pm1;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 3px;
+        border: 2px solid v.$pm1;
+        box-shadow:
+          0 0 0 4px v.$pm2,
+          0 4px 8px rgba(0, 0, 0, 0.5);
+      }
+      .mission {
+        flex-grow: 1;
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        gap: 10px;
+        .ts > i {
+          font-style: normal;
         }
-        &.done {
-          background-color: #00000000;
-          color: v.$cgreen;
+        .btn-ready {
+          text-transform: uppercase;
+          min-width: 250px;
+          padding: 10px;
+          border-radius: 10px;
+          background-color: v.$sgreen;
+          color: v.$white;
+          text-align: center;
+          .keyinfo {
+            display: inline;
+          }
+          &.done {
+            background-color: #00000000;
+            color: v.$cgreen;
+          }
         }
       }
     }

@@ -1,4 +1,5 @@
 import asset from "../data/assets"
+import { playRandomFootstep } from "../manager/randomPlays"
 import { DirectionType, IGameObjectPerson, IObjectEvent, IObjectTalk, MapGameObjects, MapWalls } from "../types/maps.types"
 import { Game } from "./Game"
 import { GameMap } from "./GameMap"
@@ -68,9 +69,11 @@ export class Person {
   currentAnimationName: string
   walkStopTimer: ReturnType<typeof setTimeout> | null = null
 
-  constructor(config: IGameObjectPerson) {
+  footstep: "a" | "b"
+  constructor(config: IGameObjectPerson, footstep: "a" | "b") {
     this.x = config.x || 0
     this.y = config.y || 0
+    this.footstep = footstep
 
     const images = typeof config.src === "string" ? [config.src] : config.src
     const imagePromises = images
@@ -249,7 +252,9 @@ export class Person {
     }
   }
 
-  audioFootSteps() {}
+  audioFootSteps() {
+    playRandomFootstep(this.footstep)
+  }
 
   facePlayer(playerDirection: DirectionType): void {
     const oppositeDirection = {

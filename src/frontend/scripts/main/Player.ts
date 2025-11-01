@@ -9,7 +9,7 @@ import { IKeyHold } from "./InputHandler"
 export class Player extends Person {
   footstep: "a" | "b"
   constructor(config: IGameObjectPerson, footstep: "a" | "b") {
-    super(config)
+    super(config, footstep)
     this.footstep = footstep
   }
 
@@ -92,6 +92,6 @@ export class Player extends Person {
     }
   }
   audioFootSteps(): void {
-    playRandomFootstep(this.footstep)
+    playRandomFootstep(this.footstep, true)
   }
 }

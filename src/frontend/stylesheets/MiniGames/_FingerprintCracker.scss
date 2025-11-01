@@ -26,7 +26,7 @@
     .center {
       width: calc(100% / 2);
       height: 100%;
-      background-color: v.$px1;
+      background-color: rgba(v.$px1, 0.8);
       border: 1px solid v.$pm2;
       .desc {
         width: 100%;

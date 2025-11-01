@@ -85,6 +85,9 @@ export default class KulonUI {
     this.el.append(this.phone.html, this.chat.html, this.gamepad.html)
     eroot().append(this.el)
   }
+  restore() {
+    this.el.append(this.phone.html, this.chat.html, this.gamepad.html)
+  }
   hide(): void {
     this.el.classList.add("hide")
   }

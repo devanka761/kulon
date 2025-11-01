@@ -65,7 +65,7 @@ export default class Prologue implements IPMC {
     this.desc = kel("div", "desc")
 
     this.btnSkip = kel("div", "btn btn-skip", { e: `<div class="keyinfo">enter</div> ${lang.CHAR_CREATION_CONTINUE}` })
-    this.actions.append(this.desc, this.btnSkip)
+    this.actions.append(this.game.kulonUI.chat.html, this.desc, this.btnSkip)
   }
   private async writeDetail(): Promise<void> {
     this.game.pause()
@@ -238,7 +238,8 @@ export default class Prologue implements IPMC {
     backsong.switch(2)
     backsong.start(2000)
     this.resumeMap()
-    this.destroy()
+    await this.destroy()
+    this.game.kulonUI.restore()
   }
   async destroy(next?: IPMC): Promise<void> {
     if (this.isLocked) return
@@ -246,6 +247,7 @@ export default class Prologue implements IPMC {
     this.el.classList.add("out")
     this.enter?.unbind()
     await waittime()
+    this.game.kulonUI.restore()
     db.pmc = undefined
     this.skipped = []
     this.el.remove()

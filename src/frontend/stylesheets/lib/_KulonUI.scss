@@ -96,6 +96,14 @@
     visibility: hidden;
     animation: fade_out 0.3s;
   }
+  &.waiting {
+    transition: none;
+    opacity: 0.3;
+    background-color: #18223690;
+    border: 2px solid v.$sgray;
+    box-shadow: 0 0 0 4px v.$sgray;
+    color: v.$sgray;
+  }
   &.disabled {
     visibility: hidden;
     transition: none;

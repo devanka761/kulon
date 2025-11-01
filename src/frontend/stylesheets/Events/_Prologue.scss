@@ -39,6 +39,7 @@ $subSize: clamp(1.2rem, calc(10vw + 1rem), 1.8rem);
     }
     .actions {
       position: absolute;
+      z-index: 20;
       margin: 0 auto;
       width: 100%;
       bottom: 0;
@@ -53,6 +54,24 @@ $subSize: clamp(1.2rem, calc(10vw + 1rem), 1.8rem);
       -webkit-backdrop-filter: blur(2px);
       opacity: 0;
       animation: fade_in 0.5s ease 0.3s forwards;
+      .kui {
+        flex-shrink: 0;
+        height: 100%;
+        padding: 10px 20px;
+        text-align: center;
+        text-transform: uppercase;
+        background-color: v.$pm2;
+        color: v.$pm1;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 3px;
+        border: 2px solid v.$pm1;
+        box-shadow:
+          0 0 0 4px v.$pm2,
+          0 4px 8px rgba(0, 0, 0, 0.5);
+      }
       .btn-skip {
         padding: 10px;
         border-radius: 5px;

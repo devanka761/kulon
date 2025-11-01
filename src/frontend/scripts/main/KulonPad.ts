@@ -117,6 +117,7 @@ export default class KulonPad {
     const distance = Math.sqrt(dx * dx + dy * dy)
 
     if (distance <= this.radius) {
+      this.el.classList.add("waiting")
       this.isActive = true
       if (!this.animationFrameId) {
         this._startAnimationLoop()
@@ -148,6 +149,7 @@ export default class KulonPad {
   }
 
   private _handleUp(): void {
+    this.el.classList.remove("waiting")
     if (!this.isActive) return
 
     this.isActive = false

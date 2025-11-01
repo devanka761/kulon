@@ -44,11 +44,31 @@
       align-items: center;
       gap: v.$bigPadding;
       animation: slide_up_in 0.3s;
+      .kui {
+        flex-shrink: 0;
+        height: 100%;
+        padding: 10px 20px;
+        text-align: center;
+        text-transform: uppercase;
+        background-color: v.$pm2;
+        color: v.$pm1;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 3px;
+        border: 2px solid v.$pm1;
+        box-shadow:
+          0 0 0 4px v.$pm2,
+          0 4px 8px rgba(0, 0, 0, 0.5);
+      }
       .btn {
         display: block;
         width: calc(100% / 2);
+        height: 100%;
         text-align: center;
         padding: 10px;
+        border-radius: 5px;
         .keyinfo {
           display: inline;
         }

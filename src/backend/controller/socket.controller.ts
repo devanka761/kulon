@@ -15,6 +15,7 @@ import { IItem } from "../types/item.types"
 import Item from "../models/ItemModel"
 import webhook from "../lib/webhook"
 import cfg from "../../config/cfg"
+import xhr from "../lib/xhr"
 
 function peerRequests(uid: string, s: SocketMessage) {
   if (!validate(["to"], s)) return
@@ -174,6 +175,19 @@ const socketMessage: SocketHandler = {
   usePhone(uid) {
     if (prog.isDone(uid, "firstphone")) return
     prog.update(uid, "firstphone", 1)
+  },
+  igc(uid, s) {
+    const { text, username } = s
+    if (!text || typeof text !== "string") return
+    const content = text.trim()
+    if (content.length < 1) return
+    const displayName = `${typeof username === "string" ? "@" + username + " " : ""}#${uid}`
+    if ("DISCORD_IGC" in cfg && typeof cfg["DISCORD_IGC"] === "string") {
+      xhr.post(cfg.DISCORD_IGC, null, {
+        content,
+        username: displayName.trim()
+      })
+    }
   },
   async payout(uid) {
     const job = dbjob.getByPlayer(uid)
