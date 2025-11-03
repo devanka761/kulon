@@ -14,7 +14,6 @@ import Prepare from "../Events/Prepare"
 import MatchMaking from "../Events/MatchMaking"
 import { ISival } from "../types/lib.types"
 import backsong from "../APIs/BackSongAPI"
-import { GameEvent } from "../main/GameEvent"
 
 function socketError(err: Event) {
   console.error(err)
@@ -127,16 +126,23 @@ class Socket {
     this._resetOldData()
     this.updateData(newUser.data)
 
-    await waittime(1000)
     peers.closeAll()
-    await waittime(1000)
 
     if (db.lobby.status === true) {
       db.lobby.disable()
-      const eventHandler = new GameEvent(this.game, {
-        type: "lobby"
-      })
-      await eventHandler.init()
+      const myMap = this.game.map.mapId
+      if (myMap !== "kulonSafeHouse") {
+        await this.game.startCutscene([
+          { type: "changeMap", map: "kulonSafeHouse", x: 3, y: 8, direction: "up", door: true },
+          { type: "stand", who: "hero", direction: "up", time: 150 },
+          { type: "walk", who: "hero", direction: "up" },
+          { type: "walk", who: "hero", direction: "up" },
+          { type: "walk", who: "hero", direction: "up" },
+          { type: "stand", who: "hero", direction: "up", time: 300 },
+          { type: "stand", who: "hero", direction: "right", time: 170 },
+          { type: "stand", who: "hero", direction: "down", time: 500 }
+        ])
+      }
     }
   }
   private async _onClosed(): Promise<void> {
