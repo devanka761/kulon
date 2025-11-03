@@ -7,7 +7,7 @@ type BackSongArr = BackSongAudio[]
 const bgms: BackSongArr = [
   ["field_theme_1", "night_theme_1", "cave_theme_2", "cave_theme_1", "field_theme_1"],
   ["the_veil_of_night_theme", "minds_eye_theme"],
-  ["distant_banjo", "playful"]
+  ["distant_banjo", "playful", "in_the_deep_woods"]
 ]
 
 class BackSongAPI {
@@ -18,6 +18,11 @@ class BackSongAPI {
   private audio: HTMLAudioElement | null = null
   private isPaused: boolean = false
   start(timeout?: number): void {
+    if (this.audio) {
+      this.audio.pause()
+      this.audio.remove()
+      this.audio = null
+    }
     const audioVolume = LocalList.bgm_volume <= 10 && LocalList.bgm_volume >= 0 ? LocalList.bgm_volume / 10 : 0.8
 
     const audio = new Audio(sound[bgms[this.type][this.index]].src)
@@ -80,24 +85,25 @@ class BackSongAPI {
       }
     }, duration / steps)
   }
-  switch(newType: number): void {
+  switch(newType: number, newIndex: number = 0): void {
+    if (this.type === newType) return
     this.type = newType
     this.lastIndex = bgms[newType].length - 1
-    this.index = 0
+    this.index = newIndex
   }
 
   destroy(timeout?: number): void {
     if (!this.audio) return
+    const oldAudio = this.audio
     this.type = 0
     this.index = 0
     this.repeated = 1
     this.lastIndex = 0
     this.isPaused = false
-    this._fade(this.audio, 0, timeout || 300, () => {
-      if (!this.audio) return
-      this.audio.pause()
-      this.audio.remove()
-      this.audio = null
+    this._fade(oldAudio, 0, timeout || 300, () => {
+      if (!oldAudio) return
+      oldAudio.pause()
+      oldAudio.remove()
     })
   }
 }

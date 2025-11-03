@@ -127,14 +127,16 @@ class Socket {
     this._resetOldData()
     this.updateData(newUser.data)
 
+    await waittime(1000)
     peers.closeAll()
-    console.log(db.lobby.status)
+    await waittime(1000)
+
     if (db.lobby.status === true) {
       db.lobby.disable()
       const eventHandler = new GameEvent(this.game, {
         type: "lobby"
       })
-      eventHandler.init()
+      await eventHandler.init()
     }
   }
   private async _onClosed(): Promise<void> {

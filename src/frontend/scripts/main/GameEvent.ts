@@ -476,6 +476,8 @@ export class GameEvent {
     })
 
     const key = session.data.key
+    backsong.switch(2, 1)
+    backsong.start(5000)
     notip({ a: `LOBBY ${key}`, b: "Entered Random Public Lobby", ic: "users-rays" })
   }
   init() {

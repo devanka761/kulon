@@ -20,12 +20,14 @@ import zender from "../lib/zender"
 import clientBuild from "../lib/clientBuild"
 import Account from "../models/AccountModel"
 import webhook from "../lib/webhook"
+import { exitCurrentLobby } from "./lobby.controller"
 
 function initSocketClient(uid: string): ISocketConfig {
   zender("system", uid, "newLogin", { userId: uid })
 
   const oldClientId = peer.parse(uid)
   if (oldClientId) {
+    exitCurrentLobby(uid)
     peer.remove(oldClientId)
     peer.unregister(uid)
   }
