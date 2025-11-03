@@ -106,9 +106,9 @@ export class Game {
 
     if (db.onduty < 1) {
       db.onduty = 1
-      const isDone = LocalList["GAME_MANUALS"]
+      const isDone = LocalList["KULON_INTRO"]
       this.player.y = isDone ? 80 : 96
-      await this.startCutscene(introEvents[LocalList["GAME_MANUALS"] ? "DONE" : "FIRST"] as IObjectEvent[])
+      await this.startCutscene(introEvents[LocalList["KULON_INTRO"] ? "DONE" : "FIRST"] as IObjectEvent[])
       if (!isDone) {
         if (db.mails.getAll.length >= 1) {
           await this.startCutscene(introEvents.MAIL_INITIAL as IObjectEvent[])

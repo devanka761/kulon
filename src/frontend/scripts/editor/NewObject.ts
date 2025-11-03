@@ -400,6 +400,7 @@ export default class NewObject {
       { id: "playSound", label: "Play Sound" },
       { id: "payout", label: "Mission Complete" },
       { id: "missionBoard", label: "Mission Board" },
+      { id: "lobby", label: "Enter/Exit Lobby" },
       { id: "jumpScare", label: "JumpScare" },
       { id: "addnote", label: "Add Note" },
       { id: "readnote", label: "Read Current Note" }

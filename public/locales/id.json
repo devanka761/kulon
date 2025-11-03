@@ -219,6 +219,8 @@
   "ST_NOT_READY": "Fitur ini masih dalam tahap pengembangan",
   "TC_JOINED": "terhubung ke team chat",
   "TC_LEFT": "terputus dari team chat",
+  "LB_JOINED": "bergabung ke lobby",
+  "LB_LEFT": "keluar dari lobby",
   "PAYOUT_COMPLETED": "BERHASIL",
   "PAYOUT_FAILED": "GAGAL",
   "PAYOUT_WON": "MENANG",

@@ -13,6 +13,7 @@ import MapList from "../data/MapList"
 import notip from "./notip"
 import { paperAdd } from "../data/notes"
 import { Interactable } from "../main/Interactable"
+import lang from "../data/language"
 
 const INVALID_CONTROLS = ["run", "init", "constructor", "game"]
 
@@ -62,6 +63,11 @@ class PeerMessage {
     })
   }
 
+  lobbyConfirm(data: ISival): void {
+    chat.add(data.from, lang.LB_JOINED, true)
+    this.requestPosition(data)
+  }
+
   requestPosition(data: ISival): void {
     peers.sendOne(data.from, "playerMapChange", {
       mapId: this.game.map.mapId,
@@ -72,6 +78,8 @@ class PeerMessage {
   }
 
   playerMove(data: ISival): void {
+    const myMap = this.game.map.mapId
+
     const remotePlayer = this.game.map.gameObjects[`crew_${data.from}`] as Person
     const peerData = peers.get(data.from)
 
@@ -84,7 +92,7 @@ class PeerMessage {
 
     if (!remotePlayer) return
 
-    if (data.mapId === this.game.map.mapId) {
+    if (data.mapId === myMap) {
       remotePlayer.targetX = data.x
       remotePlayer.targetY = data.y
       remotePlayer.direction = data.direction
@@ -120,6 +128,8 @@ class PeerMessage {
       pmc.updateScoreBoard(data.from, data.mapId)
     }
 
+    const myMap = this.game.map.mapId
+
     const remotePlayerObject = this.game.map.gameObjects[`crew_${data.from}`] as Person
     const peerData = peers.get(data.from)
 
@@ -130,18 +140,22 @@ class PeerMessage {
       peerData.setMapId(data.mapId)
     }
 
-    if (data.mapId === this.game.map.mapId) {
+    if (data.mapId === myMap) {
+      if (myMap === "kulonSafeHouse") return
       if (!remotePlayerObject) {
-        const peer = db.job.getUser(data.from)
+        const peer = peers.get(data.from)!.user
         if (peer) {
-          const newPeerObject = new Person({
-            type: "Person",
-            x: data.x,
-            y: data.y,
-            direction: data.direction,
-            src: Object.values(peer.skin),
-            isRemote: true
-          })
+          const newPeerObject = new Person(
+            {
+              type: "Person",
+              x: data.x,
+              y: data.y,
+              direction: data.direction,
+              src: Object.values(peer.skin),
+              isRemote: true
+            },
+            this.game.map.footstep
+          )
           this.game.map.gameObjects[`crew_${peer.id}`] = newPeerObject
           newPeerObject.targetX = data.x
           newPeerObject.targetY = data.y

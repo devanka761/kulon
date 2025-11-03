@@ -12,7 +12,9 @@ import MatchMaking from "../Events/MatchMaking"
 import Prepare from "../Events/Prepare"
 import Prologue from "../Events/Prologue"
 import { Game } from "../main/Game"
+import chat from "../manager/Chat"
 import ForceClose from "../pages/ForceClose"
+import { IUser } from "../types/db.types"
 import { ISival } from "../types/lib.types"
 import { IAchievements } from "../types/trohpy.types"
 import { achievement } from "./achievement"
@@ -137,16 +139,38 @@ class SocketHandler {
     }
     db.waiting.add({ id: "jobjoin", user: data.user })
   }
+  lobbyJoin(data: ISival): void {
+    if (!data.user) return
+    const user = data.user as IUser
+    db.lobby.add(user)
+  }
+  lobbyLeft(data: ISival): void {
+    db.lobby.remove(data.from)
+    this.game.map.unmountRemotePlayer(data.from)
+    if (["kulonVilla", "kulonSafeHouse"].find((map) => map === this.game.map.mapId)) {
+      chat.add(data.from, lang.LB_LEFT, true)
+    }
+  }
   shake(data: ISival, isNew: boolean = false): void {
-    if (db.pmc?.id !== "matchmaking") return
-    const pmc = db.pmc as MatchMaking
     const peerMethod = isNew ? "add" : "get"
 
-    const user = pmc.members.getCrew(data.from)
-    if (!user) return
+    if (db.pmc?.id === "matchmaking") {
+      const pmc = db.pmc as MatchMaking
 
-    const { remote } = peers[peerMethod](user.user) as CharacterAPI
-    remote.handleSignal(data)
+      const user = pmc.members.getCrew(data.from)
+      if (!user) return
+
+      const { remote } = peers[peerMethod](user.user) as CharacterAPI
+      remote.handleSignal(data)
+    }
+
+    if (db.lobby.status === true) {
+      const user = db.lobby.get(data.from)
+      if (!user) return
+
+      const { remote } = peers[peerMethod](user) as CharacterAPI
+      remote.handleSignal(data)
+    }
   }
   offer(data: ISival): void {
     this.shake(data, true)

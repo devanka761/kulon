@@ -10,6 +10,8 @@ interface ISignalData {
 }
 
 interface IPeerCallHandlerOptions {
+  onOpened?: () => void
+  onClosed?: () => void
   onSignal: (data: ISignalData) => void
   onDisconnected?: () => void
   onConnectionFailed?: () => void
@@ -41,8 +43,12 @@ export default class Peer {
       const state = this.peerConnection.connectionState
       if (state === "disconnected" || state === "closed") {
         this.options.onDisconnected?.()
+        this.options.onClosed?.()
+        this.dataChannel?.close()
       } else if (state === "failed") {
         this.options.onConnectionFailed?.()
+        this.options.onClosed?.()
+        this.dataChannel?.close()
       }
     }
 
@@ -53,9 +59,13 @@ export default class Peer {
   }
 
   private _setupDataChannelEvents(channel: RTCDataChannel): void {
-    channel.onopen = () => {}
+    channel.onopen = () => this.options.onOpened?.()
+
     channel.onerror = () => {}
-    channel.onclose = () => this.options.onDisconnected?.()
+    channel.onclose = () => {
+      this.options.onDisconnected?.()
+      this.options.onClosed?.()
+    }
     channel.onmessage = (e) => {
       try {
         const msg = JSON.parse(e.data.toString())
@@ -114,6 +124,14 @@ export default class Peer {
   close(): void {
     if (this.dataChannel) this.dataChannel.close()
     this.peerConnection.close()
+  }
+
+  onOpened(fn?: () => void): void {
+    if (fn) this.options.onOpened = () => fn()
+  }
+
+  onClosed(fn?: () => void): void {
+    if (fn) this.options.onClosed = () => fn()
   }
 
   send(message: { [key: string]: string | boolean | number | null }): void {

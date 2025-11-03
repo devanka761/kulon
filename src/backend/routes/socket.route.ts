@@ -6,6 +6,7 @@ import { processSocketMessages, convertProg, timeOnlinePassed } from "../control
 import { exitFromJob } from "../controller/job.controller"
 import webhook from "../lib/webhook"
 import cfg from "../../config/cfg"
+import { exitCurrentLobby } from "../controller/lobby.controller"
 
 function webSocketApp(ws: WebSocketWithHeartbeat, req: Request) {
   if (!req.user || !req.user.id) {
@@ -52,6 +53,7 @@ function webSocketApp(ws: WebSocketWithHeartbeat, req: Request) {
     peer.remove(clientId)
     peer.unregister(userId)
     exitFromJob(userId)
+    exitCurrentLobby(userId)
     convertProg()
     logger.info(`Offline  ${userId} ${clientId}`)
     webhook(cfg.DISCORD_USERLOG, { description: `ID ${userId} LEFT`, theme: "RED" })

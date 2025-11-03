@@ -16,10 +16,22 @@ import Item from "../models/ItemModel"
 import webhook from "../lib/webhook"
 import cfg from "../../config/cfg"
 import xhr from "../lib/xhr"
+import { getCurrentLobby } from "./lobby.controller"
 
 function peerRequests(uid: string, s: SocketMessage) {
   if (!validate(["to"], s)) return
   if (uid === s.to) return
+
+  const lobbyUsers = getCurrentLobby(uid)
+  if (lobbyUsers) {
+    const me = lobbyUsers.some((usr) => usr === uid)
+    const them = lobbyUsers.some((usr) => usr === s.to)
+
+    if (me && them) {
+      zender(uid, s.to as string, s.type as string, s)
+      return
+    }
+  }
 
   const job = dbjob.getByPlayer(uid)
   if (!job) return

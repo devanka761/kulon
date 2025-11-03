@@ -31,3 +31,7 @@ export interface ISocketConfig {
   id: string
   host: string
 }
+
+export interface ILobbies {
+  [key: string]: string[]
+}

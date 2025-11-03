@@ -33,6 +33,8 @@ import { paperAdd, paperGet } from "../data/notes"
 import Paper from "../Events/Paper"
 import { Prop } from "./Prop"
 import { Interactable } from "./Interactable"
+import xhr from "../lib/xhr"
+import { IUser } from "../types/db.types"
 
 type Resolve = (val?: string) => void
 
@@ -450,6 +452,31 @@ export class GameEvent {
   jumpScare(resolve: Resolve): void {
     const jumpscare = new JumpScare({ onComplete: () => resolve() })
     jumpscare.init()
+  }
+  async lobby(resolve: Resolve): Promise<void> {
+    resolve()
+    if (db.lobby.status === true) return
+
+    db.lobby.enable()
+
+    const session = await xhr.get("/x/lobby/joinRandom")
+    if (!session.ok || !session.data || !session.data.users) return
+
+    const users = session.data.users as IUser[]
+    users.forEach((usr) => {
+      db.lobby.add(usr)
+      const { remote } = peers.add(usr)!
+      remote.onOpened(() => {
+        remote.send({
+          from: db.me.id,
+          type: "lobbyConfirm"
+        })
+      })
+      remote.call()
+    })
+
+    const key = session.data.key
+    notip({ a: `LOBBY ${key}`, b: "Entered Random Public Lobby", ic: "users-rays" })
   }
   init() {
     return new Promise((resolve: Resolve) => {

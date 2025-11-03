@@ -139,6 +139,7 @@ export class GameMap {
   }
 
   mountRemotePlayers(): void {
+    if (this.mapId === "kulonSafeHouse") return
     peers.getAll().forEach((peer) => {
       if (peer.mapId === this.mapId) {
         const peerObject = new Person(
@@ -153,8 +154,18 @@ export class GameMap {
           this.footstep
         )
         this.gameObjects[`crew_${peer.user.id}`] = peerObject
+        peer.remote.onClosed(() => {
+          this.unmountRemotePlayer(peer.user.id)
+        })
       }
     })
+  }
+
+  unmountRemotePlayer(userId: string): void {
+    const playerKey = `crew_${userId}`
+    if (this.gameObjects[playerKey]) {
+      delete this.gameObjects[playerKey]
+    }
   }
 
   addGameObject(...args: IGameObjectData[]): void {

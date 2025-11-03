@@ -507,6 +507,27 @@ const EventMethod: IEventMethod = {
       </div>
     </div>`
     return form
+  },
+  lobby(s) {
+    //
+    // { id: "lobby", label: "Enter/Exit Lobby" },
+    const form = createForm()
+    form.innerHTML = `
+    <div class="field">
+      <div class="desc">Event</div>
+      <div class="title">Lobby</div>
+    </div>
+    <div class="field">
+      <label for="action">Exit Status</label>
+      <input type="text" autocomplete="off" name="action" id="action" placeholder="ex: Exiting" maxlength="10" value="${s.action || ""}" />
+    </div>
+    <div class="field">
+      <div class="action-buttons buttons">
+        <div class="btn btn-cancel">CANCEL</div>
+        <button class="btn btn-ok" type="submit">OK</button>
+      </div>
+    </div>`
+    return form
   }
 }
 

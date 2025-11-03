@@ -20,6 +20,7 @@ import { CharacterAPI } from "../APIs/CharacterAPI"
 import Prologue from "../Events/Prologue"
 import Paper from "../Events/Paper"
 import { paperGet } from "../data/notes"
+import chat from "../manager/Chat"
 
 const INVALID_CONTROLS = ["run", "init", "constructor", "game"]
 
@@ -133,12 +134,17 @@ class ItemRun {
       return config.classBefore.init()
     }
 
+    chat.add(db.me.id, lang.LB_LEFT, true)
+    db.lobby.disable()
+
     const job = await modal.loading(xhr.post("/x/job/create", { mission_id: config.mission.id }), "CREATING")
     if (!job.ok) {
       const price = cloud_items.find((citm) => citm.id === config.mission.price[0])
       await modal.alert((lang[job.msg] || lang.ERROR).replace("{price}", price!.name[LocalList.lang!]))
       return config.classBefore.init()
     }
+
+    peers.closeAll()
     db.job.create(job.data)
 
     return new MatchMaking({
@@ -153,6 +159,9 @@ class ItemRun {
       return config.classBefore.init()
     }
 
+    chat.add(db.me.id, lang.LB_LEFT, true)
+    db.lobby.disable()
+
     const joinType = config.code ? "code" : "invite"
     const url = "/x/job/join/" + joinType
     const data = { [joinType]: config[joinType] }
@@ -162,8 +171,34 @@ class ItemRun {
       await modal.alert(lang[job.msg] || lang.MM_JOB_INVALID)
       return config.classBefore.init()
     }
+    peers.closeAll()
+
     const jobData = job.data as IJobToReturn
     db.job.create(jobData)
+
+    const users = jobData.users.filter((user) => user.id !== db.me.id)
+    users.forEach((user) => {
+      const { remote } = peers.add(user) as CharacterAPI
+      remote.call()
+    })
+
+    const myMap = this.game.map.mapId
+    if (myMap !== "kulonSafeHouse") {
+      await this.game.startCutscene([
+        { type: "changeMap", map: "kulonSafeHouse", x: 3, y: 8, direction: "up", door: true },
+        { type: "stand", who: "hero", direction: "up", time: 150 },
+        { type: "walk", who: "hero", direction: "up" },
+        { type: "walk", who: "hero", direction: "up" },
+        { type: "walk", who: "hero", direction: "up" },
+        { type: "walk", who: "hero", direction: "up" },
+        { type: "stand", who: "hero", direction: "up", time: 300 },
+        { type: "stand", who: "hero", direction: "right", time: 170 },
+        { type: "stand", who: "hero", direction: "down", time: 500 }
+      ])
+      this.game.forceCutscene(true)
+      this.game.kulonUI.hide()
+      this.game.kulonPad.hide()
+    }
 
     const matchMaking = new MatchMaking({
       onComplete: config.onComplete,
@@ -171,13 +206,10 @@ class ItemRun {
       mission: config.mission
     })
     matchMaking.init()
-    jobData.users
-      .filter((user) => user.id !== db.me.id)
-      .forEach((user) => {
-        const { remote } = peers.add(user) as CharacterAPI
-        remote.call()
-        matchMaking.updateCrew(user)
-      })
+
+    users.forEach((user) => {
+      matchMaking.updateCrew(user)
+    })
   }
   async leaveJob(config: ISival): Promise<void> {
     const confirmLeave = await modal.confirm(lang.MS_CONFIRM_LEAVE)

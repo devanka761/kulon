@@ -219,6 +219,8 @@
   "ST_NOT_READY": "This feature is still under development",
   "TC_JOINED": "joined the team chat",
   "TC_LEFT": "left the team chat",
+  "LB_JOINED": "joined the lobby",
+  "LB_LEFT": "left the lobby",
   "PAYOUT_COMPLETED": "COMPLETED",
   "PAYOUT_FAILED": "FAILED",
   "PAYOUT_WON": "WON",

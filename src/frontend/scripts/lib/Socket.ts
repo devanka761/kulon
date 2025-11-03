@@ -14,6 +14,7 @@ import Prepare from "../Events/Prepare"
 import MatchMaking from "../Events/MatchMaking"
 import { ISival } from "../types/lib.types"
 import backsong from "../APIs/BackSongAPI"
+import { GameEvent } from "../main/GameEvent"
 
 function socketError(err: Event) {
   console.error(err)
@@ -125,6 +126,16 @@ class Socket {
 
     this._resetOldData()
     this.updateData(newUser.data)
+
+    peers.closeAll()
+    console.log(db.lobby.status)
+    if (db.lobby.status === true) {
+      db.lobby.disable()
+      const eventHandler = new GameEvent(this.game, {
+        type: "lobby"
+      })
+      eventHandler.init()
+    }
   }
   private async _onClosed(): Promise<void> {
     this.ws = undefined

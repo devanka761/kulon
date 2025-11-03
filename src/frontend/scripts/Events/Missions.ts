@@ -173,7 +173,7 @@ export default class Missions implements IPMC {
     this.boards = [this.eboard1, this.eboard2]
   }
   private writeStory(): void {
-    const missions = mission_list.filter((k) => !k.beta && k.group === 1) as IMissionList[]
+    const missions = mission_list.filter((k) => k.group === 1) as IMissionList[]
     const eboard = futor(".boards .board .list-story", this.el)
 
     missions.forEach((s, i) => {

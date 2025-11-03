@@ -1,6 +1,7 @@
 import BagAPI from "../APIs/BagAPI"
 import InvitesAPI from "../APIs/InvitesAPI"
 import JobAPI from "../APIs/JobAPI"
+import LobbyAPI from "../APIs/LobbyAPI"
 import MailsAPI from "../APIs/MailsAPI"
 import RoomAPI from "../APIs/RoomAPI"
 import TrophiesAPI from "../APIs/TrophiesAPI"
@@ -93,6 +94,7 @@ export interface IDB {
   mails: MailsAPI
   trophies: TrophiesAPI
   job: JobAPI
+  lobby: LobbyAPI
   invites: InvitesAPI
   pmc?: IPMC
   pmx?: IPMX

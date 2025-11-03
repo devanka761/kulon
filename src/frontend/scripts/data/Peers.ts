@@ -24,6 +24,8 @@ class Peers {
     return this.data.has(userId)
   }
   add(user: IUser): CharacterAPI | undefined {
+    if (this.has(user.id)) return this.get(user.id)
+
     const remote = new Peer({
       onSignal(data) {
         socket.send(data.type, { ...data, to: user.id })

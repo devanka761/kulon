@@ -58,7 +58,7 @@ class Chat {
     const emptyEl = qutor(".empty", this.elist)
     if (emptyEl) emptyEl.remove()
 
-    if (usr_id !== db.me.id && !db.job.playerExists(usr_id)) return
+    if (usr_id !== db.me.id && !peers.has(usr_id) && !db.job.playerExists(usr_id)) return
 
     usr_txt = usr_txt.trim()
 
@@ -71,7 +71,7 @@ class Chat {
     const card = kel("p", "cht")
 
     card.innerHTML = `<i class="uname${isSystem ? " y" : ""}"></i><i class="txt${isSystem ? " y" : ""}"></i>`
-    const currname = (usr_id === db.me.id ? db.me : db.job.getUser(usr_id))!.username
+    const currname = (usr_id === db.me.id ? db.me : peers.get(usr_id)?.user || db.job.getUser(usr_id))!.username
 
     futor(".uname", card).innerText = currname
     futor(".txt", card).innerText = usr_txt

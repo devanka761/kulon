@@ -1,6 +1,7 @@
 import BagAPI from "../APIs/BagAPI"
 import InvitesAPI from "../APIs/InvitesAPI"
 import JobAPI from "../APIs/JobAPI"
+import LobbyAPI from "../APIs/LobbyAPI"
 import MailsAPI from "../APIs/MailsAPI"
 import RoomAPI from "../APIs/RoomAPI"
 import TrophiesAPI from "../APIs/TrophiesAPI"
@@ -15,6 +16,7 @@ const db: IDB = {
   mails: new MailsAPI(),
   trophies: new TrophiesAPI(),
   job: new JobAPI(),
+  lobby: new LobbyAPI(),
   invites: new InvitesAPI(),
   pmc: undefined,
   pmx: undefined,

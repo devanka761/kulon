@@ -10,6 +10,7 @@ import zender from "../lib/zender"
 import prog from "../main/prog"
 import webhook from "../lib/webhook"
 import cfg from "../../config/cfg"
+import { exitCurrentLobby } from "./lobby.controller"
 
 export async function createJob(uid: string, s: { mission_id: string }): Promise<IRepTempB> {
   if (!validate(["mission_id"], s)) return { code: 400, msg: "MM_JOB_INVALID" }
@@ -42,6 +43,9 @@ export async function createJob(uid: string, s: { mission_id: string }): Promise
   if (!itemValid) return { code: 400, msg: `EXC_NOT_ENOUGH` }
 
   const jobData: IJob = dbjob.create(uid, s.mission_id, itemValid.id)
+
+  exitCurrentLobby(uid)
+
   return { code: 200, data: jobData }
 }
 
@@ -113,6 +117,8 @@ export async function joinJob(uid: string, job: IJob): Promise<IRepTempB> {
   }
   const userToInclude = users.find((usr) => usr.id === uid)
   addPlayer.players.forEach((usr) => zender(uid, usr.id, "jobJoin", { user: userToInclude }))
+
+  exitCurrentLobby(uid)
 
   return { code: 200, data: jobToReturn }
 }
