@@ -24,7 +24,9 @@ class Peers {
     return this.data.has(userId)
   }
   add(user: IUser): CharacterAPI | undefined {
-    if (this.has(user.id)) return this.get(user.id)
+    if (this.has(user.id)) {
+      this.close(user.id)
+    }
 
     const remote = new Peer({
       onSignal(data) {
@@ -99,7 +101,7 @@ class Peers {
     this.data.forEach((char) => char.setMapId(newMapId))
   }
   closeAll(): void {
-    this.data.forEach((character) => character.remote.close())
+    this.data.forEach((character) => this.close(character.user.id))
     this.data.clear()
   }
 }

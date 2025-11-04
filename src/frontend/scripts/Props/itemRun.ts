@@ -136,6 +136,7 @@ class ItemRun {
 
     chat.add(db.me.id, lang.LB_LEFT, true)
     db.lobby.disable()
+    peers.closeAll()
 
     const job = await modal.loading(xhr.post("/x/job/create", { mission_id: config.mission.id }), "CREATING")
     if (!job.ok) {
@@ -144,7 +145,6 @@ class ItemRun {
       return config.classBefore.init()
     }
 
-    peers.closeAll()
     db.job.create(job.data)
 
     return new MatchMaking({
@@ -161,6 +161,7 @@ class ItemRun {
 
     chat.add(db.me.id, lang.LB_LEFT, true)
     db.lobby.disable()
+    peers.closeAll()
 
     const joinType = config.code ? "code" : "invite"
     const url = "/x/job/join/" + joinType
@@ -171,16 +172,9 @@ class ItemRun {
       await modal.alert(lang[job.msg] || lang.MM_JOB_INVALID)
       return config.classBefore.init()
     }
-    peers.closeAll()
 
     const jobData = job.data as IJobToReturn
     db.job.create(jobData)
-
-    const users = jobData.users.filter((user) => user.id !== db.me.id)
-    users.forEach((user) => {
-      const { remote } = peers.add(user) as CharacterAPI
-      remote.call()
-    })
 
     const myMap = this.game.map.mapId
     if (myMap !== "kulonSafeHouse") {
@@ -200,6 +194,8 @@ class ItemRun {
       this.game.kulonPad.hide()
     }
 
+    const users = jobData.users.filter((user) => user.id !== db.me.id)
+
     const matchMaking = new MatchMaking({
       onComplete: config.onComplete,
       game: this.game,
@@ -208,6 +204,8 @@ class ItemRun {
     matchMaking.init()
 
     users.forEach((user) => {
+      const { remote } = peers.add(user) as CharacterAPI
+      remote.call()
       matchMaking.updateCrew(user)
     })
   }

@@ -22,6 +22,7 @@ interface IPeerCallHandlerOptions {
 export default class Peer {
   private peerConnection: RTCPeerConnection = new RTCPeerConnection(getPeerConfig())
   private dataChannel?: RTCDataChannel
+  private stopped: boolean = false
   constructor(private options: IPeerCallHandlerOptions) {
     this._setupListeners()
   }
@@ -35,21 +36,48 @@ export default class Peer {
     this.peerConnection.oniceconnectionstatechange = () => {
       const state = this.peerConnection.iceConnectionState
       if (state === "closed" || state === "disconnected" || state === "failed") {
+        if (this.stopped) {
+          this.peerConnection.oniceconnectionstatechange = null
+          this.peerConnection.onconnectionstatechange = null
+          return
+        }
+        this.stopped = true
         this.options.onUnavailable?.()
         this.options.onClosed?.()
+        this.peerConnection.oniceconnectionstatechange = null
+        this.peerConnection.onconnectionstatechange = null
+        this.close()
       }
     }
 
     this.peerConnection.onconnectionstatechange = () => {
       const state = this.peerConnection.connectionState
       if (state === "disconnected" || state === "closed") {
+        if (this.stopped) {
+          this.peerConnection.oniceconnectionstatechange = null
+          this.peerConnection.onconnectionstatechange = null
+          return
+        }
+        this.stopped = true
         this.options.onDisconnected?.()
         this.options.onClosed?.()
         this.dataChannel?.close()
+        this.peerConnection.onconnectionstatechange = null
+        this.peerConnection.oniceconnectionstatechange = null
+        this.close()
       } else if (state === "failed") {
+        if (this.stopped) {
+          this.peerConnection.oniceconnectionstatechange = null
+          this.peerConnection.onconnectionstatechange = null
+          return
+        }
+        this.stopped = true
         this.options.onConnectionFailed?.()
         this.options.onClosed?.()
         this.dataChannel?.close()
+        this.peerConnection.onconnectionstatechange = null
+        this.peerConnection.oniceconnectionstatechange = null
+        this.close()
       }
     }
 
@@ -64,8 +92,17 @@ export default class Peer {
 
     channel.onerror = () => {}
     channel.onclose = () => {
+      if (this.stopped) {
+        channel.onclose = null
+        this.peerConnection.oniceconnectionstatechange = null
+        this.peerConnection.onconnectionstatechange = null
+        return
+      }
+      this.stopped = true
       this.options.onDisconnected?.()
       this.options.onClosed?.()
+      channel.onclose = null
+      this.close()
     }
     channel.onmessage = (e) => {
       try {
@@ -125,10 +162,6 @@ export default class Peer {
   close(): void {
     if (this.dataChannel) this.dataChannel.close()
     this.peerConnection.close()
-  }
-
-  get isClosed(): boolean {
-    return this.dataChannel?.readyState === "closed" || this.dataChannel?.readyState === "closing" || this.peerConnection.connectionState === "disconnected" || this.peerConnection.connectionState === "failed" || this.peerConnection.connectionState === "connected" || this.peerConnection.signalingState === "closed"
   }
 
   onOpened(fn?: () => void): void {

@@ -114,7 +114,7 @@
   left: 50%;
   transform: translate(-50%, 0);
   width: fit-content;
-  background-color: rgba(v.$pm1, 0.7);
+  background-color: rgba(v.$pm1, 0.8);
   color: v.$px1;
   padding: v.$mediumPadding;
   border-radius: 14px;
@@ -125,7 +125,7 @@
   animation: backsong_in 1s ease;
   border: 2px solid v.$px1;
   box-shadow:
-    0 0 0 2px rgba(v.$pm1, 0.7),
+    0 0 0 2px rgba(v.$pm1, 0.8),
     0 4px 8px rgba(0, 0, 0, 0.5);
   .icon {
     flex-shrink: 0;

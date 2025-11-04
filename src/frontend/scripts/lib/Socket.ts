@@ -45,6 +45,8 @@ class Socket {
     this.ws?.removeEventListener("message", socketMessage)
   }
   private async _reconnect(): Promise<void> {
+    this.ws?.removeEventListener("error", socketError)
+    this.ws?.removeEventListener("message", socketMessage)
     if (db.pmc?.id === "prologue") {
       const pmc = db.pmc as Prologue
       pmc.aborted(db.me)
@@ -125,9 +127,6 @@ class Socket {
 
     if (db.job.status === 3) this.game.startCutscene([{ type: "playerLeft", user: db.me }])
 
-    this._resetOldData()
-    this.updateData(newUser.data)
-
     if (db.lobby.status === true) {
       db.lobby.disable()
       const myMap = this.game.map.mapId
@@ -142,8 +141,12 @@ class Socket {
           { type: "stand", who: "hero", direction: "right", time: 170 },
           { type: "stand", who: "hero", direction: "down", time: 500 }
         ])
+        this.game.forceCutscene(false)
       }
     }
+
+    this._resetOldData()
+    this.updateData(newUser.data)
   }
   private async _onClosed(): Promise<void> {
     this.ws = undefined
@@ -171,6 +174,7 @@ class Socket {
     this.game.destroy()
   }
   private _resetOldData(): void {
+    peers.closeAll()
     db.room.reset()
     db.bag.reset()
     db.mails.reset()
