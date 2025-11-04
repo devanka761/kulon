@@ -36,6 +36,7 @@ export default class Peer {
       const state = this.peerConnection.iceConnectionState
       if (state === "closed" || state === "disconnected" || state === "failed") {
         this.options.onUnavailable?.()
+        this.options.onClosed?.()
       }
     }
 
@@ -70,8 +71,8 @@ export default class Peer {
       try {
         const msg = JSON.parse(e.data.toString())
         this.options.onMessage?.(msg)
-      } catch (err) {
-        console.warn("Message is not valid " + e.data, err)
+      } catch (_err) {
+        // console.warn("Message is not valid " + e.data, err)
       }
     }
   }
@@ -101,13 +102,13 @@ export default class Peer {
     }
     if (data.type === "offer") {
       if (!data.sdp) {
-        console.error("Failed to get RTCSessionDescriptionInit", data.sdp)
+        // console.error("Failed to get RTCSessionDescriptionInit", data.sdp)
         return
       }
       await this.answer(data.sdp)
     } else if (data.type === "answer") {
       if (!data.sdp) {
-        console.error("Failed to get RTCSessionDescriptionInit", data.sdp)
+        // console.error("Failed to get RTCSessionDescriptionInit", data.sdp)
         return
       }
       const desc = new RTCSessionDescription(data.sdp)
@@ -115,8 +116,8 @@ export default class Peer {
     } else if (data.type === "candidate" && data.candidate) {
       try {
         await this.peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate))
-      } catch (err) {
-        console.error("Failed to add ICE candidate:", err)
+      } catch (_err) {
+        // console.error("Failed to add ICE candidate:", err)
       }
     }
   }
@@ -124,6 +125,10 @@ export default class Peer {
   close(): void {
     if (this.dataChannel) this.dataChannel.close()
     this.peerConnection.close()
+  }
+
+  get isClosed(): boolean {
+    return this.dataChannel?.readyState === "closed" || this.dataChannel?.readyState === "closing" || this.peerConnection.connectionState === "disconnected" || this.peerConnection.connectionState === "failed" || this.peerConnection.connectionState === "connected" || this.peerConnection.signalingState === "closed"
   }
 
   onOpened(fn?: () => void): void {
@@ -140,8 +145,8 @@ export default class Peer {
       if (this.dataChannel && this.dataChannel.readyState === "open") {
         this.dataChannel.send(msg)
       }
-    } catch (err) {
-      console.warn("Error sending message", err)
+    } catch (_err) {
+      // console.warn("Error sending message", err)
     }
   }
 }

@@ -33,7 +33,7 @@ export default class MembersAPI {
     const member = this.data.find((member) => member.type === memberType && member.id === memberId)
     if (!member) return
     member.destroy()
-    peers.remove(memberId)
+    peers.close(memberId)
     this.data.splice(this.data.indexOf(member), 1)
   }
   remove(memberId: string): void {

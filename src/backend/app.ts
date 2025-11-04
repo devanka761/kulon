@@ -7,7 +7,6 @@ import authRoute from "./routes/auth.route"
 import accountRoute from "./routes/account.route"
 import profileRoute from "./routes/profile.route"
 import jobRoute from "./routes/job.route"
-import lobbyRoute from "./routes/lobby.route"
 import donateRoute from "./routes/donate.route"
 import modRoute from "./routes/mod.route"
 import cfg from "../config/cfg"
@@ -66,7 +65,6 @@ app.use("/x/auth", authRoute)
 app.use("/x/account", accountRoute)
 app.use("/x/profile", profileRoute)
 app.use("/x/job", jobRoute)
-app.use("/x/lobby", lobbyRoute)
 app.use("/x/donate", donateRoute)
 app.use("/x/mod", modRoute)
 

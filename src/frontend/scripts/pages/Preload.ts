@@ -209,8 +209,8 @@ export default class Preload {
 
       const audioBuffer = await audioContext.decodeAudioData(arrayBuffer)
       sound[fileID] = { buffer: audioBuffer, src: fileName }
-    } catch (error) {
-      console.error(`Error audio decoded: ${fileName}`, error)
+    } catch (_error) {
+      // console.error(`Error audio decoded: ${fileName}`, error)
     } finally {
       this.launchIfReady(assetProgress, fileID)
     }

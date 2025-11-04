@@ -4,8 +4,8 @@ export async function copyToClipboard(plaintext: string): Promise<boolean> {
     .then(() => {
       return true
     })
-    .catch((err) => {
-      console.log(err)
+    .catch((_err) => {
+      // console.log(err)
       return false
     })
 }

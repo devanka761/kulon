@@ -18,7 +18,7 @@ self.addEventListener("install", (event) => {
             const items = await response.json()
             const filesToCache = items.map((item: any) => item[pathKey])
 
-            await Promise.allSettled(filesToCache.map((url: string) => cache.add(url).catch((e) => console.warn(`Failed to cache ${type}: ${url}`, e))))
+            await Promise.allSettled(filesToCache.map((url: string) => cache.add(url).catch((_e) => {})))
           }
         }
 

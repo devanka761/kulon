@@ -173,7 +173,7 @@ export default class MatchMaking implements IPMC {
       const friend = this.members.getFriend(userId)
       if (friend) friend.updateStatus("INITIAL")
       this.members.removeOne("crew", userId)
-      peers.remove(userId)
+      peers.close(userId)
       this.updateStart()
       if (userId === db.job.host) {
         this.aborted()

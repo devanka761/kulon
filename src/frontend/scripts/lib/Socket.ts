@@ -15,15 +15,15 @@ import MatchMaking from "../Events/MatchMaking"
 import { ISival } from "../types/lib.types"
 import backsong from "../APIs/BackSongAPI"
 
-function socketError(err: Event) {
-  console.error(err)
+function socketError(_err: Event) {
+  // console.error(err)
 }
 function socketMessage(data: MessageEvent) {
   try {
     const msg = JSON.parse(data.data.toString())
     socketHandler.run(msg)
-  } catch (err) {
-    console.error(err)
+  } catch (_err) {
+    // console.error(err)
   }
 }
 
@@ -70,6 +70,8 @@ class Socket {
     }
 
     await new Promise((resolve) => checkTitleScreen(resolve))
+
+    peers.closeAll()
 
     let oldPmcId: string = "none"
     const checkPmc = async (resolve: ISival) => {
@@ -126,8 +128,6 @@ class Socket {
     this._resetOldData()
     this.updateData(newUser.data)
 
-    peers.closeAll()
-
     if (db.lobby.status === true) {
       db.lobby.disable()
       const myMap = this.game.map.mapId
@@ -171,7 +171,6 @@ class Socket {
     this.game.destroy()
   }
   private _resetOldData(): void {
-    peers.closeAll()
     db.room.reset()
     db.bag.reset()
     db.mails.reset()

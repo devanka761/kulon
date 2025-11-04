@@ -50,7 +50,4 @@ export class CharacterAPI {
   send(msg: { [key: string]: string | boolean | number | null }): void {
     this.remote.send(msg)
   }
-  close(): void {
-    this.remote.close()
-  }
 }

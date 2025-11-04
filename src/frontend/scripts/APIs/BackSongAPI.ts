@@ -1,14 +1,61 @@
 import { sound } from "../data/sound"
 import LocalList from "../data/LocalList"
+import { eroot, kel } from "../lib/kel"
+import waittime from "../lib/waittime"
 
-type BackSongAudio = string[]
+interface IBackSongInfo {
+  artist: string
+  id: string
+  title: string
+}
+type BackSongAudio = IBackSongInfo[]
 type BackSongArr = BackSongAudio[]
 
 const bgms: BackSongArr = [
-  ["field_theme_1", "night_theme_1", "cave_theme_2", "cave_theme_1", "field_theme_1"],
-  ["the_veil_of_night_theme", "minds_eye_theme"],
-  ["distant_banjo", "playful", "in_the_deep_woods"]
+  [
+    { artist: "unknown", title: "Field Theme 1", id: "field_theme_1" },
+    { artist: "unknown", title: "Night Theme 1", id: "night_theme_1" },
+    { artist: "unknown", title: "Cave Theme 1", id: "cave_theme_2" },
+    { artist: "unknown", title: "Cave Theme 1", id: "cave_theme_1" },
+    { artist: "unknown", title: "Field Theme 2", id: "field_theme_2" }
+  ],
+  [
+    { artist: "Crow Shade", title: "The Veil of Night", id: "the_veil_of_night_theme" },
+    { artist: "Crow Shade", title: "Mind's Eye", id: "minds_eye_theme" }
+  ],
+  [
+    { artist: "ConcernedApe", title: "Distant Banjo", id: "distant_banjo" },
+    { artist: "ConcernedApe", title: "Playful", id: "playful" },
+    { artist: "ConcernedApe", title: "In the Deep Woods", id: "in_the_deep_woods" }
+  ]
 ]
+
+async function showInfo(info: IBackSongInfo): Promise<void> {
+  const el = kel("div", "BackSongInfo")
+
+  const einfo = kel("div", "info")
+
+  const artist = kel("p")
+  artist.innerHTML = `by <b>${info.artist}</b>`
+
+  const title = kel("p", "title")
+  title.innerHTML = info.title
+
+  einfo.append(title, artist)
+
+  const icon1 = kel("div", "icon")
+  icon1.innerHTML = '<i class="fa-solid fa-compact-disc fa-spin"></i>'
+  const icon2 = kel("div", "icon")
+  icon2.innerHTML = '<i class="fa-solid fa-music"></i>'
+
+  el.append(icon1, einfo, icon2)
+
+  eroot().append(el)
+  await waittime(5000)
+  el.classList.add("out")
+  await waittime(1000)
+  el.remove()
+}
 
 class BackSongAPI {
   private type: number = 0
@@ -18,6 +65,7 @@ class BackSongAPI {
   private audio: HTMLAudioElement | null = null
   private isPaused: boolean = false
   start(timeout?: number): void {
+    const oldSrc = this.audio?.src || "null"
     if (this.audio) {
       this.audio.pause()
       this.audio.remove()
@@ -25,14 +73,20 @@ class BackSongAPI {
     }
     const audioVolume = LocalList.bgm_volume <= 10 && LocalList.bgm_volume >= 0 ? LocalList.bgm_volume / 10 : 0.8
 
-    const audio = new Audio(sound[bgms[this.type][this.index]].src)
+    const info = bgms[this.type][this.index]
+
+    const audio = new Audio(sound[info.id].src)
     audio.preload = "auto"
     audio.load()
     audio.volume = audioVolume
     audio.onended = () => this._next()
     if (timeout) {
-      setTimeout(() => audio.play(), timeout)
+      setTimeout(() => {
+        if (!oldSrc.includes(info.id)) showInfo(info)
+        audio.play()
+      }, timeout)
     } else {
+      if (!oldSrc.includes(info.id)) showInfo(info)
       audio.play()
     }
     this.audio = audio
@@ -95,10 +149,6 @@ class BackSongAPI {
   destroy(timeout?: number): void {
     if (!this.audio) return
     const oldAudio = this.audio
-    this.type = 0
-    this.index = 0
-    this.repeated = 1
-    this.lastIndex = 0
     this.isPaused = false
     this._fade(oldAudio, 0, timeout || 300, () => {
       if (!oldAudio) return

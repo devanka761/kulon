@@ -321,8 +321,8 @@ export default class Editor {
       if (screen.orientation && "lock" in screen.orientation && typeof screen.orientation["lock"] === "function") {
         try {
           await screen.orientation["lock"]("landscape")
-        } catch (err) {
-          console.warn("Gagal mengunci orientasi:", err)
+        } catch (_err) {
+          // console.warn("Gagal mengunci orientasi:", err)
         }
       }
     }

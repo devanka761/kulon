@@ -36,15 +36,15 @@ class Peers {
       },
       onDisconnected: () => {
         this.kickFromJob(user)
-        this.remove(user.id)
+        this.close(user.id)
       },
       onUnavailable: () => {
         this.kickFromJob(user)
-        this.remove(user.id)
+        this.close(user.id)
       },
       onConnectionFailed: () => {
         this.kickFromJob(user)
-        this.remove(user.id)
+        this.close(user.id)
       }
     })
 
@@ -71,12 +71,16 @@ class Peers {
       from: `system-${Date.now().toString(36)}`
     })
   }
-  remove(userId: string): void {
+  close(userId: string): void {
     const character = this.data.get(userId)
     if (character) {
-      character.close()
-      this.data.delete(userId)
+      const { remote } = character
+      remote.close()
     }
+    this.data.delete(userId)
+  }
+  remove(userId: string): void {
+    this.data.delete(userId)
   }
   sendOne(userId: string, msgType: string, msgData: ISival = {}): void {
     const character = this.data.get(userId)
@@ -95,7 +99,7 @@ class Peers {
     this.data.forEach((char) => char.setMapId(newMapId))
   }
   closeAll(): void {
-    this.data.forEach((character) => character.close())
+    this.data.forEach((character) => character.remote.close())
     this.data.clear()
   }
 }

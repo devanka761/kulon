@@ -71,7 +71,7 @@ export class GameEvent {
         }
       )
     } else {
-      console.warn(`Game object '${who}' is not found.`)
+      // console.warn(`Game object '${who}' is not found.`)
       resolve()
     }
   }
@@ -92,7 +92,7 @@ export class GameEvent {
         }
       )
     } else {
-      console.warn(`Game object '${who}' is not found.`)
+      // console.warn(`Game object '${who}' is not found.`)
       resolve()
     }
   }
@@ -286,10 +286,10 @@ export class GameEvent {
           direction: destination.direction
         })
       } else {
-        console.warn(`No teleport destination found for direction: ${playerDirection}`)
+        // console.warn(`No teleport destination found for direction: ${playerDirection}`)
       }
     } else {
-      console.warn(`Teleport event is missing player or teleporter object.`)
+      // console.warn(`Teleport event is missing player or teleporter object.`)
     }
 
     await waittime(500)
@@ -459,7 +459,7 @@ export class GameEvent {
 
     db.lobby.enable()
 
-    const session = await xhr.get("/x/lobby/joinRandom")
+    const session = await xhr.get("/x/job/joinRandom")
     if (!session.ok || !session.data || !session.data.users) return
 
     const users = session.data.users as IUser[]
