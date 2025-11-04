@@ -5,9 +5,9 @@ import { IJob } from "../types/job.types"
 import { mission_list } from "../lib/shared"
 
 function generateJobCode(existingCode: number[] = []) {
-  let newCode = rNumber(6)
+  let newCode = rNumber(4)
   while (existingCode.includes(newCode)) {
-    newCode = rNumber(6)
+    newCode = rNumber(4)
   }
   return newCode
 }

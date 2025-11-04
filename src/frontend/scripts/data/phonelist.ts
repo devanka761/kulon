@@ -6,6 +6,7 @@ import Setting from "../Contents/Setting"
 import Shop from "../Contents/Shop"
 import Team from "../Contents/Team"
 import Trophies from "../Contents/Trophies"
+import modal from "../lib/modal"
 import itemRun from "../Props/itemRun"
 import MailSender from "../Specials/MailSender"
 import TeleportMachine from "../Specials/TeleportMachine"
@@ -14,13 +15,13 @@ import db from "./db"
 
 const phonelist: IPhoneApp[] = [
   {
-    id: "friends",
-    g: [1, 2],
-    n: "PHONE_FRIENDS",
-    ic: "fa-sharp-duotone fa-solid fa-address-book",
-    hasUnread: () => db.room.req.length >= 1,
-    r(config) {
-      new Friends(config).init()
+    id: "hint",
+    g: [2],
+    n: "PHONE_HINT",
+    ic: "fa-duotone fa-solid fa-sneaker-running",
+    async r(config) {
+      await modal.alert({ msg: "UNDER DEVELOPMENT", ic: "helmet-battle" })
+      config.classBefore.init()
     }
   },
   {
@@ -40,6 +41,16 @@ const phonelist: IPhoneApp[] = [
     ic: "fa-duotone fa-solid fa-people-group",
     r(config) {
       new Team(config).init()
+    }
+  },
+  {
+    id: "friends",
+    g: [1, 2],
+    n: "PHONE_FRIENDS",
+    ic: "fa-sharp-duotone fa-solid fa-address-book",
+    hasUnread: () => db.room.req.length >= 1,
+    r(config) {
+      new Friends(config).init()
     }
   },
   {
@@ -83,15 +94,6 @@ const phonelist: IPhoneApp[] = [
     }
   },
   {
-    id: "leave_job",
-    g: [2],
-    n: "PHONE_LEAVE_JOB",
-    ic: "fa-sharp-duotone fa-solid fa-person-to-door",
-    r(config) {
-      itemRun.run("leaveJob", config).init()
-    }
-  },
-  {
     id: "teleporter",
     g: [1, 2],
     a: [6],
@@ -127,6 +129,15 @@ const phonelist: IPhoneApp[] = [
     ic: "fa-sharp-duotone fa-solid fa-gear",
     r(config) {
       new Setting(config).init()
+    }
+  },
+  {
+    id: "leave_job",
+    g: [2],
+    n: "PHONE_LEAVE_JOB",
+    ic: "fa-sharp-duotone fa-solid fa-person-to-door",
+    r(config) {
+      itemRun.run("leaveJob", config).init()
     }
   }
 ]

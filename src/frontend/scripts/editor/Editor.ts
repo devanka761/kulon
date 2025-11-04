@@ -82,6 +82,9 @@ export default class Editor {
             <div class="btn btn-sz" title="Safe Zone">
               <i class="fa-solid fa-location-dot fa-fw"></i>
             </div>
+            <div class="btn btn-sound" title="Background Sound">
+              <i class="fa-solid fa-music-note fa-fw"></i>
+            </div>
             <div class="btn btn-rename" title="Rename">
               <i class="fa-solid fa-i fa-fw"></i>
             </div>
@@ -253,6 +256,20 @@ export default class Editor {
     const btnRename = futor(".btn-rename", this.el)
     const btnFinish = futor(".btn-finish", this.el)
     const btnFootstep = futor(".btn-footstep", this.el)
+    const btnSound = futor(".btn-sound", this.el)
+
+    btnSound.onclick = async () => {
+      if (this.isLocked || !this.currArea || this.currArea === "none") return
+      this.isLocked = true
+      const currSound = this.mapdata[this.currArea].sound || null
+      const sound = await modal.prompt({ msg: "Area Ambient Sound", val: currSound || "" })
+      if (!sound || sound === currSound) {
+        this.isLocked = false
+        return
+      }
+      this.mapdata[this.currArea].sound = sound
+      this.isLocked = false
+    }
 
     btnFootstep.onclick = async () => {
       if (this.isLocked || !this.currArea || this.currArea === "none") return
@@ -657,6 +674,7 @@ export default class Editor {
       walls: {},
       cutscenes: {}
     }
+    if (data["area-sound"]) this.mapdata[areaname].sound = data["area-sound"]
     this._setAreaObj(this.mapdata[areaname])
     this._setTileImage(areaname, data["lower-src"])
     this.isLocked = false

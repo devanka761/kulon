@@ -34,6 +34,10 @@ export default class NewArea {
         </datalist>
       </div>
       <div class="field">
+        <label for="area-sound">Area Ambient Audio</label>
+        <input type="text" name="area-sound" id="area-sound" maxlength="500" autocomplete="off" />
+      </div>
+      <div class="field">
         <div class="buttons">
           <div class="btn btn-cancel">CANCEL</div>
           <button class="btn btn-ok" type="submit">OK</button>

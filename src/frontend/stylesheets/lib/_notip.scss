@@ -113,7 +113,8 @@
   top: 20px;
   left: 50%;
   transform: translate(-50%, 0);
-  width: fit-content;
+  width: max-content;
+  max-width: calc(100% - (v.$mediumPadding * 2));
   background-color: rgba(v.$pm1, 0.8);
   color: v.$px1;
   padding: v.$mediumPadding;
@@ -133,12 +134,12 @@
   }
   .info {
     p {
+      font-size: calc(v.$dialogueSize * 0.9);
       text-align: center;
       line-height: 1.2;
     }
     .title {
-      font-size: calc(v.$defaultSize * 1.2);
-      font-weight: 600;
+      font-size: v.$dialogueSize;
     }
   }
   &.out {

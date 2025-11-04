@@ -19,4 +19,5 @@ export interface INewAreaConfig {
   "area-name": string
   "lower-src": string
   "upper-src": string
+  "area-sound"?: string
 }

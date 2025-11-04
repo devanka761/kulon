@@ -225,9 +225,8 @@ html {
             &.btn-remove {
               color: v.$cred;
             }
-            &.btn-finish {
-              color: v.$yellow;
-            }
+            &.btn-finish,
+            &.btn-footstep,
             &.btn-sz {
               color: v.$yellow;
             }

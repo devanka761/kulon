@@ -12,7 +12,7 @@ import { KeyPressListener } from "../main/KeyPressListener"
 import itemRun from "../Props/itemRun"
 import { IPMC, IPMCConfig, IUser } from "../types/db.types"
 import { IInvites, IJob } from "../types/job.types"
-import { ISival, SSKelement } from "d:/dvnkz/newKulon/2025-10-16/src/frontend/scripts/types/lib.types"
+import { ISival, SSKelement } from "../types/lib.types"
 
 function fieldOnBoard(user: IUser, job: IJob): HTMLDivElement {
   const field = kel("div", "field")
@@ -108,7 +108,7 @@ export default class Team implements IPMC {
           <form class="form" action="/x/job/find" method="get" id="job-search">
             <div class="inp">
               <span class="keyinfo">t</span>
-              <input type="number" maxlength="6" min="0" max="999999" name="job_code" id="job_code" autocomplete="off" placeholder="${lang.TM_INP_TEXT}" />
+              <input type="number" maxlength="4" min="0" max="999999" name="job_code" id="job_code" autocomplete="off" placeholder="${lang.TM_INP_TEXT}" />
             </div>
             <button type="submit" class="btn-search disabled"><span class="keyinfo">enter</span> ${lang.FR_BTN_FIND}</button>
           </form>
@@ -124,9 +124,9 @@ export default class Team implements IPMC {
     this.form = futor("#job-search", this.el) as HTMLFormElement
   }
   private updateBtnFind(): void {
-    this.inpSearch.value = this.inpSearch.value.substring(0, 6).replace(/\D/g, "")
+    this.inpSearch.value = this.inpSearch.value.substring(0, 4).replace(/\D/g, "")
     if (this.isLocked) return
-    if (this.inpSearch.value.length === 6) {
+    if (this.inpSearch.value.length === 4) {
       this.btnSearch.classList.remove("disabled")
     } else {
       this.btnSearch.classList.add("disabled")
@@ -137,7 +137,7 @@ export default class Team implements IPMC {
       e.preventDefault()
       if (this.isLocked) return
       audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
-      if (this.inpSearch.value.length !== 6) return this.writeEmpty("TM_HOW_TO", "people-group")
+      if (this.inpSearch.value.length !== 4) return this.writeEmpty("TM_HOW_TO", "people-group")
       this.isLocked = true
       this.writeEmpty("LOADING", "circle-notch fa-spin")
       this.btnSearch.classList.add("disabled")

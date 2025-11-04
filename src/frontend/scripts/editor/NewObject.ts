@@ -507,6 +507,7 @@ export default class NewObject {
       s.text.id = sprTxt[0].trim()
       s.text.en = (sprTxt[1] || sprTxt[0]).trim()
     }
+    if (s.instant) s.instant = true
     if (s.door) s.door = true
     if (s.map) s.map = "kulon" + s.map
     this._addEvent(event_type, s, flagKey, existkey)

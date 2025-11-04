@@ -43,7 +43,9 @@ const INVALID_CONTROLS = ["run", "init", "constructor", "game"]
 export class GameEvent {
   constructor(
     private game: Game,
-    private event: IObjectEvent
+    private event: IObjectEvent,
+    private targetIdx?: number,
+    private targetKey?: string
   ) {}
 
   titleScreen(resolve: Resolve): void {
@@ -314,16 +316,21 @@ export class GameEvent {
     resolve()
   }
   addnote(resolve: Resolve): void {
-    const { pages, id, text } = this.event
-    if (!id || !pages || !text) return resolve()
+    console.log(this.targetIdx, this.targetKey)
+    const { pages, text } = this.event
+    if (!this.targetKey || !pages || !text) return resolve()
     const item = cloud_items.find((itm) => itm.id === "J00006")
     if (!item) return resolve()
 
-    peers.send("addNote", { paperId: id })
+    peers.send("addNote", {
+      key: this.targetKey,
+      mapId: this.game.map.mapId,
+      index: this.targetIdx
+    })
 
-    paperAdd(id, pages, text)
+    paperAdd(this.targetKey, pages, text)
 
-    db.job.setItem({ id, amount: 1, itemId: "J00006" })
+    db.job.setItem({ id: this.targetKey, amount: 1, itemId: "J00006" })
 
     notip({
       ic: "backpack",
@@ -333,10 +340,9 @@ export class GameEvent {
     resolve()
   }
   readnote(resolve: Resolve): void {
-    const { id } = this.event
-    if (!id) return resolve()
+    if (!this.targetKey) return resolve()
 
-    const note = paperGet(id)
+    const note = paperGet(this.targetKey)
     if (!note) return resolve()
 
     const paper = new Paper({

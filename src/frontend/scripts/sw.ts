@@ -54,7 +54,7 @@ self.addEventListener("fetch", (event) => {
   const requestUrl = new URL(event.request.url)
   const src = requestUrl.pathname
 
-  const isAssetRequest = !src.includes("json") && !src.includes("outdoor_amb") && !src.includes("Kulon_Hero") && (src.includes("/audio/") || src.includes("/assets/characters/") || src.includes("/assets/items/cloud/") || src.includes("/assets/minigames/") || src.includes("/assets/unlisted/jumpscare/"))
+  const isAssetRequest = !src.includes("json") && !src.includes("Kulon_Hero") && (src.includes("/audio/") || src.includes("/assets/characters/") || src.includes("/assets/items/cloud/") || src.includes("/assets/minigames/") || src.includes("/assets/unlisted/jumpscare/"))
 
   if (isAssetRequest) {
     // @ts-expect-error no default types

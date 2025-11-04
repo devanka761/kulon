@@ -175,7 +175,10 @@ export class Game {
     else if (direction === "left") interactionBox.x -= TILE_SIZE / 2
     else if (direction === "right") interactionBox.x += TILE_SIZE / 2
 
-    const target = Object.values(this.map.gameObjects).find((obj) => {
+    const gameObjects = this.map.gameObjects
+
+    const targetKey = Object.keys(gameObjects).find((key) => {
+      const obj = gameObjects[key]
       if (obj === this.player || !obj.collisionBox) return false
 
       const objBox = {
@@ -188,11 +191,13 @@ export class Game {
       return interactionBox.x < objBox.x + objBox.width && interactionBox.x + interactionBox.width > objBox.x && interactionBox.y < objBox.y + objBox.height && interactionBox.y + interactionBox.height > objBox.y
     })
 
+    const target = targetKey ? gameObjects[targetKey] : null
+
     if (target && target.talk && target instanceof Prop === false) {
       if (typeof target.facePlayer === "function") {
         target.facePlayer(this.player.direction)
       }
-      this.findAndStartScenario(target.talk)
+      this.findAndStartScenario(target.talk, targetKey)
     }
   }
 
@@ -239,22 +244,27 @@ export class Game {
     const cutsceneTrigger = this.map.cutscenes && this.map.cutscenes[key]
     if (cutsceneTrigger && this.lastTriggeredCutsceneKey !== key) {
       this.lastTriggeredCutsceneKey = key
-      this.findAndStartScenario(cutsceneTrigger)
+      this.findAndStartScenario(cutsceneTrigger, key)
       return
     }
 
-    const propTrigger = Object.values(this.map.gameObjects).find((obj) => {
+    const gameObjects = this.map.gameObjects
+
+    const propTriggerKey = Object.keys(gameObjects).find((k) => {
+      const obj = gameObjects[k]
       if (obj instanceof Prop) {
         const propGridX = Math.floor(obj.x / TILE_SIZE)
         const propGridY = Math.floor(obj.y / TILE_SIZE)
         return propGridX === playerFeetGridX && propGridY === playerFeetGridY && obj.talk
       }
       return false
-    }) as Prop
+    })
+
+    const propTrigger = (propTriggerKey ? gameObjects[propTriggerKey] : null) as Prop | null
 
     if (propTrigger && this.lastTriggeredCutsceneKey !== `prop_${propTrigger.x},${propTrigger.y}`) {
       this.lastTriggeredCutsceneKey = `prop_${propTrigger.x},${propTrigger.y}`
-      this.findAndStartScenario(propTrigger.talk)
+      this.findAndStartScenario(propTrigger.talk, propTriggerKey)
       return
     }
 
@@ -263,14 +273,14 @@ export class Game {
     }
   }
 
-  private findAndStartScenario(scenarios: IObjectTalk[]): void {
-    for (const scenario of scenarios) {
-      const requirementsMet = (scenario.local_req || scenario.required || []).every((state) => {
+  private findAndStartScenario(scenarios: IObjectTalk[], targetKey?: string): void {
+    for (let i = 0; i < scenarios.length; i++) {
+      const reqMet = (scenarios[i].local_req || scenarios[i].required || []).every((state) => {
         return SaveList[state]
       })
 
-      if (requirementsMet) {
-        this.startCutscene(scenario.events)
+      if (reqMet) {
+        this.startCutscene(scenarios[i].events, i, targetKey)
         break
       }
     }
@@ -278,7 +288,7 @@ export class Game {
   forceCutscene(newBool: boolean): void {
     this.isCutscenePlaying = newBool
   }
-  async startCutscene(events: IObjectEvent[]): Promise<void> {
+  async startCutscene(events: IObjectEvent[], targetIdx?: number, targetKey?: string): Promise<void> {
     this.isCutscenePlaying = true
     this.kulonUI.hide()
     this.kulonPad.hide()
@@ -286,7 +296,7 @@ export class Game {
     this.player.isMoving = false
 
     for (let i = 0; i < events.length; i++) {
-      const eventHandler = new GameEvent(this, events[i])
+      const eventHandler = new GameEvent(this, events[i], targetIdx, targetKey)
       const result = await eventHandler.init()
       if (result === "BREAK") {
         break

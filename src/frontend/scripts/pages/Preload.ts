@@ -83,7 +83,9 @@ export default class Preload {
       </div>
       <div class="assetload-data">
         <div class="load-data-title">${lang.PRELOAD_NOTICE}</div>
-        <div class="load-data-list"></div>
+        <div class="load-data-list">
+          <i><small>${lang.PRELOAD_TIME}</small></i>
+        </div>
       </div>
     </div>
     <div class="assetload-action">
@@ -93,12 +95,16 @@ export default class Preload {
   writeLoadData() {
     const loadList = futor(".load-data-list", this.el)
     const convertOp = 1024 * 1024
-    Object.keys(assetSize).forEach((k) => {
-      const convertedSize = (assetSize[k as keyof typeof assetSize] / convertOp).toFixed(1)
-      const card = kel("div", "load-data-card")
-      card.innerHTML = `${k}: <b>${convertedSize} MB</b>`
-      loadList.append(card)
-    })
+    // Object.keys(assetSize).forEach((k) => {
+    //   const convertedSize = (assetSize[k as keyof typeof assetSize] / convertOp).toFixed(1)
+    //   const card = kel("div", "load-data-card")
+    //   card.innerHTML = `${k}: <b>${convertedSize} MB</b>`
+    //   loadList.append(card)
+    // })
+    const convertedSize = (assetSize.Total / convertOp).toFixed(2)
+    const card = kel("div", "load-data-card")
+    card.innerHTML = `<b>${convertedSize} MB</b>`
+    loadList.prepend(card)
   }
   btnListener() {
     const btnLoad = futor(".assetload-action", this.el)

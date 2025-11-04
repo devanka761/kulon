@@ -167,8 +167,8 @@ export default class Phone implements IPMC {
       let colspan = 1
       let rowspan = 1
       if (classList) {
-        if (classList === "b-shop-1") rowspan = 2
-        if (["b-shop-2", "b-trophies-1", "b-trophies-2"].includes(classList)) colspan = 2
+        if (["b-shop-1", "b-shop-2"].includes(classList)) rowspan = 2
+        if (["b-trophies-1", "b-trophies-2"].includes(classList)) colspan = 2
       }
 
       while (true) {

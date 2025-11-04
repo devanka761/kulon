@@ -15,9 +15,12 @@ const bgms: BackSongArr = [
   [
     { artist: "unknown", title: "Field Theme 1", id: "field_theme_1" },
     { artist: "unknown", title: "Night Theme 1", id: "night_theme_1" },
-    { artist: "unknown", title: "Cave Theme 1", id: "cave_theme_2" },
+    { artist: "unknown", title: "Night Theme 1", id: "night_theme_1" },
+    { artist: "unknown", title: "Cave Theme 2", id: "cave_theme_2" },
     { artist: "unknown", title: "Cave Theme 1", id: "cave_theme_1" },
-    { artist: "unknown", title: "Field Theme 2", id: "field_theme_2" }
+    { artist: "unknown", title: "Field Theme 2", id: "field_theme_2" },
+    { artist: "ConcernedApe", title: "Fall (The Smell of Mushroom)", id: "fall_the_smell_of_mushroom" },
+    { artist: "unknown", title: "Field Theme 1", id: "field_theme_1" }
   ],
   [
     { artist: "Crow Shade", title: "The Veil of Night", id: "the_veil_of_night_theme" },
@@ -26,7 +29,10 @@ const bgms: BackSongArr = [
   [
     { artist: "ConcernedApe", title: "Distant Banjo", id: "distant_banjo" },
     { artist: "ConcernedApe", title: "Playful", id: "playful" },
-    { artist: "ConcernedApe", title: "In the Deep Woods", id: "in_the_deep_woods" }
+    { artist: "ConcernedApe", title: "In the Deep Woods", id: "in_the_deep_woods" },
+    { artist: "ConcernedApe", title: "Fall (The Smell of Mushroom)", id: "fall_the_smell_of_mushroom" },
+    { artist: "ConcernedApe", title: "Pelican Town", id: "pelican_town" },
+    { artist: "ConcernedApe", title: "Spring (Wild Horseradish Jam)", id: "spring_wild_horseradish_jam" }
   ]
 ]
 
@@ -36,7 +42,7 @@ async function showInfo(info: IBackSongInfo): Promise<void> {
   const einfo = kel("div", "info")
 
   const artist = kel("p")
-  artist.innerHTML = `by <b>${info.artist}</b>`
+  artist.innerHTML = `by ${info.artist}`
 
   const title = kel("p", "title")
   title.innerHTML = info.title
@@ -94,7 +100,7 @@ class BackSongAPI {
   private _next(): void {
     if (this.isPaused) return
     this.repeated++
-    if (this.repeated >= (this.type === 0 ? 3 : 2)) {
+    if (this.repeated >= 2) {
       this.repeated = 1
       this.index++
     }

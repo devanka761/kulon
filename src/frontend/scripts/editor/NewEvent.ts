@@ -437,6 +437,12 @@ const EventMethod: IEventMethod = {
         </div>
       </div>
     </div>
+    <div class="opt-actions">
+      <div class="opt-next">
+        <input type="checkbox" name="instant" id="instant"${s.instant ? " checked" : ""} />
+        <label for="instant">Fire next event without timeout</label>
+      </div>
+    </div>
     <div class="field">
       <div class="action-buttons buttons">
         <div class="btn btn-cancel">CANCEL</div>

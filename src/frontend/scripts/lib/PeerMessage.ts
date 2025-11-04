@@ -177,20 +177,15 @@ class PeerMessage {
     }
   }
   addNote(data: ISival): void {
-    if (!data || !data.paperId) return
+    if (!data) return
 
-    const map = Object.values(MapList).find((world) => world.configObjects[data.paperId])
-    if (!map) return
+    const { key, mapId, index } = data
+    if (!key || !mapId || typeof index !== "number" || index < 0) return
 
-    const gameObj = map.configObjects[data.paperId]
+    const target = MapList[mapId]?.configObjects?.[key]?.talk?.[index]?.events
+    if (!target) return
 
-    const talk = gameObj.talk
-    if (!talk) return
-
-    const scenario = talk.find((scenario) => scenario.events.length >= 1 && scenario.events.find((evt) => evt.type === "addnote"))
-    if (!scenario) return
-
-    const evt = scenario.events.find((evt) => evt.type === "addnote")
+    const evt = target.find((evt) => evt.type === "addnote")
     if (!evt) return
 
     const { pages, id, text } = evt
