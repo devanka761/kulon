@@ -385,10 +385,11 @@ export default class NewObject {
     this.isLocked = true
     const typelist = [
       { id: "textMessage", label: "Text Message" },
-      { id: "changeMap", label: "Change Map", activated: true },
+      { id: "changeMap", label: "Change Map" },
       { id: "addStates", label: "Add Story Flag" },
       { id: "removeStates", label: "Remove Story Flag" },
       { id: "addClaims", label: "Add Claims" },
+      { id: "addHint", label: "Add Hint", activated: true },
       { id: "additem", label: "Add Item" },
       { id: "teleport", label: "Teleport" },
       { id: "walk", label: "Walk" },
@@ -462,7 +463,7 @@ export default class NewObject {
   }
   createEvent(event_type: string, s: ISival, flagKey: string, existkey: string | null = null): void {
     this.unlock()
-    if (["addClaims", "addStates", "addLocalFlags", "removeLocalFlags", "removeStates"].includes(event_type)) {
+    if (["addClaims", "addStates", "addLocalFlags", "removeLocalFlags", "removeStates", "addHint"].includes(event_type)) {
       s.states = s.states.replace(/\s/g, "")
       s.states = s.states.split(",")
     } else if (event_type === "choices") {

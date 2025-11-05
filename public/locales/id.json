@@ -128,7 +128,7 @@
   "JOB_IGNORE": "LAIN KALI",
   "JOB_DISBANDED": "job dibatalin dan tim dibubarin",
   "JOB_ACT_CANCELED": "Job ini udah dibatalin",
-  "TM_HOW_TO": "Masukin Kode Tim 6-digit buat cari tim",
+  "TM_HOW_TO": "Masukin Kode Tim 4-digit buat cari tim",
   "TM_NOT_FOUND": "Kode Tim Ga Ketemu",
   "TM_INP_TEXT": "Tulis Kode Tim",
   "TM_BTN_JOIN": "GABUNG",
@@ -253,5 +253,6 @@
   "PAPER_NEXT": "Lanjut",
   "PAPER_PREV": "Balik",
   "PAPER_PAGE": "Halaman",
-  "PAPER_OF": "dari"
+  "PAPER_OF": "dari",
+  "HINT_UPDATED": "Clue diperbarui"
 }

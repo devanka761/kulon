@@ -63,6 +63,7 @@ export interface IMissionList {
   spawn: { area: string; x: number; y: number; direction: DIRECTION; inc: POSITION }
   reqs?: string[]
   bag?: { id: string; amount: number }[]
+  clue?: { text: ILocale; idx: number; states: string[]; id: string }[]
   payout: {
     fail: { id: string; amount: number }[]
     success: { id: string; amount: number }[]

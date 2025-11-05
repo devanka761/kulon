@@ -1,9 +1,11 @@
+import phonelist from "../data/phonelist"
 import { eroot, kel } from "../lib/kel"
 
 interface IKulonUIButtonConfig {
   name: "phone" | "chat" | "gamepad"
   className: string
   keyboard?: string
+  hasUnread?: () => boolean
 }
 
 class KulonUIButton {
@@ -12,10 +14,12 @@ class KulonUIButton {
   private className: string
   private keyboard?: string
   private isDisabled: boolean = false
+  private hasUnread?: () => boolean
   constructor(config: IKulonUIButtonConfig) {
     this.name = config.name
     this.className = config.className
     this.keyboard = config.keyboard
+    this.hasUnread = config.hasUnread
     this._init()
   }
   private _createElement() {
@@ -38,6 +42,15 @@ class KulonUIButton {
   enable(): void {
     this.el.disabled = false
     this.isDisabled = false
+  }
+  async updateUnread(): Promise<void> {
+    if (typeof this.hasUnread !== "function") return
+
+    if (this.hasUnread()) {
+      this.el.classList.add("unread")
+    } else {
+      this.el.classList.remove("unread")
+    }
   }
   onClick(fn: () => void): void {
     this.el.onclick = null
@@ -69,7 +82,12 @@ export default class KulonUI {
     this.phone = new KulonUIButton({
       name: "phone",
       className: "fa-etch fa-solid fa-mobile",
-      keyboard: "esc"
+      keyboard: "esc",
+      hasUnread: () => {
+        const phoneApps = phonelist.filter((app) => app.hasUnread)
+
+        return phoneApps.some((app) => app.hasUnread!())
+      }
     })
 
     this.chat = new KulonUIButton({
@@ -92,6 +110,7 @@ export default class KulonUI {
     this.el.classList.add("hide")
   }
   show(): void {
+    this.phone.updateUnread()
     this.el.classList.remove("hide")
   }
   destroy(): void {

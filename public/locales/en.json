@@ -128,7 +128,7 @@
   "JOB_IGNORE": "IGNORE",
   "JOB_DISBANDED": "job has been aborted and the team has been disbanded",
   "JOB_ACT_CANCELED": "This job has been canceled",
-  "TM_HOW_TO": "Enter the 6-digit Team Code",
+  "TM_HOW_TO": "Enter the 4-digit Team Code",
   "TM_NOT_FOUND": "Team code is not found",
   "TM_INP_TEXT": "Enter Team Code",
   "TM_BTN_JOIN": "JOIN",
@@ -253,5 +253,6 @@
   "PAPER_NEXT": "Next",
   "PAPER_PREV": "Previous",
   "PAPER_PAGE": "Page",
-  "PAPER_OF": "of"
+  "PAPER_OF": "of",
+  "HINT_UPDATED": "Clue updated"
 }

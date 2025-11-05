@@ -15,6 +15,7 @@ import setNewGame from "../manager/setNewGame"
 import { IPMC, IPMCConfig, IUser } from "../types/db.types"
 import { IMissionList } from "../types/job.types"
 import { ISival } from "../types/lib.types"
+import { setHint } from "./Hint"
 
 interface IPrologueConfig extends IPMCConfig {
   onComplete: () => void
@@ -180,6 +181,11 @@ export default class Prologue implements IPMC {
     db.job.clearMap()
     if (!this.isAborted) {
       db.pmc = undefined
+      const { clue } = this.mission
+      if (clue) {
+        setHint(...clue)
+      }
+      newGame.kulonUI?.phone.updateUnread()
     }
     if (this.isAborted) {
       if (db.pmx) {

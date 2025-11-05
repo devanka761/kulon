@@ -1,0 +1,37 @@
+@use "../variables" as v;
+
+.f-hint {
+  .box {
+    max-width: 1000px;
+    .con {
+      border-radius: 10px;
+      min-height: 0;
+      max-height: 100%;
+      background-color: v.$px1;
+      border-radius: 20px;
+      overflow-y: auto;
+      padding: v.$bigPadding;
+      border: 4px solid v.$pm1;
+      box-shadow:
+        0 0 0 4px v.$px1,
+        0 8px 16px rgba(0, 0, 0, 0.5);
+      ul {
+        margin-left: var(--fa-li-margin, calc(v.$bigPadding * 2));
+        li {
+          line-height: 2;
+          .fa-li {
+            font-size: calc(v.$defaultSize * 1.05);
+          }
+          &.done {
+            color: v.$swhite;
+            text-decoration: line-through v.$pm1 1px;
+            font-style: italic;
+            .fa-li {
+              color: v.$pm1;
+            }
+          }
+        }
+      }
+    }
+  }
+}

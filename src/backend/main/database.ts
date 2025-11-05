@@ -31,7 +31,10 @@ export default class MongoConnection {
 
   private onConnected = () => {
     this.isConnectedBefore = true
-    if (this.onConnectedCallback) this.onConnectedCallback()
+    if (this.onConnectedCallback) {
+      this.onConnectedCallback()
+      this.onConnectedCallback = () => logger.info("Server already listen")
+    }
   }
 
   private onReconnected = () => {

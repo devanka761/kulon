@@ -38,6 +38,7 @@ export interface IObjectEvent {
   direction?: DirectionType
   time?: number
   door?: boolean
+  idx?: number
   text?: ILocale
   pages?: ILocale[]
   options?: IChoiceOption[]

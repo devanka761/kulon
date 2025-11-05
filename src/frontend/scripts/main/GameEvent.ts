@@ -35,6 +35,7 @@ import { Prop } from "./Prop"
 import { Interactable } from "./Interactable"
 import xhr from "../lib/xhr"
 import { IUser } from "../types/db.types"
+import { checkHint, setHint } from "../Events/Hint"
 
 type Resolve = (val?: string) => void
 
@@ -167,55 +168,102 @@ export class GameEvent {
     menu.init()
   }
   addClaims(resolve: Resolve): void {
-    if (!this.event.states) return resolve()
-    socket.send("addClaims", { states: this.event.states })
+    const { states } = this.event
+    if (!states) return resolve()
+
+    socket.send("addClaims", { states })
+
+    checkHint(states)
+
     resolve()
   }
   addStates(resolve: Resolve): void {
-    peers.send("addStates", { states: this.event.states, text: this.event.text })
-    if (!this.event.states) return resolve()
+    const { states, text } = this.event
 
-    this.event.states.forEach((state) => (SaveList[state] = true))
-    if (this.event.text) {
-      chat.add(db.me.id, this.event.text[LocalList.lang!], true)
+    if (!states) return resolve()
+    peers.send("addStates", { states, text })
+
+    states.forEach((state) => (SaveList[state] = true))
+    if (text) {
+      chat.add(db.me.id, text[LocalList.lang!], true)
     }
+
+    checkHint(states)
+
     resolve()
   }
   removeStates(resolve: Resolve): void {
-    peers.send("removeStates", { states: this.event.states })
-    if (!this.event.states) return resolve()
+    const { states } = this.event
 
-    this.event.states.forEach((state) => delete SaveList[state])
+    peers.send("removeStates", { states })
+    if (!states) return resolve()
+
+    states.forEach((state) => delete SaveList[state])
     resolve()
   }
   addLocalFlags(resolve: Resolve): void {
-    if (!this.event.states) return resolve()
-    this.event.states.forEach((state) => {
+    const { states } = this.event
+    if (!states) return resolve()
+
+    states.forEach((state) => {
       SaveList[state] = true
     })
+
+    checkHint(states)
+
     resolve()
   }
   removeLocalFlags(resolve: Resolve): void {
-    if (!this.event.states) return resolve()
-    this.event.states.forEach((state) => {
+    const { states } = this.event
+    if (!states) return resolve()
+
+    states.forEach((state) => {
       SaveList[state] = false
     })
+
     resolve()
   }
   addSetting(resolve: Resolve): void {
-    if (!this.event.states) return resolve()
-    this.event.states.forEach((state) => {
+    const { states } = this.event
+    if (!states) return resolve()
+
+    states.forEach((state) => {
       LocalList[state] = true
+    })
+
+    localSave.save()
+
+    checkHint(states)
+
+    resolve()
+  }
+  removeSetting(resolve: Resolve): void {
+    const { states } = this.event
+    if (!states) return resolve()
+
+    states.forEach((state) => {
+      delete LocalList[state]
     })
     localSave.save()
     resolve()
   }
-  removeSetting(resolve: Resolve): void {
-    if (!this.event.states) return resolve()
-    this.event.states.forEach((state) => {
-      delete LocalList[state]
+  addHint(resolve: Resolve): void {
+    const { text, idx, states } = this.event
+    if (!this.targetKey || !text || !states) return resolve()
+
+    setHint({
+      id: this.targetKey + this.targetIdx,
+      idx: typeof idx === "number" ? idx : 0,
+      states,
+      text
     })
-    localSave.save()
+
+    peers.send("addHint", {
+      key: this.targetKey,
+      mapId: this.game.map.mapId,
+      index: this.targetIdx
+    })
+
     resolve()
   }
   phone(resolve: Resolve): void {
@@ -316,9 +364,9 @@ export class GameEvent {
     resolve()
   }
   addnote(resolve: Resolve): void {
-    console.log(this.targetIdx, this.targetKey)
     const { pages, text } = this.event
     if (!this.targetKey || !pages || !text) return resolve()
+
     const item = cloud_items.find((itm) => itm.id === "J00006")
     if (!item) return resolve()
 

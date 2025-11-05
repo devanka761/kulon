@@ -37,7 +37,7 @@ function createPage(plch = "Aku menulis surat ini dari jarak 3000 km! \\ I wrote
   const card = document.createElement("div")
   card.classList.add("opt")
   card.innerHTML = `
-  <textarea name="opt-${inp_id}" id="opt-${inp_id}" maxlength="3000" placeholder="ex: ${plch}" rows="3" required>${passedValue || ""}</textarea>
+  <textarea name="opt-${inp_id}" id="opt-${inp_id}" maxlength="3000" placeholder="ex: ${plch}" rows="6" required>${passedValue || ""}</textarea>
   <div class="opt-actions">
     ${numberChoice > 1 ? '<div class="btn opt-remove" id="rem-' + inp_id + '"><i class="fa-solid fa-trash-can"></i></div>' : ""}
   </div>`
@@ -295,6 +295,33 @@ const EventMethod: IEventMethod = {
   removeLocalFlags(s) {
     return this.removeFlags("Local", s)
   },
+  addHint(s) {
+    const form = createForm()
+    form.innerHTML = `
+    <div class="field">
+      <div class="desc">Event</div>
+      <div class="title">Add Hint</div>
+    </div>
+    <div class="field">
+      <label for="text">Text - <small>separate languages with \\ (id\\en)</small></label>
+      <textarea name="text" id="text" maxlength="1000" placeholder="ex: Temukan air untuk diisikan ke botol\\Find water for your bottle" rows="3" required>${s.text ? s.text.id + " \\ " + s.text.en : ""}</textarea>
+    </div>
+    <div class="field">
+      <label for="states">States required - <small><i>separate with comma</i></small></label>
+      <input type="text" name="states" id="states" autocomplete="off" placeholder="ex: TOOK_KEY, TURNED_OFF_COMPUTER" ${s.states ? 'value="' + s.states.join(", ").trim() + '"' : ""} required />
+    </div>
+    <div class="field">
+      <label for="idx">Index - <small><i>sort with other hint</i></small></label>
+      <input type="text" name="idx" id="idx" autocomplete="off" placeholder="ex: 0 - Infinity" value="${s.idx ? s.idx.toString() : "0"}" required />
+    </div>
+    <div class="field">
+      <div class="action-buttons buttons">
+        <div class="btn btn-cancel">CANCEL</div>
+        <button class="btn btn-ok" type="submit">OK</button>
+      </div>
+    </div>`
+    return form
+  },
   missionBoard() {
     const form = createForm()
     form.innerHTML = `
@@ -515,8 +542,6 @@ const EventMethod: IEventMethod = {
     return form
   },
   lobby(s) {
-    //
-    // { id: "lobby", label: "Enter/Exit Lobby" },
     const form = createForm()
     form.innerHTML = `
     <div class="field">

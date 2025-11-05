@@ -5,6 +5,7 @@ import waittime from "./waittime"
 let nindex = 0
 let ndone = 0
 let nshowtime: ReturnType<typeof setTimeout> | null = null
+let lastA: string = "null"
 
 const cl = { "0": "p", "1": "g", "2": "y", "3": "r", "4": "rb", "5": "p" }
 
@@ -53,6 +54,7 @@ class Notip {
   async destroy() {
     this.el.classList.add("out")
     await waittime()
+    lastA = "null"
     this.el.remove()
     ndone++
     if (ndone === nindex) {
@@ -84,6 +86,10 @@ async function addNotip(s: INotipConfig, currIndex: number) {
 }
 
 export default function notip(data: { a?: string; b?: string; c?: string | number; ic?: string }) {
+  if ((data.a || data.b || "null") === lastA) return
+
+  lastA = data.a || data.b || "null"
+
   const color = (data.c?.toString() || "0") as keyof typeof cl
 
   const newData: INotipConfig = {

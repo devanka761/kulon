@@ -14,6 +14,7 @@
   transition: 0.3s;
   animation: slide_down_in 0.3s;
   .kui {
+    position: relative;
     background-color: v.$pm2;
     padding: 10px;
     border-radius: 10px;
@@ -33,6 +34,18 @@
       color: v.$pm1;
       text-transform: capitalize;
     }
+    &.unread {
+      &::before {
+        content: "";
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        border-radius: 50%;
+        background-color: v.$cred;
+      }
+    }
     &.disabled,
     &:disabled {
       opacity: 0.5;
@@ -47,6 +60,11 @@
   &.hide {
     transform: translateY(-100%);
     animation: none;
+  }
+  &:not(.hide) {
+    .kui.unread {
+      animation: pulse 1s ease 0.5s;
+    }
   }
 }
 
@@ -107,5 +125,17 @@
   &.disabled {
     visibility: hidden;
     transition: none;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  50%,
+  100% {
+    transform: scale(1);
+  }
+  25%,
+  75% {
+    transform: scale(1.2);
   }
 }

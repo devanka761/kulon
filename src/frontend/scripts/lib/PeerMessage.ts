@@ -14,6 +14,8 @@ import notip from "./notip"
 import { paperAdd } from "../data/notes"
 import { Interactable } from "../main/Interactable"
 import lang from "../data/language"
+import { checkHint, setHint } from "../Events/Hint"
+import waittime from "./waittime"
 
 const INVALID_CONTROLS = ["run", "init", "constructor", "game"]
 
@@ -32,7 +34,7 @@ class PeerMessage {
     db.waiting.add({ id: "prologueskip", userId: data.from })
   }
 
-  addStates(data: ISival): void {
+  async addStates(data: ISival): Promise<void> {
     if (!data.states) return
     if (!Array.isArray(data.states)) return
 
@@ -41,6 +43,11 @@ class PeerMessage {
     if (data.text) {
       chat.add(data.from, data.text[LocalList.lang!], true)
     }
+
+    checkHint(data.states)
+
+    await waittime(1000)
+    this.game.kulonUI?.phone.updateUnread()
   }
   removeStates(data: ISival): void {
     if (!data.states) return
@@ -203,6 +210,31 @@ class PeerMessage {
       a: text[LocalList.lang!],
       b: `+${1}`
     })
+  }
+  async addHint(data: ISival): Promise<void> {
+    if (!data) return
+
+    const { key, mapId, index } = data
+    if (!key || !mapId || typeof index !== "number" || index < 0) return
+
+    const target = MapList[mapId]?.configObjects?.[key]?.talk?.[index]?.events
+    if (!target) return
+
+    const evt = target.find((evt) => evt.type === "addHint")
+    if (!evt) return
+
+    const { text, idx, states } = evt
+    if (!text || !states) return
+
+    setHint({
+      id: key + index,
+      idx: typeof idx === "number" ? idx : 0,
+      states,
+      text
+    })
+
+    await waittime(1000)
+    this.game.kulonUI?.phone.updateUnread()
   }
   onInteract(data: ISival): void {
     if (!data.posX || !data.posY) return

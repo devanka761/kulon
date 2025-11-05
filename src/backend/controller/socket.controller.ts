@@ -195,6 +195,9 @@ const socketMessage: SocketHandler = {
     if (content.length < 1) return
     const displayName = `${typeof username === "string" ? "@" + username + " " : ""}#${uid}`
     if ("DISCORD_IGC" in cfg && typeof cfg["DISCORD_IGC"] === "string") {
+      if (!cfg.USE_WEBHOOK) return
+      if (!cfg.APP_PRODUCTION) return
+
       xhr.post(cfg.DISCORD_IGC, null, {
         content,
         username: displayName.trim()

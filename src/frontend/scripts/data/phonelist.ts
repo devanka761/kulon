@@ -6,7 +6,7 @@ import Setting from "../Contents/Setting"
 import Shop from "../Contents/Shop"
 import Team from "../Contents/Team"
 import Trophies from "../Contents/Trophies"
-import modal from "../lib/modal"
+import { Hint, hintHasUnread } from "../Events/Hint"
 import itemRun from "../Props/itemRun"
 import MailSender from "../Specials/MailSender"
 import TeleportMachine from "../Specials/TeleportMachine"
@@ -19,9 +19,9 @@ const phonelist: IPhoneApp[] = [
     g: [2],
     n: "PHONE_HINT",
     ic: "fa-duotone fa-solid fa-sneaker-running",
+    hasUnread: () => hintHasUnread(),
     async r(config) {
-      await modal.alert({ msg: "UNDER DEVELOPMENT", ic: "helmet-battle" })
-      config.classBefore.init()
+      new Hint(config).init()
     }
   },
   {

@@ -73,6 +73,10 @@
         "amount": 1
       }
     ],
+    "clue": [
+      { "id":"clue_initial_1", "text": { "en": "Charge the car battery", "id": "Charge aki mobil" },"idx": -2, "states":["CAR_BATERY_B"] },
+      { "id":"clue_initial_2", "text": { "en": "Find a way to charge the car battery", "id": "Cari cara buat charge aki mobil" },"idx": -1, "states":["VAN_NOTE"] }
+    ],
     "payout": {
       "fail": [
         {
@@ -157,6 +161,9 @@
         "id": "J00003",
         "amount": 1
       }
+    ],
+    "clue": [
+      { "id":"clue_initial_1", "text": { "en": "Coming Soon.", "id": "Comming soon." },"idx": -1, "states":["COMING_SOON"] }
     ],
     "payout": {
       "fail": [
@@ -256,6 +263,9 @@
       "EGG_11",
       "EGG_12"
     ],
+    "clue": [
+      { "id":"clue_initial_1", "text": { "en": "Win the game", "id": "Menangkan pertandingan" },"idx": -1, "states":["WON"] }
+    ],
     "payout": {
       "success": [
         {
@@ -336,6 +346,9 @@
     },
     "reqs": [
       "XOXO_WON"
+    ],
+    "clue": [
+      { "id":"clue_initial_1", "text": { "en": "Win the game", "id": "Menangkan pertandingan" },"idx": -1, "states":["WON"] }
     ],
     "payout": {
       "success": [

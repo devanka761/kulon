@@ -53,6 +53,8 @@ class SocketHandler {
       const pmc = db.pmc as Friends
       pmc.update()
     }
+
+    this.game.kulonUI?.phone.updateUnread()
   }
   acceptFriend(data: ISival): void {
     if (!data.user) return
@@ -74,6 +76,8 @@ class SocketHandler {
       const pmc = db.pmc as MatchMaking
       pmc.updateFriends(data.user)
     }
+
+    this.game.kulonUI?.phone.updateUnread()
   }
   declineFriend(data: ISival): void {
     if (!data.user) return
@@ -90,6 +94,8 @@ class SocketHandler {
       const pmc = db.pmc as Friends
       pmc.update()
     }
+
+    this.game.kulonUI?.phone.updateUnread()
   }
   removeFriend(data: ISival): void {
     if (!data.user) return
@@ -98,6 +104,8 @@ class SocketHandler {
       const pmc = db.pmc as Friends
       pmc.update()
     }
+
+    this.game.kulonUI?.phone.updateUnread()
   }
   crewOnline(data: ISival): void {
     if (db.pmc?.id === "matchmaking") {
@@ -126,6 +134,8 @@ class SocketHandler {
       const pmc = db.pmc as Jobs
       pmc.updateList()
     }
+
+    this.game.kulonUI?.phone.updateUnread()
   }
   jobJoin(data: ISival): void {
     if (db.pmc?.id === "matchmaking") {
@@ -293,6 +303,8 @@ class SocketHandler {
       const delayTime = db.onduty > 1 ? 20000 : 1000
       setTimeout(() => achievement({ title: trophyTitle, description: lang.ACH_UNLOCKED }), delayTime)
     }
+
+    this.game.kulonUI?.phone.updateUnread()
   }
   mail(data: ISival): void {
     db.mails.add(data.mail)
@@ -309,6 +321,8 @@ class SocketHandler {
       const pmc = db.pmc as Mails
       pmc.updateList()
     }
+
+    this.game.kulonUI?.phone.updateUnread()
   }
   donateSettlement(data: ISival): void {
     if (data.mail) this.mail(data)
@@ -365,6 +379,8 @@ class SocketHandler {
     audio.emit({ action: "play", type: "sfx", src: "item_collected", options: { id: Date.now().toString() } })
 
     states.forEach((state) => db.pmx!.addClaim(state, owner))
+
+    this.game.kulonUI?.phone.updateUnread()
   }
   run(data: ISival): void {
     if (!this.game || !data.type) return
