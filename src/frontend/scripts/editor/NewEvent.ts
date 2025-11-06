@@ -318,6 +318,12 @@ const EventMethod: IEventMethod = {
       <label for="idx">Index - <small><i>sort with other hint</i></small></label>
       <input type="text" name="idx" id="idx" autocomplete="off" placeholder="ex: 0 - Infinity" value="${s.idx ? s.idx.toString() : "0"}" required />
     </div>
+    <div class="opt-actions">
+      <div class="opt-next">
+        <input type="checkbox" name="instant" id="instant"${s.instant ? " checked" : ""} />
+        <label for="instant">Set as optional</label>
+      </div>
+    </div>
     <div class="field">
       <div class="action-buttons buttons">
         <div class="btn btn-cancel">CANCEL</div>

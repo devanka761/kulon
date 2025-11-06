@@ -56,9 +56,9 @@ export default class Shop implements IPMC {
   private enter?: KeyPressListener
   private esc?: KeyPressListener
 
-  private something?: SSKelement
   private itemContainer!: SSKelement
   private itemDetail!: SSKelement
+  private loaded: boolean = false
 
   constructor(config: IShopConfig) {
     this.onComplete = config.onComplete
@@ -170,8 +170,15 @@ export default class Shop implements IPMC {
       elist.innerHTML = `<div class="center">~ COMING SOON ~</div>`
     }
     this.itemContainer.append(elist)
-    if (elist.firstElementChild instanceof HTMLElement && elist.firstElementChild.classList.contains("card")) {
-      elist.firstElementChild.click()
+
+    const firstElement = elist.firstElementChild as HTMLDivElement | null
+    const isReady = firstElement && firstElement.classList.contains("card")
+
+    if (!this.loaded && isReady) {
+      setTimeout(() => firstElement.click(), 300)
+      this.loaded = true
+    } else if (isReady) {
+      firstElement.click()
     } else {
       this.writeDesc()
     }
@@ -274,7 +281,7 @@ export default class Shop implements IPMC {
     if (!next) return this.onComplete()
     if (typeof next !== "string") return next.init()
   }
-  init(): void {
+  async init(): Promise<void> {
     db.pmc = this
     audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
     this.createElement()
@@ -283,6 +290,10 @@ export default class Shop implements IPMC {
     this.updateEconomies()
     this.activatedBtn()
     this.writeItems(currentPage)
+
+    await waittime()
+
+    this.loaded = true
     this.navKeyListener()
   }
 }

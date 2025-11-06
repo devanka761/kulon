@@ -116,6 +116,8 @@
   width: max-content;
   max-width: calc(100% - (v.$mediumPadding * 2));
   background-color: rgba(v.$pm1, 0.8);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   color: v.$px1;
   padding: v.$mediumPadding;
   border-radius: 14px;

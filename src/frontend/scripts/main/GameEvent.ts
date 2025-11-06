@@ -248,14 +248,15 @@ export class GameEvent {
     resolve()
   }
   addHint(resolve: Resolve): void {
-    const { text, idx, id, states } = this.event
+    const { text, idx, id, states, instant } = this.event
     if (!this.targetKey || !id || !text || !states) return resolve()
 
     setHint({
       idx: typeof idx === "number" ? idx : 761,
       id,
       states,
-      text
+      text,
+      instant
     })
 
     peers.send("addHint", {

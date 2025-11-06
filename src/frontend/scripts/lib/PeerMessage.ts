@@ -224,14 +224,15 @@ class PeerMessage {
     if (events.length < 1) return
 
     events.forEach((evt) => {
-      const { text, idx, id, states } = evt
+      const { text, idx, id, states, instant } = evt
       if (!id || !text || !states) return
 
       setHint({
         idx: typeof idx === "number" ? idx : 761,
         id,
         states,
-        text
+        text,
+        instant
       })
     })
 

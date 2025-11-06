@@ -21,6 +21,7 @@ interface IHint {
   idx: number
   text: ILocale
   states: string[]
+  instant?: boolean
 }
 
 let unread: number = 0
@@ -29,6 +30,7 @@ const HINTS: IHint[] = []
 
 function createLi(data: IHint): HTMLLIElement {
   const li = kel("li")
+  if (data.instant) li.classList.add("optional")
   li.id = data.id
   li.setAttribute("data-idx", data.idx.toString())
   const span = kel("span", "fa-li")
@@ -65,6 +67,7 @@ export class Hint implements IPMC {
   private ul!: HTMLUListElement
 
   private esc?: KeyPressListener
+  private loaded: boolean = false
 
   constructor(config: IHintConfig) {
     this.classBefore = config.classBefore
@@ -108,12 +111,15 @@ export class Hint implements IPMC {
       checkDone(li)
     })
 
-    const firstHint = sortedList.find((li) => !li.classList.contains("done"))
+    const firstHint = sortedList.find((li) => !li.classList.contains("done") && !li.classList.contains("optional"))
     firstHint?.classList.add("highlight")
+    this.toBottom(firstHint)
   }
-  private toBottom(): void {
+  private toBottom(firstHint?: HTMLLIElement): void {
+    if (this.loaded) return
+    this.loaded = true
     // @ts-expect-error no default types
-    this.ul.lastElementChild?.scrollIntoView({ behavior: "instant", block: "center", container: "nearest" })
+    firstHint?.scrollIntoView({ behavior: "smooth", block: "center", container: "nearest" })
   }
   private async btnListener(): Promise<void> {
     const btnClose = futor(".btn-close", this.el)
@@ -158,7 +164,6 @@ export class Hint implements IPMC {
     eroot().append(this.el)
     this.writeData()
     await waittime()
-    this.toBottom()
     this.btnListener()
   }
 }

@@ -63,6 +63,8 @@ export class Bag implements IPMC {
   private items?: IItemList
   private itemContainer!: HTMLDivElement
   private itemDetail!: HTMLDivElement
+  private loaded: boolean = false
+
   constructor(config: IBagConfig) {
     this.onComplete = config.onComplete
     this.classBefore = config.classBefore
@@ -230,8 +232,12 @@ export class Bag implements IPMC {
     this.itemContainer.append(elist)
 
     const firstElement = elist.firstElementChild as HTMLDivElement | null
+    const isReady = firstElement && firstElement.classList.contains("card")
 
-    if (firstElement && firstElement.classList.contains("card")) {
+    if (!this.loaded && isReady) {
+      setTimeout(() => firstElement.click(), 300)
+      this.loaded = true
+    } else if (isReady) {
       firstElement.click()
     } else {
       this.writeDesc()
@@ -319,7 +325,7 @@ export class Bag implements IPMC {
     if (!next) return this.onComplete()
     if (typeof next !== "string") return next.init()
   }
-  init(): void {
+  async init(): Promise<void> {
     db.pmc = this
     audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
     this.createElement()
@@ -328,6 +334,10 @@ export class Bag implements IPMC {
     this.updateEconomies()
     this.activatedBtn()
     this.writeItems(currentPage)
+
+    await waittime()
+
+    this.loaded = true
     this.navKeyListener()
   }
 }
