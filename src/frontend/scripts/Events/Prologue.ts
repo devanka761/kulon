@@ -15,7 +15,7 @@ import setNewGame from "../manager/setNewGame"
 import { IPMC, IPMCConfig, IUser } from "../types/db.types"
 import { IMissionList } from "../types/job.types"
 import { ISival } from "../types/lib.types"
-import { setHint } from "./Hint"
+import { resetHint, setHint } from "./Hint"
 
 interface IPrologueConfig extends IPMCConfig {
   onComplete: () => void
@@ -180,7 +180,10 @@ export default class Prologue implements IPMC {
     peers.setInitialMap(this.mission.spawn.area)
     db.job.clearMap()
     if (!this.isAborted) {
-      db.pmc = undefined
+      if (db.pmc?.id === "prologue") db.pmc = undefined
+
+      resetHint()
+
       const { clue } = this.mission
       if (clue) {
         setHint(...clue)
@@ -254,7 +257,7 @@ export default class Prologue implements IPMC {
     this.enter?.unbind()
     await waittime()
     this.game.kulonUI.restore()
-    db.pmc = undefined
+    if (db.pmc?.id === "prologue") db.pmc = undefined
     this.skipped = []
     this.el.remove()
     this.isLocked = false

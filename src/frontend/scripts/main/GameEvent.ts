@@ -248,12 +248,12 @@ export class GameEvent {
     resolve()
   }
   addHint(resolve: Resolve): void {
-    const { text, idx, states } = this.event
-    if (!this.targetKey || !text || !states) return resolve()
+    const { text, idx, id, states } = this.event
+    if (!this.targetKey || !id || !text || !states) return resolve()
 
     setHint({
-      id: this.targetKey + this.targetIdx,
-      idx: typeof idx === "number" ? idx : 0,
+      idx: typeof idx === "number" ? idx : 761,
+      id,
       states,
       text
     })

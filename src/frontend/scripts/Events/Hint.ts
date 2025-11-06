@@ -194,3 +194,7 @@ export async function checkHint(states: string[]): Promise<void> {
 export function hintHasUnread(): boolean {
   return unread > 0
 }
+
+export function resetHint(): void {
+  HINTS.splice(0, HINTS.length)
+}

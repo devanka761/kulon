@@ -220,17 +220,19 @@ class PeerMessage {
     const target = MapList[mapId]?.configObjects?.[key]?.talk?.[index]?.events
     if (!target) return
 
-    const evt = target.find((evt) => evt.type === "addHint")
-    if (!evt) return
+    const events = target.filter((evt) => evt.type === "addHint")
+    if (events.length < 1) return
 
-    const { text, idx, states } = evt
-    if (!text || !states) return
+    events.forEach((evt) => {
+      const { text, idx, id, states } = evt
+      if (!id || !text || !states) return
 
-    setHint({
-      id: key + index,
-      idx: typeof idx === "number" ? idx : 0,
-      states,
-      text
+      setHint({
+        idx: typeof idx === "number" ? idx : 761,
+        id,
+        states,
+        text
+      })
     })
 
     await waittime(1000)

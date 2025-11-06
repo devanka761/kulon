@@ -303,6 +303,10 @@ const EventMethod: IEventMethod = {
       <div class="title">Add Hint</div>
     </div>
     <div class="field">
+      <label for="id">Hint ID</label>
+      <input type="text" name="id" id="id" autocomplete="off" placeholder="ex: hint1t3" value="${s.id ? s.id.toString() : "761"}" required />
+    </div>
+    <div class="field">
       <label for="text">Text - <small>separate languages with \\ (id\\en)</small></label>
       <textarea name="text" id="text" maxlength="1000" placeholder="ex: Temukan air untuk diisikan ke botol\\Find water for your bottle" rows="3" required>${s.text ? s.text.id + " \\ " + s.text.en : ""}</textarea>
     </div>

@@ -57,7 +57,7 @@ async function showInfo(info: IBackSongInfo): Promise<void> {
   el.append(icon1, einfo, icon2)
 
   eroot().append(el)
-  await waittime(5000)
+  await waittime(3000)
   el.classList.add("out")
   await waittime(1000)
   el.remove()

@@ -508,6 +508,7 @@ export default class NewObject {
       s.text.id = sprTxt[0].trim()
       s.text.en = (sprTxt[1] || sprTxt[0]).trim()
     }
+    if (s.idx) s.idx = Number(s.idx || 761)
     if (s.instant) s.instant = true
     if (s.door) s.door = true
     if (s.map) s.map = "kulon" + s.map
