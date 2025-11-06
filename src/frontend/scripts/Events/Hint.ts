@@ -107,6 +107,9 @@ export class Hint implements IPMC {
       this.ul.append(li)
       checkDone(li)
     })
+
+    const firstHint = sortedList.find((li) => !li.classList.contains("done"))
+    firstHint?.classList.add("highlight")
   }
   private toBottom(): void {
     // @ts-expect-error no default types
@@ -190,7 +193,14 @@ export async function checkHint(states: string[]): Promise<void> {
   if (!isMatch) return
 
   await waittime()
+
   setHint()
+
+  notip({
+    c: "2",
+    ic: "sneaker-running",
+    a: lang.HINT_UPDATED
+  })
 }
 
 export function hintHasUnread(): boolean {

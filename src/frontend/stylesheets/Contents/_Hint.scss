@@ -16,11 +16,15 @@
         0 0 0 4px v.$px1,
         0 8px 16px rgba(0, 0, 0, 0.5);
       ul {
-        margin-left: var(--fa-li-margin, calc(v.$bigPadding + v.$defaultSize));
+        margin-left: var(--fa-li-margin, calc(v.$bigPadding + ((v.$defaultSize * 1.2) * 1.1)));
         li {
           line-height: 2;
+          font-size: calc(v.$defaultSize * 1.2);
           .fa-li {
-            font-size: calc(v.$defaultSize * 1.05);
+            font-size: calc((v.$defaultSize * 1.2) * 1.05);
+          }
+          &.highlight {
+            color: v.$yellow;
           }
           &.done {
             color: v.$swhite;

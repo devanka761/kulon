@@ -38,12 +38,12 @@ const appConfig: IAppConfig = {
       template: "app.ejs",
       chunks: ["app"]
     },
-    // home: {
-    //   title: "home",
-    //   filename: "home.ejs",
-    //   template: "home.ejs",
-    //   chunks: ["home"]
-    // },
+    home: {
+      title: "home",
+      filename: "home.ejs",
+      template: "home.ejs",
+      chunks: ["home"]
+    },
     editor: {
       title: "editor",
       filename: "editor.ejs",
