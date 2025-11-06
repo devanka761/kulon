@@ -74,8 +74,8 @@
       }
     ],
     "clue": [
-      { "id":"clue_initial_1", "text": { "en": "Charge the car battery", "id": "Charge aki mobil" },"idx": -2, "states":["CAR_BATERY_B"] },
-      { "id":"clue_initial_2", "text": { "en": "Find a way to charge the car battery", "id": "Cari cara buat charge aki mobil" },"idx": -1, "states":["VAN_NOTE"] }
+      { "id":"clue_initial_1", "text": { "en": "Charge the car battery", "id": "Isi daya aki mobil" },"idx": 13, "states":["CAR_BATERY_B"] },
+      { "id":"clue_initial_2", "text": { "en": "[Optional] Find a way to charge the car battery", "id": "[Opsional] Cari cara untuk mengisi daya aki mobil" },"idx": 11, "states":["VAN_NOTE"] }
     ],
     "payout": {
       "fail": [

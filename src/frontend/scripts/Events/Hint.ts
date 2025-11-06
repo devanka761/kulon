@@ -174,6 +174,8 @@ export function setHint(...args: IHint[]): void {
     return
   }
 
+  if (args.length < 1) return
+
   unread++
 
   notip({
