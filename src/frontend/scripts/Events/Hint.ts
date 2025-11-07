@@ -214,4 +214,5 @@ export function hintHasUnread(): boolean {
 
 export function resetHint(): void {
   HINTS.splice(0, HINTS.length)
+  unread = 0
 }

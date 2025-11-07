@@ -50,10 +50,9 @@ body {
     animation: canvas_completed 0.5s forwards;
   }
   &.title-screen {
-    animation: fade_in 1s;
-    transform: scale(1.2) translateX(16px * (10)) translateY(16px * (4));
+    transform: scale(1.25);
     &.out {
-      animation: fix_screen 2s forwards;
+      animation: fix_screen 2s linear forwards;
     }
   }
 }

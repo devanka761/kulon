@@ -151,12 +151,9 @@
 
 @keyframes fix_screen {
   0% {
-    transform: scale(1.2) translateX(16px * (10)) translateY(16px * (4));
-  }
-  60% {
-    transform: scale(2) translateX(16px * (9)) translateY(16px * (-2));
+    transform: scale(1.25);
   }
   100% {
-    transform: scale(1) translateX(0) translateY(0);
+    transform: scale(1);
   }
 }

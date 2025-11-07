@@ -15,6 +15,7 @@ import setNewGame from "../manager/setNewGame"
 import { IPMC } from "../types/db.types"
 import { IMissionList } from "../types/job.types"
 import { SSKelement } from "../types/lib.types"
+import { resetHint } from "./Hint"
 
 interface IStatus {
   0: string
@@ -190,6 +191,7 @@ export default class Payout implements IPMC {
     this.box.style.transform = "translateY(100vh)"
   }
   private async backToOffline(): Promise<void> {
+    resetHint()
     peers.closeAll()
     db.job.reset()
     db.waiting.reset()

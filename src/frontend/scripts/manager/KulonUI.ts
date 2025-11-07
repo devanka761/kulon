@@ -85,7 +85,6 @@ export default class KulonUI {
       keyboard: "esc",
       hasUnread: () => {
         const phoneApps = phonelist.filter((app) => app.hasUnread)
-
         return phoneApps.some((app) => app.hasUnread!())
       }
     })

@@ -147,15 +147,15 @@ export default class TitleScreen implements IPMC {
       this.canvas.classList.add("out")
       this.el.classList.add("out")
       audio.emit({ action: "play", type: "ambient", src: this.game.map.sound, options: { fadeIn: 1000 } })
-      backsong.destroy(5000)
-      await waittime(1995)
-      this.canvas.classList.remove("title-screen", "out")
-      this.el.remove()
-      db.pmc = undefined
-      this.game.pause()
       this.game.resume()
+      backsong.destroy(10000)
+      await waittime(1000)
+      db.pmc = undefined
       this.onComplete()
       this.isLocked = false
+      await waittime(1000)
+      this.canvas.classList.remove("title-screen", "out")
+      this.el.remove()
 
       const mailSize = db.mails.getAll.length
 

@@ -186,9 +186,11 @@ export default class Prologue implements IPMC {
 
       const { clue } = this.mission
       if (clue) {
-        setHint(...clue)
+        setTimeout(() => {
+          setHint(...clue)
+          newGame.kulonUI?.phone.updateUnread()
+        }, 4000)
       }
-      newGame.kulonUI?.phone.updateUnread()
     }
     if (this.isAborted) {
       if (db.pmx) {
