@@ -37,14 +37,6 @@ export default class Auth {
     this.el.append(splash)
     await waittime(1000)
 
-    if ("serviceWorker" in navigator) {
-      try {
-        await navigator.serviceWorker.register("/sw.js", { scope: "/" })
-      } catch (_error) {
-        // -
-      }
-    }
-
     if (!LocalList.lang) {
       const newLang = await modal.select(SelectLang())
 

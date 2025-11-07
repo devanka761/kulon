@@ -1,3 +1,5 @@
+import dvnkz_v from "../../../config/version.json"
+import dvnkz_b from "../../../../public/json/build/buildNumber.json"
 import asset from "../data/assets"
 import lang from "../data/language"
 import { eroot, futor, kel, qutor } from "../lib/kel"
@@ -75,7 +77,7 @@ export default class Preload {
     this.sounds = sounds
     this.doodle = doodle
   }
-  createElement() {
+  createElement(): void {
     this.el.innerHTML = `
     <div class="box">
       <div class="title">
@@ -92,7 +94,7 @@ export default class Preload {
       <div class="btn-start center fa-fade">-- <span class="keyinfo">Enter</span> ${lang.TS_START} --</div>
     </div>`
   }
-  writeLoadData() {
+  writeLoadData(): void {
     const loadList = futor(".load-data-list", this.el)
     const convertOp = 1024 * 1024
     // Object.keys(assetSize).forEach((k) => {
@@ -106,7 +108,28 @@ export default class Preload {
     card.innerHTML = `<b>${convertedSize} MB</b>`
     loadList.prepend(card)
   }
-  btnListener() {
+  async removeOldCache(): Promise<void> {
+    const CACHE_WHITELIST = `kulon-cache-${dvnkz_v.version}-${dvnkz_b.buildNumber}`
+    await caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (CACHE_WHITELIST !== cacheName) {
+            return caches.delete(cacheName)
+          }
+          return Promise.resolve()
+        })
+      )
+    })
+
+    if ("serviceWorker" in navigator) {
+      try {
+        await navigator.serviceWorker.register("/sw.js", { scope: "/" })
+      } catch (_error) {
+        // -
+      }
+    }
+  }
+  btnListener(): void {
     const btnLoad = futor(".assetload-action", this.el)
     btnLoad.onclick = async () => {
       this.enter?.unbind()
@@ -117,18 +140,19 @@ export default class Preload {
       eloadel.innerHTML = `
       <div class="info">
         <span>${lang.LOADING}</span>
-        <span class="status">Ehek - 0%</span>
+        <span class="status">Ehek <small><i class="fa-solid fa-circle-notch fa-spin"></i></small></span>
       </div>
       <div class="loader">
         <div class="inner-loader"></div>
       </div>`
       this.el.append(eloadel)
+      await this.removeOldCache()
       await waittime(200)
       this.loadPrepare()
     }
     this.enter = new KeyPressListener("enter", () => btnLoad.click())
   }
-  async loadPrepare() {
+  async loadPrepare(): Promise<void> {
     this.assets = this.readSkins()
     this.audios = this.readSounds()
 
@@ -139,9 +163,10 @@ export default class Preload {
 
     this.load(assetProgress)
   }
-  load(assetProgress: IAssetProgress) {
+  load(assetProgress: IAssetProgress): void {
     if (!this.assets || (this.assets.length == 0 && !this.audios) || this.audios.length === 0) {
-      return this.showDone()
+      this.showDone()
+      return
     }
     this.propsToLoad = this.assets.length + this.audios.length
     if (this.assets) {
@@ -169,7 +194,7 @@ export default class Preload {
   readSkins(): IAssets[] {
     return this.skins.map((skin) => ({ id: skin.id, content: skin.path, type: "image" }))
   }
-  launchIfReady(assetProgress: IAssetProgress, fileID: string) {
+  launchIfReady(assetProgress: IAssetProgress, fileID: string): void {
     if (fileID === "null") fileID = "Koruptor"
     this.propsToLoad--
     this.propsLoaded++
@@ -184,7 +209,7 @@ export default class Preload {
       this.showDone()
     }
   }
-  beginLoadingImage(fileID: string, fileName: string, assetProgress: IAssetProgress) {
+  beginLoadingImage(fileID: string, fileName: string, assetProgress: IAssetProgress): void {
     const img = new Image()
     img.classList.add("hidden-preload")
     img.onerror = () => {
@@ -201,7 +226,7 @@ export default class Preload {
     // this.launchIfReady(assetProgress, loadscreen, fileID)
     asset[fileID] = { src: fileName }
   }
-  async beginLoadingAudio(fileID: string, fileName: string, assetProgress: IAssetProgress) {
+  async beginLoadingAudio(fileID: string, fileName: string, assetProgress: IAssetProgress): Promise<void> {
     try {
       const response = await fetch(fileName)
       if (!response.ok) {
@@ -229,7 +254,7 @@ export default class Preload {
     }
     return user
   }
-  async showDone() {
+  async showDone(): Promise<void> {
     await waittime(1000)
 
     const eloader = qutor(".assets-load", this.el)
@@ -264,12 +289,12 @@ export default class Preload {
 
     startGame(user.data, nextMap, true)
   }
-  async destroy() {
+  async destroy(): Promise<void> {
     this.el.classList.add("out")
     await waittime(1000, 5)
     this.el.remove()
   }
-  init() {
+  init(): void {
     this.createElement()
     eroot().append(this.el)
     this.writeLoadData()

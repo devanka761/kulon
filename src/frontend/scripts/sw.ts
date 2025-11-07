@@ -1,22 +1,43 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /// <reference lib="webworker" />
+import dvnkz_v from "../../config/version.json"
+import dvnkz_b from "../../../public/json/build/buildNumber.json"
 
-const CACHE_NAME = "kulon-assets-cache-v1"
-const ASSETS_TO_CACHE = ["/json/audio/audio.json", "/json/skins/skin_list.json"]
+const DVNKZ_CACHE_NAME = `kulon-cache-${dvnkz_v.version}-${dvnkz_b.buildNumber}`
+const DVNKZ_ASSET_BL = ["json", "Kulon_Hero", "outdoor_amb"]
+const DVNKZ_ASSET_WL = ["/audio/", "/assets/characters/", "/assets/maps/mp_ehek/", "/assets/maps/props/", "/assets/items/", "/assets/minigames/", "/assets/unlisted/jumpscare/"]
 
 self.addEventListener("install", (event) => {
+  const cacheWhitelist = DVNKZ_CACHE_NAME
+  // @ts-expect-error no default types
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheWhitelist !== cacheName) {
+            return caches.delete(cacheName)
+          }
+          return Promise.resolve()
+        })
+      )
+    })
+  )
   // @ts-expect-error no default types
   event.waitUntil(
     caches
-      .open(CACHE_NAME)
+      .open(DVNKZ_CACHE_NAME)
       .then(async (cache) => {
-        await cache.addAll(ASSETS_TO_CACHE)
-
         const cacheDynamicAssets = async (jsonUrl: string, type: string, pathKey: string) => {
           const response = await cache.match(jsonUrl)
           if (response) {
             const items = await response.json()
-            const filesToCache = items.map((item: any) => item[pathKey])
+            const filesToCache = items
+              .map((item: any) => item[pathKey])
+              .filter((url: string) => {
+                const isBlackListed = DVNKZ_ASSET_BL.some((keyword) => url.includes(keyword))
+                const isWhiteListed = DVNKZ_ASSET_WL.some((keyword) => url.includes(keyword))
+                return !isBlackListed && isWhiteListed
+              })
 
             await Promise.allSettled(filesToCache.map((url: string) => cache.add(url).catch((_e) => {})))
           }
@@ -31,13 +52,13 @@ self.addEventListener("install", (event) => {
 })
 
 self.addEventListener("activate", (event) => {
-  const cacheWhitelist = [CACHE_NAME]
+  const cacheWhitelist = DVNKZ_CACHE_NAME
   // @ts-expect-error no default types
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
+          if (cacheWhitelist !== cacheName) {
             return caches.delete(cacheName)
           }
           return Promise.resolve()
@@ -54,7 +75,10 @@ self.addEventListener("fetch", (event) => {
   const requestUrl = new URL(event.request.url)
   const src = requestUrl.pathname
 
-  const isAssetRequest = !src.includes("json") && !src.includes("Kulon_Hero") && (src.includes("/audio/") || src.includes("/assets/characters/") || src.includes("/assets/items/cloud/") || src.includes("/assets/minigames/") || src.includes("/assets/unlisted/jumpscare/"))
+  const isBlackListed = DVNKZ_ASSET_BL.some((keyword) => src.includes(keyword))
+  const isWhiteListed = DVNKZ_ASSET_WL.some((keyword) => src.includes(keyword))
+
+  const isAssetRequest = !isBlackListed && isWhiteListed
 
   if (isAssetRequest) {
     // @ts-expect-error no default types
@@ -69,7 +93,7 @@ self.addEventListener("fetch", (event) => {
           if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== "basic") {
             return networkResponse
           }
-          return caches.open(CACHE_NAME).then((cache) => {
+          return caches.open(DVNKZ_CACHE_NAME).then((cache) => {
             // @ts-expect-error no default types
             cache.put(event.request, networkResponse.clone())
             return networkResponse

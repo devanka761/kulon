@@ -116,6 +116,7 @@ const config: webpack.Configuration = {
   output: {
     path: path.resolve(__dirname, "public/bundle"),
     filename: "[name]-[contenthash].js",
+    iife: false,
     clean: true
   },
   plugins,
