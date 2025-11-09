@@ -30,13 +30,11 @@ class Chat {
     this.el.innerHTML = `
     <div class="box">
       <div class="content">
-        <div class="list">
-          <p class="empty">${lang.CHAT_HELP}</p>
-        </div>
+        <div class="list"><p class="empty">- ${lang.EMPTY}</p></div>
       </div>
       <form action="/ehek" method="post" class="chat-form hide">
         <div class="btn btn-chat-cancel"><i class="fa-solid fa-xmark"></i></div>
-        <input type="text" autocomplete="off" name="chat-txt" id="chat-txt" placeholder="${lang.TYPE_HERE}" maxlength="200" />
+        <input type="text" autocomplete="off" name="chat-txt" id="chat-txt" placeholder="${lang.CHAT_HELP}" maxlength="200" />
         <button class="btn btn-chat-send"><i class="fa-solid fa-angles-right"></i></button>
       </form>
     </div>`
@@ -95,14 +93,20 @@ class Chat {
     this.history.forEach((_, i) => this.history[i].element.remove())
     this.history = []
     const p = kel("p", "empty")
-    p.innerHTML = lang.EMPTY
+    p.innerHTML = `- ${lang.EMPTY}`
     this.elist.append(p)
     this.hide()
+  }
+  changeLang(): void {
+    const emptyEl = qutor(".empty", this.elist)
+    if (emptyEl) emptyEl.innerHTML = `- ${lang.EMPTY}`
   }
   async open(): Promise<void> {
     if (db.pmc && !pmcWhiteList.includes(db.pmc?.id || "undefined")) return
 
     if (qutor(".modal")) return
+
+    this.inp.placeholder = lang.CHAT_HELP
 
     if (hideTimeout) {
       clearTimeout(hideTimeout)

@@ -15,6 +15,7 @@ import { IPMC } from "../types/db.types"
 import { Game } from "../main/Game"
 import { ISettingList } from "../types/setting.types"
 import { ISival, SSKelement } from "../types/lib.types"
+import chat from "../manager/Chat"
 
 interface IItemCard {
   [key: string]: (s: ISettingList) => HTMLDivElement
@@ -350,6 +351,7 @@ export default class Setting implements IPMC {
       LocalList.lang = newLang
       localSave.save()
       await modal.loading(localeChanger())
+      chat.changeLang()
       this.isLocked = false
 
       const updateSetting = new Setting({

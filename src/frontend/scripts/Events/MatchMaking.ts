@@ -20,6 +20,8 @@ import { IPMC, IPMCConfig, IUser } from "../types/db.types"
 import { IMissionList } from "../types/job.types"
 import { Game } from "../main/Game"
 import { ISival } from "../types/lib.types"
+import { copyToClipboard } from "../lib/navigator"
+import notip from "../lib/notip"
 
 interface IMatchMakingConfig extends IPMCConfig {
   onComplete: () => void
@@ -51,6 +53,7 @@ export default class MatchMaking implements IPMC {
   private btnStart!: HTMLDivElement
 
   private esc?: KeyPressListener
+  private keyC?: KeyPressListener
   private keyE?: KeyPressListener
   private keyQ?: KeyPressListener
   private space?: KeyPressListener
@@ -87,16 +90,21 @@ export default class MatchMaking implements IPMC {
             </div>
             <div class="card textbox txt-inv-type">${lang.MM_INV_1_DESC}</div>
             <div class="card textbox txt-tutor">${lang.ARROW_ALL.split("<br/>").join(" ")}</div>
-            <div class="card textbox txt-tutor">${lang.MM_MEMBER_OPT.split("<br/>").join(" ")}</div>
           </div>
         </div>
         <div class="board">
           <div class="board-title">${lang.MM_TEAMUP}: ${this.mission.min}P - ${this.mission.max}P</div>
+          <div class="board-content">
+            <div class="card textbox txt-tutor">${lang.MM_MEMBER_OPT.split("<br/>").join(" ")}</div>
+          </div>
           <div class="board-content content-users player-list">
           </div>
         </div>
         <div class="board">
           <div class="board-title">${lang.MM_ACT_INV}</div>
+          <div class="board-content">
+            <div class="card textbox txt-tutor">${lang.MM_FRIEND_OPT.split("<br/>").join(" ")}</div>
+          </div>
           <div class="board-content content-users friend-list">
           </div>
         </div>
@@ -318,6 +326,26 @@ export default class MatchMaking implements IPMC {
       }
       this.updateInviteType()
     }
+    this.txtInvType.onclick = async () => {
+      if (this.isLocked) return
+      if (db.job.invite !== 1) return
+
+      const copiedText = await copyToClipboard(db.job.code!.toString())
+      if (copiedText) {
+        const copySuccess = lang.COPY_TEXT
+        notip({
+          a: copySuccess,
+          b: db.job.code!.toString(),
+          ic: "clipboard-check",
+          c: 2
+        })
+      } else {
+        await modal.alert("No Permission")
+      }
+    }
+    this.keyC = new KeyPressListener("c", () => {
+      this.txtInvType.click()
+    })
     this.keyE = new KeyPressListener("e", () => {
       this.btnInvType.click()
     })
@@ -492,6 +520,7 @@ export default class MatchMaking implements IPMC {
     this.members.reset()
     this.removeNavKeyListener()
     this.esc?.unbind()
+    this.keyC?.unbind()
     this.keyE?.unbind()
     this.keyQ?.unbind()
     this.space?.unbind()

@@ -11,7 +11,7 @@ const imgSources: ImgObject[] = [
   { src: "Kulon", alt: "Kulon" }
 ]
 
-const icons = ["fa-whiteboard fa-semibold fa-user", "fa-thumbprint fa-light fa-user", "fa-slab-press fa-regular fa-user", "fa-slab fa-regular fa-user", "fa-sharp-duotone fa-thin fa-user", "fa-sharp-duotone fa-solid fa-user", "fa-sharp-duotone fa-regular fa-user", "fa-sharp-duotone fa-light fa-user", "fa-sharp fa-thin fa-user", "fa-sharp fa-solid fa-user", "fa-sharp fa-regular fa-user", "fa-sharp fa-light fa-user", "fa-notdog-duo fa-solid fa-user", "fa-notdog fa-solid fa-user", "fa-jelly-fill fa-regular fa-user", "fa-jelly-duo fa-regular fa-user", "fa-jelly fa-regular fa-user", "fa-etch fa-solid fa-user", "fa-duotone fa-thin fa-user", "fa-duotone fa-solid fa-user", "fa-duotone fa-regular fa-user", "fa-duotone fa-light fa-user", "fa-thin fa-user", "fa-solid fa-user", "fa-regular fa-user", "fa-light fa-user", "fa-brands fa-github", "fa-chisel fa-regular fa-user"]
+const icons = ["fa-jelly fa-regular fa-cloud", "fa-solid fa-compact-disc", "fa-duotone fa-solid fa-circle-xmark", "fa-duotone fa-regular fa-gem", "fa-regular fa-briefcase", "fa-sharp-duotone fa-solid fa-address-book", "fa-etch fa-solid fa-mobile", "fa-jelly-fill fa-regular fa-gamepad"]
 
 export default class Intro {
   private el: HTMLDivElement = kel("div", "Intro")

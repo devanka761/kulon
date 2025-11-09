@@ -25,6 +25,9 @@
         margin-bottom: v.$smallPadding;
       }
       .load-data-list {
+        .preload-icons {
+          opacity: 0.01;
+        }
         .load-data-card {
           line-height: 1.5;
         }

@@ -144,25 +144,39 @@
       .actions {
         flex-shrink: 0;
         width: 100%;
-        .btn-start {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: v.$bigPadding;
+        .btn {
           display: block;
-          width: 100%;
           padding: v.$mediumPadding;
           text-align: center;
+          cursor: c.$cursorPointer;
+          border-radius: 10px;
+          .keyinfo {
+            display: inline;
+          }
+        }
+        .btn-room {
+          flex-shrink: 0;
+          width: fit-content;
+          background-color: v.$px1;
+          color: v.$cgreen;
+          border: 2px solid v.$cgreen;
+          box-shadow:
+            0 0 0 4px v.$px1,
+            0 8px 16px rgba(0, 0, 0, 0.5);
+        }
+        .btn-start {
+          flex-grow: 1;
           background-color: v.$pm1;
           color: v.$px1;
           border: 4px solid v.$px1;
           box-shadow:
             0 0 0 4px v.$pm1,
             0 8px 16px rgba(0, 0, 0, 0.5);
-          border-radius: 10px;
-          cursor: c.$cursorPointer;
-          .keyinfo {
-            display: inline;
-          }
-        }
-        &.disabled {
-          .btn-start {
+          &.disabled {
             // border-color: ;
             background-color: v.$sgray;
             color: v.$softwhite;

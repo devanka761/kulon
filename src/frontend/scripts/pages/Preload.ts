@@ -18,6 +18,8 @@ import { IAssets, IAssetSkins, IRepB } from "../types/lib.types"
 import Doodles from "../lib/Doodle"
 import { IMapList } from "../types/maps.types"
 
+const preloadIcons = ['<i class="fa-jelly fa-regular fa-cloud"></i>', '<i class="fa-solid fa-compact-disc"></i>', '<i class="fa-duotone fa-solid fa-circle-xmark"></i>', '<i class="fa-duotone fa-regular fa-gem"></i>', '<i class="fa-regular fa-briefcase"></i>', '<i class="fa-sharp-duotone fa-solid fa-address-book"></i>', '<i class="fa-etch fa-solid fa-mobile"></i>', '<i class="fa-jelly-fill fa-regular fa-gamepad"></i>']
+
 async function forceFullScreen() {
   const width = window.innerWidth
   const height = window.innerHeight
@@ -86,6 +88,7 @@ export default class Preload {
       <div class="assetload-data">
         <div class="load-data-title">${lang.PRELOAD_NOTICE}</div>
         <div class="load-data-list">
+          <p class="preload-icons">${preloadIcons.join("")}</p>
           <i><small>${lang.PRELOAD_TIME}</small></i>
         </div>
       </div>

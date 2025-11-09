@@ -13,6 +13,7 @@ import { IMissionList } from "../types/job.types"
 import { IPMC, IPMCConfig } from "../types/db.types"
 import { Game } from "../main/Game"
 import { ISival, SSKelement } from "../types/lib.types"
+import Team from "../Contents/Team"
 
 interface ILocaleMode {
   [key: string]: string
@@ -67,10 +68,12 @@ export default class Missions implements IPMC {
   private activeBoardIndex: number = 0
 
   private el!: HTMLDivElement
-  private btnStart!: HTMLDivElement
+  private btnStart!: SSKelement
+  private btnRoom!: SSKelement
 
   private esc?: KeyPressListener
   private enter?: KeyPressListener
+  private space?: KeyPressListener
   private navKeyHandler?: (...args: ISival) => ISival
 
   private eboard1!: SSKelement
@@ -117,12 +120,14 @@ export default class Missions implements IPMC {
             </div>
           </div>
         </div>
-        <div class="actions disabled">
-          <div class="btn btn-start"><span class="keyinfo">enter</span> ${lang.TS_START}</div>
+        <div class="actions">
+          <div class="btn btn-room"><span class="keyinfo">Space</span> <i class="fa-duotone fa-solid fa-people-group"></i> ${lang.TS_TEAM}</div>
+          <div class="btn btn-start disabled"><span class="keyinfo">enter</span> ${lang.TS_START}</div>
         </div>
       </div>
     </div>`
-    this.btnStart = qutor(".actions", this.el) as HTMLDivElement
+    this.btnStart = futor(".actions .btn-start", this.el)
+    this.btnRoom = futor(".actions .btn-room", this.el)
   }
   private btnListener(): void {
     const btnClose = futor(".btn-close", this.el)
@@ -131,9 +136,20 @@ export default class Missions implements IPMC {
       this.destroy()
     }
 
-    this.btnStart.onclick = async () => {
+    this.btnStart.onclick = () => {
       if (this.isLocked) return
       this.startJob()
+    }
+
+    this.btnRoom.onclick = async () => {
+      if (this.isLocked) return
+      const team = new Team({
+        onComplete: this.onComplete,
+        game: this.game,
+        classBefore: this
+      })
+
+      this.destroy(team)
     }
 
     this.esc = new KeyPressListener("escape", () => {
@@ -141,6 +157,9 @@ export default class Missions implements IPMC {
     })
     this.enter = new KeyPressListener("enter", () => {
       this.btnStart.click()
+    })
+    this.space = new KeyPressListener("space", () => {
+      this.btnRoom.click()
     })
   }
   private updateEconomies(): void {
@@ -295,6 +314,7 @@ export default class Missions implements IPMC {
     this.choosen = undefined
     this.esc?.unbind()
     this.enter?.unbind()
+    this.space?.unbind()
     if (this.navKeyHandler) {
       document.removeEventListener("keydown", this.navKeyHandler)
       this.navKeyHandler = undefined

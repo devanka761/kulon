@@ -64,7 +64,7 @@ class Socket {
     }
 
     const checkTitleScreen = async (resolve: ISival) => {
-      if (this.game.isPaused && db.pmc?.id !== "appearance") {
+      if (this.game.isPaused && (db.pmc?.id === "setting" || db.pmc?.id === "titleScreen")) {
         await waittime(1000)
         return checkTitleScreen(resolve)
       }

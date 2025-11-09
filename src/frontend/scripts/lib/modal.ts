@@ -334,7 +334,7 @@ const modal = {
           <p><i class="fa-duotone fa-${s.ic ? s.ic : "circle-exclamation"}"></i></p>
         </div>
         <div class="inf">
-          <p><label for="prompt-field">${typeof s === "string" ? s || "" : s.msg || ""}</label></p>
+          <p>${typeof s === "string" ? s || "" : s.msg || ""}</p>
           <form class="modal-radio-form" id="modal-radio-form"></form>
         </div>
         <div class="acts">

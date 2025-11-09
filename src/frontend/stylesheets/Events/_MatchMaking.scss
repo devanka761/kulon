@@ -131,11 +131,12 @@
             padding: v.$mediumPadding;
             background-color: rgba(v.$px1, 0.8);
             margin-bottom: v.$tinyPadding;
-            &.txt-tutor {
+            .keyinfo {
+              display: inline;
+            }
+            &.txt-tutor,
+            &.txt-inv-type {
               line-height: 1.2;
-              .keyinfo {
-                display: inline;
-              }
             }
             .lr {
               display: flex;
@@ -214,9 +215,9 @@
                 color: v.$white;
               }
             }
-            &:last-child {
-              margin-bottom: 0;
-            }
+            // &:last-child {
+            //   margin-bottom: 0;
+            // }
           }
         }
       }

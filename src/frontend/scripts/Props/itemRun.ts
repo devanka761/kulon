@@ -160,8 +160,12 @@ class ItemRun {
     }
 
     chat.add(db.me.id, lang.LB_LEFT, true)
-    db.lobby.disable()
     peers.closeAll()
+    if (db.lobby.status === true) {
+      db.lobby.disable()
+      await modal.loading(new Promise((resolve) => setTimeout(resolve, 1000)), "EXITING LOBBY")
+    }
+    db.lobby.disable()
 
     const joinType = config.code ? "code" : "invite"
     const url = "/x/job/join/" + joinType
