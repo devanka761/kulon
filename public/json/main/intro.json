@@ -1,1 +1,651 @@
-{"FIRST":[{"type":"teleport","x":4,"y":6,"direction":"down","who":"devanka761"},{"type":"stand","direction":"down","who":"hero","time":500},{"type":"titleScreen"},{"type":"stand","direction":"left","who":"devanka761","time":200},{"type":"stand","direction":"right","who":"hero","time":1000},{"type":"textMessage","who":"Devanka 761","text":{"id":"Selamat datang di perjalanan para Kulon!","en":"Welcome to the journey of Kulons!"}},{"type":"textMessage","who":"Devanka 761","text":{"id":"Oh ya, untuk kontrol dan pergerakan kamu bisa cek di menu pengaturan","en":"Oh ya, for controls and movements, you can find them by opening the settings menu"}},{"type":"settingMenu"},{"type":"stand","direction":"up","who":"devanka761","time":500},{"type":"stand","direction":"right","who":"hero","time":100},{"type":"walk","direction":"up","who":"devanka761"},{"type":"stand","direction":"up","who":"hero","time":5},{"type":"walk","direction":"up","who":"devanka761"},{"type":"walk","direction":"up","who":"hero"},{"type":"stand","direction":"left","who":"devanka761","time":5},{"type":"walk","direction":"up","who":"hero"},{"type":"stand","direction":"up","who":"hero","time":500},{"type":"stand","direction":"right","who":"hero","time":500},{"type":"textMessage","who":"Devanka 761","text":{"id":"Ini adalah meja perencanaan misi","en":"This is the planning desk for mission/job"}},{"type":"textMessage","who":"Devanka 761","text":{"id":"Ayo lihat-lihat dikit dengan tekan E","en":"Let's take a look by pressing E"}},{"type":"stand","direction":"up","who":"hero","time":500},{"type":"missionBoard","first":true},{"type":"stand","direction":"down","who":"devanka761","time":100},{"type":"stand","direction":"up","who":"hero","time":500},{"type":"stand","direction":"right","who":"hero","time":100},{"type":"walk","direction":"down","who":"devanka761"},{"type":"stand","direction":"down","who":"hero","time":100},{"type":"walk","direction":"left","who":"devanka761"},{"type":"walk","direction":"right","who":"hero"},{"type":"stand","direction":"down","who":"devanka761","time":100},{"type":"walk","direction":"down","who":"hero"},{"type":"stand","direction":"right","who":"devanka761","time":100},{"type":"stand","direction":"down","who":"hero","time":100},{"type":"stand","direction":"left","who":"hero","time":100}],"MAIL_INITIAL":[{"type":"textMessage","who":"devanka761","text":{"id":"Oh, kamu ada surat penting yang belum dibaca","en":"Oh, you have unread mails"}},{"type":"textMessage","who":"devanka761","text":{"id":"Sekalian ambil hadiah di suratnya yuk","en":"Let's claim the rewards from the mails"}},{"type":"stand","direction":"down","who":"hero","time":500},{"type":"mail"},{"type":"stand","direction":"left","who":"hero","time":500}],"SECOND":[{"type":"textMessage","who":"Devanka 761","text":{"id":"Sekarang, udah selesai","en":"Now, you're good to go"}},{"type":"textMessage","who":"Devanka 761","text":{"id":"SELAMAT BERMAIN!","en":"ENJOY!"}},{"type":"stand","direction":"down","who":"devanka761","time":500},{"type":"walk","direction":"down","who":"devanka761"},{"type":"walk","direction":"down","who":"devanka761"},{"type":"stand","direction":"down","who":"hero","time":5},{"type":"walk","direction":"down","who":"devanka761"},{"type":"walk","direction":"down","who":"devanka761"},{"type":"walk","direction":"down","who":"devanka761"},{"type":"walk","direction":"down","who":"devanka761"},{"type":"stand","direction":"down","who":"devanka761","time":150},{"type":"stand","direction":"left","who":"devanka761","time":10},{"type":"walk","direction":"right","who":"hero"},{"type":"walk","direction":"right","who":"hero"},{"type":"walk","direction":"right","who":"hero"},{"type":"walk","direction":"right","who":"hero"},{"type":"walk","direction":"right","who":"hero"},{"type":"walk","direction":"down","who":"hero"},{"type":"stand","direction":"down","who":"devanka761","time":200},{"type":"stand","direction":"right","who":"devanka761","time":500},{"type":"walk","direction":"right","who":"devanka761"},{"type":"walk","direction":"right","who":"devanka761"},{"type":"walk","direction":"right","who":"devanka761"},{"type":"walk","direction":"right","who":"devanka761"},{"type":"walk","direction":"right","who":"devanka761"},{"type":"walk","direction":"right","who":"devanka761"},{"type":"walk","direction":"right","who":"devanka761"},{"type":"walk","direction":"right","who":"devanka761"},{"type":"walk","direction":"right","who":"devanka761"},{"type":"walk","direction":"right","who":"devanka761"},{"type":"stand","direction":"right","who":"hero","time":10},{"type":"walk","direction":"up","who":"devanka761"},{"type":"walk","direction":"up","who":"devanka761"},{"type":"walk","direction":"up","who":"devanka761"},{"type":"walk","direction":"up","who":"devanka761"},{"type":"walk","direction":"up","who":"devanka761"},{"type":"walk","direction":"up","who":"devanka761"},{"type":"walk","direction":"up","who":"devanka761"},{"type":"walk","direction":"up","who":"devanka761"},{"type":"stand","direction":"up","who":"devanka761","time":200},{"type":"playSound","src":"door_close","which":"sfx","instant":true},{"type":"teleport","x":-100,"y":-100,"direction":"down","who":"devanka761"},{"type":"stand","direction":"right","who":"hero","time":500},{"type":"stand","direction":"down","who":"hero","time":1000},{"type":"textMessage","text":{"id":"Ulangi tutorial kembali saat kamu baru masuk lagi di game-game yang selanjutnya?","en":"Replay the tutorial on the next time you enter the game?"}},{"type":"choices","text":{"id":"Ulangi tutorial kembali saat kamu baru masuk lagi di game-game yang selanjutnya?","en":"Replay the tutorial on the next time you enter the game?"},"options":[{"text":{"id":"Enggak usah","en":"Nope, I am good actually"}},{"text":{"id":"Iya, ulangi lagi nanti","en":"Yes, please"},"cancel":true}]},{"states":["KULON_INTRO"],"type":"addSetting"}],"DONE":[{"type":"stand","direction":"down","who":"hero","time":500},{"type":"titleScreen"}]}
+{
+  "FIRST": [
+    {
+      "type": "teleport",
+      "x": 4,
+      "y": 6,
+      "direction": "down",
+      "who": "devanka761"
+    },
+    {
+      "type": "stand",
+      "direction": "down",
+      "who": "hero",
+      "time": 500
+    },
+    {
+      "type": "stand",
+      "direction": "left",
+      "who": "devanka761",
+      "time": 200
+    },
+    {
+      "type": "stand",
+      "direction": "right",
+      "who": "hero",
+      "time": 1000
+    },
+    {
+      "type": "textMessage",
+      "who": "TUTORIAL",
+      "text": {
+        "id": "Selamat datang di perjalanan para Kulon!",
+        "en": "Welcome to the journey of Kulons!"
+      }
+    },
+    {
+      "type": "textMessage",
+      "who": "TUTORIAL",
+      "text": {
+        "id": "Oh ya, untuk kontrol dan pergerakan kamu bisa cek di menu pengaturan",
+        "en": "Oh ya, for controls and movements, you can find them by opening the settings menu"
+      }
+    },
+    {
+      "type": "settingMenu"
+    },
+    {
+      "type": "stand",
+      "direction": "up",
+      "who": "devanka761",
+      "time": 500
+    },
+    {
+      "type": "stand",
+      "direction": "right",
+      "who": "hero",
+      "time": 100
+    },
+    {
+      "type": "walk",
+      "direction": "up",
+      "who": "devanka761"
+    },
+    {
+      "type": "stand",
+      "direction": "up",
+      "who": "hero",
+      "time": 5
+    },
+    {
+      "type": "walk",
+      "direction": "up",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "up",
+      "who": "hero"
+    },
+    {
+      "type": "stand",
+      "direction": "left",
+      "who": "devanka761",
+      "time": 5
+    },
+    {
+      "type": "walk",
+      "direction": "up",
+      "who": "hero"
+    },
+    {
+      "type": "stand",
+      "direction": "up",
+      "who": "hero",
+      "time": 500
+    },
+    {
+      "type": "stand",
+      "direction": "right",
+      "who": "hero",
+      "time": 500
+    },
+    {
+      "type": "textMessage",
+      "who": "TUTORIAL",
+      "text": {
+        "id": "Ini adalah meja perencanaan misi",
+        "en": "This is the planning desk for mission/job"
+      }
+    },
+    {
+      "type": "textMessage",
+      "who": "TUTORIAL",
+      "text": {
+        "id": "Ayo lihat-lihat dikit dengan tekan E",
+        "en": "Let's take a look by pressing E"
+      }
+    },
+    {
+      "type": "stand",
+      "direction": "up",
+      "who": "hero",
+      "time": 500
+    },
+    {
+      "type": "missionBoard",
+      "first": true
+    },
+    {
+      "type": "stand",
+      "direction": "down",
+      "who": "devanka761",
+      "time": 100
+    },
+    {
+      "type": "stand",
+      "direction": "up",
+      "who": "hero",
+      "time": 500
+    },
+    {
+      "type": "stand",
+      "direction": "right",
+      "who": "hero",
+      "time": 100
+    },
+    {
+      "type": "walk",
+      "direction": "down",
+      "who": "devanka761"
+    },
+    {
+      "type": "stand",
+      "direction": "down",
+      "who": "hero",
+      "time": 100
+    },
+    {
+      "type": "walk",
+      "direction": "left",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "right",
+      "who": "hero"
+    },
+    {
+      "type": "stand",
+      "direction": "down",
+      "who": "devanka761",
+      "time": 100
+    },
+    {
+      "type": "walk",
+      "direction": "down",
+      "who": "hero"
+    },
+    {
+      "type": "stand",
+      "direction": "right",
+      "who": "devanka761",
+      "time": 100
+    },
+    {
+      "type": "stand",
+      "direction": "down",
+      "who": "hero",
+      "time": 100
+    },
+    {
+      "type": "stand",
+      "direction": "left",
+      "who": "hero",
+      "time": 100
+    }
+  ],
+  "MAIL_INITIAL": [
+    {
+      "type": "textMessage",
+      "who": "TUTORIAL",
+      "text": {
+        "id": "Oh, kamu ada surat penting yang belum dibaca",
+        "en": "Oh, you have unread mails"
+      }
+    },
+    {
+      "type": "textMessage",
+      "who": "TUTORIAL",
+      "text": {
+        "id": "Sekalian ambil hadiah di suratnya yuk",
+        "en": "Let's claim the rewards from the mails"
+      }
+    },
+    {
+      "type": "stand",
+      "direction": "down",
+      "who": "hero",
+      "time": 500
+    },
+    {
+      "type": "mail"
+    },
+    {
+      "type": "stand",
+      "direction": "left",
+      "who": "hero",
+      "time": 500
+    }
+  ],
+  "SECOND": [
+    {
+      "type": "textMessage",
+      "who": "TUTORIAL",
+      "text": {
+        "id": "Sekarang, udah selesai",
+        "en": "Now, you're good to go"
+      }
+    },
+    {
+      "type": "textMessage",
+      "who": "TUTORIAL",
+      "text": {
+        "id": "SELAMAT BERMAIN!",
+        "en": "ENJOY!"
+      }
+    },
+    {
+      "type": "stand",
+      "direction": "down",
+      "who": "devanka761",
+      "time": 500
+    },
+    {
+      "type": "walk",
+      "direction": "down",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "down",
+      "who": "devanka761"
+    },
+    {
+      "type": "stand",
+      "direction": "down",
+      "who": "hero",
+      "time": 5
+    },
+    {
+      "type": "walk",
+      "direction": "down",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "down",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "down",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "down",
+      "who": "devanka761"
+    },
+    {
+      "type": "stand",
+      "direction": "down",
+      "who": "devanka761",
+      "time": 150
+    },
+    {
+      "type": "stand",
+      "direction": "left",
+      "who": "devanka761",
+      "time": 10
+    },
+    {
+      "type": "walk",
+      "direction": "right",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "right",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "right",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "right",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "right",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "down",
+      "who": "hero"
+    },
+    {
+      "type": "stand",
+      "direction": "down",
+      "who": "devanka761",
+      "time": 200
+    },
+    {
+      "type": "stand",
+      "direction": "right",
+      "who": "devanka761",
+      "time": 500
+    },
+    {
+      "type": "walk",
+      "direction": "right",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "right",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "right",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "right",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "right",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "right",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "right",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "right",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "right",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "right",
+      "who": "devanka761"
+    },
+    {
+      "type": "stand",
+      "direction": "right",
+      "who": "hero",
+      "time": 10
+    },
+    {
+      "type": "walk",
+      "direction": "up",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "up",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "up",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "up",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "up",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "up",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "up",
+      "who": "devanka761"
+    },
+    {
+      "type": "walk",
+      "direction": "up",
+      "who": "devanka761"
+    },
+    {
+      "type": "stand",
+      "direction": "up",
+      "who": "devanka761",
+      "time": 200
+    },
+    {
+      "type": "playSound",
+      "src": "door_close",
+      "which": "sfx",
+      "instant": true
+    },
+    {
+      "type": "teleport",
+      "x": -100,
+      "y": -100,
+      "direction": "down",
+      "who": "devanka761"
+    },
+    {
+      "type": "stand",
+      "direction": "right",
+      "who": "hero",
+      "time": 500
+    },
+    {
+      "type": "stand",
+      "direction": "down",
+      "who": "hero",
+      "time": 1000
+    },
+    {
+      "type": "textMessage",
+      "text": {
+        "id": "Ulangi tutorial kembali saat kamu baru masuk lagi di game-game yang selanjutnya?",
+        "en": "Replay the tutorial on the next time you enter the game?"
+      }
+    },
+    {
+      "type": "choices",
+      "text": {
+        "id": "Ulangi tutorial kembali saat kamu baru masuk lagi di game-game yang selanjutnya?",
+        "en": "Replay the tutorial on the next time you enter the game?"
+      },
+      "options": [
+        {
+          "text": {
+            "id": "Enggak usah",
+            "en": "Nope, I am good actually"
+          }
+        },
+        {
+          "text": {
+            "id": "Iya, ulangi lagi nanti",
+            "en": "Yes, please"
+          },
+          "cancel": true
+        }
+      ]
+    },
+    {
+      "states": [
+        "KULON_INTRO"
+      ],
+      "type": "addSetting"
+    }
+  ],
+  "DONE": [
+    {
+      "type": "walk",
+      "direction": "left",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "down",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "down",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "down",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "down",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "down",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "down",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "down",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "left",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "left",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "left",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "left",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "left",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "left",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "left",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "left",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "left",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "left",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "up",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "up",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "up",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "up",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "up",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "up",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "right",
+      "who": "hero"
+    },
+    {
+      "type": "walk",
+      "direction": "right",
+      "who": "hero"
+    },
+    {
+      "type": "stand",
+      "direction": "right",
+      "who": "hero",
+      "time": 250
+    },
+    {
+      "type": "stand",
+      "direction": "down",
+      "who": "hero",
+      "time": 400
+    }
+  ]
+}

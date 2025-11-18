@@ -15,7 +15,7 @@ import { ISival } from "../types/lib.types"
 
 export default class TitleScreen implements IPMC {
   id = "titleScreen"
-  isLocked: boolean = false
+  isLocked: boolean = true
   onComplete: (...args: ISival) => ISival
   private game: Game
   private el!: HTMLDivElement
@@ -93,6 +93,7 @@ export default class TitleScreen implements IPMC {
     this.navKeyListener()
     await waittime(900)
     audio.emit({ action: "stop", type: "ambient", options: { fadeOut: 1000 } })
+    this.isLocked = false
   }
   navKeyListener(): void {
     const buttons = Array.from(this.emenu.querySelectorAll(".btn")) as HTMLDivElement[]

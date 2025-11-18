@@ -72,6 +72,7 @@ export default class CharCreation extends Appearance {
       }
       this.isLocked = false
       backsong.destroy()
+      backsong.switch(1)
       await this.destroy()
       if (this.doodle) this.doodle.end()
       startGame(saveChar.data, this.nextMap!, true)

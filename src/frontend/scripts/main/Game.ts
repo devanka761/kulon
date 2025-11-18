@@ -18,6 +18,7 @@ import KulonPad from "./KulonPad"
 import { Prop } from "./Prop"
 import { Player } from "./Player"
 import { IGameObjectData, IObjectEvent, IObjectTalk } from "../types/maps.types"
+import backsong from "../APIs/BackSongAPI"
 
 export interface GameObjectMain {
   update: (deltaTime: number, keys: InputHandler["keys"], walls: GameMap["walls"], game: Game) => void
@@ -107,14 +108,24 @@ export class Game {
     if (db.onduty < 1) {
       db.onduty = 1
       const isDone = LocalList["KULON_INTRO"]
-      this.player.y = isDone ? 80 : 96
-      await this.startCutscene(introEvents[LocalList["KULON_INTRO"] ? "DONE" : "FIRST"] as IObjectEvent[])
+      this.player.x = isDone ? 224 : 48
+      this.player.y = isDone ? 64 : 96
+      if (!isDone) {
+        backsong.switch(2, 1)
+        backsong.start(1000)
+      }
+      await this.startCutscene(introEvents[isDone ? "DONE" : "FIRST"] as IObjectEvent[])
       if (!isDone) {
         if (db.mails.getAll.length >= 1) {
           await this.startCutscene(introEvents.MAIL_INITIAL as IObjectEvent[])
         }
         await this.startCutscene(introEvents.SECOND as IObjectEvent[])
+        backsong.destroy(1000)
+        await this.startCutscene([{ type: "stand", direction: "down", who: "hero", time: 1000 }])
       }
+      backsong.switch(1)
+      backsong.start(750)
+      await this.startCutscene([{ type: "titleScreen" }])
     }
   }
 

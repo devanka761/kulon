@@ -1,8 +1,8 @@
 import { ILocalList } from "../types/data.types"
 
 const LocalList: ILocalList = {
-  bgm_volume: 3,
-  ui_volume: 5,
+  bgm_volume: 6,
+  ui_volume: 2,
   sfx_volume: 7,
   ambient_volume: 4,
   footstep_volume: 2,

@@ -51,6 +51,7 @@ body {
   }
   &.title-screen {
     transform: scale(1.25);
+    animation: break_screen 1.2s ease;
     &.out {
       animation: fix_screen 2s linear forwards;
     }
