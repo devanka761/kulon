@@ -50,7 +50,7 @@
     "express": "^5.1.0",
     "express-session": "^1.18.2",
     "express-ws": "^5.0.2",
-    "mongoose": "^8.19.2",
+    "mongoose": "^9.0.0",
     "nodemailer": "^7.0.10",
     "qrcode": "^1.5.4",
     "webrtc-adapter": "^9.0.3"
