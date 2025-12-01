@@ -44,7 +44,7 @@
   },
   "homepage": "https://github.com/devanka761/kulon#readme",
   "dependencies": {
-    "connect-mongo": "^5.1.0",
+    "connect-mongo": "^6.0.0",
     "dotenv": "^17.2.3",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
