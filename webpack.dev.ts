@@ -25,10 +25,10 @@ const appConfig: IAppConfig = {
     app: "./src/frontend/scripts/app.ts",
     home: "./src/frontend/scripts/home.ts",
     editor: "./src/frontend/scripts/editor.ts",
-    // privacy: "./src/frontend/scripts/legal.ts",
-    // terms: "./src/frontend/scripts/legal.ts",
-    // license: "./src/frontend/scripts/license.ts",
-    // autherror: "./src/frontend/scripts/404.ts",
+    privacy: "./src/frontend/scripts/legal.ts",
+    terms: "./src/frontend/scripts/legal.ts",
+    license: "./src/frontend/scripts/license.ts",
+    autherror: "./src/frontend/scripts/404.ts",
     404: "./src/frontend/scripts/404.ts"
   },
   entries: {
@@ -50,30 +50,30 @@ const appConfig: IAppConfig = {
       template: "editor.ejs",
       chunks: ["editor"]
     },
-    // privacy: {
-    //   title: "privacy",
-    //   filename: "privacy.ejs",
-    //   template: "privacy.ejs",
-    //   chunks: ["privacy"]
-    // },
-    // terms: {
-    //   title: "terms",
-    //   filename: "terms.ejs",
-    //   template: "terms.ejs",
-    //   chunks: ["terms"]
-    // },
-    // license: {
-    //   title: "license",
-    //   filename: "license.ejs",
-    //   template: "license.ejs",
-    //   chunks: ["license"]
-    // },
-    // autherror: {
-    //   title: "autherror",
-    //   filename: "autherror.ejs",
-    //   template: "autherror.ejs",
-    //   chunks: ["autherror"]
-    // },
+    privacy: {
+      title: "privacy",
+      filename: "privacy.ejs",
+      template: "privacy.ejs",
+      chunks: ["privacy"]
+    },
+    terms: {
+      title: "terms",
+      filename: "terms.ejs",
+      template: "terms.ejs",
+      chunks: ["terms"]
+    },
+    license: {
+      title: "license",
+      filename: "license.ejs",
+      template: "license.ejs",
+      chunks: ["license"]
+    },
+    autherror: {
+      title: "autherror",
+      filename: "autherror.ejs",
+      template: "autherror.ejs",
+      chunks: ["autherror"]
+    },
     404: {
       title: "404",
       filename: "404.ejs",

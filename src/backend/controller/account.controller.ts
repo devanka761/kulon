@@ -45,7 +45,7 @@ export async function getMe(uid: string): Promise<IRepTempB> {
   const socket = initSocketClient(uid)
 
   const roomList = await Friend.find({ users: uid }).lean()
-  const userids = roomList.map((room) => room.users.find((usr) => usr !== uid))
+  const userids = roomList.map((room) => room.users.find((usr) => usr !== uid)).filter((id): id is string => !!id)
   const users = await User.find({ id: { $in: userids } }).lean()
 
   const room = roomList.map((userData) => {

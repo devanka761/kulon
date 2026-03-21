@@ -23,7 +23,7 @@ export async function createJob(uid: string, s: { mission_id: string }): Promise
   const candidateItems = await Item.find({
     owner: uid,
     itemId: price_id,
-    amount: { $gte: price_amount },
+    amount: { $gte: Number(price_amount) },
     $or: [{ expiry: { $gt: Date.now() } }, { expiry: { $exists: false } }]
   }).lean()
 

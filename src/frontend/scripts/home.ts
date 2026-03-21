@@ -1,3 +1,4 @@
+import "webfont-awesome-pro/scss/allstyles.scss"
 import "../stylesheets/home.scss"
 import nav from "./lib/nav"
 

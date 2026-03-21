@@ -1,6 +1,6 @@
 {
   "name": "kulon",
-  "version": "1.0.0-wip.39",
+  "version": "1.0.0-wip.40",
   "description": "Multiplayer 2D Pixel Survival Puzzle Game",
   "main": "dist/backend/server.js",
   "scripts": {
@@ -53,6 +53,7 @@
     "mongoose": "^9.0.0",
     "nodemailer": "^7.0.10",
     "qrcode": "^1.5.4",
+    "webfont-awesome-pro": "^1.2.7",
     "webrtc-adapter": "^9.0.3"
   },
   "devDependencies": {

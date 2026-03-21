@@ -1,3 +1,4 @@
+import "webfont-awesome-pro/scss/allstyles.scss"
 import "../stylesheets/app.scss"
 import Auth from "./pages/Auth"
 import localSave from "./manager/storage"
