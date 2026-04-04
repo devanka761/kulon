@@ -51,7 +51,7 @@
     "express-session": "^1.18.2",
     "express-ws": "^5.0.2",
     "mongoose": "^9.0.0",
-    "nodemailer": "^7.0.10",
+    "nodemailer": "^8.0.0",
     "qrcode": "^1.5.4",
     "webfont-awesome-pro": "^1.2.7",
     "webrtc-adapter": "^9.0.3"
@@ -65,7 +65,7 @@
     "@types/express-session": "^1.18.2",
     "@types/express-ws": "^3.0.6",
     "@types/node": "^24.9.1",
-    "@types/nodemailer": "^7.0.3",
+    "@types/nodemailer": "^8.0.0",
     "@types/qrcode": "^1.5.6",
     "@typescript/native-preview": "^7.0.0-dev.20251024.1",
     "babel-loader": "^10.0.0",
