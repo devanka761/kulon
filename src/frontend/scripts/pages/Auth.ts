@@ -11,8 +11,8 @@ import lang from "../data/language"
 import Doodle from "../lib/Doodle"
 import Preload from "./Preload"
 import { checkScreenSize } from "../manager/screenSize"
-import { SignEmail } from "./_AuthEmail"
 import { IModalSelectConfig } from "../types/modal.types"
+import { SignIn } from "./SignIn"
 
 function SelectLang(): Partial<IModalSelectConfig> {
   return {
@@ -85,7 +85,7 @@ export default class Auth {
   writeForm(): void {
     auth_container = this.el
     doodle = new Doodle({ root: eroot(), fillRatio: 0.4, strength: 30, delay: 500 })
-    new SignEmail(auth_container).init()
+    new SignIn(auth_container).init()
   }
   init(): void {
     eroot().append(this.el)

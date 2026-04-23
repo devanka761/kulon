@@ -336,14 +336,46 @@
       }
     },
     {
-      "id": "4444",
+      "id": "4441",
+      "group": "4",
+      "type": "text",
+      "breaker": true,
+      "uniq": "writeMethod",
+      "name": {
+        "id": "Metode Login",
+        "en": "Login Method"
+      }
+    },
+    {
+      "id": "4442",
+      "group": "4",
+      "type": "text",
+      "breaker": true,
+      "uniq": "writeKulon",
+      "name": {
+        "id": "ID Kulon",
+        "en": "Kulon ID"
+      }
+    },
+    {
+      "id": "4443",
       "group": "4",
       "type": "text",
       "breaker": true,
       "uniq": "writeProvider",
       "name": {
-        "id": "Masuk Sebagai",
-        "en": "Logged In As"
+        "id": "ID Luna",
+        "en": "Luna ID"
+      }
+    },
+    {
+      "id": "account_settings",
+      "group": "4",
+      "type": "func",
+      "uniq": "writeLunaSetting",
+      "value": {
+        "id": "PENGATURAN AKUN LUNA",
+        "en": "LUNA ACCOUNT SETTINGS"
       }
     },
     {
@@ -353,8 +385,8 @@
       "cl": "r",
       "uniq": "writeLogout",
       "value": {
-        "id": "KELUAR DARI AKUN",
-        "en": "LOGOUT"
+        "id": "KELUAR DARI AKUN KULON",
+        "en": "LOGOUT FROM KULON"
       }
     },
     {

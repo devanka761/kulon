@@ -62,8 +62,9 @@ export interface IPMX {
 }
 
 export interface IProvider {
-  name?: string
-  email?: string | null
+  id?: string
+  lunaId?: string
+  method?: number
 }
 
 export interface ISkin {

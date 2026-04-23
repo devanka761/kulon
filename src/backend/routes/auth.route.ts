@@ -1,7 +1,7 @@
 import express, { Request, Response, Router } from "express"
-import { authLogin, authVerify, processAnonymous, processThirdParty } from "../controller/auth.controller"
+import { authLogin, processAnonymous, processThirdParty } from "../controller/auth.controller"
 import { rep } from "../lib/generators"
-import { IAccount } from "../types/account.types"
+import { AccountProvider, IAccount } from "../types/account.types"
 import { getOAuthUrl, getOAuthUser, isProviderValid } from "../controller/oauth.controller"
 import { isAccount } from "../main/middlewares"
 import { IQueryParam } from "../types/auth.types"
@@ -21,27 +21,6 @@ router.post("/sign-in", async (req: Request, res: Response) => {
   return
 })
 
-router.post("/verify", async (req: Request, res: Response) => {
-  const verifyUser = rep(await authVerify(req.body))
-  if (!verifyUser.ok) {
-    res.status(verifyUser.code).json(verifyUser)
-    return
-  }
-  const userData = verifyUser.data.user as IAccount
-  if (verifyUser.code === 200 && userData) {
-    req.user = {
-      id: userData.id.toString(),
-      data: {
-        id: userData.data.id.toString(),
-        email: userData.data.email,
-        provider: userData.data.provider
-      }
-    }
-  }
-  res.status(verifyUser.code).json(verifyUser)
-  return
-})
-
 router.get("/logout", (req: Request, res: Response) => {
   const { r, s, pwa } = req.query
 
@@ -58,51 +37,34 @@ router.get("/logout", (req: Request, res: Response) => {
   })
 })
 
-router.get("/:provider/redirect", async (req: Request, res: Response) => {
-  const { provider } = req.params
-  if (!provider) {
-    return res.render("404")
-  }
-  if (req.query?.error) {
+router.get("/luunna/redirect", async (req: Request, res: Response) => {
+  let { code } = req.query
+
+  if (!code) {
     return res.render("autherror")
   }
-  if (!req.query?.code) {
+
+  code = code.toString()
+
+  const user = await getOAuthUser(code)
+  if (!user || !user.ok || user.error || user.errors) {
     return res.render("autherror")
   }
-  const user = await getOAuthUser({ provider, code: req.query.code as string })
-  if (!user || user.error) {
-    return res.render("autherror")
-  }
-  const verifyUser = rep(
-    await processThirdParty({
-      user: user.data,
-      provider: user.provider
-    })
-  )
+
+  const verifyUser = rep(await processThirdParty(user.data))
+
   if (!verifyUser.ok || verifyUser.code !== 200) {
     return res.render("autherror")
   }
+
   const userData = verifyUser.data.user as IAccount
+
   req.user = {
     id: userData.id,
-    data: {
-      id: userData.data.id,
-      email: userData.data.email,
-      provider: userData.data.provider
-    }
+    created: userData.created
   }
 
-  const { state } = req.query
-  if (!state) return res.redirect("/app")
-
-  const states = JSON.parse(Buffer.from(state.toString(), "base64").toString()) as IQueryParam
-
-  const url = states.r
-  const queries: string[] = []
-  if (states.s) queries.push("s=" + states.s)
-  if (states.pwa) queries.push("pwa=" + states.pwa)
-
-  const redirectURL = url + (queries.length >= 1 ? "?" + queries.join("&") : "")
+  const redirectURL = "/app?s=1"
 
   return res.redirect(redirectURL)
 })
@@ -123,11 +85,7 @@ router.post("/guest", async (req: Request, res: Response) => {
 
     req.user = {
       id: userData.id,
-      data: {
-        id: userData.data.id,
-        email: userData.data.email,
-        provider: userData.data.provider
-      }
+      created: userData.created
     }
   }
 
@@ -140,13 +98,14 @@ router.get("/:provider", (req: Request, res: Response) => {
     return res.render("404")
   }
 
-  const { r, s, pwa } = req.query
+  const { r, s, pwa, locale } = req.query
 
   const states: IQueryParam = { r: r ? "/" + r.toString() : "/app" }
   if (s) states.s = s.toString()
   if (pwa) states.pwa = pwa.toString()
+  if (locale) states.locale = locale.toString()
 
-  return res.redirect(getOAuthUrl(provider as "github" | "google" | "discord", states))
+  return res.redirect(getOAuthUrl(provider as AccountProvider, states))
 })
 
 export default router

@@ -50,6 +50,21 @@
       font-size: v.$dialogueSize;
       font-weight: bold;
     }
+    .title {
+      width: 100%;
+      text-align: center;
+      margin-top: v.$bigPadding;
+      margin-bottom: v.$mediumPadding;
+      .logo-icon {
+        display: block;
+        width: 100px;
+        margin: 0 auto;
+      }
+    }
+    .motto {
+      text-align: center;
+      font-size: calc(v.$defaultSize * 0.95);
+    }
     .form {
       padding: 20px;
       .field {
@@ -107,47 +122,22 @@
           }
           .btn {
             width: 100%;
-            color: v.$white;
             border-radius: 10px;
             padding: 10px;
             text-align: center;
             text-transform: capitalize;
-            background-color: v.$px1;
             border: 1px solid v.$px1;
             display: block;
             text-decoration: none;
             margin-bottom: 5px;
+            background-color: v.$pm1;
+            color: v.$black;
             &:focus {
+              background-color: v.$pm2;
+              color: v.$white;
               border-color: v.$pm1;
             }
-            &.btn-login {
-              background-color: v.$pm1;
-              color: v.$black;
-              &:focus {
-                background-color: v.$pm2;
-                color: v.$white;
-                border-color: v.$pm1;
-              }
-            }
-            &.btn-google {
-              color: v.$cred;
-            }
-            &.btn-discord {
-              // margin-top: 5px;
-              color: v.$blurple;
-            }
-            &.btn-github {
-              margin-top: 5px;
-            }
-            &.btn-guest {
-              color: v.$syellow;
-              margin-top: 0;
-            }
           }
-        }
-        .btn-headback {
-          color: v.$pm1;
-          text-decoration: underline;
         }
         .sm {
           font-size: 0.9rem;
@@ -155,12 +145,44 @@
           text-align-last: left;
           color: v.$softwhite;
         }
-        .btn-start-over {
-          text-align: center;
-          a {
-            color: v.$pm1;
+        &.other-providers {
+          width: 100%;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          align-items: center;
+          gap: 5px;
+          .btn {
+            color: v.$softwhite;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            text-transform: capitalize;
+            background-color: v.$px1;
+            border: 1px solid v.$px1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             text-decoration: none;
-            border-bottom: 1px solid v.$pm1;
+            &.btn-guest {
+              i {
+                color: v.$syellow;
+              }
+            }
+            &:hover {
+              transform: translateY(-1px);
+            }
+            &:focus {
+              border-color: v.$pm1;
+            }
+            i {
+              font-size: v.$defaultSize;
+            }
+            .provider-icon {
+              display: block;
+              width: v.$defaultSize;
+            }
           }
         }
         &:last-child {

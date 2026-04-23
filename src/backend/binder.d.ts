@@ -1,5 +1,5 @@
 import { type WebSocket } from "ws"
-import { IAccount } from "./types/account.types"
+import { IAccountSession } from "./types/account.types"
 
 declare module "express-ws" {
   interface WebSocketWithHeartbeat extends WebSocket {
@@ -9,13 +9,13 @@ declare module "express-ws" {
 
 declare module "express-session" {
   interface SessionData {
-    user?: IAccount
+    user?: IAccountSession
   }
 }
 
 declare module "express" {
   interface Request {
-    user?: IAccount
+    user?: IAccountSession
   }
 }
 

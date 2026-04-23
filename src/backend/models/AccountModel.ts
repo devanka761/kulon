@@ -6,15 +6,9 @@ export type IAccountModel = Model<IAccount>
 const schema = new Schema(
   {
     id: { type: String, required: true },
-    data: {
-      type: {
-        id: { type: String, required: true },
-        email: { type: String, required: true },
-        provider: { type: String, required: true }
-      },
-      required: true,
-      _id: false
-    },
+    externalId: { type: String, required: true },
+    email: { type: String, required: true },
+    created: { type: Number, required: true },
     anon: { type: Number }
   },
   {
