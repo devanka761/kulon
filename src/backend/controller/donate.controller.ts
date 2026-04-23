@@ -51,7 +51,7 @@ export async function createDonate(uid: string, itemId: string): Promise<IRepTem
     payment_type: "qris",
     transaction_details: { order_id: order_id, gross_amount: item.price },
     item_details: [{ price: item.price, quantity: 1, name: benefit.name.id }],
-    customer_details: { userid: uid, email: account.data.email },
+    customer_details: { userid: uid, lunaid: account.externalId },
     custom_expiry: { expiry_duration: 360 },
     qris: { acquirer: "gopay" }
   }

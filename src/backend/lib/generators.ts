@@ -1,6 +1,7 @@
 import crypto from "crypto"
 import cfg from "../../config/cfg"
-import { IRepB, IRepTempB } from "../types/validate.types"
+import { IRepB, IRepTempB, ISival } from "../types/validate.types"
+import { IQueryParam } from "../types/auth.types"
 
 export const peerKey: string = crypto.randomBytes(16).toString("hex")
 
@@ -49,4 +50,25 @@ export function rUid(): string {
 
 export function escapeRegex(string: string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+}
+
+export function parseBase64(query: ISival): IQueryParam {
+  try {
+    const data = JSON.parse(Buffer.from(query.toString(), "base64").toString()) as IQueryParam
+    return data
+  } catch (err) {
+    console.error(err)
+    return { errorParse: true }
+  }
+}
+
+export function toBase64(query: ISival): string {
+  try {
+    const data = Buffer.from(JSON.stringify(query)).toString("base64")
+    return data
+  } catch (err) {
+    console.error(err)
+    const data = Buffer.from(JSON.stringify({ errorParse: true })).toString("base64")
+    return data
+  }
 }

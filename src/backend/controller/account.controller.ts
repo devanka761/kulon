@@ -72,8 +72,9 @@ export async function getMe(uid: string): Promise<IRepTempB> {
 
   const dataToReturn = {
     provider: {
-      email: provider.data.provider === "anonymous" ? null : provider.data.email,
-      name: provider.data.provider === "anonymous" ? "Guest" : provider.data.provider
+      id: provider.id,
+      lunaId: provider.externalId,
+      method: provider.anon ? 0 : 1
     },
     me: user,
     socket,

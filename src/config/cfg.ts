@@ -10,11 +10,6 @@ export default {
   DB_URI: process.env.DB_URI ?? "mongodb://localhost:27017/myapp",
   DB_NAME: process.env.DB_NAME ?? "myapp",
 
-  SMTP_HOST: process.env.SMTP_HOST ?? "smtp.example.com",
-  SMTP_PORT: Number(process.env.SMTP_PORT ?? 587),
-  SMTP_USER: process.env.SMTP_USER ?? "user@example.com",
-  SMTP_PASS: process.env.SMTP_PASS ?? "password",
-
   DISCORD_BOT_TOKEN: process.env.DISCORD_BOT_TOKEN ?? "DISCORD_BOT_TOKEN",
   DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID ?? "DISCORD_CLIENT_ID",
   DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET ?? "DISCORD_CLIENT_SECRET",
@@ -34,6 +29,8 @@ export default {
   PR_MIDTRANS_CLIENT_KEY: process.env.PR_MIDTRANS_CLIENT_KEY ?? "MIDTRANS_CLIENT_KEY",
 
   SESSION_SECRET: process.env.SESSION_SECRET ?? "secret",
+
+  LUNA_SECRET: process.env.LUNA_SECRET ?? "secret",
 
   USE_WEBHOOK: discord.USE_WEBHOOK,
   DISCORD_DONATION: discord.DISCORD_DONATION,

@@ -294,9 +294,17 @@ export default class Setting implements IPMC {
       inp.click()
     }
   }
+  private writeMethod(card: HTMLDivElement): void {
+    const p = futor("p", card)
+    p.innerHTML += "<br/>" + (db.provider.method ? "LUNA SSO" : lang["AUTH_GUEST"]) + "<br/>"
+  }
+  private writeKulon(card: HTMLDivElement): void {
+    const p = futor("p", card)
+    p.innerHTML += `<br/>${db.provider.id}<br/>`
+  }
   private writeProvider(card: HTMLDivElement): void {
     const p = futor("p", card)
-    p.innerHTML = `${db.provider.email ? db.provider.email + " " : ""}(${db.provider.name})`
+    p.innerHTML += `<br/>${db.provider.lunaId}<br/>`
   }
   private writeLogout(card: HTMLDivElement): void {
     const urlParams = new URLSearchParams(window.location.search)
@@ -320,6 +328,29 @@ export default class Setting implements IPMC {
       await modal.loading(xhr.get(url), "LOGGING OUT")
       this.isLocked = false
       window.location.href = url
+    }
+  }
+  private writeLunaSetting(card: HTMLDivElement): void {
+    card.onclick = async () => {
+      if (this.isLocked) return
+      audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+      this.isLocked = true
+
+      if (!db.provider.method) {
+        await modal.alert(lang["ST_TXT_NOTLINKED"])
+        this.isLocked = false
+        return
+      }
+
+      const confNewTab = await modal.confirm(lang.ST_TXT_NEWTAB)
+      if (!confNewTab) {
+        this.isLocked = false
+        return
+      }
+      const urlTab = "https://devanka.id/luunna/portal"
+      window.open(urlTab)
+      await modal.alert(`<a href="${urlTab}" target="_blank">https://devanka.id/luunna/portal <i class="fa-duotone fa-regular fa-up-right-from-square"></i></a>`)
+      this.isLocked = false
     }
   }
   private writeLanguage(card: HTMLDivElement, s: ISettingList): void {

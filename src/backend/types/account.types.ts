@@ -1,21 +1,37 @@
-export type AccountProvider = "google" | "github" | "discord" | "kulon" | "anonymous"
+export type AccountProvider = "google" | "discord" | "github" | "tiktok" | "facebook" | "luunna" | "kulon" | "anonymous"
 
-export interface IAccountData {
-  id: string
+export interface IExternalAccountData {
+  externalId: string
   email: string
   provider: AccountProvider
+  name?: string
+}
+
+export interface IExternalAccount {
+  id: string
+  data: IExternalAccountData[]
+  created: number
+}
+
+export interface IAccountSession {
+  id: string
+  created: number
 }
 
 export interface IAccount {
   id: string
-  data: IAccountData
+  externalId: string
+  email: string
+  created: number
   anon?: number
 }
 
-export interface IAccountTemp {
-  id?: string
-  data: Partial<IAccountData>
-  anon?: number
+export type IAccountTemp = Partial<IAccount>
+
+export interface IAccountSafe {
+  id: string
+  email: string
+  lunaId: string
 }
 
 export interface IExchange {
