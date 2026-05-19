@@ -80,7 +80,7 @@
     "sass": "^1.93.2",
     "sass-loader": "^16.0.6",
     "tsx": "^4.20.6",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.0",
     "typescript-eslint": "^8.46.2",
     "webpack": "^5.102.1",
     "webpack-cli": "^6.0.1"
