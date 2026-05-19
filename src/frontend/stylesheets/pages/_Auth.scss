@@ -50,18 +50,8 @@
       font-size: v.$dialogueSize;
       font-weight: bold;
     }
-    .title {
-      width: 100%;
-      text-align: center;
-      margin-top: v.$bigPadding;
-      margin-bottom: v.$mediumPadding;
-      .logo-icon {
-        display: block;
-        width: 100px;
-        margin: 0 auto;
-      }
-    }
     .motto {
+      margin-top: v.$bigPadding;
       text-align: center;
       font-size: calc(v.$defaultSize * 0.95);
     }
@@ -147,11 +137,9 @@
         }
         &.other-providers {
           width: 100%;
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          align-items: center;
-          gap: 5px;
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+          gap: v.$mediumPadding;
           .btn {
             color: v.$softwhite;
             border-radius: 10px;
@@ -182,6 +170,9 @@
             .provider-icon {
               display: block;
               width: v.$defaultSize;
+            }
+            &:last-child {
+              grid-column: 1 / -1;
             }
           }
         }

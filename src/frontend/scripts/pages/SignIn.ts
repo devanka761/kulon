@@ -51,16 +51,11 @@ export class SignIn {
     const queryPwa = urlParams.get("pwa")
     if (queryPwa) pageQueries.push("pwa=" + queryPwa)
     this.queries = pageQueries.join("&")
-    console.log(this.queries)
   }
   createElement() {
     this.el.innerHTML = `
     <div class="top">
-      <p>KULON</p>
-    </div>
-
-    <div class="title">
-      <img class="logo-icon" src="/images/providers/luunna.svg" alt="[Luunna Logo]" width="125" />
+      <p>KULON x LUNA</p>
     </div>
 
     <div class="motto">
@@ -203,11 +198,10 @@ export class SignIn {
       const currHref = btn.getAttribute("href") as string
       const btnId = btn.getAttribute("id")!.toString().replace("-login", "")
 
-      btn.href = IN_DEVELOPMENTS.find((k) => k === btnId) ? window.location.href : `${currHref}?locale=${LocalList.lang || "id"}&${this.queries}}`
+      btn.href = IN_DEVELOPMENTS.find((k) => k === btnId) ? window.location.href : `${currHref}?locale=${LocalList.lang || "id"}&${this.queries}`
 
       btn.onclick = async (e) => {
         e.preventDefault()
-        console.log(btnId)
         if (this.isLocked) return
         this.isLocked = true
 
