@@ -6,10 +6,7 @@ const TILE_SIZE = 16
 export class Teleporter extends Person {
   from: IGameObjectTeleporterType
   constructor(config: IGameObjectTeleporter) {
-    super({
-      ...config,
-      src: "null"
-    })
+    super({ ...config, src: "null" }, "a")
     this.from = config.from
 
     this.talk = [

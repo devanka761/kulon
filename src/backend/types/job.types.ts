@@ -54,8 +54,14 @@ export interface IMissionList {
   min: number
   max: number
   ready: number
-  price: [string, number][]
-  spawn: { area: string; x: number; y: number; direction: DIRECTION; inc: POSITION }
+  price: [string, number]
+  spawn: {
+    area: string
+    x: number
+    y: number
+    direction: DIRECTION
+    inc: POSITION
+  }
   reqs?: string[]
   bag?: { id: string; amount: number }[]
   payout: {

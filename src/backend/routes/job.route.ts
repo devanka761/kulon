@@ -13,7 +13,7 @@ router.post("/create", async (req: Request, res: Response) => {
 })
 router.get("/find/:job_code", async (req: Request, res: Response) => {
   const { job_code } = req.params
-  const job = rep(await findJob(req.user?.id as string, job_code))
+  const job = rep(await findJob(req.user?.id as string, job_code.toString()))
   return res.status(job.code).json(job)
 })
 

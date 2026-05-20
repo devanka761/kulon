@@ -18,12 +18,12 @@ router.get("/me", async (req: Request, res: Response) => {
 
 router.post("/mail-claim/:mailId", async (req: Request, res: Response) => {
   const { mailId } = req.params
-  const claimMail = rep(await mailClaim(req.user?.id as string, mailId))
+  const claimMail = rep(await mailClaim(req.user?.id as string, mailId.toString()))
   return res.status(claimMail.code).json(claimMail)
 })
 router.post("/trophy-claim/:trophyId", async (req: Request, res: Response) => {
   const { trophyId } = req.params
-  const claimTrophy = rep(await trophyClaim(req.user?.id as string, trophyId))
+  const claimTrophy = rep(await trophyClaim(req.user?.id as string, trophyId.toString()))
   return res.status(claimTrophy.code).json(claimTrophy)
 })
 router.post("/exchange", async (req: Request, res: Response) => {

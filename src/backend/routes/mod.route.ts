@@ -11,7 +11,9 @@ router.get("/editor-mapdata", cdUser, isAccount, express.json({ limit: "1MB" }),
 })
 
 router.get("/editor-loadproject/:project_name", cdUser, isAccount, express.json({ limit: "1MB" }), (req: Request, res: Response) => {
-  const editor = rep(loadProjectMap(req.params.project_name))
+  const { project_name } = req.params
+
+  const editor = rep(loadProjectMap(project_name.toString()))
   return res.status(editor.code).json(editor)
 })
 
@@ -23,7 +25,7 @@ router.post("/sendmail", async (req: Request, res: Response) => {
 })
 router.post("/access/:userId", async (req: Request, res: Response) => {
   const { userId } = req.params
-  const newAccess = rep(await updateAccess(userId, req.body))
+  const newAccess = rep(await updateAccess(userId.toString(), req.body))
   return res.status(newAccess.code).json(newAccess)
 })
 

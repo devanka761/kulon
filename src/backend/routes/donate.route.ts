@@ -14,7 +14,7 @@ router.use(cdUser, isUser, express.json({ limit: "1MB" }))
 
 router.post("/create/:itemId", async (req: Request, res: Response) => {
   const { itemId } = req.params
-  const donate = rep(await createDonate(req.user?.id as string, itemId))
+  const donate = rep(await createDonate(req.user?.id as string, itemId.toString()))
   return res.status(donate.code).json(donate)
 })
 

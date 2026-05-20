@@ -82,7 +82,8 @@ export default class Auth {
     const preload = new Preload({ skins, sounds, doodle })
     preload.init()
   }
-  writeForm(): void {
+  async writeForm(): Promise<void> {
+    await checkScreenSize()
     auth_container = this.el
     doodle = new Doodle({ root: eroot(), fillRatio: 0.4, strength: 30, delay: 500 })
     new SignIn(auth_container).init()

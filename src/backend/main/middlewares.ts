@@ -7,12 +7,7 @@ const userCDs = new Map()
 export function cdUser(req: Request, res: Response, next: NextFunction) {
   const user_ips: string | string[] = req.headers["x-real-ip"] || req.headers["x-forwarded-for"] || req.headers["cf-connecting-ip"] || req.socket.remoteAddress || "unknown"
 
-  let ip: string = ""
-  if (typeof user_ips === "string") {
-    ip = user_ips
-  } else {
-    ip = user_ips[0]
-  }
+  const ip = typeof user_ips === "string" ? user_ips : user_ips[0]
 
   const uid = req.user?.id ? req.user.id : ip
 

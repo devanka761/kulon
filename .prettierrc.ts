@@ -5,7 +5,7 @@ const config = {
   printWidth: Infinity,
   semi: false,
   singleQuote: false,
-  trailingComma: "none"
-}
+  trailingComma: "none",
+};
 
-export default config
+export default config;

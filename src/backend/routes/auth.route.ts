@@ -72,12 +72,8 @@ router.get("/luunna/redirect", async (req: Request, res: Response) => {
 router.post("/guest", async (req: Request, res: Response) => {
   const user_ips: string | string[] = req.headers["x-real-ip"] || req.headers["x-forwarded-for"] || req.headers["cf-connecting-ip"] || req.socket.remoteAddress || "unknown" + Date.now()
 
-  let ip: string = ""
-  if (typeof user_ips === "string") {
-    ip = user_ips
-  } else {
-    ip = user_ips[0]
-  }
+  const ip = typeof user_ips === "string" ? user_ips : user_ips[0]
+
   const anon = rep(await processAnonymous(ip))
 
   if (anon.ok && anon.data.user) {
@@ -94,7 +90,7 @@ router.post("/guest", async (req: Request, res: Response) => {
 
 router.get("/:provider", (req: Request, res: Response) => {
   const { provider } = req.params
-  if (!isProviderValid(provider)) {
+  if (!isProviderValid(provider.toString())) {
     return res.render("404")
   }
 
