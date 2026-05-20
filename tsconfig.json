@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
     "target": "es2016",
-    "module": "esnext",
-    "moduleResolution": "bundler",
+    "module": "node16",
+    "moduleResolution": "node16",
     "resolveJsonModule": true,
     "outDir": "dist",
-    "rootDir": "./",
+    "rootDir": "./src",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
