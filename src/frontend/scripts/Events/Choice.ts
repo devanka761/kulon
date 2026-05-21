@@ -1,9 +1,9 @@
 import LocalList from "../data/LocalList"
 import audio from "../lib/AudioHandler"
 import { eroot, kel, qutor } from "../lib/kel"
-import { IPMC, IPMCConfig } from "../types/db.types"
-import { ILocale } from "../types/lib.types"
-import { IChoiceOption } from "../types/maps.types"
+import { IPMC, IPMCConfig } from "../types/DBTypes"
+import { ILocale } from "../types/LibTypes"
+import { IChoiceOption } from "../types/MapsTypes"
 
 interface IChoiceConfig extends IPMCConfig {
   text: ILocale

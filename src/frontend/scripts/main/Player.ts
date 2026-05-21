@@ -2,7 +2,7 @@ import chat from "../manager/Chat"
 import peers from "../data/Peers"
 import { Person } from "./Person"
 import { playRandomFootstep } from "../manager/randomPlays"
-import { IGameObjectPerson, MapWalls } from "../types/maps.types"
+import { IGameObjectPerson, MapWalls } from "../types/MapsTypes"
 import { Game } from "./Game"
 import { IKeyHold } from "./InputHandler"
 

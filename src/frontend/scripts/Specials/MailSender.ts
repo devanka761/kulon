@@ -6,8 +6,8 @@ import { eroot, futor, kel } from "../lib/kel"
 import modal from "../lib/modal"
 import waittime from "../lib/waittime"
 import xhr from "../lib/xhr"
-import { IPMC, IPMCConfig } from "../types/db.types"
-import { ISival, SSKelement } from "../types/lib.types"
+import { IPMC, IPMCConfig } from "../types/DBTypes"
+import { IAny, SSKelement } from "../types/LibTypes"
 
 function createOption(item_id: string, item_label: string): HTMLOptionElement {
   const opt = kel("option")
@@ -115,7 +115,7 @@ export default class MailSender implements IPMC {
       this.isLocked = true
       const hasEmpty = []
       const formData = new FormData(this.form)
-      const data: { [key: string]: ISival } = {}
+      const data: { [key: string]: IAny } = {}
       formData.forEach((val, key) => {
         if (!val) hasEmpty.push(key)
         val = val.toString()

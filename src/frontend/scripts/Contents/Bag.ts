@@ -11,9 +11,9 @@ import socket from "../lib/Socket"
 import waittime from "../lib/waittime"
 import { KeyPressListener } from "../main/KeyPressListener"
 import itemRun from "../Props/itemRun"
-import { IPMC, IPMCConfig } from "../types/db.types"
-import { IItem } from "../types/item.types"
-import { ISival } from "../types/lib.types"
+import { IPMC, IPMCConfig } from "../types/DBTypes"
+import { IItem } from "../types/ItemTypes"
+import { IAny } from "../types/LibTypes"
 
 let currentPage: string = "1"
 let expireInterval: ReturnType<typeof setInterval> | null = null
@@ -58,7 +58,7 @@ export class Bag implements IPMC {
 
   private esc?: KeyPressListener
   private enter?: KeyPressListener
-  private navKeyHandler?: (...args: ISival) => void
+  private navKeyHandler?: (...args: IAny) => void
 
   private items?: IItemList
   private itemContainer!: HTMLDivElement

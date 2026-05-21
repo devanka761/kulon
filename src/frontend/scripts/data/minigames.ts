@@ -1,11 +1,11 @@
 import FingerprintCracker from "../MiniGames/FingerprintCracker"
 import FingerprintCloner from "../MiniGames/FingerprintCloner"
-import { ISival } from "../types/lib.types"
+import { IAny } from "../types/LibTypes"
 
 interface IMinigameList {
   id: string
   name: string
-  run(config: ISival): void
+  run(config: IAny): void
 }
 
 interface IMinigameLists {

@@ -9,7 +9,7 @@ import WaitingAPI from "../APIs/WaitingAPI"
 import peers from "../data/Peers"
 import socket from "../lib/Socket"
 import { Game } from "../main/Game"
-import { ISival } from "./lib.types"
+import { IAny } from "./LibTypes"
 
 export interface ICustomColor {
   1: string
@@ -24,12 +24,12 @@ export interface IPhoneApp {
   a?: number[]
   cl?: ICustomColor
   hasUnread?(): boolean
-  r(config: ISival): void
+  r(config: IAny): void
 }
 
 export interface IPMCConfig {
   game?: Game
-  onComplete: (...args: ISival) => ISival
+  onComplete: (...args: IAny) => IAny
   classBefore?: IPMC
   [key: string]: unknown
 }
@@ -38,11 +38,11 @@ export interface IPMC {
   readonly id: string
   isLocked: boolean
   classBefore?: IPMC
-  onComplete?: (...args: ISival) => ISival
-  destroy?(cb?: IPMC | IPhoneApp | boolean | null): void | Promise<ISival>
-  run?(...args: ISival): ISival
-  init(...args: ISival): ISival | Promise<ISival>
-  r?(...args: ISival): ISival
+  onComplete?: (...args: IAny) => IAny
+  destroy?(cb?: IPMC | IPhoneApp | boolean | null): void | Promise<IAny>
+  run?(...args: IAny): IAny
+  init(...args: IAny): IAny | Promise<IAny>
+  r?(...args: IAny): IAny
 }
 
 export interface IPMXConfig {
@@ -55,10 +55,10 @@ export interface IPMXConfig {
 export interface IPMX {
   readonly id: string
   addClaim(state: string, status: boolean | string): void
-  onInteract?(x: number, y: number, isRemote?: boolean, data?: ISival): void
+  onInteract?(x: number, y: number, isRemote?: boolean, data?: IAny): void
   destroy(): void | Promise<void>
   setGame?(game: Game): void
-  init(...args: ISival): void
+  init(...args: IAny): void
 }
 
 export interface IProvider {

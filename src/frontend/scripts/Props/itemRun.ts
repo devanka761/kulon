@@ -14,8 +14,8 @@ import peers from "../data/Peers"
 import socket from "../lib/Socket"
 import Payout from "../Events/Payout"
 import { Game } from "../main/Game"
-import { ISival } from "../types/lib.types"
-import { IJobToReturn } from "../types/job.types"
+import { IAny } from "../types/LibTypes"
+import { IJobToReturn } from "../types/JobTypes"
 import { CharacterAPI } from "../APIs/CharacterAPI"
 import Prologue from "../Events/Prologue"
 import Paper from "../Events/Paper"
@@ -28,7 +28,7 @@ class ItemRun {
   readonly id = "itemrun"
   private game!: Game
   isLocked: boolean = false
-  exchange(config: ISival): void {
+  exchange(config: IAny): void {
     return new Exchange({
       onComplete: config.onComplete,
       classBefore: config.classBefore,
@@ -38,7 +38,7 @@ class ItemRun {
   restartGameMap(): void {
     setNewGame({ ...MapList }, this.game, true)
   }
-  async appearance(config: ISival): Promise<void> {
+  async appearance(config: IAny): Promise<void> {
     if (db.onduty > 1) {
       await modal.alert(lang.ITD_ONDUTY)
       return config.classBefore.init()
@@ -52,7 +52,7 @@ class ItemRun {
       game: this.game
     }).init()
   }
-  async changeName(config: ISival): Promise<void> {
+  async changeName(config: IAny): Promise<void> {
     if (db.onduty > 1) {
       await modal.alert(lang.ITD_ONDUTY)
       return config.classBefore.init()
@@ -116,7 +116,7 @@ class ItemRun {
 
     return config.classBefore.init()
   }
-  async readnote(config: ISival): Promise<void> {
+  async readnote(config: IAny): Promise<void> {
     const note = paperGet(config.id)
     if (!note) return config.onComplete()
 
@@ -128,7 +128,7 @@ class ItemRun {
     })
     paper.init()
   }
-  async startJob(config: ISival): Promise<void> {
+  async startJob(config: IAny): Promise<void> {
     if (db.onduty > 1) {
       await modal.alert(lang.ITD_ONDUTY)
       return config.classBefore.init()
@@ -153,7 +153,7 @@ class ItemRun {
       mission: config.mission
     }).init()
   }
-  async joinJob(config: ISival): Promise<void> {
+  async joinJob(config: IAny): Promise<void> {
     if (db.onduty > 1) {
       await modal.alert(lang.ITD_ONDUTY)
       return config.classBefore.init()
@@ -213,7 +213,7 @@ class ItemRun {
       matchMaking.updateCrew(user)
     })
   }
-  async leaveJob(config: ISival): Promise<void> {
+  async leaveJob(config: IAny): Promise<void> {
     const confirmLeave = await modal.confirm(lang.MS_CONFIRM_LEAVE)
     if (!confirmLeave) return config.classBefore.init()
 
@@ -224,7 +224,7 @@ class ItemRun {
     }
     return new Payout({ ...config, fail: true }).init()
   }
-  run(runId: string, config: ISival = {}) {
+  run(runId: string, config: IAny = {}) {
     db.pmc = this
     return {
       init: async () => {

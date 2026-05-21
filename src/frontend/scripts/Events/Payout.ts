@@ -12,9 +12,9 @@ import { Game } from "../main/Game"
 import chat from "../manager/Chat"
 import { getOfflineAssets, getOfflineMaps } from "../manager/initialWorld"
 import setNewGame from "../manager/setNewGame"
-import { IPMC } from "../types/db.types"
-import { IMissionList } from "../types/job.types"
-import { SSKelement } from "../types/lib.types"
+import { IPMC } from "../types/DBTypes"
+import { IMissionList } from "../types/JobTypes"
+import { SSKelement } from "../types/LibTypes"
 import { resetHint } from "./Hint"
 
 interface IStatus {

@@ -1,18 +1,18 @@
 import { AnyBulkWriteOperation } from "mongoose"
 import User from "../models/UserModel"
-import { ICreateUser, ISkin, IUser } from "../types/user.types"
-import { IRepTempB, ISival } from "../types/validate.types"
-import { ISocketConfig } from "../types/peer.types"
+import { ICreateUser, ISkin, IUser } from "../types/UserTypes.ts"
+import { IRepTempB, IAny } from "../types/ValidateTypes"
+import { ISocketConfig } from "../types/PeerTypes"
 import { escapeRegex, isProd, rUid } from "../lib/generators"
 import peer from "../lib/peer"
 import cfg from "../../config/cfg"
 import Friend from "../models/FriendModel"
 import Item from "../models/ItemModel"
 import Mail from "../models/MailModel"
-import { IItem, IReturnItem } from "../types/item.types"
+import { IItem, IReturnItem } from "../types/ItemTypes"
 import Trophy from "../models/TrophyModel"
 import prog from "../main/prog"
-import { IAccount, IExchange } from "../types/account.types"
+import { IAccount, IExchange } from "../types/AccountTypes"
 import validate from "../lib/validate"
 import { PEER_CONFIG } from "../../config/peer.json"
 import { shop_items, skinlist, trophylist } from "../lib/shared"
@@ -20,7 +20,7 @@ import zender from "../lib/zender"
 import clientBuild from "../lib/clientBuild"
 import Account from "../models/AccountModel"
 import webhook from "../lib/webhook"
-import { exitCurrentLobby } from "./lobby.controller"
+import { exitCurrentLobby } from "./LobbyController"
 
 function initSocketClient(uid: string): ISocketConfig {
   zender("system", uid, "newLogin", { userId: uid })
@@ -322,7 +322,7 @@ export async function itemExchange(uid: string, s: IExchange): Promise<IRepTempB
   return { code: 200, data: itemToReturn }
 }
 
-export async function changeUsername(uid: string, s: ISival): Promise<IRepTempB> {
+export async function changeUsername(uid: string, s: IAny): Promise<IRepTempB> {
   if (!validate(["username", "item_id"], s)) return { code: 400, msg: "ACC_NO_USERNAME" }
   const username = s.username.trim() as string
   const itemId = s.item_id as string
@@ -381,7 +381,7 @@ export async function changeUsername(uid: string, s: ISival): Promise<IRepTempB>
 
 const skinsValid = ["Backpacks", "Beards", "Bodies", "Eyes", "Glasses", "Hairstyles", "Hats", "Outfits"]
 
-export async function changeSkin(uid: string, s: ISival): Promise<IRepTempB> {
+export async function changeSkin(uid: string, s: IAny): Promise<IRepTempB> {
   if (!validate(["item_id"], s)) return { code: 400, msg: "ACC_SKIN_NOT_VALID" }
 
   if (!s.skin) return { code: 400, msg: "ACC_SKIN_NOT_VALID" }

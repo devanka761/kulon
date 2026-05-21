@@ -1,4 +1,4 @@
-import { IZender } from "../types/peer.types"
+import { IZender } from "../types/PeerTypes"
 import { rNumber } from "./generators"
 import peer from "./peer"
 

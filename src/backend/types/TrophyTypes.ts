@@ -1,5 +1,5 @@
-import { ILocale } from "./mail.types"
-import { ISival } from "./validate.types"
+import { ILocale } from "./MailTypes"
+import { IAny } from "./ValidateTypes"
 
 export interface ITrophy {
   owner: string
@@ -23,13 +23,13 @@ export interface IAchievements {
 
 export interface IProgress {
   taken: number
-  temp?: ISival
+  temp?: IAny
   ts?: number
   claimed?: boolean
 }
 
 export interface ITrophyProgress extends ITrophy {
-  temp?: ISival
+  temp?: IAny
 }
 
 export interface IKeyProgress {

@@ -1,4 +1,4 @@
-import { IRepB } from "../types/lib.types"
+import { IRepB } from "../types/LibTypes"
 import packageVersion from "../../../config/version.json"
 import db from "../data/db"
 import lang from "../data/language"

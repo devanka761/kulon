@@ -6,13 +6,13 @@ import socket from "../../lib/Socket"
 import waittime from "../../lib/waittime"
 import { Game } from "../../main/Game"
 import { playRandomPop } from "../../manager/randomPlays"
-import { IPlayers, IPMX, IPMXConfig } from "../../types/db.types"
-import { ISival } from "../../types/lib.types"
-import { IObjectEvent } from "../../types/maps.types"
+import { IPlayers, IPMX, IPMXConfig } from "../../types/DBTypes"
+import { IAny } from "../../types/LibTypes"
+import { IObjectEvent } from "../../types/MapsTypes"
 import Participant from "./_Participant"
 import { getByGrid, getGrid } from "./XoxoBoardAPI"
 
-type Resolve = (val?: ISival) => void
+type Resolve = (val?: IAny) => void
 
 type IBoard = (string | null)[][]
 
@@ -65,7 +65,7 @@ export default class Xoxo implements IPMX {
   }
   setInitialBoard(): void {}
   addClaim(_state: string, _status: boolean | string): void {}
-  onInteract(posX: number, posY: number, isRemote: boolean = false, data?: ISival): void {
+  onInteract(posX: number, posY: number, isRemote: boolean = false, data?: IAny): void {
     if (!this.game || (!isRemote && this.currPlayer !== this.me)) return
 
     const userId = isRemote ? this.them : this.me
@@ -232,7 +232,7 @@ export default class Xoxo implements IPMX {
   setGame(game: Game): void {
     this.game = game
   }
-  init(_data: ISival): void {
+  init(_data: IAny): void {
     this.createElement()
     this.setInitialBoard()
     this.writePlayers()

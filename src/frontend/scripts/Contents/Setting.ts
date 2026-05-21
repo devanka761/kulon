@@ -11,10 +11,10 @@ import xhr from "../lib/xhr"
 import localSave from "../manager/storage"
 import audio from "../lib/AudioHandler"
 import backsong from "../APIs/BackSongAPI"
-import { IPMC } from "../types/db.types"
+import { IPMC } from "../types/DBTypes"
 import { Game } from "../main/Game"
-import { ISettingList } from "../types/setting.types"
-import { ISival, SSKelement } from "../types/lib.types"
+import { ISettingList } from "../types/SettingTypes"
+import { IAny, SSKelement } from "../types/LibTypes"
 import chat from "../manager/Chat"
 
 interface IItemCard {
@@ -121,7 +121,7 @@ export default class Setting implements IPMC {
 
   private el!: HTMLDivElement
 
-  private navKeyHandler?: (...args: ISival) => ISival
+  private navKeyHandler?: (...args: IAny) => IAny
   private board!: SSKelement
   private menus!: SSKelement
   private esc?: KeyPressListener

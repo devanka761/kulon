@@ -6,7 +6,7 @@ export type ValidateObj = {
 export type ValidateArr = string[]
 
 export type SivalType = string | number | boolean
-export type ISival = any
+export type IAny = any
 
 export type IReqType = "POST" | "GET"
 

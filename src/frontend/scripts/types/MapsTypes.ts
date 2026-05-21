@@ -4,7 +4,7 @@ import { Person } from "../main/Person"
 import { Player } from "../main/Player"
 import { Prop } from "../main/Prop"
 import { Teleporter } from "../main/Teleporter"
-import { ILocale } from "./lib.types"
+import { ILocale } from "./LibTypes"
 
 export type GameObjectType = "Person" | "Interactable" | "Teleporter" | "Player" | "Prop"
 export type GameObjectSrc = string[] | string

@@ -2,13 +2,13 @@
 import cfg from "../../config/cfg"
 import { isProd, toBase64 } from "../lib/generators"
 import xhr from "../lib/xhr"
-import { AccountProvider } from "../types/account.types"
-import { IQueryParam } from "../types/auth.types"
-import { ISival } from "../types/validate.types"
+import { AccountProvider } from "../types/AccountTypes"
+import { IQueryParam } from "../types/AuthTypes"
+import { IAny } from "../types/ValidateTypes"
 
 const HOST: string = isProd ? `https://${cfg.APP_HOST}` : `http://localhost:${cfg.APP_PORT}`
 
-const CallBackURL: Record<string, ISival> = {
+const CallBackURL: Record<string, IAny> = {
   luunna(state: string) {
     return `https://devanka.id/luunna/portal?luna=${state}`
   },

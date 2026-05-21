@@ -1,4 +1,4 @@
-import { ISival } from "../types/lib.types"
+import { IAny } from "../types/lib.types"
 import asset from "../data/assets"
 import { eroot, kel, futor } from "../lib/kel"
 import modal from "../lib/modal"
@@ -18,7 +18,7 @@ let coorTimeout: ReturnType<typeof setTimeout> | null = null
 export default class Editor {
   readonly project_name: string
   private mapdata: IMapList
-  private finishedEvents: ISival[]
+  private finishedEvents: IAny[]
   private isLocked: boolean = false
   private currArea: string = "none"
   private currImg: HTMLImageElement | null = null

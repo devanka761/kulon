@@ -1,4 +1,4 @@
-import { ILocale } from "./lib.types"
+import { ILocale } from "./LibTypes"
 
 export interface ITrophy {
   owner: string

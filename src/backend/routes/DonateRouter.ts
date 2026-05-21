@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express"
 import { cdUser, isUser } from "../main/middlewares"
 import { rep } from "../lib/generators"
-import { createDonate, updateDonate } from "../controller/donate.controller"
+import { createDonate, updateDonate } from "../controller/DonateController"
 
 const router = express.Router()
 

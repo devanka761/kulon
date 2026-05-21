@@ -1,4 +1,4 @@
-import { IMail } from "../types/mail.types"
+import { IMail } from "../types/MailTypes"
 
 export default class MailsAPI {
   private data: IMail[] = []

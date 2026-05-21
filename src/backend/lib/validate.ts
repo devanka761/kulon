@@ -1,6 +1,6 @@
-import { ISival, ValidateArr, ValidateObj } from "../types/validate.types"
+import { IAny, ValidateArr, ValidateObj } from "../types/ValidateTypes"
 
-export default function validate(snap: ValidateArr | ValidateObj, data?: ISival): boolean {
+export default function validate(snap: ValidateArr | ValidateObj, data?: IAny): boolean {
   if (!data) throw new Error("The validate's data want to check is null")
   if (snap instanceof Array) {
     const valids = snap.filter((s) => {

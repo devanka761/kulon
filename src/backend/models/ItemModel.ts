@@ -1,5 +1,5 @@
 import { model, Model, Schema } from "mongoose"
-import { IItem } from "../types/item.types"
+import { IItem } from "../types/ItemTypes"
 
 export type IItemModel = Model<IItem>
 

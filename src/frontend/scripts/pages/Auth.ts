@@ -11,7 +11,7 @@ import lang from "../data/language"
 import Doodle from "../lib/Doodle"
 import Preload from "./Preload"
 import { checkScreenSize } from "../manager/screenSize"
-import { IModalSelectConfig } from "../types/modal.types"
+import { IModalSelectConfig } from "../types/ModalTypes"
 import { SignIn } from "./SignIn"
 
 function SelectLang(): Partial<IModalSelectConfig> {

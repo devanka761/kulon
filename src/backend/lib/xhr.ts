@@ -1,6 +1,6 @@
-import { ISival } from "../types/validate.types"
+import { IAny } from "../types/ValidateTypes"
 
-async function efetch(method: "POST" | "GET", url: string, authorization?: string | null, s?: ISival) {
+async function efetch(method: "POST" | "GET", url: string, authorization?: string | null, s?: IAny) {
   const options = {
     method,
     headers: {
@@ -24,7 +24,7 @@ const xhr = {
   async get(ref: string, authorization?: string | null) {
     return await efetch("GET", ref, authorization)
   },
-  async post(ref: string, authorization?: string | null, s?: ISival) {
+  async post(ref: string, authorization?: string | null, s?: IAny) {
     return await efetch("POST", ref, authorization, s)
   }
 }

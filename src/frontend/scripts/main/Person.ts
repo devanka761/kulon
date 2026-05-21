@@ -1,6 +1,6 @@
 import asset from "../data/assets"
 import { playRandomFootstep } from "../manager/randomPlays"
-import { DirectionType, IGameObjectPerson, IObjectEvent, IObjectTalk, MapGameObjects, MapWalls } from "../types/maps.types"
+import { DirectionType, IGameObjectPerson, IObjectEvent, IObjectTalk, MapGameObjects, MapWalls } from "../types/MapsTypes"
 import { Game } from "./Game"
 import { GameMap } from "./GameMap"
 import { IKeyHold } from "./InputHandler"

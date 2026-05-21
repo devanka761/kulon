@@ -1,7 +1,7 @@
 import { rNumber } from "../lib/generators"
 import zender from "../lib/zender"
-import { IItem } from "../types/item.types"
-import { IJob } from "../types/job.types"
+import { IItem } from "../types/ItemTypes"
+import { IJob } from "../types/JobTypes"
 import { mission_list } from "../lib/shared"
 
 function generateJobCode(existingCode: number[] = []) {

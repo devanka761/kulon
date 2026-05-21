@@ -1,4 +1,4 @@
-import { ITrophy } from "../types/trohpy.types"
+import { ITrophy } from "../types/TrophyTypes"
 
 export default class TrophiesAPI {
   private data: ITrophy[] = []

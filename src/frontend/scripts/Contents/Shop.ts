@@ -9,15 +9,15 @@ import { eroot, futor, kel, qutor } from "../lib/kel"
 import socket from "../lib/Socket"
 import waittime from "../lib/waittime"
 import { KeyPressListener } from "../main/KeyPressListener"
-import { IPMC } from "../types/db.types"
-import { IShopItem } from "../types/item.types"
-import { ISival, SSKelement } from "../types/lib.types"
+import { IPMC } from "../types/DBTypes"
+import { IShopItem } from "../types/ItemTypes"
+import { IAny, SSKelement } from "../types/LibTypes"
 import Donate from "./Donate"
 import { Exchange } from "./Exchange"
 
 let currentPage: string = "0"
 
-function itemCard(s: ISival): HTMLDivElement {
+function itemCard(s: IAny): HTMLDivElement {
   const item = cloud_items.find((itm) => itm.id === s.id)!
   const card = kel("div", "card")
   card.innerHTML = `
@@ -52,7 +52,7 @@ export default class Shop implements IPMC {
 
   private el!: HTMLDivElement
 
-  private navKeyHandler?: (...args: ISival) => ISival
+  private navKeyHandler?: (...args: IAny) => IAny
   private enter?: KeyPressListener
   private esc?: KeyPressListener
 
@@ -144,7 +144,7 @@ export default class Shop implements IPMC {
     const btnSelecteds = this.el.querySelectorAll(".con-list .card.selected")
     btnSelecteds.forEach((el) => el.classList.remove("selected"))
     if (!btn) btn = futor(`.con-list .card[k-type="${currentPage}"]`, this.el)
-    btn.classList.add("selected")
+    btn!.classList.add("selected")
   }
   private writeItems(ktype?: string): void {
     const pageItems = shop_items.filter((k) => k.group === ktype)

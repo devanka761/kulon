@@ -7,8 +7,8 @@ import { eroot, futor, kel, qutor } from "../lib/kel"
 import waittime from "../lib/waittime"
 import { Game } from "../main/Game"
 import { KeyPressListener } from "../main/KeyPressListener"
-import { IPMC, IPMCConfig } from "../types/db.types"
-import { ISival, SSKelement } from "../types/lib.types"
+import { IPMC, IPMCConfig } from "../types/DBTypes"
+import { IAny, SSKelement } from "../types/LibTypes"
 
 function createCurrent(text: string): HTMLDivElement {
   text = text.replace("kulon", "")
@@ -44,7 +44,7 @@ export default class TeleportMachine implements IPMC {
 
   private el!: HTMLDivElement
 
-  private navKeyHandler?: (...args: ISival) => ISival
+  private navKeyHandler?: (...args: IAny) => IAny
   private enter?: KeyPressListener
   private esc?: KeyPressListener
   private list!: SSKelement

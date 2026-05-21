@@ -1,6 +1,6 @@
 import modal from "../lib/modal"
 import Editor from "./Editor"
-import { ISival } from "../types/lib.types"
+import { IAny } from "../types/lib.types"
 import { eroot, futor, kel } from "../lib/kel"
 import { IGameObjectTeleporterType, TeleporeterFromPosition } from "../types/maps.types"
 import waittime from "../lib/waittime"
@@ -180,7 +180,7 @@ export default class NewTeleporter {
       e.preventDefault()
       if (this.isLocked) return
       this.isLocked = true
-      const data: ISival = {}
+      const data: IAny = {}
       const formData = new FormData(this.form)
       formData.forEach((val, key) => {
         if (key === "obj-id") {
@@ -202,7 +202,7 @@ export default class NewTeleporter {
     }
   }
 
-  private async _sendToEditor(s: ISival) {
+  private async _sendToEditor(s: IAny) {
     const dataFrom = { ...s }
     delete dataFrom.id
     await this.destroy()
@@ -222,7 +222,7 @@ export default class NewTeleporter {
   unlock() {
     this.isLocked = false
   }
-  async destroy(next?: ISival): Promise<void> {
+  async destroy(next?: IAny): Promise<void> {
     this.el.classList.add("out")
     await waittime()
     this.el.remove()

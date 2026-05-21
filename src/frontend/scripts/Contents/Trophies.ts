@@ -11,9 +11,9 @@ import { KeyPressListener } from "../main/KeyPressListener"
 import xhr from "../lib/xhr"
 import Rewards from "../Props/Rewards"
 import audio from "../lib/AudioHandler"
-import { IAchievement, ITrophy } from "../types/trohpy.types"
-import { IPMC, IPMCConfig } from "../types/db.types"
-import { ISival } from "../types/lib.types"
+import { IAchievement, ITrophy } from "../types/TrophyTypes"
+import { IPMC, IPMCConfig } from "../types/DBTypes"
+import { IAny } from "../types/LibTypes"
 
 let currentPage: string = "1"
 
@@ -74,7 +74,7 @@ export default class Trophies implements IPMC {
   isLocked: boolean = false
   onComplete: () => void
   classBefore?: IPMC
-  private navKeyHandler?: (...args: ISival) => ISival
+  private navKeyHandler?: (...args: IAny) => IAny
 
   private el!: HTMLDivElement
   private eboard!: HTMLDivElement

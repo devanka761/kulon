@@ -1,4 +1,4 @@
-import { KelementAttr, SSKelement } from "../types/lib.types"
+import { KelementAttr, SSKelement } from "../types/LibTypes"
 
 export function qutor(classnames: string, parent?: HTMLElement): SSKelement | null {
   const el = parent ?? document.body

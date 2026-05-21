@@ -1,5 +1,5 @@
 import { model, Model, Schema } from "mongoose"
-import { IMail } from "../types/mail.types"
+import { IMail } from "../types/MailTypes"
 
 export type IMailModel = Model<IMail>
 

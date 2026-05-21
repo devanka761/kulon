@@ -16,10 +16,10 @@ import chat from "../manager/Chat"
 import audio from "../lib/AudioHandler"
 import backsong from "../APIs/BackSongAPI"
 import { loadMiniGame } from "../lib/minigameLoader"
-import { IPMC, IPMCConfig, IUser } from "../types/db.types"
-import { IMissionList } from "../types/job.types"
+import { IPMC, IPMCConfig, IUser } from "../types/DBTypes"
+import { IMissionList } from "../types/JobTypes"
 import { Game } from "../main/Game"
-import { ISival } from "../types/lib.types"
+import { IAny } from "../types/LibTypes"
 import { copyToClipboard } from "../lib/navigator"
 import notip from "../lib/notip"
 
@@ -42,7 +42,7 @@ export default class MatchMaking implements IPMC {
   members: MembersAPI = new MembersAPI()
   private activeBoardIndex: number = 1
   private selectedIndices: [number, number, number] = [-1, -1, -1]
-  private navKeyListener?: (...args: ISival) => ISival
+  private navKeyListener?: (...args: IAny) => IAny
   private isAborted: boolean = false
 
   private friendlist!: HTMLDivElement

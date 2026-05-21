@@ -1,4 +1,4 @@
-import { IItem } from "../types/item.types"
+import { IItem } from "../types/ItemTypes"
 
 export default class BagAPI {
   private data: IItem[] = []

@@ -6,7 +6,7 @@ import { Person } from "../main/Person"
 import SaveList from "../data/SaveList"
 import LocalList from "../data/LocalList"
 import { Game } from "../main/Game"
-import { ISival } from "../types/lib.types"
+import { IAny } from "../types/LibTypes"
 import Prologue from "../Events/Prologue"
 import Phone from "../Events/Phone"
 import MapList from "../data/MapList"
@@ -21,10 +21,10 @@ const INVALID_CONTROLS = ["run", "init", "constructor", "game"]
 
 class PeerMessage {
   private game!: Game
-  chatMessage(data: ISival): void {
+  chatMessage(data: IAny): void {
     chat.add(data.from, data.text)
   }
-  prologueSkip(data: ISival): void {
+  prologueSkip(data: IAny): void {
     if (db.pmc?.id === "prologue") {
       const pmc = db.pmc as Prologue
       pmc.updateSkipped(data.from)
@@ -34,7 +34,7 @@ class PeerMessage {
     db.waiting.add({ id: "prologueskip", userId: data.from })
   }
 
-  async addStates(data: ISival): Promise<void> {
+  async addStates(data: IAny): Promise<void> {
     if (!data.states) return
     if (!Array.isArray(data.states)) return
 
@@ -49,13 +49,13 @@ class PeerMessage {
     await waittime(1000)
     this.game.kulonUI?.phone.updateUnread()
   }
-  removeStates(data: ISival): void {
+  removeStates(data: IAny): void {
     if (!data.states) return
     if (!Array.isArray(data.states)) return
 
     data.states.forEach((state: string) => delete SaveList[state])
   }
-  addItem(data: ISival): void {
+  addItem(data: IAny): void {
     const { itemId, amount } = data
     if (!itemId || !amount) return
     const item = cloud_items.find((itm) => itm.id === itemId)
@@ -70,12 +70,12 @@ class PeerMessage {
     })
   }
 
-  lobbyConfirm(data: ISival): void {
+  lobbyConfirm(data: IAny): void {
     chat.add(data.from, lang.LB_JOINED, true)
     this.requestPosition(data)
   }
 
-  requestPosition(data: ISival): void {
+  requestPosition(data: IAny): void {
     peers.sendOne(data.from, "playerMapChange", {
       mapId: this.game.map.mapId,
       x: this.game.player.x,
@@ -84,7 +84,7 @@ class PeerMessage {
     })
   }
 
-  playerMove(data: ISival): void {
+  playerMove(data: IAny): void {
     const myMap = this.game.map.mapId
 
     const remotePlayer = this.game.map.gameObjects[`crew_${data.from}`] as Person
@@ -112,7 +112,7 @@ class PeerMessage {
     }
   }
 
-  objMapChange(data: ISival): void {
+  objMapChange(data: IAny): void {
     const { who, mapId, x, y } = data
     if (!who || !mapId || !x || !y) return
 
@@ -129,7 +129,7 @@ class PeerMessage {
     }
   }
 
-  playerMapChange(data: ISival): void {
+  playerMapChange(data: IAny): void {
     if (db.pmc?.id === "phone") {
       const pmc = db.pmc as Phone
       pmc.updateScoreBoard(data.from, data.mapId)
@@ -183,7 +183,7 @@ class PeerMessage {
       remotePlayerObject.direction = data.direction
     }
   }
-  addNote(data: ISival): void {
+  addNote(data: IAny): void {
     if (!data) return
 
     const { key, mapId, index } = data
@@ -211,7 +211,7 @@ class PeerMessage {
       b: `+${1}`
     })
   }
-  async addHint(data: ISival): Promise<void> {
+  async addHint(data: IAny): Promise<void> {
     if (!data) return
 
     const { key, mapId, index } = data
@@ -239,13 +239,13 @@ class PeerMessage {
     await waittime(1000)
     this.game.kulonUI?.phone.updateUnread()
   }
-  onInteract(data: ISival): void {
+  onInteract(data: IAny): void {
     if (!data.posX || !data.posY) return
     if (db.pmx && db.pmx.onInteract) {
       db.pmx.onInteract(data.posX, data.posY, true, data)
     }
   }
-  run(data: ISival): void {
+  run(data: IAny): void {
     if (!this.game || !data.type || !data.from) return
     if (INVALID_CONTROLS.find((control) => control === data.type)) return
 

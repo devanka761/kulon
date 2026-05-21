@@ -1,5 +1,5 @@
 import { model, Model, Schema } from "mongoose"
-import { IAccount } from "../types/account.types"
+import { IAccount } from "../types/AccountTypes"
 
 export type IAccountModel = Model<IAccount>
 

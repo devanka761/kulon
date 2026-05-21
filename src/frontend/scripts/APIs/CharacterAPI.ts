@@ -1,6 +1,6 @@
 import Peer from "../lib/Peer"
-import { ISkin, IUser } from "../types/db.types"
-import { DirectionType } from "../types/maps.types"
+import { ISkin, IUser } from "../types/DBTypes"
+import { DirectionType } from "../types/MapsTypes"
 
 interface IConfig {
   user: IUser

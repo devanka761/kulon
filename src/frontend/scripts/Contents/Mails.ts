@@ -11,9 +11,9 @@ import waittime from "../lib/waittime"
 import xhr from "../lib/xhr"
 import { KeyPressListener } from "../main/KeyPressListener"
 import Rewards from "../Props/Rewards"
-import { IPMC, IPMCConfig } from "../types/db.types"
-import { ISival } from "../types/lib.types"
-import { IMail } from "../types/mail.types"
+import { IPMC, IPMCConfig } from "../types/DBTypes"
+import { IAny } from "../types/LibTypes"
+import { IMail } from "../types/MailTypes"
 
 function cardOnList(s: IMail): HTMLDivElement {
   const card = kel("div", "card")
@@ -96,7 +96,7 @@ export default class Mails implements IPMC {
 
   private boxMail: string[] = []
 
-  private listNavHandler?: (...args: ISival) => void
+  private listNavHandler?: (...args: IAny) => void
 
   constructor(config: IMailConfig) {
     this.onComplete = config.onComplete

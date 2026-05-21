@@ -1,5 +1,5 @@
 import { model, Model, Schema } from "mongoose"
-import { ITrophy } from "../types/trophy.types"
+import { ITrophy } from "../types/TrophyTypes"
 
 export type ITrophyModel = Model<ITrophy>
 

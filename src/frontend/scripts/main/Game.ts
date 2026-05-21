@@ -17,7 +17,7 @@ import KulonUI from "../manager/KulonUI"
 import KulonPad from "./KulonPad"
 import { Prop } from "./Prop"
 import { Player } from "./Player"
-import { IGameObjectData, IObjectEvent, IObjectTalk } from "../types/maps.types"
+import { IGameObjectData, IObjectEvent, IObjectTalk } from "../types/MapsTypes"
 import backsong from "../APIs/BackSongAPI"
 
 export interface GameObjectMain {

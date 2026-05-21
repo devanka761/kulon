@@ -1,8 +1,8 @@
 import fs from "fs"
-import { IAchievements } from "../types/trophy.types"
-import { IShopItem } from "../types/account.types"
-import { ICloudItem } from "../types/item.types"
-import { IMissionList } from "../types/job.types"
+import { IAchievements } from "../types/TrophyTypes"
+import { IShopItem } from "../types/AccountTypes"
+import { ICloudItem } from "../types/ItemTypes"
+import { IMissionList } from "../types/JobTypes"
 
 export const skinlist = JSON.parse(fs.readFileSync("./public/json/skins/skin_list.json", "utf-8")).map((sk: { id: string }) => sk.id) as string[]
 

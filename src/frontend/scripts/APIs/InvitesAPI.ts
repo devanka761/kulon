@@ -1,4 +1,4 @@
-import { IInvites } from "../types/job.types"
+import { IInvites } from "../types/JobTypes"
 
 export default class InvitesAPI {
   private data: IInvites[] = []

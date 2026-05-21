@@ -3,6 +3,7 @@ import webpack from "webpack"
 import HtmlWebpackPlugin from "html-webpack-plugin"
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 import { CleanWebpackPlugin } from "clean-webpack-plugin"
+import publiEntries from "./publicEntries"
 
 interface IAppConfigEntries {
   title: string
@@ -11,77 +12,14 @@ interface IAppConfigEntries {
   chunks: string[]
 }
 
-interface IAppConfig {
-  entry: webpack.EntryObject
-  entries: {
-    [key: string]: IAppConfigEntries
-  }
-}
-
 type IPlugins = (CleanWebpackPlugin | MiniCssExtractPlugin | HtmlWebpackPlugin)[]
 
-const appConfig: IAppConfig = {
-  entry: {
-    app: "./src/frontend/scripts/app.ts",
-    home: "./src/frontend/scripts/home.ts",
-    editor: "./src/frontend/scripts/editor.ts",
-    privacy: "./src/frontend/scripts/legal.ts",
-    terms: "./src/frontend/scripts/legal.ts",
-    license: "./src/frontend/scripts/license.ts",
-    autherror: "./src/frontend/scripts/404.ts",
-    404: "./src/frontend/scripts/404.ts"
-  },
-  entries: {
-    app: {
-      title: "app",
-      filename: "app.ejs",
-      template: "app.ejs",
-      chunks: ["app"]
-    },
-    home: {
-      title: "home",
-      filename: "home.ejs",
-      template: "home.ejs",
-      chunks: ["home"]
-    },
-    editor: {
-      title: "editor",
-      filename: "editor.ejs",
-      template: "editor.ejs",
-      chunks: ["editor"]
-    },
-    privacy: {
-      title: "privacy",
-      filename: "privacy.ejs",
-      template: "privacy.ejs",
-      chunks: ["privacy"]
-    },
-    terms: {
-      title: "terms",
-      filename: "terms.ejs",
-      template: "terms.ejs",
-      chunks: ["terms"]
-    },
-    license: {
-      title: "license",
-      filename: "license.ejs",
-      template: "license.ejs",
-      chunks: ["license"]
-    },
-    autherror: {
-      title: "autherror",
-      filename: "autherror.ejs",
-      template: "autherror.ejs",
-      chunks: ["autherror"]
-    },
-    404: {
-      title: "404",
-      filename: "404.ejs",
-      template: "404.ejs",
-      chunks: ["404"]
-    }
-  }
-}
+const entryGroup: IAppConfigEntries[] = Object.keys(publiEntries).map((key) => ({
+  title: key,
+  filename: `${key}.ejs`,
+  template: `${key}.ejs`,
+  chunks: [key]
+}))
 
 const plugins: IPlugins = [
   new CleanWebpackPlugin(),
@@ -90,7 +28,7 @@ const plugins: IPlugins = [
   })
 ]
 
-Object.values(appConfig.entries).forEach((entryInfo, _entryName) => {
+Object.values(entryGroup).forEach((entryInfo, _entryName) => {
   plugins.push(
     new HtmlWebpackPlugin({
       title: entryInfo.title,
@@ -107,7 +45,7 @@ Object.values(appConfig.entries).forEach((entryInfo, _entryName) => {
 
 const entry = {
   sw: { import: "./src/frontend/scripts/sw.ts", filename: "../sw.js" },
-  ...appConfig.entry
+  ...publiEntries
 }
 
 const config: webpack.Configuration = {
@@ -135,12 +73,7 @@ const config: webpack.Configuration = {
               [
                 "@babel/preset-env",
                 {
-                  targets: {
-                    firefox: "69",
-                    chrome: "64",
-                    safari: "13",
-                    edge: "79"
-                  }
+                  targets: "supports es6-module"
                 }
               ]
             ]

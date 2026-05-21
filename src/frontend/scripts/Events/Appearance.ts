@@ -9,9 +9,9 @@ import xhr from "../lib/xhr"
 import { KeyPressListener } from "../main/KeyPressListener"
 import { playRandomPop } from "../manager/randomPlays"
 import itemRun from "../Props/itemRun"
-import { IPMC, IPMCConfig } from "../types/db.types"
+import { IPMC, IPMCConfig } from "../types/DBTypes"
 import { Game } from "../main/Game"
-import { ISival } from "../types/lib.types"
+import { IAny } from "../types/LibTypes"
 
 interface IAppearanceConfig extends IPMCConfig {
   item_id?: string
@@ -387,7 +387,7 @@ export default class Appearance implements IPMC {
     }
   }
 
-  async destroy(next?: ISival): Promise<void> {
+  async destroy(next?: IAny): Promise<void> {
     if (this.isLocked) return
     audio.emit({ action: "play", type: "ui", src: "phone_close", options: { id: "phone_close" } })
     this.isLocked = true

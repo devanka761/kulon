@@ -6,12 +6,12 @@ import audio from "../lib/AudioHandler"
 import { eroot, futor, kel } from "../lib/kel"
 import waittime from "../lib/waittime"
 import { KeyPressListener } from "../main/KeyPressListener"
-import { IPMC, IPMCConfig } from "../types/db.types"
-import { IItem } from "../types/item.types"
-import { ISival } from "../types/lib.types"
+import { IPMC, IPMCConfig } from "../types/DBTypes"
+import { IItem } from "../types/ItemTypes"
+import { IAny } from "../types/LibTypes"
 
 export default class Rewards implements IPMC {
-  onComplete: (...args: ISival[]) => ISival
+  onComplete: (...args: IAny[]) => IAny
   classBefore?: IPMC
   id: string = "rewards"
   private el: HTMLDivElement = kel("div", "Rewards")

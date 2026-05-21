@@ -6,7 +6,7 @@ import modal from "../lib/modal"
 import waittime from "../lib/waittime"
 import xhr from "../lib/xhr"
 import localSave from "../manager/storage"
-import { IModalSelectConfig } from "../types/modal.types"
+import { IModalSelectConfig } from "../types/ModalTypes"
 import Auth from "./Auth"
 
 function SelectLang(): Partial<IModalSelectConfig> {

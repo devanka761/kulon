@@ -1,4 +1,4 @@
-import { IGameObjectTeleporter, IGameObjectTeleporterType } from "../types/maps.types"
+import { IGameObjectTeleporter, IGameObjectTeleporterType } from "../types/MapsTypes"
 import { Person } from "./Person"
 
 const TILE_SIZE = 16

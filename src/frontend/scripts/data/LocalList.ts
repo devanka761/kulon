@@ -1,4 +1,4 @@
-import { ILocalList } from "../types/data.types"
+import { ILocalList } from "../types/DataTypes"
 
 const LocalList: ILocalList = {
   bgm_volume: 6,

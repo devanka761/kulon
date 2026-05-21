@@ -1,7 +1,7 @@
 export type SSKelement = HTMLElementTagNameMap[keyof HTMLElementTagNameMap]
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ISival = any
+export type IAny = any
 
 export type IReqType = "POST" | "GET"
 
@@ -9,7 +9,8 @@ export interface IRepB {
   ok: boolean
   code: number
   msg: string
-  data?: ISival
+  data?: IAny
+  errors?: IAny
 }
 
 export interface ILocale {

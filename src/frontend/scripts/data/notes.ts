@@ -1,4 +1,4 @@
-import { ILocale } from "../types/lib.types"
+import { ILocale } from "../types/LibTypes"
 
 interface INote {
   name: ILocale

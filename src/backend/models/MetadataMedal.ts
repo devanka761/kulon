@@ -1,5 +1,5 @@
 import { model, Model, Schema } from "mongoose"
-import { IMetadata } from "../types/metadata.types"
+import { IMetadata } from "../types/MetadataTypes"
 
 export type IMetadataModel = Model<IMetadata>
 

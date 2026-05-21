@@ -2,11 +2,11 @@ import { Request } from "express"
 import { WebSocketWithHeartbeat } from "express-ws"
 import logger from "../main/logger"
 import peer from "../lib/peer"
-import { processSocketMessages, convertProg, timeOnlinePassed } from "../controller/socket.controller"
-import { exitFromJob } from "../controller/job.controller"
+import { processSocketMessages, convertProg, timeOnlinePassed } from "../controller/SocketController"
+import { exitFromJob } from "../controller/JobController"
 import webhook from "../lib/webhook"
 import cfg from "../../config/cfg"
-import { exitCurrentLobby } from "../controller/lobby.controller"
+import { exitCurrentLobby } from "../controller/LobbyController"
 
 function webSocketApp(ws: WebSocketWithHeartbeat, req: Request) {
   if (!req.user || !req.user.id) {

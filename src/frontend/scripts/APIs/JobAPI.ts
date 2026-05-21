@@ -1,9 +1,9 @@
 import db from "../data/db"
 import chat from "../manager/Chat"
 import lang from "../data/language"
-import { IJobItem, IJobToReturn, IPlayersMatchMaking, JobBag } from "../types/job.types"
-import { IMapList, IObjectEvent } from "../types/maps.types"
-import { IUser } from "../types/db.types"
+import { IJobItem, IJobToReturn, IPlayersMatchMaking, JobBag } from "../types/JobTypes"
+import { IMapList, IObjectEvent } from "../types/MapsTypes"
+import { IUser } from "../types/DBTypes"
 import SaveList from "../data/SaveList"
 
 export default class JobAPI {

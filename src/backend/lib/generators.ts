@@ -1,7 +1,7 @@
 import crypto from "crypto"
 import cfg from "../../config/cfg"
-import { IRepB, IRepTempB, ISival } from "../types/validate.types"
-import { IQueryParam } from "../types/auth.types"
+import { IRepB, IRepTempB, IAny } from "../types/ValidateTypes"
+import { IQueryParam } from "../types/AuthTypes"
 
 export const peerKey: string = crypto.randomBytes(16).toString("hex")
 
@@ -52,7 +52,7 @@ export function escapeRegex(string: string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
 }
 
-export function parseBase64(query: ISival): IQueryParam {
+export function parseBase64(query: IAny): IQueryParam {
   try {
     const data = JSON.parse(Buffer.from(query.toString(), "base64").toString()) as IQueryParam
     return data
@@ -62,7 +62,7 @@ export function parseBase64(query: ISival): IQueryParam {
   }
 }
 
-export function toBase64(query: ISival): string {
+export function toBase64(query: IAny): string {
   try {
     const data = Buffer.from(JSON.stringify(query)).toString("base64")
     return data

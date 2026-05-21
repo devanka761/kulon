@@ -10,9 +10,9 @@ import xhr from "../lib/xhr"
 import { Game } from "../main/Game"
 import { KeyPressListener } from "../main/KeyPressListener"
 import itemRun from "../Props/itemRun"
-import { IPMC, IPMCConfig, IUser } from "../types/db.types"
-import { IInvites, IJob } from "../types/job.types"
-import { ISival, SSKelement } from "../types/lib.types"
+import { IPMC, IPMCConfig, IUser } from "../types/DBTypes"
+import { IInvites, IJob } from "../types/JobTypes"
+import { IAny, SSKelement } from "../types/LibTypes"
 
 function fieldOnBoard(user: IUser, job: IJob): HTMLDivElement {
   const field = kel("div", "field")
@@ -83,7 +83,7 @@ export default class Team implements IPMC {
   private btnSearch!: SSKelement
   private inpSearch!: HTMLInputElement
   private form!: HTMLFormElement
-  private listNavHandler?: (...args: ISival) => ISival
+  private listNavHandler?: (...args: IAny) => IAny
 
   constructor(config: ITeamConfig) {
     this.onComplete = config.onComplete

@@ -12,9 +12,9 @@ import { Game } from "../main/Game"
 import { KeyPressListener } from "../main/KeyPressListener"
 import chat from "../manager/Chat"
 import setNewGame from "../manager/setNewGame"
-import { IPMC, IPMCConfig, IUser } from "../types/db.types"
-import { IMissionList } from "../types/job.types"
-import { ISival } from "../types/lib.types"
+import { IPMC, IPMCConfig, IUser } from "../types/DBTypes"
+import { IMissionList } from "../types/JobTypes"
+import { IAny } from "../types/LibTypes"
 import { resetHint, setHint } from "./Hint"
 
 interface IPrologueConfig extends IPMCConfig {
@@ -33,7 +33,7 @@ export default class Prologue implements IPMC {
   private startTime?: number
 
   private skipped: string[] = []
-  private isAborted: ISival = null
+  private isAborted: IAny = null
   private isLaunching: boolean = false
 
   private el!: HTMLDivElement

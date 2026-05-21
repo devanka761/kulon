@@ -11,8 +11,8 @@ import waittime from "../lib/waittime"
 import { Game } from "../main/Game"
 import { KeyPressListener } from "../main/KeyPressListener"
 import chat from "../manager/Chat"
-import { IPMC, IPMCConfig, IUser } from "../types/db.types"
-import { IMissionList } from "../types/job.types"
+import { IPMC, IPMCConfig, IUser } from "../types/DBTypes"
+import { IMissionList } from "../types/JobTypes"
 import Prologue from "./Prologue"
 
 let launchInterval: ReturnType<typeof setInterval> | null = null

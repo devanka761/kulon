@@ -4,7 +4,7 @@ import MatchMaking from "../Events/MatchMaking"
 import { kel } from "../lib/kel"
 import modal from "../lib/modal"
 import socket from "../lib/Socket"
-import { IUser } from "../types/db.types"
+import { IUser } from "../types/DBTypes"
 
 const USER_STATUS = {
   INITIAL: ["h", ""],

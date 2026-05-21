@@ -1,4 +1,4 @@
-import { IUser } from "../types/db.types"
+import { IUser } from "../types/DBTypes"
 
 export default class LobbyAPI {
   private data: IUser[] = []

@@ -1,13 +1,13 @@
 import lang from "../data/language"
 import { KeyPressListener } from "../main/KeyPressListener"
-import { IRepB, ISival } from "../types/lib.types"
-import { IModalAlertConfig, IModalConfirmConfig, IModalPromptConfig, IModalSelectConfig } from "../types/modal.types"
+import { IRepB, IAny } from "../types/LibTypes"
+import { IModalAlertConfig, IModalConfirmConfig, IModalPromptConfig, IModalSelectConfig } from "../types/ModalTypes"
 import audio from "./AudioHandler"
 import { eroot, kel, qutor } from "./kel"
 import waittime from "./waittime"
 
 const modal = {
-  async loading(newfunc: ISival, msg = "LOADING"): Promise<ISival> {
+  async loading(newfunc: IAny, msg = "LOADING"): Promise<IAny> {
     audio.emit({ action: "play", type: "ui", src: "dialogue_process", options: { id: "dialogue_process" } })
     const el = kel("div", "loading", {
       e: kel("div", "box", {
@@ -32,7 +32,7 @@ const modal = {
         return err
       })
   },
-  async smloading(newfunc: ISival, msg = "LOADING"): Promise<ISival> {
+  async smloading(newfunc: IAny, msg = "LOADING"): Promise<IAny> {
     audio.emit({ action: "play", type: "ui", src: "dialogue_process", options: { id: "dialogue_process" } })
     const el = kel("div", "sm-loading")
     el.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>${msg}</span>`

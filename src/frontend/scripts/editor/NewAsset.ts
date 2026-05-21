@@ -1,4 +1,4 @@
-import { ISival } from "../types/lib.types"
+import { IAny } from "../types/lib.types"
 import asset from "../data/assets"
 import { eroot, futor, kel, qutor } from "../lib/kel"
 import LoadAssets from "../lib/LoadAssets"
@@ -72,7 +72,7 @@ export default class NewAsset {
       if (this.type && (!this.dataFile || !this.file)) return
       this.isLocked = true
       const formData = new FormData(this.form)
-      const data: ISival = {}
+      const data: IAny = {}
       formData.forEach((val, key) => {
         if (key !== "asset-file") data[key] = val
       })

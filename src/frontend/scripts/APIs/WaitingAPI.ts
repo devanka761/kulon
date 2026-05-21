@@ -1,13 +1,13 @@
-import { ISival } from "../types/lib.types"
+import { IAny } from "../types/LibTypes"
 
 interface IWaitingConfig {
   id: string
-  [key: string]: ISival
+  [key: string]: IAny
 }
 interface IWaiting {
   id: string
   ts: number
-  [key: string]: ISival
+  [key: string]: IAny
 }
 
 export default class WaitingAPI {

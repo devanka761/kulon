@@ -11,9 +11,9 @@ import waittime from "../lib/waittime"
 import { Game } from "../main/Game"
 import { KeyPressListener } from "../main/KeyPressListener"
 import itemRun from "../Props/itemRun"
-import { IPMC, IPMCConfig, IUser } from "../types/db.types"
-import { IInvites, IJobInvite } from "../types/job.types"
-import { ISival, SSKelement } from "../types/lib.types"
+import { IPMC, IPMCConfig, IUser } from "../types/DBTypes"
+import { IInvites, IJobInvite } from "../types/JobTypes"
+import { IAny, SSKelement } from "../types/LibTypes"
 
 function cardOnList(user: IUser, job: IJobInvite): HTMLDivElement {
   const mission = mission_list.find((k) => k.id === job.mission)!
@@ -96,7 +96,7 @@ export default class Jobs implements IPMC {
   private esc?: KeyPressListener
   private enter?: KeyPressListener
   private del?: KeyPressListener
-  private listNavHandler?: (...args: ISival) => ISival
+  private listNavHandler?: (...args: IAny) => IAny
 
   constructor(config: IJobsConfig) {
     this.onComplete = config.onComplete

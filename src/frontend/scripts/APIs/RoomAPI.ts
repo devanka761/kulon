@@ -1,5 +1,5 @@
 import db from "../data/db"
-import { IFriend, IRoom, IRoomType } from "../types/friend.types"
+import { IFriend, IRoom, IRoomType } from "../types/FriendTypes"
 
 export default class RoomAPI {
   private data: IFriend[] = []

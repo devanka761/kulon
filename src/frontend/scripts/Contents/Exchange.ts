@@ -11,9 +11,9 @@ import waittime from "../lib/waittime"
 import xhr from "../lib/xhr"
 import { KeyPressListener } from "../main/KeyPressListener"
 import Rewards from "../Props/Rewards"
-import { IPMC, IPMCConfig } from "../types/db.types"
-import { ICloudItem } from "../types/item.types"
-import { ISival } from "../types/lib.types"
+import { IPMC, IPMCConfig } from "../types/DBTypes"
+import { ICloudItem } from "../types/ItemTypes"
+import { IAny } from "../types/LibTypes"
 
 function drawImg(imgSrc: string, imgAlt: string): HTMLImageElement {
   const img = new Image()
@@ -52,7 +52,7 @@ export class Exchange implements IPMC {
   private item_src1!: ICloudItem
   private item_src2!: ICloudItem
 
-  private navKeyHandler?: (val: ISival) => ISival
+  private navKeyHandler?: (val: IAny) => IAny
   private enter?: KeyPressListener
   private esc?: KeyPressListener
 

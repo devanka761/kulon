@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express"
 import { cdUser, isUser } from "../main/middlewares"
 import { rep } from "../lib/generators"
-import { createJob, findJob, joinJobByCode, joinJobByInvite, startJob } from "../controller/job.controller"
-import { joinRandomLobby } from "../controller/lobby.controller"
+import { createJob, findJob, joinJobByCode, joinJobByInvite, startJob } from "../controller/JobController"
+import { joinRandomLobby } from "../controller/LobbyController"
 const router = express.Router()
 
 router.use(cdUser, isUser, express.json({ limit: "1MB" }))
