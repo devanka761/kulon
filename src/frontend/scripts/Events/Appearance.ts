@@ -141,7 +141,7 @@ export default class Appearance implements IPMC {
   }
 
   protected async setSkins(): Promise<void> {
-    const charSkinList = (await xhr.get("/json/skins/character_creation_list.json?v=" + Date.now())) as ISkins
+    const charSkinList = (await xhr.forceGet("/json/skins/character_creation_list.json?v=" + Date.now())) as ISkins
     this.skins = charSkinList
     this.editorListener()
   }

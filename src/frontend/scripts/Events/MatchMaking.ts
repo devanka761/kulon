@@ -452,13 +452,13 @@ export default class MatchMaking implements IPMC {
   private async parseData(): Promise<void> {
     this.btnStart.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> ${lang.DOWNLOADING}`
 
-    const nextAssets = await xhr.get(`/json/assets/st_${this.mission.map}.json?v=${Date.now()}`)
+    const nextAssets = await xhr.forceGet(`/json/assets/st_${this.mission.map}.json?v=${Date.now()}`)
     await new LoadAssets({ skins: nextAssets }).run()
 
-    const nextMap = await xhr.get(`/json/maps/mp_${this.mission.map}.json?v=${Date.now()}`)
+    const nextMap = await xhr.forceGet(`/json/maps/mp_${this.mission.map}.json?v=${Date.now()}`)
     db.job.nextMap = nextMap
 
-    const nextComplete = await xhr.get(`/json/scenes/cs_${this.mission.map}.json?v=${Date.now()}`)
+    const nextComplete = await xhr.forceGet(`/json/scenes/cs_${this.mission.map}.json?v=${Date.now()}`)
 
     db.job.finishScenes = nextComplete
 

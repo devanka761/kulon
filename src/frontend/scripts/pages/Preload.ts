@@ -258,13 +258,13 @@ export default class Preload {
     const eloader = qutor(".assets-load", this.el)
     if (eloader) eloader.remove()
 
-    const initialSkins = await modal.smloading(xhr.get("/json/assets/st_ehek.json?v=" + Date.now()), "Getting User Ready")
+    const initialSkins = await modal.smloading(xhr.forceGet("/json/assets/st_ehek.json?v=" + Date.now()), "Getting User Ready")
 
     setOfflineAssets(initialSkins)
 
     await modal.smloading(new LoadAssets({ skins: initialSkins }).run(), "Loading Character Data")
 
-    const nextMap = await xhr.get(`/json/maps/mp_ehek.json?v=${Date.now()}`)
+    const nextMap = await xhr.forceGet(`/json/maps/mp_ehek.json?v=${Date.now()}`)
 
     setOfflineMaps(nextMap as IMapList)
 

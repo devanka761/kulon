@@ -35,9 +35,9 @@ export default class Intro {
       }
       img.onload = async () => {
         this.box.className = "box show"
-        await waittime(2000)
+        await waittime(1000)
         this.box.className = "box hide"
-        await waittime(600)
+        await waittime(300)
         img.remove()
         resolve()
       }

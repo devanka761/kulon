@@ -1,5 +1,5 @@
 import cloud_items from "../../../../public/json/items/cloud_items.json"
-import { IAny } from "../types/lib.types"
+import { IAny } from "../types/LibTypes"
 import Minigames from "../data/minigames"
 import { eroot, futor, kel } from "../lib/kel"
 import waittime from "../lib/waittime"

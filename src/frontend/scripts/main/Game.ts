@@ -108,7 +108,8 @@ export class Game {
     if (db.onduty < 1) {
       db.onduty = 1
       const isDone = LocalList["KULON_INTRO"]
-      this.player.x = isDone ? 224 : 48
+      // this.player.x = isDone ? 224 : 48
+      this.player.x = isDone ? 96 : 48
       this.player.y = isDone ? 64 : 96
       if (!isDone) {
         backsong.switch(2, 1)

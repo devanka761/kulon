@@ -68,8 +68,8 @@ export default class Auth {
 
     if (!doodle) doodle = new Doodle({ root: eroot(), fillRatio: 0.4, strength: 30, delay: 500 })
 
-    const skins = await xhr.get("/json/skins/skin_list.json?v=" + Date.now())
-    const sounds = await xhr.get("/json/audio/audio.json?v=" + Date.now())
+    const skins = await xhr.forceGet("/json/skins/skin_list.json?v=" + Date.now())
+    const sounds = await xhr.forceGet("/json/audio/audio.json?v=" + Date.now())
     splash.classList.add("out")
     await waittime(1000)
     splash.remove()
