@@ -519,7 +519,7 @@
       "type": "stand",
       "direction": "down",
       "who": "hero",
-      "time": 1700
+      "time": 500
     }
   ]
 }

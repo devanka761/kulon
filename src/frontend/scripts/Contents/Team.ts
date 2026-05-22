@@ -96,7 +96,7 @@ export default class Team implements IPMC {
     <div class="box">
       <div class="nav">
         <div class="left">
-          <div class="title"><i class="fa-solid fa-envelope"></i> ${lang.PHONE_TEAM}</div>
+          <div class="title"><i class="fa-solid fa-people-group"></i> ${lang.PHONE_TEAM}</div>
         </div>
         <div class="right">
           <span class="keyinfo">esc</span>
