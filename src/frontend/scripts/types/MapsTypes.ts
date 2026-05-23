@@ -75,6 +75,7 @@ export interface IGameObjectPerson extends IGameObject {
   direction?: DirectionType
   isRemote?: boolean
   canControlled?: boolean
+  enemy?: boolean
 }
 export interface IGameObjectInteractable extends IGameObject {
   src: GameObjectSrc
@@ -119,6 +120,7 @@ export interface IGameObjectData {
   direction?: DirectionType
   isRemote?: boolean
   canControlled?: boolean
+  enemy?: boolean
 }
 
 export type GameObjectData = IGameObjectData | IGameObjectPerson | IGameObjectInteractable | IGameObjectTeleporter

@@ -8,6 +8,8 @@ import { IKeyHold } from "./InputHandler"
 
 export class Player extends Person {
   footstep: "a" | "b"
+  isPlayer: boolean = true
+
   constructor(config: IGameObjectPerson, footstep: "a" | "b") {
     super(config, footstep)
     this.footstep = footstep
@@ -93,5 +95,10 @@ export class Player extends Person {
   }
   audioFootSteps(): void {
     playRandomFootstep(this.footstep, true)
+  }
+
+  onEnemyCollision(_enemy: Person): void {
+    // sabar dulu ges, cape.
+    // fiturnya lagi dipikirin
   }
 }

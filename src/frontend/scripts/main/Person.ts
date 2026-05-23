@@ -1,5 +1,6 @@
 import asset from "../data/assets"
 import { playRandomFootstep } from "../manager/randomPlays"
+import { IAny } from "../types/LibTypes"
 import { DirectionType, IGameObjectPerson, IObjectEvent, IObjectTalk, MapGameObjects, MapWalls } from "../types/MapsTypes"
 import { Game } from "./Game"
 import { GameMap } from "./GameMap"
@@ -80,6 +81,7 @@ export class Person {
   isAttacking: boolean = false
   hasLunged: boolean = false
   swordImage!: HTMLImageElement
+  enemy: boolean = false
 
   footstep: "a" | "b"
   constructor(config: IGameObjectPerson, footstep: "a" | "b") {
@@ -115,6 +117,10 @@ export class Person {
     if (this.isRemote) {
       this.targetX = this.x
       this.targetY = this.y
+    }
+    this.enemy = config.enemy || false
+    if (this.enemy) {
+      this.speed = 60 * 0.7
     }
 
     this.frameX = 18
@@ -178,6 +184,9 @@ export class Person {
     }
 
     if (this.behaviorLoop.length === 0) {
+      if (this.enemy) {
+        this.updateAI(game)
+      }
       return
     }
 
@@ -355,14 +364,39 @@ export class Person {
         continue
       }
 
-      const objBox = {
-        x: obj.x - 3,
-        y: obj.y,
-        width: obj.collisionBox.width + 6,
-        height: obj.collisionBox.height + 1
+      let objBox
+      if (obj instanceof Person) {
+        objBox = {
+          x: obj.x + obj.collisionBox.xOffset,
+          y: obj.y + obj.collisionBox.yOffset,
+          width: obj.collisionBox.width,
+          height: obj.collisionBox.height
+        }
+      } else {
+        objBox = {
+          x: obj.x - 3,
+          y: obj.y,
+          width: obj.collisionBox.width + 6,
+          height: obj.collisionBox.height + 1
+        }
       }
 
       if (characterBox.x < objBox.x + objBox.width && characterBox.x + characterBox.width > objBox.x && characterBox.y < objBox.y + objBox.height && characterBox.y + characterBox.height > objBox.y) {
+        const isThisPlayer = (this as IAny).isPlayer
+        const isObjPlayer = (obj as IAny).isPlayer
+
+        if (isThisPlayer && obj instanceof Person && obj.enemy) {
+          if (typeof (this as IAny).onEnemyCollision === "function") {
+            ;(this as IAny).onEnemyCollision(obj)
+          }
+          return false
+        } else if (this.enemy && isObjPlayer) {
+          if (typeof (obj as IAny).onEnemyCollision === "function") {
+            ;(obj as IAny).onEnemyCollision(this)
+          }
+          return false
+        }
+
         return true
       }
     }
@@ -392,5 +426,41 @@ export class Person {
     this.frameTimer = 0
     this.currentAnimationName = `hit-${this.direction}`
     this.frameX = this.animationFrames[this.currentAnimationName].start
+  }
+
+  updateAI(game: Game): void {
+    if (!game.player || game.isCutscenePlaying || game.isPaused || this.isRemote) return
+
+    const dx = game.player.x - this.x
+    const dy = game.player.y - this.y
+    const distance = Math.sqrt(dx * dx + dy * dy)
+
+    if (distance < 120 && distance > 16) {
+      const preferredDir: DirectionType = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "right" : "left") : dy > 0 ? "down" : "up"
+
+      if (preferredDir) {
+        this.direction = preferredDir
+        if (!this.isNextTileColliding(game)) {
+          if (this.walkStopTimer) {
+            clearTimeout(this.walkStopTimer)
+            this.walkStopTimer = null
+          }
+          this.movingProgressRemaining = TILE_SIZE
+        } else {
+          const secondaryDir: DirectionType = preferredDir === "right" || preferredDir === "left" ? (dy > 0 ? "down" : "up") : dx > 0 ? "right" : "left"
+
+          this.direction = secondaryDir
+          if (!this.isNextTileColliding(game)) {
+            if (this.walkStopTimer) {
+              clearTimeout(this.walkStopTimer)
+              this.walkStopTimer = null
+            }
+            this.movingProgressRemaining = TILE_SIZE
+          } else {
+            this.direction = preferredDir
+          }
+        }
+      }
+    }
   }
 }
