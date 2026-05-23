@@ -3,10 +3,10 @@ import { WebSocketWithHeartbeat } from "express-ws"
 import logger from "../main/logger"
 import peer from "../lib/peer"
 import { processSocketMessages, convertProg, timeOnlinePassed } from "../controller/SocketController"
-import { exitFromJob } from "../controller/JobController"
 import webhook from "../lib/webhook"
 import cfg from "../../config/cfg"
 import { exitCurrentLobby } from "../controller/LobbyController"
+import dbjob from "../main/job"
 
 function webSocketApp(ws: WebSocketWithHeartbeat, req: Request) {
   if (!req.user || !req.user.id) {
@@ -52,7 +52,7 @@ function webSocketApp(ws: WebSocketWithHeartbeat, req: Request) {
   ws.on("close", () => {
     peer.remove(clientId)
     peer.unregister(userId)
-    exitFromJob(userId)
+    dbjob.exit(userId)
     exitCurrentLobby(userId)
     convertProg()
     logger.info(`Offline  ${userId} ${clientId}`)

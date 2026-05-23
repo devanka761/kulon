@@ -3,6 +3,10 @@ import zender from "../lib/zender"
 import { IItem } from "../types/ItemTypes"
 import { IJob } from "../types/JobTypes"
 import { mission_list } from "../lib/shared"
+import User from "../models/UserModel"
+import prog from "./prog"
+import webhook from "../lib/webhook"
+import cfg from "../../config/cfg"
 
 function generateJobCode(existingCode: number[] = []) {
   let newCode = rNumber(4)
@@ -174,12 +178,43 @@ class Job {
   }
   remove(jobId: string): boolean {
     const jobIndex = this.data.findIndex((item) => item.id === jobId)
-    const users = this.data[jobIndex].players.map((item) => item.id)
     if (jobIndex === -1) return false
+
+    const users = this.data[jobIndex].players.map((item) => item.id)
 
     users.forEach((userId) => zender("system", userId, "removeJob", { jobId: jobId }))
     this.data.splice(jobIndex, 1)
     return true
+  }
+  async exit(uid: string): Promise<void> {
+    const job = dbjob.getByPlayer(uid)
+    if (!job) return
+    if (job.status >= 4) return
+    const users = await User.find({ id: { $in: job.players.map((usr) => usr.id) } }).lean()
+    const userToInclude = users.find((usr) => usr.id === uid)
+    users.forEach((usr) => {
+      zender(uid, usr.id, "jobExit", { user: userToInclude })
+    })
+    if (job.status === 3) {
+      if (!prog.isDone(uid, "jobleft")) prog.update(uid, "jobleft", 1)
+      dbjob.remove(job.id)
+    }
+
+    if (job.status < 2) {
+      dbjob.removePlayer(uid, job.id)
+    } else {
+      webhook(cfg.DISCORD_MISSION, {
+        author: { name: `JID ${job.code}` },
+        title: "Mission Failed",
+        theme: "RED",
+        fields: [
+          { name: "Mission ID", value: `MID ${job.mission}` },
+          { name: "Reason", value: `ID ${uid} left the job` }
+        ]
+      })
+    }
+
+    if (job.host === uid) dbjob.remove(job.id)
   }
 }
 

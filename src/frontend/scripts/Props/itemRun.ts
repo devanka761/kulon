@@ -136,8 +136,16 @@ class ItemRun {
     }
 
     chat.add(db.me.id, lang.LB_LEFT, true)
-    db.lobby.disable()
     peers.closeAll()
+
+    db.lobby.disable()
+    db.waiting.reset()
+    db.invites.reset()
+    db.job.reset()
+    if (db.pmx) {
+      db.pmx.destroy()
+      db.pmx = undefined
+    }
 
     const job = await modal.loading(xhr.post("/x/job/create", { mission_id: config.mission.id }), "CREATING")
     if (!job.ok) {
@@ -200,6 +208,15 @@ class ItemRun {
 
     chat.add(db.me.id, lang.LB_LEFT, true)
     peers.closeAll()
+
+    db.waiting.reset()
+    db.invites.reset()
+    db.job.reset()
+    if (db.pmx) {
+      db.pmx.destroy()
+      db.pmx = undefined
+    }
+
     if (db.lobby.status === true) {
       db.lobby.disable()
       await modal.loading(new Promise((resolve) => setTimeout(resolve, 1000)), "EXITING LOBBY")
@@ -226,6 +243,7 @@ class ItemRun {
 
     chat.add(db.me.id, lang.LB_LEFT, true)
     peers.closeAll()
+
     if (db.lobby.status === true) {
       db.lobby.disable()
       await modal.loading(new Promise((resolve) => setTimeout(resolve, 1000)), "EXITING LOBBY")

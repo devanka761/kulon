@@ -122,6 +122,7 @@ export default class Prepare implements IPMC {
     })
   }
   private getMeReady(isTimeOut?: boolean): void {
+    if (isTimeOut) socket.send("prepareTimeOut")
     if (this.meReady) return
     this.meReady = true
     this.updatePlayerStatus(db.me.id)
@@ -130,7 +131,6 @@ export default class Prepare implements IPMC {
     eready.classList.add("done")
     eready.innerHTML = lang.PRP_WAITING
     socket.send("prepareReady")
-    if (isTimeOut) socket.send("prepareTimeOut")
   }
   private btnListener(): void {
     const eready = futor(".btn-ready", this.el)

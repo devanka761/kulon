@@ -1,4 +1,4 @@
-import { IAny } from "../types/lib.types"
+import { IAny } from "../types/LibTypes"
 import asset from "../data/assets"
 import { eroot, futor, kel, qutor } from "../lib/kel"
 import LoadAssets from "../lib/LoadAssets"

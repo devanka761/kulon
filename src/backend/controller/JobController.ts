@@ -7,7 +7,6 @@ import validate from "../lib/validate"
 import dbjob from "../main/job"
 import User from "../models/UserModel"
 import zender from "../lib/zender"
-import prog from "../main/prog"
 import webhook from "../lib/webhook"
 import cfg from "../../config/cfg"
 import { exitCurrentLobby } from "./LobbyController"
@@ -42,40 +41,12 @@ export async function createJob(uid: string, s: { mission_id: string }): Promise
 
   if (!itemValid) return { code: 400, msg: `EXC_NOT_ENOUGH` }
 
-  const jobData: IJob = dbjob.create(uid, s.mission_id, itemValid.id)
-
+  dbjob.exit(uid)
   exitCurrentLobby(uid)
 
+  const jobData: IJob = dbjob.create(uid, s.mission_id, itemValid.id)
+
   return { code: 200, data: jobData }
-}
-
-export async function exitFromJob(uid: string): Promise<void> {
-  const job = dbjob.getByPlayer(uid)
-  if (!job) return
-  if (job.status >= 4) return
-  const users = await User.find({ id: { $in: job.players.map((usr) => usr.id) } }).lean()
-  const userToInclude = users.find((usr) => usr.id === uid)
-  users.forEach((usr) => {
-    zender(uid, usr.id, "jobExit", { user: userToInclude })
-  })
-  if (job.status === 3 && !prog.isDone(uid, "jobleft")) {
-    prog.update(uid, "jobleft", 1)
-  }
-  if (job.status < 2) {
-    dbjob.removePlayer(uid, job.id)
-  } else {
-    webhook(cfg.DISCORD_MISSION, {
-      author: { name: `JID ${job.code}` },
-      title: "Mission Failed",
-      theme: "RED",
-      fields: [
-        { name: "Mission ID", value: `MID ${job.mission}` },
-        { name: "Reason", value: `ID ${uid} left the job` }
-      ]
-    })
-  }
-
-  if (job.host === uid) dbjob.remove(job.id)
 }
 
 export async function findJob(uid: string, job_code: string): Promise<IRepTempB> {

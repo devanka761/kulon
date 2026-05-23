@@ -1,8 +1,8 @@
 import modal from "../lib/modal"
 import Editor from "./Editor"
-import { IAny } from "../types/lib.types"
+import { IAny } from "../types/LibTypes"
 import { eroot, futor, kel } from "../lib/kel"
-import { IGameObjectTeleporterType, TeleporeterFromPosition } from "../types/maps.types"
+import { IGameObjectTeleporterType, TeleporeterFromPosition } from "../types/MapsTypes"
 import waittime from "../lib/waittime"
 
 export interface INewObjectConfig {

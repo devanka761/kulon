@@ -9,7 +9,6 @@ import { mission_list } from "../lib/shared"
 import zender from "../lib/zender"
 import User from "../models/UserModel"
 import peer from "../lib/peer"
-import { exitFromJob } from "./JobController"
 import { IJob, IMissionList } from "../types/JobTypes"
 import { IItem } from "../types/ItemTypes"
 import Item from "../models/ItemModel"
@@ -40,7 +39,11 @@ function peerRequests(uid: string, s: SocketMessage) {
   zender(uid, s.to as string, s.type as string, s)
 }
 
-async function calculateWinner(job: IJob, mission: IMissionList) {
+async function calculateWinner(jobData: IJob, mission: IMissionList) {
+  const job = { ...jobData }
+
+  dbjob.remove(job.id)
+
   const stateCounts: { [key: string]: number } = {}
   for (const stateKey in job.states) {
     const playerId = job.states[stateKey]
@@ -96,7 +99,6 @@ async function calculateWinner(job: IJob, mission: IMissionList) {
       { name: "Winners", value: winners.map((usr) => `ID ${usr}`).join("\n") }
     ]
   })
-  dbjob.remove(job.id)
 
   if (bulkOps.length >= 1) await Item.bulkWrite(bulkOps)
 }
@@ -147,7 +149,7 @@ const socketMessage: SocketHandler = {
     peerRequests(uid, s)
   },
   jobExit(uid) {
-    exitFromJob(uid)
+    dbjob.exit(uid)
   },
   jobKick(uid, s) {
     if (!validate(["to"], s)) return
@@ -156,7 +158,7 @@ const socketMessage: SocketHandler = {
     const job = dbjob.getByPlayer(uid)
     if (!job) return
     zender("system", userId, "jobKick", {})
-    exitFromJob(userId)
+    dbjob.exit(userId)
   },
   jobInviteType(uid, s) {
     if (!validate({ invite: "number" }, s)) return
@@ -216,6 +218,8 @@ const socketMessage: SocketHandler = {
     const job = dbjob.getByPlayer(uid)
     if (!job) return
 
+    dbjob.remove(job.id)
+
     const host = job.host
     const players = job.players.filter((usr) => usr.id !== host).map((usr) => usr.id)
 
@@ -262,7 +266,6 @@ const socketMessage: SocketHandler = {
       theme: "LIME",
       fields: [{ name: "Mission ID", value: `MID ${job.mission}` }]
     })
-    dbjob.remove(job.id)
     if (bulkOps.length >= 1) await Item.bulkWrite(bulkOps)
   },
   addStates(uid, s) {
