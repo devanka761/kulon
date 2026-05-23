@@ -1,4 +1,4 @@
-import { IGameObjectInteractable, IObjectTalk } from "../types/maps.types"
+import { IGameObjectInteractable, IObjectTalk } from "../types/MapsTypes"
 import { Interactable } from "./Interactable"
 
 export class Prop extends Interactable {

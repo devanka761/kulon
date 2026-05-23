@@ -5,8 +5,8 @@ import { eroot, futor, kel, qutor } from "../lib/kel"
 import modal from "../lib/modal"
 import waittime from "../lib/waittime"
 import chat from "../manager/Chat"
-import { IPMC, IPMCConfig } from "../types/db.types"
-import { ISival, SSKelement } from "../types/lib.types"
+import { IPMC, IPMCConfig } from "../types/DBTypes"
+import { IAny, SSKelement } from "../types/LibTypes"
 
 const fingImg = ["fingclo_a.svg", "fingclo_b.svg", "fingclo_c.svg"]
 
@@ -21,7 +21,7 @@ export default class FingerprintCloner implements IPMC {
 
   private el!: HTMLDivElement
 
-  private navKeyHandler?: (...args: ISival) => ISival
+  private navKeyHandler?: (...args: IAny) => IAny
 
   private connections!: SSKelement
   private target!: SSKelement
@@ -126,7 +126,7 @@ export default class FingerprintCloner implements IPMC {
     this.imgTarget = img
     this.target.appendChild(img)
 
-    await new Promise((resolve: (...args: ISival) => ISival) => {
+    await new Promise((resolve: (...args: IAny) => IAny) => {
       img.onload = () => {
         const imgHeight = () => {
           return img.offsetHeight

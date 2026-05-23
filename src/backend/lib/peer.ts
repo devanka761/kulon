@@ -1,5 +1,5 @@
 import { WebSocket } from "ws"
-import { IPeer } from "../types/peer.types"
+import { IPeer } from "../types/PeerTypes"
 
 class Peer {
   private clients: Map<string, IPeer> = new Map<string, IPeer>()

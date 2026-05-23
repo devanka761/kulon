@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express"
 import { cdUser, isAccount, isMod } from "../main/middlewares"
 import { rep } from "../lib/generators"
-import { addAssetMap, getEditorMapData, loadProjectMap, newProject, remAssetMap, saveProjectMap, sendMail, updateAccess } from "../controller/mod.controller"
+import { addAssetMap, getEditorMapData, loadProjectMap, newProject, remAssetMap, saveProjectMap, sendMail, updateAccess } from "../controller/ModController"
 
 const router = express.Router()
 

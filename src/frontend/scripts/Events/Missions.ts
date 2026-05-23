@@ -9,10 +9,10 @@ import { KeyPressListener } from "../main/KeyPressListener"
 import waittime from "../lib/waittime"
 import itemRun from "../Props/itemRun"
 import audio from "../lib/AudioHandler"
-import { IMissionList } from "../types/job.types"
-import { IPMC, IPMCConfig } from "../types/db.types"
+import { IMissionList } from "../types/JobTypes"
+import { IPMC, IPMCConfig } from "../types/DBTypes"
 import { Game } from "../main/Game"
-import { ISival, SSKelement } from "../types/lib.types"
+import { IAny, SSKelement } from "../types/LibTypes"
 import Team from "../Contents/Team"
 
 interface ILocaleMode {
@@ -74,7 +74,7 @@ export default class Missions implements IPMC {
   private esc?: KeyPressListener
   private enter?: KeyPressListener
   private space?: KeyPressListener
-  private navKeyHandler?: (...args: ISival) => ISival
+  private navKeyHandler?: (...args: IAny) => IAny
 
   private eboard1!: SSKelement
   private eboard2!: SSKelement

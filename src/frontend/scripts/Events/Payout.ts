@@ -12,9 +12,9 @@ import { Game } from "../main/Game"
 import chat from "../manager/Chat"
 import { getOfflineAssets, getOfflineMaps } from "../manager/initialWorld"
 import setNewGame from "../manager/setNewGame"
-import { IPMC } from "../types/db.types"
-import { IMissionList } from "../types/job.types"
-import { SSKelement } from "../types/lib.types"
+import { IPMC } from "../types/DBTypes"
+import { IMissionList } from "../types/JobTypes"
+import { SSKelement } from "../types/LibTypes"
 import { resetHint } from "./Hint"
 
 interface IStatus {
@@ -146,12 +146,12 @@ export default class Payout implements IPMC {
     audio.emit({ action: "play", type: "sfx", src: "text_drop", options: { id: "text_drop_" + Date.now() } })
     await waittime(150)
     this.etitle.style.transform = "translateY(0)"
-    await waittime(3000)
+    await waittime(1500)
     done()
   }
   private async setCrew(done: (val?: unknown) => unknown): Promise<unknown | void> {
     if (this.currCrew <= 0) {
-      await waittime(2000)
+      await waittime(1000)
       return done()
     }
     audio.emit({ action: "play", type: "sfx", src: "text_drop", options: { id: "text_drop_" + Date.now() } })
@@ -168,7 +168,7 @@ export default class Payout implements IPMC {
     if (this.currEco <= 0) {
       audio.emit({ action: "play", type: "sfx", src: "text_zoom", options: { id: "text_zoom" } })
       this.box.style.transform = "scale(1)"
-      await waittime(3000)
+      await waittime(1500)
       return done()
     }
     audio.emit({ action: "play", type: "sfx", src: "text_drop", options: { id: "text_drop_" + Date.now() } })

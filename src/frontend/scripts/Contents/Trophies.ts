@@ -11,9 +11,9 @@ import { KeyPressListener } from "../main/KeyPressListener"
 import xhr from "../lib/xhr"
 import Rewards from "../Props/Rewards"
 import audio from "../lib/AudioHandler"
-import { IAchievement, ITrophy } from "../types/trohpy.types"
-import { IPMC, IPMCConfig } from "../types/db.types"
-import { ISival } from "../types/lib.types"
+import { IAchievement, ITrophy } from "../types/TrophyTypes"
+import { IPMC, IPMCConfig } from "../types/DBTypes"
+import { IAny } from "../types/LibTypes"
 
 let currentPage: string = "1"
 
@@ -74,10 +74,11 @@ export default class Trophies implements IPMC {
   isLocked: boolean = false
   onComplete: () => void
   classBefore?: IPMC
-  private navKeyHandler?: (...args: ISival) => ISival
+  private navKeyHandler?: (...args: IAny) => IAny
 
   private el!: HTMLDivElement
   private eboard!: HTMLDivElement
+  private currentFocus: "left" | "right" = "left"
 
   private esc?: KeyPressListener
   private enter?: KeyPressListener
@@ -104,17 +105,28 @@ export default class Trophies implements IPMC {
         </div>
       </div>
       <div class="con">
-        <div class="board">
-        </div>
         <div class="con-list">
           <div k-type="1" class="card selected">${lang.FW_TRP_GENERAL}</div>
           <div k-type="2" class="card">${lang.FW_TRP_JOURNEY}</div>
           <div k-type="3" class="card">${lang.FW_TRP_HIDDEN}</div>
           <div class="card-help">${lang.ARROW_ALL}</div>
         </div>
+        <div class="board">
+        </div>
       </div>
     </div>`
     this.eboard = qutor(".board", this.el) as HTMLDivElement
+  }
+  private setFocus(target: "left" | "right") {
+    this.currentFocus = target
+    const itemList = qutor(".item-list", this.el)
+    if (itemList) {
+      if (target === "left") {
+        itemList.classList.add("blur")
+      } else {
+        itemList.classList.remove("blur")
+      }
+    }
   }
   async btnListener(): Promise<void> {
     const btnClose = futor(".btn-close", this.el)
@@ -128,6 +140,7 @@ export default class Trophies implements IPMC {
     btnChanges.forEach((btn) => {
       btn.onclick = () => {
         if (btn.getAttribute("k-type") === currentPage) return
+        this.setFocus("left")
         audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: Date.now().toString() } })
         const attr = btn.getAttribute("k-type")!
         currentPage = attr
@@ -168,7 +181,7 @@ export default class Trophies implements IPMC {
     const pageItems = Object.keys(trophy_list).filter((k) => trophy_list[k as keyof typeof trophy_list].group === ktype)
     const elistBefore = qutor(".item-list", this.el)
     if (elistBefore) elistBefore.remove()
-    const elist = kel("div", "item-list")
+    const elist = kel("div", "item-list blur")
     const pageList: ITrophiesPageList = { 1: [], 2: [], 3: [] }
     pageItems.forEach((itm) => {
       const card = itemCard(itm, trophy_list[itm as keyof typeof trophy_list])
@@ -176,13 +189,24 @@ export default class Trophies implements IPMC {
         pageList[3].push(card)
       } else if (card.classList.contains("done")) {
         pageList[1].push(card)
-        card.onclick = () => this.setClaim(itm, card)
       } else {
         pageList[2].push(card)
       }
-      card.onmouseenter = () => {
+
+      card.onclick = () => {
+        this.setFocus("right")
         elist.querySelectorAll(".active").forEach((el) => el.classList.remove("active"))
         card.classList.add("active")
+        if (card.classList.contains("done")) {
+          this.setClaim(itm, card)
+        }
+      }
+
+      card.onmouseenter = () => {
+        if (this.currentFocus === "right") {
+          elist.querySelectorAll(".active").forEach((el) => el.classList.remove("active"))
+          card.classList.add("active")
+        }
       }
     })
     Object.keys(pageList).forEach((k) => pageList[k].forEach((card) => elist.append(card)))
@@ -194,49 +218,65 @@ export default class Trophies implements IPMC {
     this.navKeyHandler = (e) => {
       if (!["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter"].includes(e.key)) return
       if (this.isLocked) return
+
       e.preventDefault()
 
       const conList = this.el.querySelector(".con-list") as HTMLDivElement
       const boardList = this.el.querySelector(".board .item-list") as HTMLDivElement
 
-      if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
-        const buttons = Array.from(conList.querySelectorAll(".card")) as HTMLDivElement[]
-        if (buttons.length < 1) return
-        const currentIndex = buttons.findIndex((btn) => btn.classList.contains("selected"))
-        let nextIndex
-        if (e.key === "ArrowRight") {
-          nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % buttons.length
-        } else {
-          nextIndex = currentIndex <= 0 ? buttons.length - 1 : currentIndex - 1
+      if (this.currentFocus === "left") {
+        if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+          const buttons = Array.from(conList.querySelectorAll(".card")) as HTMLDivElement[]
+          if (buttons.length < 1) return
+          const currentIndex = buttons.findIndex((btn) => btn.classList.contains("selected"))
+          let nextIndex
+          if (e.key === "ArrowDown") {
+            nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % buttons.length
+          } else {
+            nextIndex = currentIndex <= 0 ? buttons.length - 1 : currentIndex - 1
+          }
+          buttons[nextIndex]?.click()
+        } else if (e.key === "ArrowRight") {
+          if (boardList) {
+            const cards = Array.from(boardList.querySelectorAll(".card")) as HTMLDivElement[]
+            if (cards.length >= 1) {
+              let activeBefore = cards.find((card) => card.classList.contains("active"))
+              if (!activeBefore) {
+                activeBefore = cards[0]
+                activeBefore.classList.add("active")
+              }
+            }
+            this.setFocus("right")
+          }
         }
-        buttons[nextIndex]?.click()
-        return
-      }
+      } else if (this.currentFocus === "right") {
+        if (!boardList) return
+        const cards = Array.from(boardList.querySelectorAll(".card")) as HTMLDivElement[]
+        if (cards.length < 1) return
+        const currentIndex = cards.findIndex((card) => card.classList.contains("active"))
+        if (currentIndex === -1) return
 
-      if (!boardList) return
-      if (e.key === "Enter") {
-        const activeCard = qutor(".card.active", boardList)
-        activeCard?.click()
-        return
-      }
-
-      const cards = Array.from(boardList.querySelectorAll(".card"))
-      if (cards.length < 1) return
-      const currentIndex = cards.findIndex((card) => card.classList.contains("active"))
-      let nextIndex
-      if (e.key === "ArrowDown") {
-        nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % cards.length
-      } else {
-        nextIndex = currentIndex <= 0 ? cards.length - 1 : currentIndex - 1
-      }
-      cards[currentIndex]?.classList.remove("active")
-      const nextCard = cards[nextIndex]
-      if (nextCard) {
-        audio.emit({ action: "play", type: "ui", src: "phone_menu_move", options: { id: Date.now().toString() } })
-        nextCard.classList.add("active")
-
-        // @ts-expect-error no default types
-        nextCard.scrollIntoView({ behavior: "smooth", block: "center", container: "nearest" })
+        if (e.key === "Enter") {
+          const activeCard = qutor(".card.active", boardList)
+          activeCard?.click()
+        } else if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+          let nextIndex
+          if (e.key === "ArrowDown") {
+            nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % cards.length
+          } else {
+            nextIndex = currentIndex <= 0 ? cards.length - 1 : currentIndex - 1
+          }
+          cards[currentIndex]?.classList.remove("active")
+          const nextCard = cards[nextIndex]
+          if (nextCard) {
+            audio.emit({ action: "play", type: "ui", src: "phone_menu_move", options: { id: Date.now().toString() } })
+            nextCard.classList.add("active")
+            // @ts-expect-error no default types
+            nextCard.scrollIntoView({ behavior: "smooth", block: "center", container: "nearest" })
+          }
+        } else if (e.key === "ArrowLeft") {
+          this.setFocus("left")
+        }
       }
     }
     document.addEventListener("keydown", this.navKeyHandler)
@@ -297,6 +337,7 @@ export default class Trophies implements IPMC {
     db.pmc = this
     audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
     this.createElement()
+    this.setFocus("left")
     eroot().append(this.el)
     this.writeDetail()
     this.navKeyListener()

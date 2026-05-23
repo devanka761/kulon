@@ -1,5 +1,5 @@
 import asset from "../data/assets"
-import { IAssets, IAssetSkins } from "../types/lib.types"
+import { IAssets, IAssetSkins } from "../types/LibTypes"
 import { eroot } from "./kel"
 
 type IAnyFunc = (val?: unknown) => void

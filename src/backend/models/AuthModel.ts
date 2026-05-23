@@ -1,5 +1,5 @@
 import { model, Model, Schema } from "mongoose"
-import { IAuth } from "../types/auth.types"
+import { IAuth } from "../types/AuthTypes"
 
 export type IAuthModel = Model<IAuth>
 

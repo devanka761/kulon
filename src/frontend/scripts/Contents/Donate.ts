@@ -10,7 +10,7 @@ import modal from "../lib/modal"
 import waittime from "../lib/waittime"
 import xhr from "../lib/xhr"
 import { KeyPressListener } from "../main/KeyPressListener"
-import { IPMC, IPMCConfig } from "../types/db.types"
+import { IPMC, IPMCConfig } from "../types/DBTypes"
 import Invoice from "./Invoice"
 
 function drawImg(imgSrc: string, imgAlt: string): HTMLImageElement {

@@ -1,7 +1,7 @@
 import MapList from "../data/MapList"
 import { futor } from "../lib/kel"
 import { Game } from "../main/Game"
-import { IMapList, ISpawnRule } from "../types/maps.types"
+import { IMapList, ISpawnRule } from "../types/MapsTypes"
 import SetNextMap from "./SetNextMap"
 import localSave from "./storage"
 

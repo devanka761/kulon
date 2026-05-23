@@ -8,9 +8,9 @@ import sdate from "../lib/sdate"
 import waittime from "../lib/waittime"
 import xhr from "../lib/xhr"
 import { KeyPressListener } from "../main/KeyPressListener"
-import { IPMC, IPMCConfig, IUser } from "../types/db.types"
-import { IRoomType } from "../types/friend.types"
-import { SSKelement } from "../types/lib.types"
+import { IPMC, IPMCConfig, IUser } from "../types/DBTypes"
+import { IRoomType } from "../types/FriendTypes"
+import { SSKelement } from "../types/LibTypes"
 
 const roomStatus = ["isFriend", "theirReq", "myReq"]
 

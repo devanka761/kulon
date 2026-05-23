@@ -1,9 +1,9 @@
-import { IMapSave } from "../types/editor.types"
+import { IMapSave } from "../types/EditorTypes"
 import { eroot, kel, qutor } from "../lib/kel"
 import LoadAssets from "../lib/LoadAssets"
 import modal from "../lib/modal"
 import xhr from "../lib/xhr"
-import { SSKelement } from "../types/lib.types"
+import { SSKelement } from "../types/LibTypes"
 import Editor from "./Editor"
 
 export default class StartEditor {
@@ -94,9 +94,9 @@ export default class StartEditor {
     })
   }
   private async _setMapData(fileid: string): Promise<void> {
-    const mpjson = await modal.loading(xhr.get(`/json/maps/mp_${fileid}.json?v=${Date.now()}`), "LOADING MAPS")
-    const csjons = (await modal.loading(xhr.get(`/json/scenes/cs_${fileid}.json?v=${Date.now()}`), "LOADING COMPLETED EVENTS")) || []
-    const stjson = await modal.loading(xhr.get(`/json/assets/st_${fileid}.json?v=${Date.now()}`), "GETTING ASSETS INFORMATION")
+    const mpjson = await modal.loading(xhr.forceGet(`/json/maps/mp_${fileid}.json?v=${Date.now()}`), "LOADING MAPS")
+    const csjons = (await modal.loading(xhr.forceGet(`/json/scenes/cs_${fileid}.json?v=${Date.now()}`), "LOADING COMPLETED EVENTS")) || []
+    const stjson = await modal.loading(xhr.forceGet(`/json/assets/st_${fileid}.json?v=${Date.now()}`), "GETTING ASSETS INFORMATION")
     await modal.loading(new LoadAssets({ skins: stjson }).run(), "DOWNLOADING ASSETS")
     this.isLocked = false
     this.destroy()

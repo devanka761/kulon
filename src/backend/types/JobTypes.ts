@@ -1,5 +1,5 @@
-import { IUser } from "./db.types"
-import { ILocale } from "./lib.types"
+import { ILocale } from "./MailTypes"
+import { IUser } from "./UserTypes.ts"
 
 export type JobStates = {
   [key: string]: boolean | string
@@ -7,7 +7,6 @@ export type JobStates = {
 export interface IJobItem {
   id: string
   amount: number
-  itemId?: string
 }
 export type JobBag = {
   [key: string]: IJobItem
@@ -26,14 +25,10 @@ export interface IJob {
   host: string
   status: number
   mission: string
-  invite: number
+  invite: 1 | 2 | 3
   states: JobStates
   bag: JobBag
   players: IPlayersMatchMaking[]
-}
-
-export interface IJobInvite extends IJob {
-  ts: number
 }
 
 export interface IJobToReturn extends IJob {
@@ -60,17 +55,17 @@ export interface IMissionList {
   max: number
   ready: number
   price: [string, number]
-  spawn: { area: string; x: number; y: number; direction: DIRECTION; inc: POSITION }
+  spawn: {
+    area: string
+    x: number
+    y: number
+    direction: DIRECTION
+    inc: POSITION
+  }
   reqs?: string[]
   bag?: { id: string; amount: number }[]
-  clue?: { text: ILocale; idx: number; states: string[]; id: string }[]
   payout: {
     fail: { id: string; amount: number }[]
     success: { id: string; amount: number }[]
   }
-}
-
-export interface IInvites {
-  job: IJobInvite
-  user: IUser
 }

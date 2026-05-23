@@ -152,20 +152,6 @@
                 }
               }
             }
-            &.active {
-              border-color: v.$pm1;
-            }
-            &.done {
-              cursor: c.$cursorPointer;
-              &.active {
-                background-color: v.$pm2;
-                .reward {
-                  .keyinfo {
-                    display: inline;
-                  }
-                }
-              }
-            }
             &.claimed {
               .reward {
                 .item::after {
@@ -186,6 +172,27 @@
               }
             }
           }
+          &:not(.blur) {
+            .card {
+              &.active {
+                border-color: v.$pm1;
+              }
+              &.done {
+                cursor: c.$cursorPointer;
+                &.active {
+                  background-color: v.$pm2;
+                  .reward {
+                    .keyinfo {
+                      display: inline;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        &:has(.blur) {
+          opacity: 0.75;
         }
       }
     }

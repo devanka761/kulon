@@ -8,8 +8,8 @@ import modal from "../lib/modal"
 import xhr from "../lib/xhr"
 import { KeyPressListener } from "../main/KeyPressListener"
 import startGame from "../manager/startGame"
-import { IPMCConfig } from "../types/db.types"
-import { IMapList } from "../types/maps.types"
+import { IPMCConfig } from "../types/DBTypes"
+import { IMapList } from "../types/MapsTypes"
 
 interface IAppearanceConfig extends IPMCConfig {
   item_id?: string

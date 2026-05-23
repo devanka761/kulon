@@ -1,15 +1,15 @@
 import { isProd, rNumber, toBase64 } from "../lib/generators"
 import validate from "../lib/validate"
 import cfg from "../../config/cfg"
-import { IAccount, IExternalAccount } from "../types/account.types"
-import { IRepTempB, ISival } from "../types/validate.types"
+import { IAccount, IExternalAccount } from "../types/AccountTypes"
+import { IRepTempB, IAny } from "../types/ValidateTypes"
 import Account from "../models/AccountModel"
 import guest from "../main/guests"
 import webhook from "../lib/webhook"
 
 const HOST: string = isProd ? `https://${cfg.APP_HOST}` : `http://localhost:${cfg.APP_PORT}`
 
-export async function authLogin(s: ISival): Promise<IRepTempB> {
+export async function authLogin(s: IAny): Promise<IRepTempB> {
   if (!validate(["email"], s)) return { code: 400, msg: "AUTH_ERR_01" }
   s.email = s.email.toString().toLowerCase()
   const mailValid = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g

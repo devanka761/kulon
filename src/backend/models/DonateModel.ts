@@ -1,5 +1,5 @@
 import { model, Model, Schema } from "mongoose"
-import { IDonate } from "../types/donate.types"
+import { IDonate } from "../types/DonateTypes"
 
 export type IDonateModel = Model<IDonate>
 

@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express"
 import { cdUser, isUser } from "../main/middlewares"
 import { rep } from "../lib/generators"
-import { createJob, findJob, joinJobByCode, joinJobByInvite, startJob } from "../controller/job.controller"
-import { joinRandomLobby } from "../controller/lobby.controller"
+import { createJob, findJob, joinJobByCode, joinJobByInvite, randomJob, startJob } from "../controller/JobController"
+import { joinRandomLobby } from "../controller/LobbyController"
 const router = express.Router()
 
 router.use(cdUser, isUser, express.json({ limit: "1MB" }))
@@ -27,6 +27,12 @@ router.post("/join/invite", async (req: Request, res: Response) => {
 })
 router.post("/start", async (req: Request, res: Response) => {
   const job = rep(await startJob(req.user?.id as string))
+  return res.status(job.code).json(job)
+})
+
+router.get("/random/:roomType", async (req: Request, res: Response) => {
+  const { roomType } = req.params
+  const job = rep(await randomJob(req.user!.id, roomType.toString()))
   return res.status(job.code).json(job)
 })
 

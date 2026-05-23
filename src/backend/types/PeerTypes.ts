@@ -1,5 +1,5 @@
 import { WebSocket } from "ws"
-import { ISival } from "./validate.types"
+import { IAny } from "./ValidateTypes"
 
 export interface IPeer {
   id: string
@@ -7,7 +7,7 @@ export interface IPeer {
 }
 
 export type SocketMessage = {
-  [key: string]: ISival
+  [key: string]: IAny
 }
 
 export type SocketHandler = {

@@ -10,13 +10,13 @@ import notip from "../lib/notip"
 import waittime from "../lib/waittime"
 import { Game } from "../main/Game"
 import { KeyPressListener } from "../main/KeyPressListener"
-import { IPMC, IPMCConfig } from "../types/db.types"
-import { ISival } from "../types/lib.types"
+import { IPMC, IPMCConfig } from "../types/DBTypes"
+import { IAny } from "../types/LibTypes"
 
 export default class TitleScreen implements IPMC {
   id = "titleScreen"
   isLocked: boolean = true
-  onComplete: (...args: ISival) => ISival
+  onComplete: (...args: IAny) => IAny
   private game: Game
   private el!: HTMLDivElement
 
@@ -138,7 +138,7 @@ export default class TitleScreen implements IPMC {
     this.ecopyright.remove()
     this.ewelcome.remove()
   }
-  async destroy(next?: ISival): Promise<void> {
+  async destroy(next?: IAny): Promise<void> {
     Object.values(this.keyListeners).forEach((listener) => {
       listener.unbind()
     })

@@ -12,9 +12,9 @@ import { Game } from "../main/Game"
 import { KeyPressListener } from "../main/KeyPressListener"
 import chat from "../manager/Chat"
 import setNewGame from "../manager/setNewGame"
-import { IPMC, IPMCConfig, IUser } from "../types/db.types"
-import { IMissionList } from "../types/job.types"
-import { ISival } from "../types/lib.types"
+import { IPMC, IPMCConfig, IUser } from "../types/DBTypes"
+import { IMissionList } from "../types/JobTypes"
+import { IAny } from "../types/LibTypes"
 import { resetHint, setHint } from "./Hint"
 
 interface IPrologueConfig extends IPMCConfig {
@@ -23,6 +23,8 @@ interface IPrologueConfig extends IPMCConfig {
   game: Game
   startTime?: number
 }
+
+let skipInterval: ReturnType<typeof setInterval> | null = null
 
 export default class Prologue implements IPMC {
   id: string = "prologue"
@@ -33,7 +35,7 @@ export default class Prologue implements IPMC {
   private startTime?: number
 
   private skipped: string[] = []
-  private isAborted: ISival = null
+  private isAborted: IAny = null
   private isLaunching: boolean = false
 
   private el!: HTMLDivElement
@@ -103,6 +105,9 @@ export default class Prologue implements IPMC {
     this.skipped.push(userId)
     this.writeSkipped()
   }
+  forceSkipped(): void {
+    this.btnSkip.click()
+  }
   setSkip(): void {
     this.box.append(this.actions)
     this.writeSkipped()
@@ -118,10 +123,32 @@ export default class Prologue implements IPMC {
       peers.send("prologueSkip")
       this.btnSkip.innerHTML = lang.PRP_WAITING
     }
+
+    this.setSkipInterval()
+
     this.enter = new KeyPressListener("enter", () => {
       this.btnSkip.click()
     })
     this.updateQueue()
+  }
+  setSkipInterval(): void {
+    let remainTime = 9
+
+    skipInterval = setInterval(() => {
+      const timingText = `0:0${remainTime}`
+      const skipText = `<div class="keyinfo">enter</div> ${lang.CHAR_CREATION_CONTINUE}`
+      const actionText = this.skipped.find((usr) => usr === db.me.id) ? lang.PRP_WAITING : skipText
+      if (remainTime <= 0) {
+        this.btnSkip.innerHTML = actionText
+        this.btnSkip.click()
+        peers.send("prologueTimeOut")
+        clearInterval(skipInterval!)
+        skipInterval = null
+        return
+      }
+      this.btnSkip.innerHTML = `${timingText} ${actionText}`
+      remainTime--
+    }, 1000)
   }
   writeSkipped(): void {
     const amount = this.skipped.length
@@ -153,6 +180,10 @@ export default class Prologue implements IPMC {
   }
 
   private async drop(): Promise<void> {
+    if (skipInterval) {
+      clearInterval(skipInterval)
+      skipInterval = null
+    }
     const nextMap = db.job.nextMap
     audio.emit({ action: "stop", type: "bgm", options: { fadeOut: 1000 } })
     audio.emit({ action: "play", type: "ui", src: "act_done", options: { id: "act_done" } })
@@ -232,6 +263,10 @@ export default class Prologue implements IPMC {
     this.isAborted = user
   }
   async aborted(user: IUser): Promise<void> {
+    if (skipInterval) {
+      clearInterval(skipInterval)
+      skipInterval = null
+    }
     if (this.isAborted) return
     this.isAborted = user
     this.isLocked = true
@@ -253,6 +288,10 @@ export default class Prologue implements IPMC {
     this.game.kulonUI.restore()
   }
   async destroy(next?: IPMC): Promise<void> {
+    if (skipInterval) {
+      clearInterval(skipInterval)
+      skipInterval = null
+    }
     if (this.isLocked) return
     this.isLocked = true
     this.el.classList.add("out")

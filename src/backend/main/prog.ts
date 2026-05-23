@@ -1,8 +1,8 @@
-import { IProg, IProgress, ITrophy, ITrophyProgress, IUnCommits } from "../types/trophy.types"
+import { IProg, IProgress, ITrophy, ITrophyProgress, IUnCommits } from "../types/TrophyTypes"
 import { trophylist } from "../lib/shared"
 import zender from "../lib/zender"
 import Trophy from "../models/TrophyModel"
-import { ISival } from "../types/validate.types"
+import { IAny } from "../types/ValidateTypes"
 import User from "../models/UserModel"
 import webhook from "../lib/webhook"
 import cfg from "../../config/cfg"
@@ -20,7 +20,7 @@ class Prog {
       claimed: newData.claimed
     }
   }
-  async set(uid: string, trophyId: string, newTaken: number, tempData?: ISival): Promise<void> {
+  async set(uid: string, trophyId: string, newTaken: number, tempData?: IAny): Promise<void> {
     if (this.isDone(uid, trophyId)) return
     if (!this.data[uid]) this.data[uid] = {}
     if (!this.data[uid][trophyId]) this.data[uid][trophyId] = { taken: 0, temp: tempData }
@@ -31,7 +31,7 @@ class Prog {
 
     await this.save(uid, trophyId)
   }
-  async update(uid: string, trophyId: string, addedTaken: number, tempData?: ISival): Promise<void> {
+  async update(uid: string, trophyId: string, addedTaken: number, tempData?: IAny): Promise<void> {
     if (this.isDone(uid, trophyId)) return
     if (!this.data[uid]) this.data[uid] = {}
     if (!this.data[uid][trophyId]) this.data[uid][trophyId] = { taken: 0, temp: tempData }

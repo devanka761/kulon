@@ -1,3 +1,4 @@
+import screenfull from "screenfull"
 import lang from "../data/language"
 import modal from "../lib/modal"
 
@@ -15,13 +16,7 @@ export async function checkScreenSize(): Promise<void> {
 
     const docEl = document.documentElement
 
-    if (docEl.requestFullscreen) {
-      await docEl.requestFullscreen({ navigationUI: "hide" })
-    } else if ("webkitRequestFullscreen" in docEl && typeof docEl["webkitRequestFullscreen"] === "function") {
-      await docEl["webkitRequestFullscreen"]()
-    } else if ("msRequestFullscreen" in docEl && typeof docEl["msRequestFullscreen"] === "function") {
-      await docEl["msRequestFullscreen"]()
-    }
+    if (screenfull.isEnabled) screenfull.request(docEl, { navigationUI: "hide" })
   }
 
   if (screen.orientation && "lock" in screen.orientation && typeof screen.orientation["lock"] === "function") {

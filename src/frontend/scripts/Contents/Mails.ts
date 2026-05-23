@@ -11,9 +11,9 @@ import waittime from "../lib/waittime"
 import xhr from "../lib/xhr"
 import { KeyPressListener } from "../main/KeyPressListener"
 import Rewards from "../Props/Rewards"
-import { IPMC, IPMCConfig } from "../types/db.types"
-import { ISival } from "../types/lib.types"
-import { IMail } from "../types/mail.types"
+import { IPMC, IPMCConfig } from "../types/DBTypes"
+import { IAny } from "../types/LibTypes"
+import { IMail } from "../types/MailTypes"
 
 function cardOnList(s: IMail): HTMLDivElement {
   const card = kel("div", "card")
@@ -83,6 +83,7 @@ interface IMailConfig extends IPMCConfig {
 
 export default class Mails implements IPMC {
   id: string = "mails"
+  cardId: string = "69"
   isLocked: boolean = false
   onComplete: () => void
   classBefore?: IPMC
@@ -96,7 +97,7 @@ export default class Mails implements IPMC {
 
   private boxMail: string[] = []
 
-  private listNavHandler?: (...args: ISival) => void
+  private listNavHandler?: (...args: IAny) => void
 
   constructor(config: IMailConfig) {
     this.onComplete = config.onComplete
@@ -211,8 +212,12 @@ export default class Mails implements IPMC {
     this.setClaimable(field, mail)
     this.eboard.append(field)
   }
-  setClaimable(field: HTMLDivElement, s: IMail): void {
+  private async setClaimable(field: HTMLDivElement, s: IMail): Promise<void> {
+    const cardId = Date.now().toString()
+    this.cardId = cardId
+
     this.enter?.unbind()
+
     const eactions = futor(".actions", field)
     const btnBefore = futor(".btn", eactions)
     if (btnBefore) btnBefore.remove()
@@ -239,10 +244,13 @@ export default class Mails implements IPMC {
       const rewardSplash = new Rewards({ onComplete: this.onComplete, itemList: updateMail.data, classBefore: this })
       this.destroy(rewardSplash)
     }
+    eactions.append(btn)
+
+    await waittime(300, -5)
+    if (this.cardId !== cardId) return
     this.enter = new KeyPressListener("enter", () => {
       btn.click()
     })
-    eactions.append(btn)
   }
   writeEmpty(): void {
     if (!this.eboard.classList.contains("empty")) {

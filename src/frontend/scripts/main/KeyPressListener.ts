@@ -1,6 +1,6 @@
-import { ISival } from "../types/lib.types"
+import { IAny } from "../types/LibTypes"
 
-type IAnyFunc = (ev?: ISival) => void
+type IAnyFunc = (ev?: IAny) => void
 
 export class KeyPressListener {
   private keydownFunction: IAnyFunc

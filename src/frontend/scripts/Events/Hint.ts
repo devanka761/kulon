@@ -7,8 +7,8 @@ import { eroot, futor, kel } from "../lib/kel"
 import notip from "../lib/notip"
 import waittime from "../lib/waittime"
 import { KeyPressListener } from "../main/KeyPressListener"
-import { IPMC, IPMCConfig } from "../types/db.types"
-import { ILocale } from "../types/lib.types"
+import { IPMC, IPMCConfig } from "../types/DBTypes"
+import { ILocale } from "../types/LibTypes"
 
 interface IHintConfig extends IPMCConfig {
   onComplete: () => void

@@ -10,7 +10,7 @@ import { Hint, hintHasUnread } from "../Events/Hint"
 import itemRun from "../Props/itemRun"
 import MailSender from "../Specials/MailSender"
 import TeleportMachine from "../Specials/TeleportMachine"
-import { IPhoneApp } from "../types/db.types"
+import { IPhoneApp } from "../types/DBTypes"
 import db from "./db"
 
 const phonelist: IPhoneApp[] = [

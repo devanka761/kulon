@@ -1,7 +1,7 @@
-import { IRepTempB } from "../types/validate.types"
+import { IRepTempB } from "../types/ValidateTypes"
 import User from "../models/UserModel"
 import zender from "../lib/zender"
-import { ILobbies } from "../types/peer.types"
+import { ILobbies } from "../types/PeerTypes"
 import { rNumber } from "../lib/generators"
 
 function generateLobbyCode(existingCode: number[] = []): string {

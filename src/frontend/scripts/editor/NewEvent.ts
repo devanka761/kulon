@@ -1,5 +1,5 @@
 import cloud_items from "../../../../public/json/items/cloud_items.json"
-import { ISival } from "../types/lib.types"
+import { IAny } from "../types/LibTypes"
 import Minigames from "../data/minigames"
 import { eroot, futor, kel } from "../lib/kel"
 import waittime from "../lib/waittime"
@@ -47,7 +47,7 @@ function createPage(plch = "Aku menulis surat ini dari jarak 3000 km! \\ I wrote
 }
 
 interface IEventMethod {
-  [key: string]: (...args: ISival) => HTMLFormElement
+  [key: string]: (...args: IAny) => HTMLFormElement
 }
 
 const EventMethod: IEventMethod = {
@@ -171,7 +171,7 @@ const EventMethod: IEventMethod = {
     </div>`
     const optList = futor(".opts", form)
     if (s.options?.length >= 1) {
-      s.options.forEach((opt: ISival) => {
+      s.options.forEach((opt: IAny) => {
         optList.append(createChoice("Bentar.. \\ Lemme think about this..", `${opt.text.id} \\ ${opt.text.en}`, !opt.cancel))
       })
     }
@@ -530,7 +530,7 @@ const EventMethod: IEventMethod = {
     </div>`
     const optList = futor(".opts", form)
     if (s.pages?.length >= 1) {
-      s.pages.forEach((opt: ISival) => {
+      s.pages.forEach((opt: IAny) => {
         optList.append(createPage("Bentar.. \\ Lemme think about this..", `${opt.id} \\ ${opt.en}`))
       })
     }
@@ -576,14 +576,14 @@ export interface INewEventConfig {
   type: string
   mode: string
   objectEditor: NewObject
-  passed?: ISival
+  passed?: IAny
 }
 
 export default class NewEvent {
   private objectEditor: NewObject
   private type: string
   private mode: string
-  private passed?: ISival = null
+  private passed?: IAny = null
   private isLocked: boolean = false
   private el: HTMLDivElement = kel("div", "newArea")
   private form!: HTMLFormElement
@@ -639,7 +639,7 @@ export default class NewEvent {
       e.preventDefault()
       if (this.isLocked) return
       this.isLocked = true
-      const data: ISival = {}
+      const data: IAny = {}
       const formData = new FormData(this.form)
       formData.forEach((val, key) => {
         if (val.toString().length >= 1) {
@@ -654,7 +654,7 @@ export default class NewEvent {
       this.objectEditor.createEvent(this.type, data, this.mode, this.passed?._n || null)
     }
   }
-  async destroy(next?: ISival) {
+  async destroy(next?: IAny) {
     this.el.classList.add("out")
     await waittime()
     numberChoice = 0

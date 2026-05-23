@@ -3,8 +3,8 @@ import Peer from "../lib/Peer"
 import peerMessage from "../lib/PeerMessage"
 import socket from "../lib/Socket"
 import socketHandler from "../lib/SocketHandler"
-import { IUser } from "../types/db.types"
-import { ISival } from "../types/lib.types"
+import { IUser } from "../types/DBTypes"
+import { IAny } from "../types/LibTypes"
 import db from "./db"
 
 class Peers {
@@ -32,7 +32,7 @@ class Peers {
       onSignal(data) {
         socket.send(data.type, { ...data, to: user.id })
       },
-      onMessage: (data: ISival) => {
+      onMessage: (data: IAny) => {
         if (!data.type || !data.from) return
         peerMessage.run(data)
       },
@@ -84,11 +84,11 @@ class Peers {
   remove(userId: string): void {
     this.data.delete(userId)
   }
-  sendOne(userId: string, msgType: string, msgData: ISival = {}): void {
+  sendOne(userId: string, msgType: string, msgData: IAny = {}): void {
     const character = this.data.get(userId)
     if (character) character.send({ from: db.me.id, type: msgType, ...msgData })
   }
-  send(msgType: string, msgData: ISival = {}): void {
+  send(msgType: string, msgData: IAny = {}): void {
     this.data.forEach((character) =>
       character.send({
         from: db.me.id,

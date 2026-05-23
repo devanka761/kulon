@@ -14,9 +14,10 @@ import assetSize from "../../../../public/json/skins/size.json"
 import audio from "../lib/AudioHandler"
 import { sound, audioContext } from "../data/sound"
 import { KeyPressListener } from "../main/KeyPressListener"
-import { IAssets, IAssetSkins, IRepB } from "../types/lib.types"
+import { IAssets, IAssetSkins, IRepB } from "../types/LibTypes"
 import Doodles from "../lib/Doodle"
-import { IMapList } from "../types/maps.types"
+import { IMapList } from "../types/MapsTypes"
+import screenfull from "screenfull"
 
 const preloadIcons = ['<i class="fa-jelly fa-regular fa-cloud"></i>', '<i class="fa-solid fa-compact-disc"></i>', '<i class="fa-duotone fa-solid fa-circle-xmark"></i>', '<i class="fa-duotone fa-regular fa-gem"></i>', '<i class="fa-regular fa-briefcase"></i>', '<i class="fa-sharp-duotone fa-solid fa-address-book"></i>', '<i class="fa-etch fa-solid fa-mobile"></i>', '<i class="fa-jelly-fill fa-regular fa-gamepad"></i>']
 
@@ -30,13 +31,7 @@ async function forceFullScreen() {
   if ((width < 720 || height < 480) && !pwa) {
     const docEl = document.documentElement
 
-    if (docEl.requestFullscreen) {
-      await docEl.requestFullscreen({ navigationUI: "hide" })
-    } else if ("webkitRequestFullscreen" in docEl && typeof docEl["webkitRequestFullscreen"] === "function") {
-      await docEl["webkitRequestFullscreen"]()
-    } else if ("msRequestFullscreen" in docEl && typeof docEl["msRequestFullscreen"] === "function") {
-      await docEl["msRequestFullscreen"]()
-    }
+    if (screenfull.isEnabled) screenfull.request(docEl, { navigationUI: "hide" })
 
     if (screen.orientation && "lock" in screen.orientation && typeof screen.orientation["lock"] === "function") {
       try {
@@ -263,13 +258,13 @@ export default class Preload {
     const eloader = qutor(".assets-load", this.el)
     if (eloader) eloader.remove()
 
-    const initialSkins = await modal.smloading(xhr.get("/json/assets/st_ehek.json?v=" + Date.now()), "Getting User Ready")
+    const initialSkins = await modal.smloading(xhr.forceGet("/json/assets/st_ehek.json?v=" + Date.now()), "Getting User Ready")
 
     setOfflineAssets(initialSkins)
 
     await modal.smloading(new LoadAssets({ skins: initialSkins }).run(), "Loading Character Data")
 
-    const nextMap = await xhr.get(`/json/maps/mp_ehek.json?v=${Date.now()}`)
+    const nextMap = await xhr.forceGet(`/json/maps/mp_ehek.json?v=${Date.now()}`)
 
     setOfflineMaps(nextMap as IMapList)
 

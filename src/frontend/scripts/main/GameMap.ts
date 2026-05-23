@@ -6,7 +6,7 @@ import { Interactable } from "./Interactable"
 import { Teleporter } from "./Teleporter"
 import audio from "../lib/AudioHandler"
 import { Prop } from "./Prop"
-import { ICutscenes, IGameObjectData, IGameObjectInteractable, IGameObjectPerson, IGameObjects, IGameObjectTeleporter, IMapConfig, IWalls, MapGameObjects, MapWalls } from "../types/maps.types"
+import { ICutscenes, IGameObjectData, IGameObjectInteractable, IGameObjectPerson, IGameObjects, IGameObjectTeleporter, IMapConfig, IWalls, MapGameObjects, MapWalls } from "../types/MapsTypes"
 import MapList from "../data/MapList"
 
 type Resolve = (val?: string) => void

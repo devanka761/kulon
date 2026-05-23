@@ -1,7 +1,7 @@
-import { IRepTempB, ISival } from "../types/validate.types"
+import { IRepTempB, IAny } from "../types/ValidateTypes"
 import Item from "../models/ItemModel"
-import { IItem } from "../types/item.types"
-import { IJob, IJobToReturn } from "../types/job.types"
+import { IItem } from "../types/ItemTypes"
+import { IJob, IJobToReturn } from "../types/JobTypes"
 import { mission_list } from "../lib/shared"
 import validate from "../lib/validate"
 import dbjob from "../main/job"
@@ -10,7 +10,7 @@ import zender from "../lib/zender"
 import prog from "../main/prog"
 import webhook from "../lib/webhook"
 import cfg from "../../config/cfg"
-import { exitCurrentLobby } from "./lobby.controller"
+import { exitCurrentLobby } from "./LobbyController"
 
 export async function createJob(uid: string, s: { mission_id: string }): Promise<IRepTempB> {
   if (!validate(["mission_id"], s)) return { code: 400, msg: "MM_JOB_INVALID" }
@@ -123,7 +123,7 @@ export async function joinJob(uid: string, job: IJob): Promise<IRepTempB> {
   return { code: 200, data: jobToReturn }
 }
 
-export async function joinJobByCode(uid: string, s: ISival): Promise<IRepTempB> {
+export async function joinJobByCode(uid: string, s: IAny): Promise<IRepTempB> {
   if (!validate({ code: "number" }, s)) return { code: 404, msg: "MM_JOB_INVALID", data: "number" }
 
   const job = dbjob.getByCode(s.code)
@@ -135,12 +135,33 @@ export async function joinJobByCode(uid: string, s: ISival): Promise<IRepTempB> 
   return await joinJob(uid, job)
 }
 
-export async function joinJobByInvite(uid: string, s: ISival): Promise<IRepTempB> {
+export async function joinJobByInvite(uid: string, s: IAny): Promise<IRepTempB> {
   if (!validate(["invite"], s)) return { code: 400, msg: "MM_JOB_INVALID" }
   const job = dbjob.getByPlayer(s.invite)
   if (!job) return { code: 404, msg: "JOB_ID_NOT_FOUND" }
   if (job.status > 1) return { code: 404, msg: "JOB_ONGOING" }
   if (job.invite > 2) return { code: 404, msg: "TM_NOT_PUBLIC_ANYMORE" }
+  if (job.players.find((usr) => usr.id === uid)) return { code: 404 }
+
+  return await joinJob(uid, job)
+}
+
+type IRoomTypeConvert = Record<string, number>
+const roomTypeConvert: IRoomTypeConvert = {
+  story: 1,
+  minigame: 2,
+  random: 0
+}
+
+export async function randomJob(uid: string, paramRoomType: string): Promise<IRepTempB> {
+  const roomType: number = roomTypeConvert[paramRoomType] ?? 4
+
+  const roomTypes: number[] = roomType === 0 ? [1, 2] : [roomType]
+
+  const job = dbjob.getRandom(roomTypes)
+  if (!job) return { code: 404, msg: "JOB_ID_NOT_FOUND" }
+  if (job.status > 1) return { code: 404, msg: "JOB_ONGOING" }
+  if (job.invite > 1) return { code: 404, msg: "TM_NOT_PUBLIC_ANYMORE" }
   if (job.players.find((usr) => usr.id === uid)) return { code: 404 }
 
   return await joinJob(uid, job)

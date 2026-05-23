@@ -102,7 +102,7 @@
             min-height: 0;
             padding: v.$bigPadding;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(clamp(80px, 20vh, 150px), 1fr));
+            grid-template-columns: 1fr 1fr 1fr 1fr;
             gap: v.$bigPadding;
             .card {
               position: relative;
@@ -166,13 +166,17 @@
                   width: clamp(16px, 4vh, 20px);
                 }
               }
-              &.selected {
-                background-color: v.$pm2;
-                box-shadow: 0 0 0 1px rgba($color: v.$pm1, $alpha: 0.5);
-                .amount,
-                .price {
-                  background-color: v.$pm1;
-                  color: v.$px1;
+            }
+            &:not(.blur) {
+              .card {
+                &.selected {
+                  background-color: v.$pm2;
+                  box-shadow: 0 0 0 1px rgba($color: v.$pm1, $alpha: 0.5);
+                  .amount,
+                  .price {
+                    background-color: v.$pm1;
+                    color: v.$px1;
+                  }
                 }
               }
             }
@@ -227,6 +231,9 @@
               }
             }
           }
+        }
+        &:has(.blur) {
+          opacity: 0.75;
         }
       }
     }

@@ -25,6 +25,21 @@
           0 8px 16px rgba(0, 0, 0, 0.5);
         overflow-y: auto;
         scrollbar-width: thin;
+        .btn-random {
+          display: block;
+          width: fit-content;
+          padding: v.$mediumPadding;
+          text-align: center;
+          background-color: v.$sgreen;
+          color: v.$white;
+          border-radius: 5px;
+          margin: v.$mediumPadding auto;
+          cursor: c.$cursorPointer;
+          overflow: hidden;
+          .keyinfo {
+            display: inline;
+          }
+        }
         .card-help {
           line-height: 1.2;
           text-align: center;
@@ -276,9 +291,23 @@
           .empty-board {
             text-align: center;
             padding: 40px 20px;
-            opacity: 0.7;
+            color: v.$softwhite;
             .board-icon {
               font-size: 5em;
+            }
+            .btn-random {
+              display: block;
+              width: fit-content;
+              margin: 0 auto;
+              margin-top: v.$bigPadding;
+              padding: v.$mediumPadding;
+              border-radius: 5px;
+              text-align: center;
+              background-color: v.$sgreen;
+              color: v.$white;
+              .keyinfo {
+                display: inline;
+              }
             }
           }
         }

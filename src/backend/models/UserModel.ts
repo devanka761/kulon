@@ -1,5 +1,5 @@
 import { model, Model, Schema } from "mongoose"
-import { IUser } from "../types/user.types"
+import { IUser } from "../types/UserTypes.ts"
 
 export type IUserModel = Model<IUser>
 

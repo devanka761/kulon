@@ -507,11 +507,6 @@
   "DONE": [
     {
       "type": "walk",
-      "direction": "left",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
       "direction": "down",
       "who": "hero"
     },
@@ -519,133 +514,12 @@
       "type": "walk",
       "direction": "down",
       "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "down",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "down",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "down",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "down",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "down",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "left",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "left",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "left",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "left",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "left",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "left",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "left",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "left",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "left",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "left",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "up",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "up",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "up",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "up",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "up",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "up",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "right",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "right",
-      "who": "hero"
-    },
-    {
-      "type": "stand",
-      "direction": "right",
-      "who": "hero",
-      "time": 250
     },
     {
       "type": "stand",
       "direction": "down",
       "who": "hero",
-      "time": 400
+      "time": 500
     }
   ]
 }

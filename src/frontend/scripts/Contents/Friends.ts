@@ -9,8 +9,8 @@ import { eroot, futor, kel, qutor } from "../lib/kel"
 import Find from "./Find"
 import Profile from "./Profile"
 import audio from "../lib/AudioHandler"
-import { IPMC, IUser } from "../types/db.types"
-import { ISival, SSKelement } from "../types/lib.types"
+import { IPMC, IUser } from "../types/DBTypes"
+import { IAny, SSKelement } from "../types/LibTypes"
 
 function playerCard(usr: IUser): HTMLButtonElement {
   const card = kel("button", "card")
@@ -45,7 +45,7 @@ export default class Friends {
   private ereq!: SSKelement
   private efriends!: SSKelement
 
-  private navKeyHandler?: (...args: ISival) => ISival
+  private navKeyHandler?: (...args: IAny) => IAny
   private esc?: KeyPressListener
 
   private reqlist: string[] = []

@@ -1,5 +1,5 @@
 import { model, Model, Schema } from "mongoose"
-import { IFriend } from "../types/friend.types"
+import { IFriend } from "../types/FriendTypes"
 
 export type IFriendModel = Model<IFriend>
 

@@ -3,6 +3,9 @@
   "extends": ["config:recommended", ":assignAndReview(devanka761)"],
   "labels": ["dependencies"],
   "assignees": ["devanka761"],
+  "lockFileMaintenance": {
+    "enabled": false
+  },
   "packageRules": [
     {
       "matchDepTypes": ["devDependencies"],

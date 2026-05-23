@@ -4,8 +4,8 @@ import prog from "../main/prog"
 import Account from "../models/AccountModel"
 import Friend from "../models/FriendModel"
 import User from "../models/UserModel"
-import { IUser } from "../types/user.types"
-import { IRepTempB } from "../types/validate.types"
+import { IUser } from "../types/UserTypes.ts"
+import { IRepTempB } from "../types/ValidateTypes"
 
 export async function usersFind(uid: string, userid: string): Promise<IRepTempB> {
   if (!userid || typeof userid !== "string") return { code: 404, msg: "USER_NOT_FOUND" }

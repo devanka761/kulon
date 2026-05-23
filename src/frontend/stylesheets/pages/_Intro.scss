@@ -1,4 +1,5 @@
 @use "../variables" as v;
+
 .Intro {
   position: absolute;
   top: 0;
@@ -18,10 +19,10 @@
       max-height: 100%;
     }
     &.show {
-      animation: fade_in 0.5s ease forwards;
+      animation: fade_in 0.3s ease forwards;
     }
     &.hide {
-      animation: fade_out 0.5s ease forwards;
+      animation: fade_out 0.3s ease forwards;
     }
   }
   .icon-packs {

@@ -5,8 +5,8 @@ import { eroot, kel } from "../../lib/kel"
 import sdate from "../../lib/sdate"
 import socket from "../../lib/Socket"
 import { Game } from "../../main/Game"
-import { IPlayers, IPMX, IPMXConfig } from "../../types/db.types"
-import { ISival } from "../../types/lib.types"
+import { IPlayers, IPMX, IPMXConfig } from "../../types/DBTypes"
+import { IAny } from "../../types/LibTypes"
 import Participant from "./_Participant"
 
 export default class EggHunt implements IPMX {
@@ -46,7 +46,7 @@ export default class EggHunt implements IPMX {
     if (!participant) return
     participant.addEgg(1)
   }
-  setCustom(data: ISival): void {
+  setCustom(data: IAny): void {
     const starttime = data as number
     this.endTime = starttime + 1000 * 60 * 3
     this.updateTimeOut()
@@ -72,7 +72,7 @@ export default class EggHunt implements IPMX {
     this.el.remove()
     return
   }
-  init(data: ISival): void {
+  init(data: IAny): void {
     this.createElement()
     this.writePlayers()
     this.setCustom(data)

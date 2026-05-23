@@ -1,10 +1,10 @@
 import express, { Request, Response, Router } from "express"
-import { authLogin, processAnonymous, processThirdParty } from "../controller/auth.controller"
+import { authLogin, processAnonymous, processThirdParty } from "../controller/AuthController"
 import { rep } from "../lib/generators"
-import { AccountProvider, IAccount } from "../types/account.types"
-import { getOAuthUrl, getOAuthUser, isProviderValid } from "../controller/oauth.controller"
+import { AccountProvider, IAccount } from "../types/AccountTypes"
+import { getOAuthUrl, getOAuthUser, isProviderValid } from "../controller/OAuthController"
 import { isAccount } from "../main/middlewares"
-import { IQueryParam } from "../types/auth.types"
+import { IQueryParam } from "../types/AuthTypes"
 
 const router: Router = express.Router()
 

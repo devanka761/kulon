@@ -1,1 +1,0 @@
-import "../stylesheets/legal.scss"

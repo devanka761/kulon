@@ -12,7 +12,7 @@ import { Game } from "../main/Game"
 import Prologue from "../Events/Prologue"
 import Prepare from "../Events/Prepare"
 import MatchMaking from "../Events/MatchMaking"
-import { ISival } from "../types/lib.types"
+import { IAny } from "../types/LibTypes"
 import backsong from "../APIs/BackSongAPI"
 
 function socketError(_err: Event) {
@@ -63,7 +63,7 @@ class Socket {
       await waittime(500)
     }
 
-    const checkTitleScreen = async (resolve: ISival) => {
+    const checkTitleScreen = async (resolve: IAny) => {
       if (this.game.isPaused && (db.pmc?.id === "setting" || db.pmc?.id === "titleScreen")) {
         await waittime(1000)
         return checkTitleScreen(resolve)
@@ -76,7 +76,7 @@ class Socket {
     peers.closeAll()
 
     let oldPmcId: string = "none"
-    const checkPmc = async (resolve: ISival) => {
+    const checkPmc = async (resolve: IAny) => {
       if (db.pmc && db.pmc.id === oldPmcId) {
         await waittime(500)
         return resolve()
@@ -95,7 +95,7 @@ class Socket {
 
     db.pmc = undefined
 
-    const checkCutscene = async (resolve: ISival) => {
+    const checkCutscene = async (resolve: IAny) => {
       if (this.game.isCutscenePlaying) {
         await waittime(500)
         return await checkCutscene(resolve)
@@ -184,7 +184,7 @@ class Socket {
       db.job.reset()
     }
   }
-  updateData(s: ISival): void {
+  updateData(s: IAny): void {
     if (s.socket) {
       this.id = s.socket.id
       this.host = s.socket.host

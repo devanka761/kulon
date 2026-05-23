@@ -1,12 +1,12 @@
-import { IRepTempB, ISival } from "../types/validate.types"
+import { IRepTempB, IAny } from "../types/ValidateTypes"
 import { shop_items, cloud_items } from "../lib/shared"
 import Account from "../models/AccountModel"
-import { IAccount } from "../types/account.types"
+import { IAccount } from "../types/AccountTypes"
 import { isMidtransProd } from "../lib/generators"
 import xhr from "../lib/xhr"
 import cfg from "../../config/cfg"
 import Donate from "../models/DonateModel"
-import { IDonate } from "../types/donate.types"
+import { IDonate } from "../types/DonateTypes"
 import Mail from "../models/MailModel"
 import zender from "../lib/zender"
 import webhook from "../lib/webhook"
@@ -92,7 +92,7 @@ export async function createDonate(uid: string, itemId: string): Promise<IRepTem
   return { code: 200, data: donate }
 }
 
-export async function updateDonate(s: ISival): Promise<void> {
+export async function updateDonate(s: IAny): Promise<void> {
   if (!s.order_id) return
 
   const midtrans = encodeMidtrans()

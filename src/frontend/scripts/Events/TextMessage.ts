@@ -2,8 +2,8 @@ import RevealingText from "../main/RevealingText"
 import { KeyPressListener } from "../main/KeyPressListener"
 import LocalList from "../data/LocalList"
 import { eroot, futor, kel, qutor } from "../lib/kel"
-import { IPMCConfig } from "../types/db.types"
-import { ILocale } from "../types/lib.types"
+import { IPMCConfig } from "../types/DBTypes"
+import { ILocale } from "../types/LibTypes"
 
 interface ITextMessageConfig extends IPMCConfig {
   text: ILocale

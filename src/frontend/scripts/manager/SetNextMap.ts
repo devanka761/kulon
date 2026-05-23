@@ -2,7 +2,7 @@ import { CharacterAPI } from "../APIs/CharacterAPI"
 import db from "../data/db"
 import MapList from "../data/MapList"
 import peers from "../data/Peers"
-import { IGameObjectData, IGameObjectPerson, IMapList, ISpawnRule } from "../types/maps.types"
+import { IGameObjectData, IGameObjectPerson, IMapList, ISpawnRule } from "../types/MapsTypes"
 
 export default function SetNextMap(nextMap: IMapList, spawnRule: ISpawnRule | null = null): void {
   const userIds = db.job.players?.map((usr) => usr.id) || null

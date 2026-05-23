@@ -1,15 +1,15 @@
 import fs from "fs"
 import validate from "../lib/validate"
-import { IRepTempB, ISival } from "../types/validate.types"
+import { IRepTempB, IAny } from "../types/ValidateTypes"
 import { cloud_items } from "../lib/shared"
-import { IMail } from "../types/mail.types"
+import { IMail } from "../types/MailTypes"
 import User from "../models/UserModel"
 import Mail from "../models/MailModel"
 import zender from "../lib/zender"
 import mapEditor from "../main/mapEditor"
-import { IAssetMap } from "../types/editor.types"
+import { IAssetMap } from "../types/EditorTypes"
 
-export async function sendMail(s: ISival): Promise<IRepTempB> {
+export async function sendMail(s: IAny): Promise<IRepTempB> {
   if (!validate(["userId", "title", "sub", "text"], s)) return { code: 400, msg: "Invalid Form Body" }
 
   if (!s.rewards) return { code: 400, msg: "Invalid Form Body" }
@@ -64,10 +64,10 @@ export async function sendMail(s: ISival): Promise<IRepTempB> {
   return { code: 200 }
 }
 
-export async function updateAccess(userId: string, s: ISival): Promise<IRepTempB> {
+export async function updateAccess(userId: string, s: IAny): Promise<IRepTempB> {
   if (!s.access) return { code: 400, msg: "Invalid Form Body" }
   if (!Array.isArray(s.access)) return { code: 400, msg: "Invalid Form Body" }
-  const newAccess = s.access.filter((k: ISival) => typeof k === "number" && k >= 1)
+  const newAccess = s.access.filter((k: IAny) => typeof k === "number" && k >= 1)
 
   const userExists = await User.updateOne({ id: userId }, { $set: { access: newAccess } })
   if (!userExists.modifiedCount) return { code: 404, msg: "User is not found" }
@@ -75,7 +75,7 @@ export async function updateAccess(userId: string, s: ISival): Promise<IRepTempB
   return { code: 200 }
 }
 
-export async function newProject(s: ISival): Promise<IRepTempB> {
+export async function newProject(s: IAny): Promise<IRepTempB> {
   if (!validate(["project_name"], s)) return { code: 400 }
   const project_name = s.project_name.replace(/\s/g, "").toLowerCase()
   if (mapEditor.exists(project_name)) return { code: 400, msg: "The Project Is Already Exist" }
@@ -97,7 +97,7 @@ export function loadProjectMap(project_name: string): IRepTempB {
   return { code: 400, msg: "The Project Is Not Available or Has Been Deleted" }
 }
 
-export function addAssetMap(s: ISival): IRepTempB {
+export function addAssetMap(s: IAny): IRepTempB {
   if (!validate(["asset-name", "asset-folder", "asset-file", "asset-extension", "project_name"], s)) return { code: 400 }
   s.extension = s["asset-extension"]
 
@@ -127,7 +127,7 @@ export function addAssetMap(s: ISival): IRepTempB {
   return { code: 200, data: { assets: [assetsData] } }
 }
 
-export function remAssetMap(s: ISival): IRepTempB {
+export function remAssetMap(s: IAny): IRepTempB {
   if (!validate(["project_name", "asset-filename"], s)) return { code: 400 }
   s.filename = s["asset-filename"]
   if (!mapEditor.exists(s.project_name)) return { code: 400, msg: "The Project Is Not Available or Has Been Deleted" }
@@ -146,7 +146,7 @@ export function remAssetMap(s: ISival): IRepTempB {
 
   return { code: 200, data: { asset: s.filename } }
 }
-export function saveProjectMap(s: ISival): IRepTempB {
+export function saveProjectMap(s: IAny): IRepTempB {
   if (!validate(["project_name", "file1", "file2"], s)) return { code: 400 }
 
   if (!mapEditor.exists(s.project_name)) return { code: 400, msg: "The Project Is Not Available or Has Been Deleted" }

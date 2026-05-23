@@ -1,3 +1,4 @@
+import mission_list from "../../../../public/json/main/missions.json"
 import cloud_items from "../../../../public/json/items/cloud_items.json"
 import { Exchange } from "../Contents/Exchange"
 import shop_items from "../../../../public/json/items/shop_items.json"
@@ -14,8 +15,8 @@ import peers from "../data/Peers"
 import socket from "../lib/Socket"
 import Payout from "../Events/Payout"
 import { Game } from "../main/Game"
-import { ISival } from "../types/lib.types"
-import { IJobToReturn } from "../types/job.types"
+import { IAny } from "../types/LibTypes"
+import { IJobToReturn, IMissionList } from "../types/JobTypes"
 import { CharacterAPI } from "../APIs/CharacterAPI"
 import Prologue from "../Events/Prologue"
 import Paper from "../Events/Paper"
@@ -28,7 +29,7 @@ class ItemRun {
   readonly id = "itemrun"
   private game!: Game
   isLocked: boolean = false
-  exchange(config: ISival): void {
+  exchange(config: IAny): void {
     return new Exchange({
       onComplete: config.onComplete,
       classBefore: config.classBefore,
@@ -38,7 +39,7 @@ class ItemRun {
   restartGameMap(): void {
     setNewGame({ ...MapList }, this.game, true)
   }
-  async appearance(config: ISival): Promise<void> {
+  async appearance(config: IAny): Promise<void> {
     if (db.onduty > 1) {
       await modal.alert(lang.ITD_ONDUTY)
       return config.classBefore.init()
@@ -52,7 +53,7 @@ class ItemRun {
       game: this.game
     }).init()
   }
-  async changeName(config: ISival): Promise<void> {
+  async changeName(config: IAny): Promise<void> {
     if (db.onduty > 1) {
       await modal.alert(lang.ITD_ONDUTY)
       return config.classBefore.init()
@@ -116,7 +117,7 @@ class ItemRun {
 
     return config.classBefore.init()
   }
-  async readnote(config: ISival): Promise<void> {
+  async readnote(config: IAny): Promise<void> {
     const note = paperGet(config.id)
     if (!note) return config.onComplete()
 
@@ -128,7 +129,7 @@ class ItemRun {
     })
     paper.init()
   }
-  async startJob(config: ISival): Promise<void> {
+  async startJob(config: IAny): Promise<void> {
     if (db.onduty > 1) {
       await modal.alert(lang.ITD_ONDUTY)
       return config.classBefore.init()
@@ -153,7 +154,45 @@ class ItemRun {
       mission: config.mission
     }).init()
   }
-  async joinJob(config: ISival): Promise<void> {
+  async goToMatchMaking(config: IAny): Promise<void> {
+    const jobData = config.job.data as IJobToReturn
+    db.job.create(jobData)
+
+    const myMap = this.game.map.mapId
+    if (myMap !== "kulonSafeHouse") {
+      await this.game.startCutscene([
+        { type: "changeMap", map: "kulonSafeHouse", x: 3, y: 8, direction: "up", door: true },
+        { type: "stand", who: "hero", direction: "up", time: 150 },
+        { type: "walk", who: "hero", direction: "up" },
+        { type: "walk", who: "hero", direction: "up" },
+        { type: "walk", who: "hero", direction: "up" },
+        { type: "stand", who: "hero", direction: "up", time: 300 },
+        { type: "stand", who: "hero", direction: "right", time: 170 },
+        { type: "stand", who: "hero", direction: "down", time: 300 }
+      ])
+      this.game.forceCutscene(true)
+      this.game.kulonUI.hide()
+      this.game.kulonPad.hide()
+    }
+
+    const users = jobData.users.filter((user) => user.id !== db.me.id)
+
+    const mission = mission_list.find((k) => k.id === jobData.mission) as IMissionList
+
+    const matchMaking = new MatchMaking({
+      onComplete: config.onComplete,
+      game: this.game,
+      mission: mission
+    })
+    matchMaking.init()
+
+    users.forEach((user) => {
+      const { remote } = peers.add(user) as CharacterAPI
+      remote.call()
+      matchMaking.updateCrew(user)
+    })
+  }
+  async joinJob(config: IAny): Promise<void> {
     if (db.onduty > 1) {
       await modal.alert(lang.ITD_ONDUTY)
       return config.classBefore.init()
@@ -177,43 +216,25 @@ class ItemRun {
       return config.classBefore.init()
     }
 
-    const jobData = job.data as IJobToReturn
-    db.job.create(jobData)
-
-    const myMap = this.game.map.mapId
-    if (myMap !== "kulonSafeHouse") {
-      await this.game.startCutscene([
-        { type: "changeMap", map: "kulonSafeHouse", x: 3, y: 8, direction: "up", door: true },
-        { type: "stand", who: "hero", direction: "up", time: 150 },
-        { type: "walk", who: "hero", direction: "up" },
-        { type: "walk", who: "hero", direction: "up" },
-        { type: "walk", who: "hero", direction: "up" },
-        { type: "walk", who: "hero", direction: "up" },
-        { type: "stand", who: "hero", direction: "up", time: 300 },
-        { type: "stand", who: "hero", direction: "right", time: 170 },
-        { type: "stand", who: "hero", direction: "down", time: 500 }
-      ])
-      this.game.forceCutscene(true)
-      this.game.kulonUI.hide()
-      this.game.kulonPad.hide()
+    this.goToMatchMaking({ job, onComplete: config.onComplete })
+  }
+  async joinRandom(config: IAny): Promise<void> {
+    if (db.onduty > 1) {
+      await modal.alert(lang.ITD_ONDUTY)
+      return config.classBefore.init()
     }
 
-    const users = jobData.users.filter((user) => user.id !== db.me.id)
+    chat.add(db.me.id, lang.LB_LEFT, true)
+    peers.closeAll()
+    if (db.lobby.status === true) {
+      db.lobby.disable()
+      await modal.loading(new Promise((resolve) => setTimeout(resolve, 1000)), "EXITING LOBBY")
+    }
+    db.lobby.disable()
 
-    const matchMaking = new MatchMaking({
-      onComplete: config.onComplete,
-      game: this.game,
-      mission: config.mission
-    })
-    matchMaking.init()
-
-    users.forEach((user) => {
-      const { remote } = peers.add(user) as CharacterAPI
-      remote.call()
-      matchMaking.updateCrew(user)
-    })
+    this.goToMatchMaking({ job: config.job, onComplete: config.onComplete })
   }
-  async leaveJob(config: ISival): Promise<void> {
+  async leaveJob(config: IAny): Promise<void> {
     const confirmLeave = await modal.confirm(lang.MS_CONFIRM_LEAVE)
     if (!confirmLeave) return config.classBefore.init()
 
@@ -224,7 +245,7 @@ class ItemRun {
     }
     return new Payout({ ...config, fail: true }).init()
   }
-  run(runId: string, config: ISival = {}) {
+  run(runId: string, config: IAny = {}) {
     db.pmc = this
     return {
       init: async () => {

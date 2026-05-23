@@ -7,8 +7,8 @@ import modal from "../lib/modal"
 import waittime from "../lib/waittime"
 import xhr from "../lib/xhr"
 import { KeyPressListener } from "../main/KeyPressListener"
-import { IPMC, IPMCConfig, IUser } from "../types/db.types"
-import { ISival, SSKelement } from "../types/lib.types"
+import { IPMC, IPMCConfig, IUser } from "../types/DBTypes"
+import { IAny, SSKelement } from "../types/LibTypes"
 import Profile from "./Profile"
 
 function playerCard(usr: IUser): HTMLButtonElement {
@@ -46,7 +46,7 @@ export default class Find implements IPMC {
   private con!: SSKelement
 
   private esc?: KeyPressListener
-  private navKeyHandler?: (...args: ISival) => ISival
+  private navKeyHandler?: (...args: IAny) => IAny
   constructor(config: IFindConfig) {
     this.users = config.users
     this.onComplete = config.onComplete

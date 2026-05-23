@@ -11,9 +11,10 @@ import waittime from "../lib/waittime"
 import { Game } from "../main/Game"
 import { KeyPressListener } from "../main/KeyPressListener"
 import itemRun from "../Props/itemRun"
-import { IPMC, IPMCConfig, IUser } from "../types/db.types"
-import { IInvites, IJobInvite } from "../types/job.types"
-import { ISival, SSKelement } from "../types/lib.types"
+import { IPMC, IPMCConfig, IUser } from "../types/DBTypes"
+import { IInvites, IJobInvite } from "../types/JobTypes"
+import { IAny, SSKelement } from "../types/LibTypes"
+import QuickJoin from "./QuickJoin"
 
 function cardOnList(user: IUser, job: IJobInvite): HTMLDivElement {
   const mission = mission_list.find((k) => k.id === job.mission)!
@@ -27,6 +28,12 @@ function cardHelp(): HTMLDivElement {
   const card = kel("div", "card-help")
   card.innerHTML = lang.ARROW_VERTICAL
   return card
+}
+
+function cardRandom(): HTMLDivElement {
+  const btnRandom = kel("div", "btn btn-random")
+  btnRandom.innerHTML = `<span class="keyinfo">space</span> ${lang.JOB_RANDOM_FIND}`
+  return btnRandom
 }
 
 function fieldOnBoard(user: IUser, job: IJobInvite): HTMLDivElement {
@@ -83,6 +90,7 @@ interface IJobsConfig extends IPMCConfig {
 
 export default class Jobs implements IPMC {
   id: string = "jobs"
+  cardId: string = "69"
   onComplete: () => void
   classBefore: IPMC
   isLocked: boolean = false
@@ -94,9 +102,10 @@ export default class Jobs implements IPMC {
   private eboard!: SSKelement
 
   private esc?: KeyPressListener
+  private space?: KeyPressListener
   private enter?: KeyPressListener
   private del?: KeyPressListener
-  private listNavHandler?: (...args: ISival) => ISival
+  private listNavHandler?: (...args: IAny) => IAny
 
   constructor(config: IJobsConfig) {
     this.onComplete = config.onComplete
@@ -109,7 +118,7 @@ export default class Jobs implements IPMC {
     <div class="box">
       <div class="nav">
         <div class="left">
-          <div class="title"><i class="fa-solid fa-envelope"></i> ${lang.PHONE_JOBS}</div>
+          <div class="title"><i class="fa-solid fa-briefcase"></i> ${lang.PHONE_JOBS}</div>
         </div>
         <div class="right">
           <span class="keyinfo">esc</span>
@@ -163,9 +172,32 @@ export default class Jobs implements IPMC {
     document.addEventListener("keydown", this.listNavHandler)
   }
   private checkEmptyList(): void {
-    if (this.boxInvite.length < 1) {
-      this.cardlist.innerHTML = `<div class="center"><p>~ ${lang.EMPTY} ~</p></div>`
-    } else {
+    const randomBefore = qutor(".btn-random", this.cardlist)
+    if (randomBefore) this.cardlist.prepend(randomBefore)
+
+    if (!randomBefore) {
+      this.space?.unbind()
+
+      const btnRandom = cardRandom()
+      btnRandom.onclick = () => {
+        if (this.isLocked) return
+
+        const quickJoin = new QuickJoin({
+          onComplete: this.onComplete,
+          game: this.game,
+          classBefore: this
+        })
+
+        this.destroy(quickJoin)
+      }
+
+      this.cardlist.prepend(btnRandom)
+      this.space = new KeyPressListener("space", () => {
+        btnRandom.click()
+      })
+    }
+
+    if (this.boxInvite.length >= 1) {
       const cards = Array.from(this.cardlist.querySelectorAll(".card")) as HTMLDivElement[]
       if (cards.length < 1) return
       cards[0].click()
@@ -210,6 +242,9 @@ export default class Jobs implements IPMC {
     this.eboard.append(field)
   }
   private async setClaimable(field: HTMLDivElement, { user, job }: IInvites): Promise<void> {
+    const cardId = Date.now().toString()
+    this.cardId = cardId
+
     this.enter?.unbind()
     this.del?.unbind()
 
@@ -250,7 +285,8 @@ export default class Jobs implements IPMC {
       )
     }
 
-    await waittime(500)
+    await waittime(300, -5)
+    if (this.cardId !== cardId) return
 
     this.enter = new KeyPressListener("enter", () => {
       btnAccept.click()
@@ -278,12 +314,14 @@ export default class Jobs implements IPMC {
     this.enter?.unbind()
     this.del?.unbind()
     this.esc?.unbind()
+    this.space?.unbind()
     document.removeEventListener("keydown", this.listNavHandler!)
     this.boxInvite = []
     await waittime()
     this.enter?.unbind()
     this.del?.unbind()
     this.esc?.unbind()
+    this.space?.unbind()
     this.el.remove()
     this.isLocked = false
     if (!next) return this.onComplete()

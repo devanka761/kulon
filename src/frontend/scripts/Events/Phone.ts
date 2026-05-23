@@ -12,8 +12,8 @@ import socket from "../lib/Socket"
 import waittime from "../lib/waittime"
 import { Game } from "../main/Game"
 import { KeyPressListener } from "../main/KeyPressListener"
-import { IPhoneApp, IPMC } from "../types/db.types"
-import { ISival, SSKelement } from "../types/lib.types"
+import { IPhoneApp, IPMC } from "../types/DBTypes"
+import { IAny, SSKelement } from "../types/LibTypes"
 
 interface IPhoneConfig {
   onComplete: () => void
@@ -30,7 +30,7 @@ export default class Phone implements IPMC {
   private appCards: HTMLButtonElement[] = []
   private scoreBoard!: ScoreBoard
 
-  private navKeyHandler?: (...args: ISival) => ISival
+  private navKeyHandler?: (...args: IAny) => IAny
 
   private el!: HTMLDivElement
   private btnRename!: SSKelement

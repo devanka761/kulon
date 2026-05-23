@@ -1,5 +1,5 @@
-import { ISival } from "./lib.types"
-import { IMapList } from "./maps.types"
+import { IAny } from "./LibTypes"
+import { IMapList } from "./MapsTypes"
 
 export type IActionMode = "Wall" | "Space" | "Object" | "Teleporter" | "Bulk" | null
 
@@ -9,7 +9,7 @@ export interface IMapSave {
 export interface IEditorConfig {
   project_name: string
   mapdata: IMapList
-  finishedEvents: ISival
+  finishedEvents: IAny
 }
 export interface IBulk {
   [key: string]: boolean

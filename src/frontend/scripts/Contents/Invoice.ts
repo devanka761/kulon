@@ -7,8 +7,8 @@ import waittime from "../lib/waittime"
 import Mails from "./Mails"
 import { KeyPressListener } from "../main/KeyPressListener"
 import audio from "../lib/AudioHandler"
-import { IPMC, IPMCConfig } from "../types/db.types"
-import { IDonate } from "../types/donate.types"
+import { IPMC, IPMCConfig } from "../types/DBTypes"
+import { IDonate } from "../types/DonateTypes"
 
 interface IInvoiceConfig extends IPMCConfig {
   onComplete: () => void

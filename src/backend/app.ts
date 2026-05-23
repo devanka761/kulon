@@ -3,15 +3,15 @@ import express, { Request, Response, NextFunction } from "express"
 import expressWs, { WebSocketWithHeartbeat } from "express-ws"
 import session from "express-session"
 import MongoStore from "connect-mongo"
-import authRoute from "./routes/auth.route"
-import accountRoute from "./routes/account.route"
-import profileRoute from "./routes/profile.route"
-import jobRoute from "./routes/job.route"
-import donateRoute from "./routes/donate.route"
-import modRoute from "./routes/mod.route"
+import authRoute from "./routes/AuthRouter"
+import accountRoute from "./routes/AccountRouter"
+import profileRoute from "./routes/ProfileRouter"
+import jobRoute from "./routes/JobRouter"
+import donateRoute from "./routes/DonateRouter"
+import modRoute from "./routes/ModRouter"
 import cfg from "../config/cfg"
 import { sessionUserBinder } from "./main/binder"
-import webSocketApp from "./routes/socket.route"
+import webSocketApp from "./routes/SocketRouter"
 import clientBuild from "./lib/clientBuild"
 import { version } from "../config/version.json"
 import mapEditor from "./main/mapEditor"
@@ -76,14 +76,8 @@ app.get("/editor", (req: Request, res: Response) => {
   res.render("editor")
 })
 
-const legals = ["privacy", "terms", "license"]
-
-app.get("/legal/:legal_text", (req: Request, res: Response, next: NextFunction) => {
-  const { legal_text } = req.params
-
-  if (legals.find((legal) => legal === legal_text.toString())) return res.render(legal_text.toString())
-
-  return next()
+app.get("/license", (req: Request, res: Response) => {
+  return res.render("license")
 })
 
 app.get("/", (req: Request, res: Response) => {

@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express"
 import { cdUser, isUser } from "../main/middlewares"
 import { rep } from "../lib/generators"
-import { acceptFriend, addFriend, cancelFriend, declineFriend, removeFriend, usersFind } from "../controller/profile.controller"
+import { acceptFriend, addFriend, cancelFriend, declineFriend, removeFriend, usersFind } from "../controller/ProfileController"
 const router = express.Router()
 
 router.use(cdUser, isUser, express.json({ limit: "1MB" }))

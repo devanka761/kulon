@@ -1,5 +1,5 @@
 import fs from "fs"
-import { IMapSave } from "../types/editor.types"
+import { IMapSave } from "../types/EditorTypes"
 
 const mapFolder = "./public/json/build"
 const mapPath = mapFolder + "/maps.json"

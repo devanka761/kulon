@@ -16,10 +16,10 @@ import chat from "../manager/Chat"
 import audio from "../lib/AudioHandler"
 import backsong from "../APIs/BackSongAPI"
 import { loadMiniGame } from "../lib/minigameLoader"
-import { IPMC, IPMCConfig, IUser } from "../types/db.types"
-import { IMissionList } from "../types/job.types"
+import { IPMC, IPMCConfig, IUser } from "../types/DBTypes"
+import { IMissionList } from "../types/JobTypes"
 import { Game } from "../main/Game"
-import { ISival } from "../types/lib.types"
+import { IAny } from "../types/LibTypes"
 import { copyToClipboard } from "../lib/navigator"
 import notip from "../lib/notip"
 
@@ -42,7 +42,7 @@ export default class MatchMaking implements IPMC {
   members: MembersAPI = new MembersAPI()
   private activeBoardIndex: number = 1
   private selectedIndices: [number, number, number] = [-1, -1, -1]
-  private navKeyListener?: (...args: ISival) => ISival
+  private navKeyListener?: (...args: IAny) => IAny
   private isAborted: boolean = false
 
   private friendlist!: HTMLDivElement
@@ -452,13 +452,13 @@ export default class MatchMaking implements IPMC {
   private async parseData(): Promise<void> {
     this.btnStart.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> ${lang.DOWNLOADING}`
 
-    const nextAssets = await xhr.get(`/json/assets/st_${this.mission.map}.json?v=${Date.now()}`)
+    const nextAssets = await xhr.forceGet(`/json/assets/st_${this.mission.map}.json?v=${Date.now()}`)
     await new LoadAssets({ skins: nextAssets }).run()
 
-    const nextMap = await xhr.get(`/json/maps/mp_${this.mission.map}.json?v=${Date.now()}`)
+    const nextMap = await xhr.forceGet(`/json/maps/mp_${this.mission.map}.json?v=${Date.now()}`)
     db.job.nextMap = nextMap
 
-    const nextComplete = await xhr.get(`/json/scenes/cs_${this.mission.map}.json?v=${Date.now()}`)
+    const nextComplete = await xhr.forceGet(`/json/scenes/cs_${this.mission.map}.json?v=${Date.now()}`)
 
     db.job.finishScenes = nextComplete
 

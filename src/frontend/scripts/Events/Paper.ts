@@ -6,8 +6,8 @@ import audio from "../lib/AudioHandler"
 import { eroot, futor, kel } from "../lib/kel"
 import waittime from "../lib/waittime"
 import { KeyPressListener } from "../main/KeyPressListener"
-import { IPMC, IPMCConfig } from "../types/db.types"
-import { ILocale, SSKelement } from "../types/lib.types"
+import { IPMC, IPMCConfig } from "../types/DBTypes"
+import { ILocale, SSKelement } from "../types/LibTypes"
 
 interface IPaperConfig extends IPMCConfig {
   onComplete: () => void

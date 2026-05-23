@@ -51,6 +51,7 @@
       font-weight: bold;
     }
     .motto {
+      margin: 0 v.$bigPadding;
       margin-top: v.$bigPadding;
       text-align: center;
       font-size: calc(v.$defaultSize * 0.95);

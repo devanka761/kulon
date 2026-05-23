@@ -14,16 +14,16 @@ import Prologue from "../Events/Prologue"
 import { Game } from "../main/Game"
 import chat from "../manager/Chat"
 import ForceClose from "../pages/ForceClose"
-import { IUser } from "../types/db.types"
-import { ISival } from "../types/lib.types"
-import { IAchievements } from "../types/trohpy.types"
+import { IUser } from "../types/DBTypes"
+import { IAny } from "../types/LibTypes"
+import { IAchievements } from "../types/TrophyTypes"
 import { achievement } from "./achievement"
 import audio from "./AudioHandler"
 import notip from "./notip"
 import socket from "./Socket"
 import waittime from "./waittime"
 
-type Resolve = (val?: ISival) => void
+type Resolve = (val?: IAny) => void
 
 const INVALID_CONTROLS = ["run", "init", "constructor", "game"]
 
@@ -39,7 +39,7 @@ class SocketHandler {
       msg_2: lang.CLOUD_SAME_TIME
     })
   }
-  addFriend(data: ISival): void {
+  addFriend(data: IAny): void {
     if (!data.user) return
     if (!LocalList["friend_request_notification_disabled"]) {
       notip({
@@ -56,7 +56,7 @@ class SocketHandler {
 
     this.game.kulonUI?.phone.updateUnread()
   }
-  acceptFriend(data: ISival): void {
+  acceptFriend(data: IAny): void {
     if (!data.user) return
     if (!LocalList["friend_request_notification_disabled"]) {
       notip({
@@ -79,7 +79,7 @@ class SocketHandler {
 
     this.game.kulonUI?.phone.updateUnread()
   }
-  declineFriend(data: ISival): void {
+  declineFriend(data: IAny): void {
     if (!data.user) return
     db.room.remove(data.user.id)
     if (db.pmc?.id === "friends") {
@@ -87,17 +87,7 @@ class SocketHandler {
       pmc.update()
     }
   }
-  cancelFriend(data: ISival): void {
-    if (!data.user) return
-    db.room.remove(data.user.id)
-    if (db.pmc?.id === "friends") {
-      const pmc = db.pmc as Friends
-      pmc.update()
-    }
-
-    this.game.kulonUI?.phone.updateUnread()
-  }
-  removeFriend(data: ISival): void {
+  cancelFriend(data: IAny): void {
     if (!data.user) return
     db.room.remove(data.user.id)
     if (db.pmc?.id === "friends") {
@@ -107,19 +97,29 @@ class SocketHandler {
 
     this.game.kulonUI?.phone.updateUnread()
   }
-  crewOnline(data: ISival): void {
+  removeFriend(data: IAny): void {
+    if (!data.user) return
+    db.room.remove(data.user.id)
+    if (db.pmc?.id === "friends") {
+      const pmc = db.pmc as Friends
+      pmc.update()
+    }
+
+    this.game.kulonUI?.phone.updateUnread()
+  }
+  crewOnline(data: IAny): void {
     if (db.pmc?.id === "matchmaking") {
       const pmc = db.pmc as MatchMaking
       pmc.members.getFriend(data.userId)?.updateStatus("ONLINE")
     }
   }
-  crewOffline(data: ISival): void {
+  crewOffline(data: IAny): void {
     if (db.pmc?.id === "matchmaking") {
       const pmc = db.pmc as MatchMaking
       pmc.members.getFriend(data.userId)?.updateStatus("OFFLINE")
     }
   }
-  jobInvite(data: ISival): void {
+  jobInvite(data: IAny): void {
     if (!LocalList["job_invite_notification_disabled"] && !db.invites.exists(data.user.id)) {
       notip({
         a: data.user.username,
@@ -137,7 +137,7 @@ class SocketHandler {
 
     this.game.kulonUI?.phone.updateUnread()
   }
-  jobJoin(data: ISival): void {
+  jobJoin(data: IAny): void {
     if (db.pmc?.id === "matchmaking") {
       db.job.addPlayer(data.user.id)
       db.job.addUser(data.user)
@@ -149,19 +149,19 @@ class SocketHandler {
     }
     db.waiting.add({ id: "jobjoin", user: data.user })
   }
-  lobbyJoin(data: ISival): void {
+  lobbyJoin(data: IAny): void {
     if (!data.user) return
     const user = data.user as IUser
     db.lobby.add(user)
   }
-  lobbyLeft(data: ISival): void {
+  lobbyLeft(data: IAny): void {
     db.lobby.remove(data.from)
     this.game.map.unmountRemotePlayer(data.from)
     if (["kulonVilla", "kulonSafeHouse"].find((map) => map === this.game.map.mapId)) {
       chat.add(data.from, lang.LB_LEFT, true)
     }
   }
-  shake(data: ISival, isNew: boolean = false): void {
+  shake(data: IAny, isNew: boolean = false): void {
     const peerMethod = isNew ? "add" : "get"
 
     if (db.pmc?.id === "matchmaking") {
@@ -182,16 +182,16 @@ class SocketHandler {
       remote.handleSignal(data)
     }
   }
-  offer(data: ISival): void {
+  offer(data: IAny): void {
     this.shake(data, true)
   }
-  answer(data: ISival): void {
+  answer(data: IAny): void {
     this.shake(data)
   }
-  candidate(data: ISival): void {
+  candidate(data: IAny): void {
     this.shake(data)
   }
-  async jobExit(data: ISival): Promise<void> {
+  async jobExit(data: IAny): Promise<void> {
     if (db.job.status === 3) {
       const checkCutscene = async (resolve: Resolve) => {
         if ([1, 3].includes(db.onduty)) {
@@ -243,7 +243,7 @@ class SocketHandler {
 
     db.waiting.add({ id: "jobkick" })
   }
-  jobInviteType(data: ISival): void {
+  jobInviteType(data: IAny): void {
     if (!data.invite) return
     db.job.invite = data.invite
 
@@ -262,7 +262,7 @@ class SocketHandler {
       return
     }
   }
-  jobPrepare(data: ISival): void {
+  jobPrepare(data: IAny): void {
     if (db.pmc?.id === "matchmaking") {
       const pmc = db.pmc as MatchMaking
       pmc.prepare(data.starttime)
@@ -271,7 +271,7 @@ class SocketHandler {
 
     db.waiting.add({ id: "jobprepare", starttime: data.starttime })
   }
-  prepareReady(data: ISival): void {
+  prepareReady(data: IAny): void {
     if (db.pmc?.id === "prepare") {
       const pmc = db.pmc as Prepare
       pmc.updatePlayerStatus(data.from)
@@ -279,6 +279,15 @@ class SocketHandler {
     }
 
     db.waiting.add({ id: "prepareready", userId: data.from })
+  }
+  prepareTimeOut(data: IAny): void {
+    if (db.pmc?.id === "prepare") {
+      const pmc = db.pmc as Prepare
+      pmc.forceLaunch()
+      return
+    }
+
+    db.waiting.add({ id: "preparetimeout", userId: data.from })
   }
   jobLaunch(): void {
     if (db.pmc?.id === "prepare") {
@@ -289,11 +298,11 @@ class SocketHandler {
 
     db.waiting.add({ id: "joblaunch" })
   }
-  jobSetItem(data: ISival): void {
+  jobSetItem(data: IAny): void {
     const { item } = data
     db.job.setItem(item)
   }
-  trophyUpdate(data: ISival): void {
+  trophyUpdate(data: IAny): void {
     const trophy = data.trophy
     db.trophies.update(trophy)
     if (trophy.ts && !trophy.claimed) {
@@ -306,7 +315,7 @@ class SocketHandler {
 
     this.game.kulonUI?.phone.updateUnread()
   }
-  mail(data: ISival): void {
+  mail(data: IAny): void {
     db.mails.add(data.mail)
 
     if (!LocalList["mail_notification_disabled"]) {
@@ -324,7 +333,7 @@ class SocketHandler {
 
     this.game.kulonUI?.phone.updateUnread()
   }
-  donateSettlement(data: ISival): void {
+  donateSettlement(data: IAny): void {
     if (data.mail) this.mail(data)
 
     if (db.pmc?.id === "invoice") {
@@ -348,7 +357,7 @@ class SocketHandler {
 
     this.game.startCutscene([{ type: "payout", crew: true }])
   }
-  async winners(data: ISival): Promise<void> {
+  async winners(data: IAny): Promise<void> {
     const newTs = data.tss
     Object.keys(newTs).forEach((userId) => db.job.setTs(userId, -newTs[userId]))
 
@@ -367,7 +376,7 @@ class SocketHandler {
 
     this.game.startCutscene([{ type: "winner", winners: data.winners }])
   }
-  addClaims(data: ISival): void {
+  addClaims(data: IAny): void {
     if (!db.pmx) return
 
     const states = data.states
@@ -382,7 +391,7 @@ class SocketHandler {
 
     this.game.kulonUI?.phone.updateUnread()
   }
-  run(data: ISival): void {
+  run(data: IAny): void {
     if (!this.game || !data.type) return
     if (INVALID_CONTROLS.find((control) => control === data.type)) return
     const type = data.type as keyof SocketHandler

@@ -9,15 +9,15 @@ import { eroot, futor, kel, qutor } from "../lib/kel"
 import socket from "../lib/Socket"
 import waittime from "../lib/waittime"
 import { KeyPressListener } from "../main/KeyPressListener"
-import { IPMC } from "../types/db.types"
-import { IShopItem } from "../types/item.types"
-import { ISival, SSKelement } from "../types/lib.types"
+import { IPMC } from "../types/DBTypes"
+import { IShopItem } from "../types/ItemTypes"
+import { IAny, SSKelement } from "../types/LibTypes"
 import Donate from "./Donate"
 import { Exchange } from "./Exchange"
 
 let currentPage: string = "0"
 
-function itemCard(s: ISival): HTMLDivElement {
+function itemCard(s: IAny): HTMLDivElement {
   const item = cloud_items.find((itm) => itm.id === s.id)!
   const card = kel("div", "card")
   card.innerHTML = `
@@ -52,13 +52,13 @@ export default class Shop implements IPMC {
 
   private el!: HTMLDivElement
 
-  private navKeyHandler?: (...args: ISival) => ISival
+  private navKeyHandler?: (...args: IAny) => IAny
   private enter?: KeyPressListener
   private esc?: KeyPressListener
 
   private itemContainer!: SSKelement
   private itemDetail!: SSKelement
-  private loaded: boolean = false
+  private currentFocus: "left" | "right" = "left"
 
   constructor(config: IShopConfig) {
     this.onComplete = config.onComplete
@@ -96,7 +96,7 @@ export default class Shop implements IPMC {
             </div>
           </div>
           <div class="item-container">
-            <div class="item-list">
+            <div class="item-list blur">
             </div>
           </div>
           <div class="detail">
@@ -106,6 +106,15 @@ export default class Shop implements IPMC {
     </div>`
     this.itemContainer = futor(".item-container", this.el)
     this.itemDetail = futor(".detail", this.el)
+  }
+  private setFocus(target: "left" | "right") {
+    this.currentFocus = target
+    const itemList = qutor(".item-list", this.el)!
+    if (target === "left") {
+      itemList.classList.add("blur")
+    } else {
+      itemList.classList.remove("blur")
+    }
   }
   private async btnListener(): Promise<void> {
     const btnClose = futor(".btn-close", this.el)
@@ -118,6 +127,7 @@ export default class Shop implements IPMC {
     btnChanges.forEach((btn) => {
       btn.onclick = () => {
         if (btn.getAttribute("k-type") === currentPage) return
+        this.setFocus("left")
         audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: Date.now().toString() } })
         currentPage = btn.getAttribute("k-type")!
         this.activatedBtn(btn)
@@ -144,17 +154,18 @@ export default class Shop implements IPMC {
     const btnSelecteds = this.el.querySelectorAll(".con-list .card.selected")
     btnSelecteds.forEach((el) => el.classList.remove("selected"))
     if (!btn) btn = futor(`.con-list .card[k-type="${currentPage}"]`, this.el)
-    btn.classList.add("selected")
+    btn!.classList.add("selected")
   }
   private writeItems(ktype?: string): void {
     const pageItems = shop_items.filter((k) => k.group === ktype)
 
     const elistBefore = qutor(".item-list", this.el)
     if (elistBefore) elistBefore.remove()
-    const elist = kel("div", "item-list")
+    const elist = kel("div", "item-list blur")
     pageItems.forEach((itm) => {
       const card = itemCard(itm)
       card.onclick = () => {
+        this.setFocus("right")
         audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
         const cardSelecteds = this.el.querySelectorAll(".item-list .card.selected")
         cardSelecteds.forEach((el) => el.classList.remove("selected"))
@@ -171,17 +182,7 @@ export default class Shop implements IPMC {
     }
     this.itemContainer.append(elist)
 
-    const firstElement = elist.firstElementChild as HTMLDivElement | null
-    const isReady = firstElement && firstElement.classList.contains("card")
-
-    if (!this.loaded && isReady) {
-      setTimeout(() => firstElement.click(), 300)
-      this.loaded = true
-    } else if (isReady) {
-      firstElement.click()
-    } else {
-      this.writeDesc()
-    }
+    this.writeDesc()
   }
   private writeDesc(s?: IShopItem): void {
     this.enter?.unbind()
@@ -220,8 +221,10 @@ export default class Shop implements IPMC {
           await this.destroy(donate)
         }
       }
-      itmAct.append(btnBuy)
+
+      itmAct.append(kel("span", "keyinfo", { e: "enter" }), btnBuy)
       this.enter = new KeyPressListener("enter", () => {
+        if (this.currentFocus === "left") return
         btnBuy.click()
       })
     }
@@ -235,33 +238,59 @@ export default class Shop implements IPMC {
 
       e.preventDefault()
 
-      if (e.key === "ArrowUp" || e.key === "ArrowDown") {
-        const buttons = Array.from(this.el.querySelectorAll(".con-list .card")) as HTMLDivElement[]
-        if (buttons.length < 1) return
+      if (this.currentFocus === "left") {
+        if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+          const buttons = Array.from(this.el.querySelectorAll(".con-list .card")) as HTMLDivElement[]
+          if (buttons.length < 1) return
 
-        const currentIndex = buttons.findIndex((btn) => btn.classList.contains("selected"))
+          const currentIndex = buttons.findIndex((btn) => btn.classList.contains("selected"))
 
-        let nextIndex
-        if (e.key === "ArrowDown") {
-          nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % buttons.length
-        } else {
-          nextIndex = currentIndex <= 0 ? buttons.length - 1 : currentIndex - 1
+          let nextIndex
+          if (e.key === "ArrowDown") {
+            nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % buttons.length
+          } else {
+            nextIndex = currentIndex <= 0 ? buttons.length - 1 : currentIndex - 1
+          }
+
+          const nextButton = buttons[nextIndex]
+          if (nextButton) nextButton.click()
+        } else if (e.key === "ArrowRight") {
+          const cards = Array.from(this.el.querySelectorAll(".item-list .card")) as HTMLDivElement[]
+          if (cards.length >= 1) {
+            const selectedBefore = cards.find((card) => card.classList.contains("selected"))
+            if (selectedBefore) {
+              selectedBefore.click()
+            } else {
+              cards[0].click()
+            }
+            this.setFocus("right")
+          }
         }
-
-        const nextButton = buttons[nextIndex]
-        if (nextButton) nextButton.click()
-      } else if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+      } else if (this.currentFocus === "right") {
         const cards = Array.from(this.el.querySelectorAll(".item-list .card")) as HTMLDivElement[]
         if (cards.length < 1) return
         const currentIndex = cards.findIndex((card) => card.classList.contains("selected"))
-        let nextIndex
-        if (e.key === "ArrowRight") {
-          nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % cards.length
-        } else {
-          nextIndex = currentIndex <= 0 ? cards.length - 1 : currentIndex - 1
+        if (currentIndex === -1) return
+
+        if (e.key === "ArrowUp") {
+          const nextIndex = currentIndex - 4
+          if (nextIndex >= 0) cards[nextIndex].click()
+        } else if (e.key === "ArrowDown") {
+          const nextIndex = currentIndex + 4
+          cards[nextIndex < cards.length ? nextIndex : cards.length - 1].click()
+        } else if (e.key === "ArrowRight") {
+          if (currentIndex % 4 !== 3) {
+            const nextIndex = currentIndex + 1
+            if (nextIndex < cards.length) cards[nextIndex].click()
+          }
+        } else if (e.key === "ArrowLeft") {
+          if (currentIndex % 4 === 0) {
+            this.setFocus("left")
+          } else {
+            const nextIndex = currentIndex - 1
+            if (nextIndex >= 0) cards[nextIndex].click()
+          }
         }
-        const nextCard = cards[nextIndex]
-        if (nextCard) nextCard.click()
       }
     }
     document.addEventListener("keydown", this.navKeyHandler)
@@ -285,6 +314,7 @@ export default class Shop implements IPMC {
     db.pmc = this
     audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
     this.createElement()
+    this.setFocus("left")
     eroot().append(this.el)
     this.btnListener()
     this.updateEconomies()
@@ -293,7 +323,6 @@ export default class Shop implements IPMC {
 
     await waittime()
 
-    this.loaded = true
     this.navKeyListener()
   }
 }

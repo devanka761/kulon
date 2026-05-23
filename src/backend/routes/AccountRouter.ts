@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express"
 import { cdUser, isAccount, isUser } from "../main/middlewares"
-import { changeSkin, changeUsername, createUser, getMe, itemExchange, mailClaim, trophyClaim } from "../controller/account.controller"
+import { changeSkin, changeUsername, createUser, getMe, itemExchange, mailClaim, trophyClaim } from "../controller/AccountController"
 import { rep } from "../lib/generators"
 const router = express.Router()
 

@@ -1,4 +1,4 @@
-import { IRepB } from "../types/lib.types"
+import { IRepB } from "../types/LibTypes"
 import packageVersion from "../../../config/version.json"
 import db from "../data/db"
 import lang from "../data/language"
@@ -47,10 +47,10 @@ export default class ReconnectTool {
       return await this._startReconnect()
     }
 
-    const buildNumber = userData.data?.build || -69
+    const buildNumber = Number(userData.data?.build) || -69
     const clientVersion = userData.data?.package || "-0.0.1"
 
-    if (db.version !== buildNumber || clientVersion !== packageVersion.version) {
+    if (db.version !== buildNumber || packageVersion.version !== clientVersion) {
       await waittime(2000)
       await this.destroy()
       return { code: 400, ok: false, msg: "CLOUD_OUTDATED" }

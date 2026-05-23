@@ -1,6 +1,6 @@
 import asset from "../data/assets"
 import SaveList from "../data/SaveList"
-import { IGameObjectInteractable, IObjectTalk } from "../types/maps.types"
+import { IGameObjectInteractable, IObjectTalk } from "../types/MapsTypes"
 
 const TILE_SIZE = 16
 

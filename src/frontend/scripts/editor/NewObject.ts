@@ -2,7 +2,7 @@ import asset from "../data/assets"
 import modal from "../lib/modal"
 import NewEvent from "./NewEvent"
 import Editor from "./Editor"
-import { ISival } from "../types/lib.types"
+import { IAny } from "../types/lib.types"
 import { eroot, futor, kel, qutor } from "../lib/kel"
 import { GameObjectData } from "../types/maps.types"
 import waittime from "../lib/waittime"
@@ -11,7 +11,7 @@ export interface INewObjectConfig {
   x: number
   y: number
   editor: Editor
-  passed: ISival
+  passed: IAny
   isSpace: boolean
 }
 
@@ -21,13 +21,13 @@ export default class NewObject {
   private editor: Editor
   private el: HTMLDivElement = kel("div", "newArea")
   private form!: HTMLFormElement
-  private passed: ISival
+  private passed: IAny
   private isSpace: boolean
   private isLocked: boolean = false
   private flagNumber: number = 0
   private evtNumber: number = 0
-  private defaultEvents: ISival = {}
-  private flagEvents: ISival = {}
+  private defaultEvents: IAny = {}
+  private flagEvents: IAny = {}
 
   constructor(
     config: INewObjectConfig,
@@ -190,10 +190,10 @@ export default class NewObject {
       }
     })
   }
-  private _writeFlType(s: ISival): void {
+  private _writeFlType(s: IAny): void {
     const el = this.el.querySelectorAll(`[name="obj-flag-type"]`) as NodeListOf<HTMLInputElement>
-    const isStory = s.find((fl: ISival) => fl.required)
-    const isLocal = s.find((fl: ISival) => fl.local_req)
+    const isStory = s.find((fl: IAny) => fl.required)
+    const isLocal = s.find((fl: IAny) => fl.local_req)
 
     let ftype = "none"
     if (isStory) {
@@ -214,11 +214,11 @@ export default class NewObject {
     const el = futor("#obj-flag", this.el) as HTMLInputElement
     el.value = val ?? ""
   }
-  private _writeFlagEvents(s: ISival): void {
-    const isStory = s.filter((fl: ISival) => fl.required)
-    const isLocal = s.filter((fl: ISival) => fl.local_req)
+  private _writeFlagEvents(s: IAny): void {
+    const isStory = s.filter((fl: IAny) => fl.required)
+    const isLocal = s.filter((fl: IAny) => fl.local_req)
 
-    let currEvent: ISival = null,
+    let currEvent: IAny = null,
       currReq: string | null = null
     if (isStory.length >= 1) {
       currEvent = isStory
@@ -230,12 +230,12 @@ export default class NewObject {
     }
     if (!currEvent || !currReq) return
 
-    currEvent.forEach((evtObject: ISival) => {
+    currEvent.forEach((evtObject: IAny) => {
       this._setNewHasFlag(evtObject, evtObject[currReq])
     })
   }
 
-  private _setNewHasFlag(talk: ISival = null, flagReq: ISival = null): void {
+  private _setNewHasFlag(talk: IAny = null, flagReq: IAny = null): void {
     const fieldKey = "fk" + this.flagNumber + "_" + Date.now().toString(36)
     if (!this.flagEvents[fieldKey]) this.flagEvents[fieldKey] = {}
     this.flagNumber++
@@ -268,15 +268,15 @@ export default class NewObject {
     if (talk) {
       const inp = qutor(".evt-inp", field) as HTMLInputElement
       inp.value = flagReq.join(", ")
-      talk.events.forEach((evt: ISival) => {
+      talk.events.forEach((evt: IAny) => {
         this._addEvent(evt.type, evt, fieldKey)
       })
     }
   }
-  private _writeDefaultEvents(s: ISival): void {
-    const currEvent = s.find((fl: ISival) => !fl.required && !fl.local_req) || null
+  private _writeDefaultEvents(s: IAny): void {
+    const currEvent = s.find((fl: IAny) => !fl.required && !fl.local_req) || null
     if (!currEvent) return
-    currEvent.events.forEach((evt: ISival) => {
+    currEvent.events.forEach((evt: IAny) => {
       this._addEvent(evt.type, evt)
     })
   }
@@ -364,7 +364,7 @@ export default class NewObject {
       e.preventDefault()
       if (this.isLocked) return
       this.isLocked = true
-      const data: ISival = {}
+      const data: IAny = {}
       const formData = new FormData(this.form)
       formData.forEach((val, key) => {
         data[key.replace("obj-", "")] = val
@@ -418,7 +418,7 @@ export default class NewObject {
     const newEvent = new NewEvent({ type: setType, mode: mode as string, objectEditor: this })
     newEvent.run()
   }
-  private _addEvent(event_type: string, s: ISival, flagKey: string | null = null, existkey: string | null = null): void {
+  private _addEvent(event_type: string, s: IAny, flagKey: string | null = null, existkey: string | null = null): void {
     const eventID = existkey || "evt" + this.evtNumber + "_" + Date.now().toString(36)
     if (!existkey) this.evtNumber++
     const card = existkey ? futor(`[k-evtid="${eventID}"]`, this.el) : kel("div", "card")
@@ -461,13 +461,13 @@ export default class NewObject {
       card.remove()
     }
   }
-  createEvent(event_type: string, s: ISival, flagKey: string, existkey: string | null = null): void {
+  createEvent(event_type: string, s: IAny, flagKey: string, existkey: string | null = null): void {
     this.unlock()
     if (["addClaims", "addStates", "addLocalFlags", "removeLocalFlags", "removeStates", "addHint"].includes(event_type)) {
       s.states = s.states.replace(/\s/g, "")
       s.states = s.states.split(",")
     } else if (event_type === "choices") {
-      const currOpt: ISival = {}
+      const currOpt: IAny = {}
       Object.keys(s).forEach((k) => {
         if (k.includes("opt-")) {
           const currIdx = k.replace("opt-", "")
@@ -486,7 +486,7 @@ export default class NewObject {
       })
       s.options = Object.values(currOpt)
     } else if (event_type === "addnote") {
-      const currOpt: ISival = {}
+      const currOpt: IAny = {}
       Object.keys(s).forEach((k) => {
         if (k.includes("opt-")) {
           const currIdx = k.replace("opt-", "")
@@ -514,7 +514,7 @@ export default class NewObject {
     if (s.map) s.map = "kulon" + s.map
     this._addEvent(event_type, s, flagKey, existkey)
   }
-  private _sendToEditor(s: ISival): void {
+  private _sendToEditor(s: IAny): void {
     if (this.finishEvent) {
       this._sendByFinish()
     } else if (this.isSpace) {
@@ -523,8 +523,8 @@ export default class NewObject {
       this._sendByObject(s)
     }
   }
-  private async _sendBySpace(s: ISival): Promise<void> {
-    const data: ISival = {}
+  private async _sendBySpace(s: IAny): Promise<void> {
+    const data: IAny = {}
     const defEvt = this.defaultEvents
     if (Object.keys(defEvt).length < 1) {
       await modal.alert("Please add at least 1 default event to submit")
@@ -558,7 +558,7 @@ export default class NewObject {
       this.editor.editSpace(coors, data)
     }
   }
-  private async _sendByObject(s: ISival): Promise<void> {
+  private async _sendByObject(s: IAny): Promise<void> {
     const data: GameObjectData = {
       type: s.type,
       x: this.x,
@@ -616,7 +616,7 @@ export default class NewObject {
   unlock() {
     this.isLocked = false
   }
-  async destroy(next?: ISival): Promise<void> {
+  async destroy(next?: IAny): Promise<void> {
     this.el.classList.add("out")
     await waittime()
     this.el.remove()

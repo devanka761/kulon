@@ -5,8 +5,8 @@ import { eroot, futor, kel, qutor } from "../lib/kel"
 import modal from "../lib/modal"
 import waittime from "../lib/waittime"
 import chat from "../manager/Chat"
-import { IPMC, IPMCConfig } from "../types/db.types"
-import { ISival, SSKelement } from "../types/lib.types"
+import { IPMC, IPMCConfig } from "../types/DBTypes"
+import { IAny, SSKelement } from "../types/LibTypes"
 
 const fingImg = ["fingcra_a.svg", "fingcra_b.svg", "fingcra_c.svg", "fingcra_d.svg"]
 
@@ -32,7 +32,7 @@ export default class FingerprintCracker implements IPMC {
   private puzzle: IPuzzleConfig = { crack: [], attempt: [] }
 
   private el!: HTMLDivElement
-  private navKeyHandler?: (...args: ISival) => ISival
+  private navKeyHandler?: (...args: IAny) => IAny
   private btnCheck!: SSKelement
 
   constructor(config: IPMCConfig) {
@@ -118,7 +118,7 @@ export default class FingerprintCracker implements IPMC {
     const elCloneTarget = futor("[data-target]", this.el)
     const components: IComponent[] = []
 
-    await new Promise((resolve: (...args: ISival) => void) => {
+    await new Promise((resolve: (...args: IAny) => void) => {
       img_1.style.maxWidth = "100%"
       img_1.style.maxHeight = "100%"
       elCloneTarget.appendChild(img_1)
@@ -158,7 +158,7 @@ export default class FingerprintCracker implements IPMC {
       resolve()
     })
 
-    await new Promise((resolve: (...args: ISival) => void) => {
+    await new Promise((resolve: (...args: IAny) => void) => {
       img_2.style.maxWidth = "100%"
       img_2.style.maxHeight = "100%"
       img_2.style.visibility = "hidden"
@@ -303,7 +303,7 @@ export default class FingerprintCracker implements IPMC {
       const scanningId = "scan_" + Date.now().toString()
       const fingscan_img = new Image()
       fingscan_img.src = asset[this.nFingImg[this.imgpar]].src
-      await new Promise((resolve: (...args: ISival) => void) => {
+      await new Promise((resolve: (...args: IAny) => void) => {
         fingscan_img.onload = () => {
           audio.emit({ src: "hack_scanning", action: "play", type: "sfx", options: { id: scanningId } })
 

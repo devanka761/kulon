@@ -1,5 +1,5 @@
-import { IAssetSkins } from "../types/lib.types"
-import { IMapList } from "../types/maps.types"
+import { IAssetSkins } from "../types/LibTypes"
+import { IMapList } from "../types/MapsTypes"
 
 interface InitialWorld {
   maps: IMapList | null

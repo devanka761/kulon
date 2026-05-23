@@ -1,4 +1,4 @@
-import { IMapList } from "../types/maps.types"
+import { IMapList } from "../types/MapsTypes"
 
 const MapList: IMapList = {}
 
