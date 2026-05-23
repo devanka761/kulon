@@ -33,7 +33,15 @@ class PeerMessage {
 
     db.waiting.add({ id: "prologueskip", userId: data.from })
   }
+  prologueTimeOut(data: IAny): void {
+    if (db.pmc?.id === "prologue") {
+      const pmc = db.pmc as Prologue
+      pmc.forceSkipped()
+      return
+    }
 
+    db.waiting.add({ id: "prologuetimeout", userId: data.from })
+  }
   async addStates(data: IAny): Promise<void> {
     if (!data.states) return
     if (!Array.isArray(data.states)) return

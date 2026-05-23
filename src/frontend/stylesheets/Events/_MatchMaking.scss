@@ -142,6 +142,10 @@
               display: flex;
               justify-content: space-between;
               align-items: center;
+              .btn-text {
+                text-align: center;
+                padding: 0 v.$smallPadding;
+              }
               .switch {
                 display: flex;
                 justify-content: center;

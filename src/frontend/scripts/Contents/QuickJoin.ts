@@ -7,6 +7,7 @@ import waittime from "../lib/waittime"
 import xhr from "../lib/xhr"
 import { Game } from "../main/Game"
 import { KeyPressListener } from "../main/KeyPressListener"
+import itemRun from "../Props/itemRun"
 import { IPMC, IPMCConfig } from "../types/DBTypes"
 import { IAny, SSKelement } from "../types/LibTypes"
 
@@ -187,8 +188,16 @@ export default class QuickJoin implements IPMC {
         return
       }
 
-      await modal.alert("FOUND!")
       this.isLocked = false
+
+      this.destroy(
+        itemRun.run("joinRandom", {
+          onComplete: this.onComplete,
+          game: this.game,
+          classBefore: this,
+          job
+        }) as IPMC
+      )
     }
 
     await waittime(300, -5)

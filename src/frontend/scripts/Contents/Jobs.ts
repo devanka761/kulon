@@ -173,7 +173,6 @@ export default class Jobs implements IPMC {
   }
   private checkEmptyList(): void {
     const randomBefore = qutor(".btn-random", this.cardlist)
-    console.log(randomBefore)
     if (randomBefore) this.cardlist.prepend(randomBefore)
 
     if (!randomBefore) {

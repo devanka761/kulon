@@ -46,6 +46,22 @@ class Job {
   getByPlayer(userId: string): IJob | null {
     return this.data.find((item) => item.players.find((usr) => usr.id === userId)) || null
   }
+  getRandom(roomTypes: number[]): IJob | null {
+    const missions = mission_list.filter((room) => roomTypes.includes(room.mode))
+    if (missions.length < 1) return null
+
+    const jobs = this.data.filter((room) => {
+      const mission = missions.find((m) => m.id === room.mission)
+      const status = room.status
+      const invite = room.invite
+      const players = room.players.length
+      return status === 1 && invite === 1 && mission && players < mission.max
+    })
+
+    const job = jobs.sort((a, b) => b.players.length - a.players.length)
+
+    return job[0]
+  }
   get(jobId: string): IJob | null {
     return this.data.find((item) => item.id === jobId) || null
   }
@@ -67,9 +83,9 @@ class Job {
 
     if (this.data[jobIndex].players.every((user) => user.done)) {
       this.upgradeStatus(jobId, 3)
-      const minute1 = Date.now() + 60000
+      const timing1 = Date.now() + 20000
       this.data[jobIndex].players.forEach((user) => {
-        zender("system", user.id, "jobPrepare", { starttime: minute1 })
+        zender("system", user.id, "jobPrepare", { starttime: timing1 })
       })
     }
 

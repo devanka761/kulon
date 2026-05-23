@@ -146,6 +146,27 @@ export async function joinJobByInvite(uid: string, s: IAny): Promise<IRepTempB> 
   return await joinJob(uid, job)
 }
 
+type IRoomTypeConvert = Record<string, number>
+const roomTypeConvert: IRoomTypeConvert = {
+  story: 1,
+  minigame: 2,
+  random: 0
+}
+
+export async function randomJob(uid: string, paramRoomType: string): Promise<IRepTempB> {
+  const roomType: number = roomTypeConvert[paramRoomType] ?? 4
+
+  const roomTypes: number[] = roomType === 0 ? [1, 2] : [roomType]
+
+  const job = dbjob.getRandom(roomTypes)
+  if (!job) return { code: 404, msg: "JOB_ID_NOT_FOUND" }
+  if (job.status > 1) return { code: 404, msg: "JOB_ONGOING" }
+  if (job.invite > 1) return { code: 404, msg: "TM_NOT_PUBLIC_ANYMORE" }
+  if (job.players.find((usr) => usr.id === uid)) return { code: 404 }
+
+  return await joinJob(uid, job)
+}
+
 export async function startJob(uid: string): Promise<IRepTempB> {
   const job = dbjob.getByPlayer(uid)
   if (!job) return { code: 404, msg: "JOB_ID_NOT_FOUND" }

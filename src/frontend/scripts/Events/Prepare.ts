@@ -106,6 +106,8 @@ export default class Prepare implements IPMC {
       isValid = sdate.remain(this.startTime, true)
       this.launchNote.innerHTML = isValid ? `${lang.PRP_TS_TEXT} ${isValid}` : ""
       if (!isValid) {
+        if (chat.formOpened) chat.hide()
+        this.getMeReady(true)
         clearInterval(launchInterval!)
         launchInterval = null
         return this.launch()
@@ -119,18 +121,24 @@ export default class Prepare implements IPMC {
       this.elist.append(card)
     })
   }
+  private getMeReady(isTimeOut?: boolean): void {
+    if (this.meReady) return
+    this.meReady = true
+    this.updatePlayerStatus(db.me.id)
+    const eready = futor(".btn-ready", this.el)
+
+    eready.classList.add("done")
+    eready.innerHTML = lang.PRP_WAITING
+    socket.send("prepareReady")
+    if (isTimeOut) socket.send("prepareTimeOut")
+  }
   private btnListener(): void {
     const eready = futor(".btn-ready", this.el)
 
     eready.onclick = () => {
-      if (this.meReady) return
       if (this.isLocked || chat.formOpened) return
       audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
-      this.meReady = true
-      this.updatePlayerStatus(db.me.id)
-      eready.classList.add("done")
-      eready.innerHTML = lang.PRP_WAITING
-      socket.send("prepareReady")
+      this.getMeReady()
     }
 
     this.enter = new KeyPressListener("enter", () => {
@@ -145,10 +153,20 @@ export default class Prepare implements IPMC {
     }
     this.readylist.push(userId)
   }
+  forceLaunch(): void {
+    if (chat.formOpened) chat.hide()
+    this.getMeReady()
+    if (launchInterval) {
+      clearInterval(launchInterval)
+      launchInterval = null
+    }
+    this.launch()
+  }
 
   updateQueue(): void {
     const waitExit = db.waiting.get("jobexit")
     const waitReady = db.waiting.getMany("prepareready")
+    const waitTimeOut = db.waiting.get("preparetimeout")
 
     if (waitExit) {
       this.aborted(waitExit.user)
@@ -160,6 +178,12 @@ export default class Prepare implements IPMC {
     if (waitReady.length >= 1) {
       waitReady.forEach((usr) => this.updatePlayerStatus(usr.userId))
       db.waiting.removeMany("prepareready")
+      return
+    }
+
+    if (waitTimeOut) {
+      this.forceLaunch()
+      db.waiting.removeMany("preparetimeout")
       return
     }
   }

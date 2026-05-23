@@ -184,6 +184,14 @@ const socketMessage: SocketHandler = {
       zender(uid, usr.id, "prepareReady", {})
     })
   },
+  prepareTimeOut(uid) {
+    const job = dbjob.getByPlayer(uid)
+    if (!job) return
+    job.players.forEach((usr) => {
+      dbjob.setReady(job.id, usr.id)
+      zender(uid, usr.id, "prepareTimeOut", {})
+    })
+  },
   usePhone(uid) {
     if (prog.isDone(uid, "firstphone")) return
     prog.update(uid, "firstphone", 1)

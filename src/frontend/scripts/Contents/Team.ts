@@ -213,7 +213,7 @@ export default class Team implements IPMC {
           onComplete: this.onComplete,
           game: this.game,
           classBefore: this,
-          mission: mission_list.find((k) => k.id === job.mission),
+          mission: job.mission,
           code: job.code
         }) as IPMC
       )

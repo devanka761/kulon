@@ -76,14 +76,8 @@ app.get("/editor", (req: Request, res: Response) => {
   res.render("editor")
 })
 
-const legals = ["privacy", "terms", "license"]
-
-app.get("/legal/:legal_text", (req: Request, res: Response, next: NextFunction) => {
-  const { legal_text } = req.params
-
-  if (legals.find((legal) => legal === legal_text.toString())) return res.render(legal_text.toString())
-
-  return next()
+app.get("/license", (req: Request, res: Response) => {
+  return res.render("license")
 })
 
 app.get("/", (req: Request, res: Response) => {

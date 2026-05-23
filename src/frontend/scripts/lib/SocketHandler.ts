@@ -280,6 +280,15 @@ class SocketHandler {
 
     db.waiting.add({ id: "prepareready", userId: data.from })
   }
+  prepareTimeOut(data: IAny): void {
+    if (db.pmc?.id === "prepare") {
+      const pmc = db.pmc as Prepare
+      pmc.forceLaunch()
+      return
+    }
+
+    db.waiting.add({ id: "preparetimeout", userId: data.from })
+  }
   jobLaunch(): void {
     if (db.pmc?.id === "prepare") {
       const pmc = db.pmc as Prepare
