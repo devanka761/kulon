@@ -16,12 +16,12 @@ export class Player extends Person {
   update(deltaTime: number, keys: IKeyHold, walls: MapWalls, game: Game): void {
     if (game.isCutscenePlaying) {
       this.updateBehavior(deltaTime, game)
-      this.animate(deltaTime)
+      this.animate(deltaTime, game)
       return
     }
 
     const handlePlayerMovement = () => {
-      if (chat.formOpened) {
+      if (chat.formOpened || this.isAttacking) {
         this.isMoving = false
         return
       }
@@ -75,7 +75,7 @@ export class Player extends Person {
       handlePlayerMovement()
     }
 
-    this.animate(deltaTime)
+    this.animate(deltaTime, game)
 
     const now = Date.now()
 

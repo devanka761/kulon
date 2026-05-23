@@ -10,6 +10,7 @@ import itemRun from "../Props/itemRun"
 import peerMessage from "../lib/PeerMessage"
 import db from "../data/db"
 import chat from "../manager/Chat"
+import peers from "../data/Peers"
 import introEvents from "../../../../public/json/main/intro.json"
 import LocalList from "../data/LocalList"
 import socket from "../lib/Socket"
@@ -59,7 +60,22 @@ export class Game {
   }
 
   private keypressAction(): void {
-    this.keyListeners.push(new KeyPressListener("escape", () => this.openPhone()), new KeyPressListener("t", () => chat.open()), new KeyPressListener("e", this.checkForInteraction.bind(this)))
+    this.keyListeners.push(
+      new KeyPressListener("escape", () => this.openPhone()),
+      new KeyPressListener("t", () => chat.open()),
+      new KeyPressListener("e", this.checkForInteraction.bind(this)),
+      new KeyPressListener("k", () => {
+        if (!this.isPaused && !this.isCutscenePlaying) {
+          this.player.attack()
+          peers.send("playerAttack", {
+            x: this.player.x,
+            y: this.player.y,
+            mapId: this.map.mapId,
+            direction: this.player.direction
+          })
+        }
+      })
+    )
 
     this.kulonUI.phone.onClick(() => this.openPhone())
     this.kulonUI.chat.onClick(() => chat.open())

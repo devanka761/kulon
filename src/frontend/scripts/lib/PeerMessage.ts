@@ -120,6 +120,20 @@ class PeerMessage {
     }
   }
 
+  playerAttack(data: IAny): void {
+    const myMap = this.game.map.mapId
+    if (data.mapId !== myMap) return
+
+    const remotePlayer = this.game.map.gameObjects[`crew_${data.from}`] as Person
+
+    if (remotePlayer) {
+      remotePlayer.x = data.x
+      remotePlayer.y = data.y
+      remotePlayer.direction = data.direction
+      remotePlayer.attack()
+    }
+  }
+
   objMapChange(data: IAny): void {
     const { who, mapId, x, y } = data
     if (!who || !mapId || !x || !y) return

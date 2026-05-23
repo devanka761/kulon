@@ -57,7 +57,16 @@ export class Person {
     "walk-right": { start: 0, end: 5, row: 2, interval: 0.14 },
     "walk-up": { start: 6, end: 11, row: 2, interval: 0.14 },
     "walk-left": { start: 12, end: 17, row: 2, interval: 0.14 },
-    "walk-down": { start: 18, end: 23, row: 2, interval: 0.14 }
+    "walk-down": { start: 18, end: 23, row: 2, interval: 0.14 },
+
+    "hit-right": { start: 0, end: 5, row: 15, interval: 0.04 },
+    "sword-right": { start: 0, end: 5, row: 0, interval: 0.04 },
+    "hit-up": { start: 6, end: 11, row: 15, interval: 0.04 },
+    "sword-up": { start: 6, end: 11, row: 0, interval: 0.04 },
+    "hit-left": { start: 12, end: 17, row: 15, interval: 0.04 },
+    "sword-left": { start: 12, end: 17, row: 0, interval: 0.04 },
+    "hit-down": { start: 18, end: 23, row: 15, interval: 0.04 },
+    "sword-down": { start: 18, end: 23, row: 0, interval: 0.04 }
   }
   private idleAnimationInterval: number = 0.18
   private frameTimer: number = 0
@@ -68,6 +77,9 @@ export class Person {
   movingProgressRemaining: number = 0
   currentAnimationName: string
   walkStopTimer: ReturnType<typeof setTimeout> | null = null
+  isAttacking: boolean = false
+  hasLunged: boolean = false
+  swordImage!: HTMLImageElement
 
   footstep: "a" | "b"
   constructor(config: IGameObjectPerson, footstep: "a" | "b") {
@@ -76,6 +88,11 @@ export class Person {
     this.footstep = footstep
 
     const images = typeof config.src === "string" ? [config.src] : config.src
+
+    const swordImage = new Image()
+    swordImage.src = asset.Sword.src
+    this.swordImage = swordImage
+
     const imagePromises = images
       .filter((src) => src)
       .map((src, i) => {
@@ -127,7 +144,7 @@ export class Person {
     } else {
       this.updateBehavior(deltaTime, game)
     }
-    this.animate(deltaTime)
+    this.animate(deltaTime, game)
   }
 
   updateRemote(_deltaTime: number): void {
@@ -224,11 +241,27 @@ export class Person {
     Object.values(this.images).forEach((image) => {
       ctx.drawImage(image, this.width * this.frameX, this.height * this.frameY, this.width, this.height, Math.round(this.x), Math.round(drawY), this.width, this.height)
     })
+
+    if (this.isAttacking && this.swordImage) {
+      const swordAnimName = `sword-${this.direction}`
+      const swordAnim = this.animationFrames[swordAnimName]
+      if (swordAnim) {
+        const hitAnimName = `hit-${this.direction}`
+        const hitAnim = this.animationFrames[hitAnimName]
+        const progress = this.frameX - hitAnim.start
+        const swordFrameX = swordAnim.start + progress
+        ctx.drawImage(this.swordImage, this.width * swordFrameX, this.height * swordAnim.row, this.width, this.height, Math.round(this.x), Math.round(drawY), this.width, this.height)
+      }
+    }
   }
 
-  animate(deltaTime: number): void {
+  animate(deltaTime: number, game: Game): void {
     this.frameTimer += deltaTime
-    const animationName: keyof IAnimationFrames = this.isMoving ? `walk-${this.direction}` : `idle-${this.direction}`
+    let animationName: keyof IAnimationFrames = this.isMoving ? `walk-${this.direction}` : `idle-${this.direction}`
+
+    if (this.isAttacking) {
+      animationName = `hit-${this.direction}`
+    }
 
     if (this.currentAnimationName !== animationName) {
       this.currentAnimationName = animationName
@@ -236,17 +269,39 @@ export class Person {
       this.frameX = this.animationFrames[animationName].start
     }
     const currentAnimation = this.animationFrames[animationName]
-    const interval = this.isMoving ? currentAnimation.interval : this.idleAnimationInterval
+    const interval = this.isMoving || this.isAttacking ? currentAnimation.interval : this.idleAnimationInterval
 
     this.frameY = currentAnimation.row
     if (this.frameTimer >= interval) {
       this.frameTimer = 0
       this.frameX++
       if (this.frameX > currentAnimation.end) {
-        this.frameX = currentAnimation.start
+        if (this.isAttacking) {
+          this.isAttacking = false
+          this.frameX = currentAnimation.end
+        } else {
+          this.frameX = currentAnimation.start
+        }
       }
 
-      if (this.isMoving && footsteps.includes(this.frameX)) {
+      if (this.isAttacking && !this.hasLunged) {
+        if (this.frameX === currentAnimation.start + 4) {
+          this.hasLunged = true
+          let nextX = this.x
+          let nextY = this.y
+          if (this.direction === "up") nextY -= 3
+          if (this.direction === "down") nextY += 3
+          if (this.direction === "left") nextX -= 3
+          if (this.direction === "right") nextX += 3
+
+          if (game && game.map && !this.isColliding(nextX, nextY, game.map.walls, game.map.gameObjects)) {
+            this.x = nextX
+            this.y = nextY
+          }
+        }
+      }
+
+      if (this.isMoving && !this.isAttacking && footsteps.includes(this.frameX)) {
         this.audioFootSteps()
       }
     }
@@ -328,5 +383,14 @@ export class Person {
 
   startBehavior(_state: { map: GameMap }, behavior: IPersonBehavior): void {
     this.behaviorLoop.push(behavior)
+  }
+
+  attack(): void {
+    if (this.isAttacking) return
+    this.isAttacking = true
+    this.hasLunged = false
+    this.frameTimer = 0
+    this.currentAnimationName = `hit-${this.direction}`
+    this.frameX = this.animationFrames[this.currentAnimationName].start
   }
 }
