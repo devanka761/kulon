@@ -1,7 +1,7 @@
 import asset from "../data/assets"
 import { eroot, futor, kel, qutor } from "../lib/kel"
 import waittime from "../lib/waittime"
-import { INewAreaConfig } from "../types/editor.types"
+import { INewAreaConfig } from "../types/EditorTypes"
 import Editor from "./Editor"
 
 export default class NewArea {

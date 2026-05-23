@@ -32,6 +32,7 @@ interface IMatchMakingConfig extends IPMCConfig {
 export default class MatchMaking implements IPMC {
   id: string = "matchmaking"
   isLocked: boolean = false
+  isStarting: boolean = false
   onComplete: () => void
 
   private mission: IMissionList
@@ -179,10 +180,18 @@ export default class MatchMaking implements IPMC {
     if (isDeleting) {
       const userId = typeof user === "string" ? user : user.id
       const friend = this.members.getFriend(userId)
+      const crew = this.members.getCrew(userId)
       if (friend) friend.updateStatus("INITIAL")
       this.members.removeOne("crew", userId)
       peers.close(userId)
       this.updateStart()
+      if (this.isStarting && crew) {
+        this.isLocked = true
+        await modal.abort()
+        await modal.alert(lang.PRP_ON_LEFT.replace("{user}", crew.username))
+        this.isLocked = false
+        this.aborted()
+      }
       if (userId === db.job.host) {
         this.aborted()
         return
@@ -395,7 +404,7 @@ export default class MatchMaking implements IPMC {
   }
   updateQueue(): void {
     const waitKick = db.waiting.get("jobkick")
-    const waitExit = db.waiting.get("jobexit")
+    const waitExit = db.waiting.getMany("jobexit")
     const waitjoin = db.waiting.getMany("jobjoin")
     const waitStart = db.waiting.get("jobstart")
 
@@ -405,9 +414,9 @@ export default class MatchMaking implements IPMC {
       return
     }
 
-    if (waitExit) {
-      this.updateCrew(waitExit.user, true)
-      db.waiting.remove("jobexit")
+    if (waitExit.length >= 1) {
+      waitExit.forEach((usr) => this.updateCrew(usr.user, true))
+      db.waiting.removeMany("jobexit")
       return
     }
 
@@ -450,6 +459,7 @@ export default class MatchMaking implements IPMC {
     this.parseData()
   }
   private async parseData(): Promise<void> {
+    this.isStarting = true
     this.btnStart.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> ${lang.DOWNLOADING}`
 
     const nextAssets = await xhr.forceGet(`/json/assets/st_${this.mission.map}.json?v=${Date.now()}`)
@@ -482,6 +492,7 @@ export default class MatchMaking implements IPMC {
     }
 
     this.btnStart.innerHTML = `${lang.PRP_WAITING}`
+
     socket.send("jobDoneLoading")
   }
   async prepare(starttime: number): Promise<void> {
@@ -507,6 +518,10 @@ export default class MatchMaking implements IPMC {
     await modal.alert(lang.JOB_DISBANDED)
     this.isLocked = false
     db.job.reset()
+    if (db.pmx) {
+      db.pmx.destroy()
+      db.pmx = undefined
+    }
     peers.closeAll()
     this.resumeMap()
     this.destroy()

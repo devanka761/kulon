@@ -21,6 +21,7 @@ import clientBuild from "../lib/clientBuild"
 import Account from "../models/AccountModel"
 import webhook from "../lib/webhook"
 import { exitCurrentLobby } from "./LobbyController"
+import dbjob from "../main/job"
 
 function initSocketClient(uid: string): ISocketConfig {
   zender("system", uid, "newLogin", { userId: uid })
@@ -86,6 +87,8 @@ export async function getMe(uid: string): Promise<IRepTempB> {
     build: clientBuild.buildVersion,
     package: clientBuild.packageVersion
   }
+
+  dbjob.exit(uid)
 
   return { code: 200, data: dataToReturn }
 }

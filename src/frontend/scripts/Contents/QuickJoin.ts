@@ -176,6 +176,14 @@ export default class QuickJoin implements IPMC {
       this.isLocked = true
       this.writeLoading()
 
+      db.waiting.reset()
+      db.invites.reset()
+      db.job.reset()
+      if (db.pmx) {
+        db.pmx.destroy()
+        db.pmx = undefined
+      }
+
       const job = await xhr.get(endpoint)
 
       await waittime(1000)

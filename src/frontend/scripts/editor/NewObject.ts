@@ -2,9 +2,9 @@ import asset from "../data/assets"
 import modal from "../lib/modal"
 import NewEvent from "./NewEvent"
 import Editor from "./Editor"
-import { IAny } from "../types/lib.types"
+import { IAny } from "../types/LibTypes"
 import { eroot, futor, kel, qutor } from "../lib/kel"
-import { GameObjectData } from "../types/maps.types"
+import { GameObjectData } from "../types/MapsTypes"
 import waittime from "../lib/waittime"
 
 export interface INewObjectConfig {

@@ -243,6 +243,7 @@ export default class Prologue implements IPMC {
   updateQueue(): void {
     const waitExit = db.waiting.get("jobexit")
     const waitSkip = db.waiting.getMany("prologueskip")
+    const waitTimeOut = db.waiting.get("prologuetimeout")
 
     if (waitExit) {
       this.aborted(waitExit.user)
@@ -252,6 +253,12 @@ export default class Prologue implements IPMC {
 
     if (waitSkip.length >= 1) {
       waitSkip.forEach((usr) => this.updateSkipped(usr.userId))
+      return
+    }
+
+    if (waitTimeOut) {
+      this.forceSkipped()
+      db.waiting.removeMany("prologuetimeout")
       return
     }
   }
