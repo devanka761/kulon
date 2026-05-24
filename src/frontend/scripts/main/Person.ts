@@ -118,10 +118,9 @@ export class Person {
     this.speed = 60
 
     this.isRemote = config.isRemote || false
-    if (this.isRemote) {
-      this.targetX = this.x
-      this.targetY = this.y
-    }
+    this.targetX = this.x
+    this.targetY = this.y
+
     this.enemy = config.enemy || false
     if (this.enemy) {
       this.speed = 60 * 0.7
@@ -474,7 +473,7 @@ export class Person {
       const dx = p.x - this.x
       const dy = p.y - this.y
       const distance = Math.sqrt(dx * dx + dy * dy)
-      if (distance < minDistance && distance > 16) {
+      if (distance < minDistance) {
         minDistance = distance
         closestPlayer = p
       }
@@ -494,6 +493,13 @@ export class Person {
       const dx = p.x - this.x
       const dy = p.y - this.y
       const preferredDir: DirectionType = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "right" : "left") : dy > 0 ? "down" : "up"
+
+      if (minDistance <= 16) {
+        if (minDistance > 0) {
+          this.direction = preferredDir
+        }
+        return
+      }
 
       if (preferredDir) {
         this.direction = preferredDir
