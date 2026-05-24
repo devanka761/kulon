@@ -134,6 +134,29 @@ class PeerMessage {
     }
   }
 
+  npcMove(data: IAny): void {
+    if (data.npcId === "hero") return
+
+    const myMap = this.game.map.mapId
+
+    if (MapList[data.mapId] && MapList[data.mapId].configObjects[data.npcId]) {
+      MapList[data.mapId].configObjects[data.npcId].x = data.x / 16
+      MapList[data.mapId].configObjects[data.npcId].y = data.y / 16
+      MapList[data.mapId].configObjects[data.npcId].direction = data.direction
+    }
+
+    if (data.mapId !== myMap) return
+
+    const npc = this.game.map.gameObjects[data.npcId] as Person
+    if (npc) {
+      npc.x = data.x
+      npc.y = data.y
+      npc.direction = data.direction
+      npc.targetX = data.targetX
+      npc.targetY = data.targetY
+    }
+  }
+
   objMapChange(data: IAny): void {
     const { who, mapId, x, y } = data
     if (!who || !mapId || !x || !y) return
@@ -162,6 +185,8 @@ class PeerMessage {
     const remotePlayerObject = this.game.map.gameObjects[`crew_${data.from}`] as Person
     const peerData = peers.get(data.from)
 
+    const wasHost = this.game.map.isHost()
+
     if (peerData) {
       peerData.setX(data.x)
       peerData.setY(data.y)
@@ -171,6 +196,10 @@ class PeerMessage {
 
     if (data.mapId === myMap) {
       if (myMap === "kulonSafeHouse") return
+      if (wasHost) {
+        this.game.map.broadcastAllNpcs(data.from)
+      }
+
       if (!remotePlayerObject) {
         const peer = peers.get(data.from)!.user
         if (peer) {

@@ -1,4 +1,5 @@
 import asset from "../data/assets"
+import peers from "../data/Peers"
 import { playRandomFootstep } from "../manager/randomPlays"
 import { IAny } from "../types/LibTypes"
 import { DirectionType, IGameObjectPerson, IObjectEvent, IObjectTalk, MapGameObjects, MapWalls } from "../types/MapsTypes"
@@ -6,6 +7,7 @@ import { Game } from "./Game"
 import { GameMap } from "./GameMap"
 import { IKeyHold } from "./InputHandler"
 import { Prop } from "./Prop"
+import MapList from "../data/MapList"
 
 const TILE_SIZE = 16
 
@@ -33,6 +35,7 @@ interface IPersonBehavior extends IObjectEvent {
 }
 
 export class Person {
+  id?: string
   x: number
   y: number
   width = 16
@@ -85,6 +88,7 @@ export class Person {
 
   footstep: "a" | "b"
   constructor(config: IGameObjectPerson, footstep: "a" | "b") {
+    this.id = config.id
     this.x = config.x || 0
     this.y = config.y || 0
     this.footstep = footstep
@@ -145,24 +149,32 @@ export class Person {
   }
 
   update(deltaTime: number, keys: IKeyHold, walls: MapWalls, game: Game): void {
-    if (this.isRemote) {
+    let actingRemote = this.isRemote
+    const isPlayer = (this as IAny).isPlayer
+    if (!isPlayer && !this.isRemote) {
+      actingRemote = !game.map.isHost()
+    }
+
+    if (actingRemote) {
       this.updateRemote(deltaTime)
     } else {
       this.updateBehavior(deltaTime, game)
+      this.targetX = this.x
+      this.targetY = this.y
     }
     this.animate(deltaTime, game)
   }
 
-  updateRemote(_deltaTime: number): void {
+  updateRemote(deltaTime: number): void {
     const dx = this.targetX - this.x
     const dy = this.targetY - this.y
     const distance = Math.sqrt(dx * dx + dy * dy)
 
-    const lerpFactor = 0.2
-
     if (distance > 1) {
-      this.x += dx * lerpFactor
-      this.y += dy * lerpFactor
+      const moveAmount = Math.min(this.speed * deltaTime, distance)
+      const ratio = moveAmount / distance
+      this.x += dx * ratio
+      this.y += dy * ratio
       this.isMoving = true
       if (this.walkStopTimer) {
         clearTimeout(this.walkStopTimer)
@@ -172,9 +184,6 @@ export class Person {
         this.isMoving = false
       }, 100)
     }
-    // else {
-    //   setTimeout(() => (this.isMoving = false), 150)
-    // }
   }
 
   updateBehavior(deltaTime: number, game: Game): void {
@@ -200,6 +209,9 @@ export class Person {
           this.walkStopTimer = null
         }
         this.movingProgressRemaining = TILE_SIZE
+        const targetX = this.x + (this.direction === "right" ? TILE_SIZE : this.direction === "left" ? -TILE_SIZE : 0)
+        const targetY = this.y + (this.direction === "down" ? TILE_SIZE : this.direction === "up" ? -TILE_SIZE : 0)
+        this.broadcastNpcMove(game, targetX, targetY)
       }
     } else if (behavior.type === "stand") {
       this.direction = behavior.direction!
@@ -207,6 +219,7 @@ export class Person {
 
       if (!behavior.isTimerStarted) {
         behavior.isTimerStarted = true
+        this.broadcastNpcMove(game, this.x, this.y)
         setTimeout(() => {
           const completedBehavior = this.behaviorLoop.shift()
           if (completedBehavior && completedBehavior.onComplete) {
@@ -428,14 +441,58 @@ export class Person {
     this.frameX = this.animationFrames[this.currentAnimationName].start
   }
 
+  broadcastNpcMove(game: Game, targetX: number, targetY: number): void {
+    if (!this.id) return
+    const isPlayer = (this as IAny).isPlayer
+    if (isPlayer || this.id === "hero") return
+
+    const mapId = game.map.mapId
+    if (MapList[mapId] && MapList[mapId].configObjects[this.id]) {
+      MapList[mapId].configObjects[this.id].x = this.x / 16
+      MapList[mapId].configObjects[this.id].y = this.y / 16
+      MapList[mapId].configObjects[this.id].direction = this.direction
+    }
+
+    peers.send("npcMove", {
+      npcId: this.id,
+      mapId: mapId,
+      x: this.x,
+      y: this.y,
+      direction: this.direction,
+      targetX,
+      targetY
+    })
+  }
+
   updateAI(game: Game): void {
     if (!game.player || game.isCutscenePlaying || game.isPaused || this.isRemote) return
 
-    const dx = game.player.x - this.x
-    const dy = game.player.y - this.y
-    const distance = Math.sqrt(dx * dx + dy * dy)
+    let closestPlayer: { x: number; y: number } | null = null
+    let minDistance = 120
 
-    if (distance < 120 && distance > 16) {
+    const checkPlayer = (p: { x: number; y: number }) => {
+      const dx = p.x - this.x
+      const dy = p.y - this.y
+      const distance = Math.sqrt(dx * dx + dy * dy)
+      if (distance < minDistance && distance > 16) {
+        minDistance = distance
+        closestPlayer = p
+      }
+    }
+
+    if (game.player) checkPlayer(game.player)
+
+    for (const key in game.map.gameObjects) {
+      if (key.startsWith("crew_")) {
+        const remotePlayer = game.map.gameObjects[key]
+        if (remotePlayer) checkPlayer(remotePlayer)
+      }
+    }
+
+    if (closestPlayer) {
+      const p = closestPlayer as { x: number; y: number }
+      const dx = p.x - this.x
+      const dy = p.y - this.y
       const preferredDir: DirectionType = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "right" : "left") : dy > 0 ? "down" : "up"
 
       if (preferredDir) {
@@ -446,6 +503,9 @@ export class Person {
             this.walkStopTimer = null
           }
           this.movingProgressRemaining = TILE_SIZE
+          const targetX = this.x + (this.direction === "right" ? TILE_SIZE : this.direction === "left" ? -TILE_SIZE : 0)
+          const targetY = this.y + (this.direction === "down" ? TILE_SIZE : this.direction === "up" ? -TILE_SIZE : 0)
+          this.broadcastNpcMove(game, targetX, targetY)
         } else {
           const secondaryDir: DirectionType = preferredDir === "right" || preferredDir === "left" ? (dy > 0 ? "down" : "up") : dx > 0 ? "right" : "left"
 
@@ -456,6 +516,9 @@ export class Person {
               this.walkStopTimer = null
             }
             this.movingProgressRemaining = TILE_SIZE
+            const targetX = this.x + (this.direction === "right" ? TILE_SIZE : this.direction === "left" ? -TILE_SIZE : 0)
+            const targetY = this.y + (this.direction === "down" ? TILE_SIZE : this.direction === "up" ? -TILE_SIZE : 0)
+            this.broadcastNpcMove(game, targetX, targetY)
           } else {
             this.direction = preferredDir
           }

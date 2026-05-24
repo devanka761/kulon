@@ -10,11 +10,12 @@
     {
       "matchDepTypes": ["devDependencies"],
       "addLabels": ["dev-dependencies"],
+      "matchUpdateTypes": ["minor"],
       "automerge": true,
       "automergeType": "branch"
     },
     {
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": ["minor"],
       "matchCurrentVersion": "!/^0/",
       "automerge": true,
       "automergeType": "branch"

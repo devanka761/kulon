@@ -8,6 +8,8 @@ import audio from "../lib/AudioHandler"
 import { Prop } from "./Prop"
 import { ICutscenes, IGameObjectData, IGameObjectInteractable, IGameObjectPerson, IGameObjects, IGameObjectTeleporter, IMapConfig, IWalls, MapGameObjects, MapWalls } from "../types/MapsTypes"
 import MapList from "../data/MapList"
+import db from "../data/db"
+import { IAny } from "../types/LibTypes"
 
 type Resolve = (val?: string) => void
 
@@ -59,6 +61,19 @@ export class GameMap {
     this.playSound()
   }
 
+  getHostId(): string {
+    if (!db.me) return ""
+    const playerIds = peers.arr.filter((p) => p.mapId === this.mapId).map((p) => p.user.id)
+    playerIds.push(db.me.id)
+    playerIds.sort()
+    return playerIds[0]
+  }
+
+  isHost(): boolean {
+    if (!db.me) return false
+    return this.getHostId() === db.me.id
+  }
+
   playSound(): void {
     audio.emit({
       action: "play",
@@ -97,6 +112,7 @@ export class GameMap {
       if (objectConfig.type === "Person") {
         const pixelConfig = {
           ...objectConfig,
+          id: key,
           x: objectConfig.x * TILE_SIZE,
           y: objectConfig.y * TILE_SIZE
         }
@@ -109,6 +125,7 @@ export class GameMap {
       } else if (objectConfig.type === "Interactable") {
         const pixelConfig = {
           ...objectConfig,
+          id: key,
           x: objectConfig.x * TILE_SIZE,
           y: objectConfig.y * TILE_SIZE
         }
@@ -117,6 +134,7 @@ export class GameMap {
       } else if (objectConfig.type === "Prop") {
         const pixelConfig = {
           ...objectConfig,
+          id: key,
           x: objectConfig.x * TILE_SIZE,
           y: objectConfig.y * TILE_SIZE
         }
@@ -125,6 +143,7 @@ export class GameMap {
       } else if (objectConfig.type === "Teleporter") {
         const pixelConfig = {
           ...objectConfig,
+          id: key,
           x: objectConfig.x * TILE_SIZE,
           y: objectConfig.y * TILE_SIZE
         }
@@ -181,5 +200,25 @@ export class GameMap {
 
   getPlayer() {
     return Object.values(this.gameObjects).find((obj) => obj instanceof Player) as Player
+  }
+
+  broadcastAllNpcs(targetUserId: string): void {
+    Object.keys(this.gameObjects).forEach((key) => {
+      const obj = this.gameObjects[key]
+      const isPlayer = (obj as IAny).isPlayer
+      if (obj instanceof Person && !obj.isRemote && !isPlayer) {
+        if (obj.id) {
+          peers.sendOne(targetUserId, "npcMove", {
+            npcId: obj.id,
+            mapId: this.mapId,
+            x: obj.x,
+            y: obj.y,
+            direction: obj.direction,
+            targetX: obj.x,
+            targetY: obj.y
+          })
+        }
+      }
+    })
   }
 }
