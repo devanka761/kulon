@@ -70,7 +70,12 @@ export class Person {
     "hit-left": { start: 12, end: 17, row: 15, interval: 0.04 },
     "sword-left": { start: 12, end: 17, row: 0, interval: 0.04 },
     "hit-down": { start: 18, end: 23, row: 15, interval: 0.04 },
-    "sword-down": { start: 18, end: 23, row: 0, interval: 0.04 }
+    "sword-down": { start: 18, end: 23, row: 0, interval: 0.04 },
+
+    "hurt-right": { start: 0, end: 2, row: 19, interval: 0.1 },
+    "hurt-up": { start: 3, end: 5, row: 19, interval: 0.1 },
+    "hurt-left": { start: 6, end: 8, row: 19, interval: 0.1 },
+    "hurt-down": { start: 9, end: 11, row: 19, interval: 0.1 }
   }
   private idleAnimationInterval: number = 0.18
   private frameTimer: number = 0
@@ -81,6 +86,7 @@ export class Person {
   movingProgressRemaining: number = 0
   currentAnimationName: string
   walkStopTimer: ReturnType<typeof setTimeout> | null = null
+  isHurting: boolean = false
   isAttacking: boolean = false
   hasLunged: boolean = false
   swordImage!: HTMLImageElement
@@ -282,6 +288,8 @@ export class Person {
 
     if (this.isAttacking) {
       animationName = `hit-${this.direction}`
+    } else if (this.isHurting) {
+      animationName = `hurt-${this.direction}`
     }
 
     if (this.currentAnimationName !== animationName) {
@@ -290,7 +298,7 @@ export class Person {
       this.frameX = this.animationFrames[animationName].start
     }
     const currentAnimation = this.animationFrames[animationName]
-    const interval = this.isMoving || this.isAttacking ? currentAnimation.interval : this.idleAnimationInterval
+    const interval = this.isMoving || this.isAttacking || this.isHurting ? currentAnimation.interval : this.idleAnimationInterval
 
     this.frameY = currentAnimation.row
     if (this.frameTimer >= interval) {
@@ -299,6 +307,9 @@ export class Person {
       if (this.frameX > currentAnimation.end) {
         if (this.isAttacking) {
           this.isAttacking = false
+          this.frameX = currentAnimation.end
+        } else if (this.isHurting) {
+          this.isHurting = false
           this.frameX = currentAnimation.end
         } else {
           this.frameX = currentAnimation.start
@@ -322,7 +333,7 @@ export class Person {
         }
       }
 
-      if (this.isMoving && !this.isAttacking && footsteps.includes(this.frameX)) {
+      if (this.isMoving && !this.isAttacking && !this.isHurting && footsteps.includes(this.frameX)) {
         this.audioFootSteps()
       }
     }
@@ -432,11 +443,19 @@ export class Person {
   }
 
   attack(): void {
-    if (this.isAttacking) return
+    if (this.isAttacking || this.isHurting) return
     this.isAttacking = true
     this.hasLunged = false
     this.frameTimer = 0
     this.currentAnimationName = `hit-${this.direction}`
+    this.frameX = this.animationFrames[this.currentAnimationName].start
+  }
+
+  hurt(): void {
+    if (this.isHurting || this.isAttacking) return
+    this.isHurting = true
+    this.frameTimer = 0
+    this.currentAnimationName = `hurt-${this.direction}`
     this.frameX = this.animationFrames[this.currentAnimationName].start
   }
 
