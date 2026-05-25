@@ -135,7 +135,7 @@ export default class Prologue implements IPMC {
     let remainTime = 9
 
     skipInterval = setInterval(() => {
-      const timingText = `0:0${remainTime}`
+      const timingText = `0${remainTime}`
       const skipText = `<div class="keyinfo">enter</div> ${lang.CHAR_CREATION_CONTINUE}`
       const actionText = this.skipped.find((usr) => usr === db.me.id) ? lang.PRP_WAITING : skipText
       if (remainTime <= 0) {

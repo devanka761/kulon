@@ -63,14 +63,14 @@ export class Person {
     "walk-left": { start: 12, end: 17, row: 2, interval: 0.14 },
     "walk-down": { start: 18, end: 23, row: 2, interval: 0.14 },
 
-    "hit-right": { start: 0, end: 5, row: 15, interval: 0.04 },
-    "sword-right": { start: 0, end: 5, row: 0, interval: 0.04 },
-    "hit-up": { start: 6, end: 11, row: 15, interval: 0.04 },
-    "sword-up": { start: 6, end: 11, row: 0, interval: 0.04 },
-    "hit-left": { start: 12, end: 17, row: 15, interval: 0.04 },
-    "sword-left": { start: 12, end: 17, row: 0, interval: 0.04 },
-    "hit-down": { start: 18, end: 23, row: 15, interval: 0.04 },
-    "sword-down": { start: 18, end: 23, row: 0, interval: 0.04 },
+    "hit-right": { start: 0, end: 5, row: 15, interval: 0.07 },
+    "sword-right": { start: 0, end: 5, row: 0, interval: 0.07 },
+    "hit-up": { start: 6, end: 11, row: 15, interval: 0.07 },
+    "sword-up": { start: 6, end: 11, row: 0, interval: 0.07 },
+    "hit-left": { start: 12, end: 17, row: 15, interval: 0.07 },
+    "sword-left": { start: 12, end: 17, row: 0, interval: 0.07 },
+    "hit-down": { start: 18, end: 23, row: 15, interval: 0.07 },
+    "sword-down": { start: 18, end: 23, row: 0, interval: 0.07 },
 
     "hurt-right": { start: 0, end: 2, row: 19, interval: 0.1 },
     "hurt-up": { start: 3, end: 5, row: 19, interval: 0.1 },
@@ -90,6 +90,7 @@ export class Person {
   isAttacking: boolean = false
   hasLunged: boolean = false
   swordImage!: HTMLImageElement
+  following: boolean = false
   enemy: boolean = false
 
   footstep: "a" | "b"
@@ -127,10 +128,11 @@ export class Person {
     this.targetX = this.x
     this.targetY = this.y
 
-    this.enemy = config.enemy || false
-    if (this.enemy) {
-      this.speed = 60 * 0.7
+    this.following = config.following || false
+    if (this.following) {
+      this.speed = 60 * 0.5
     }
+    this.enemy = config.enemy || false
 
     this.frameX = 18
     this.frameY = 1
@@ -198,7 +200,7 @@ export class Person {
     }
 
     if (this.behaviorLoop.length === 0) {
-      if (this.enemy) {
+      if (this.following) {
         this.updateAI(game)
       }
       return
@@ -326,7 +328,7 @@ export class Person {
           if (this.direction === "left") nextX -= 3
           if (this.direction === "right") nextX += 3
 
-          if (game && game.map && !this.isColliding(nextX, nextY, game.map.walls, game.map.gameObjects)) {
+          if (game && game.map && !this.isColliding(nextX, nextY, game.map.walls, game.map.gameObjects, game)) {
             this.x = nextX
             this.y = nextY
           }
@@ -359,7 +361,7 @@ export class Person {
     }
   }
 
-  isColliding(nextX: number, nextY: number, walls: MapWalls, gameObjects: MapGameObjects): boolean {
+  isColliding(nextX: number, nextY: number, walls: MapWalls, gameObjects: MapGameObjects, game?: Game, ignoreTriggers?: boolean): boolean {
     const characterBox = {
       x: nextX + this.collisionBox.xOffset,
       y: nextY + this.collisionBox.yOffset,
@@ -405,19 +407,79 @@ export class Person {
       }
 
       if (characterBox.x < objBox.x + objBox.width && characterBox.x + characterBox.width > objBox.x && characterBox.y < objBox.y + objBox.height && characterBox.y + characterBox.height > objBox.y) {
+        if (ignoreTriggers) return true
+
         const isThisPlayer = (this as IAny).isPlayer
         const isObjPlayer = (obj as IAny).isPlayer
 
-        if (isThisPlayer && obj instanceof Person && obj.enemy) {
-          if (typeof (this as IAny).onEnemyCollision === "function") {
-            ;(this as IAny).onEnemyCollision(obj)
+        if (obj instanceof Person) {
+          const isThisNPC = !isThisPlayer
+          const isObjNPC = !isObjPlayer
+
+          if ((isThisPlayer && isObjNPC) || (isThisNPC && isObjPlayer)) {
+            const player = isThisPlayer ? this : obj
+            const npc = isThisPlayer ? obj : this
+            if (!npc.enemy) break
+
+            const dx = player.x - npc.x
+            const dy = player.y - npc.y
+
+            let isFacingNPC = false
+            if (player.direction === "up" && dy > 0 && Math.abs(dx) <= 16) isFacingNPC = true
+            else if (player.direction === "down" && dy < 0 && Math.abs(dx) <= 16) isFacingNPC = true
+            else if (player.direction === "left" && dx > 0 && Math.abs(dy) <= 16) isFacingNPC = true
+            else if (player.direction === "right" && dx < 0 && Math.abs(dy) <= 16) isFacingNPC = true
+
+            if (player.isAttacking && isFacingNPC) {
+              npc.hurt()
+            } else {
+              player.hurt()
+            }
+
+            if (Math.abs(dx) > Math.abs(dy)) {
+              const dir = dx >= 0 ? 1 : -1
+              const pNextX = player.x + 16 * dir
+              const nNextX = npc.x - 32 * dir
+
+              if (!player.isColliding(pNextX, player.y, walls, gameObjects, game, true)) {
+                player.x = pNextX
+                player.targetX = player.x
+              }
+              if (!npc.isColliding(nNextX, npc.y, walls, gameObjects, game, true)) {
+                npc.x = nNextX
+                npc.targetX = npc.x
+              }
+            } else {
+              const dir = dy >= 0 ? 1 : -1
+              const pNextY = player.y + 16 * dir
+              const nNextY = npc.y - 32 * dir
+
+              if (!player.isColliding(player.x, pNextY, walls, gameObjects, game, true)) {
+                player.y = pNextY
+                player.targetY = player.y
+              }
+              if (!npc.isColliding(npc.x, nNextY, walls, gameObjects, game, true)) {
+                npc.y = nNextY
+                npc.targetY = npc.y
+              }
+            }
+
+            if (game) {
+              npc.broadcastNpcMove(game, npc.targetX, npc.targetY)
+            }
           }
-          return false
-        } else if (this.enemy && isObjPlayer) {
-          if (typeof (obj as IAny).onEnemyCollision === "function") {
-            ;(obj as IAny).onEnemyCollision(this)
+        }
+
+        if (isThisPlayer && obj instanceof Person && obj.following) {
+          if (typeof (this as IAny).onFollowingCollision === "function") {
+            ;(this as IAny).onFollowingCollision(obj)
           }
-          return false
+          return true
+        } else if (this.following && isObjPlayer) {
+          if (typeof (obj as IAny).onFollowingCollision === "function") {
+            ;(obj as IAny).onFollowingCollision(this)
+          }
+          return true
         }
 
         return true
@@ -435,7 +497,7 @@ export class Person {
     if (this.direction === "down") nextY += TILE_SIZE / 2
     if (this.direction === "left") nextX -= TILE_SIZE / 2
     if (this.direction === "right") nextX += TILE_SIZE / 2
-    return this.isColliding(nextX, nextY, game.map.walls, game.map.gameObjects)
+    return this.isColliding(nextX, nextY, game.map.walls, game.map.gameObjects, game)
   }
 
   startBehavior(_state: { map: GameMap }, behavior: IPersonBehavior): void {
@@ -513,7 +575,7 @@ export class Person {
       const dy = p.y - this.y
       const preferredDir: DirectionType = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "right" : "left") : dy > 0 ? "down" : "up"
 
-      if (minDistance <= 16) {
+      if (minDistance <= 8) {
         if (minDistance > 0) {
           this.direction = preferredDir
         }

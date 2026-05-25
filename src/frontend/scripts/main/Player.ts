@@ -23,8 +23,12 @@ export class Player extends Person {
     }
 
     const handlePlayerMovement = () => {
+      const oldX = this.x
+      const oldY = this.y
+
       if (chat.formOpened || this.isAttacking) {
-        this.isMoving = false
+        this.isColliding(this.x, this.y, walls, game.map.gameObjects, game)
+        this.isMoving = this.x !== oldX || this.y !== oldY
         return
       }
       let moveX = 0
@@ -44,11 +48,9 @@ export class Player extends Person {
         this.direction = "right"
       }
 
-      const oldX = this.x
-      const oldY = this.y
-
       if (moveX === 0 && moveY === 0) {
-        this.isMoving = false
+        this.isColliding(this.x, this.y, walls, game.map.gameObjects, game)
+        this.isMoving = this.x !== oldX || this.y !== oldY
         return
       }
 
@@ -61,10 +63,10 @@ export class Player extends Person {
       const desiredNextX = this.x + moveX * this.speed * deltaTime
       const desiredNextY = this.y + moveY * this.speed * deltaTime
 
-      if (!this.isColliding(desiredNextX, this.y, walls, game.map.gameObjects)) {
+      if (!this.isColliding(desiredNextX, this.y, walls, game.map.gameObjects, game)) {
         this.x = desiredNextX
       }
-      if (!this.isColliding(this.x, desiredNextY, walls, game.map.gameObjects)) {
+      if (!this.isColliding(this.x, desiredNextY, walls, game.map.gameObjects, game)) {
         this.y = desiredNextY
       }
 

@@ -35,7 +35,7 @@ function fieldOnBard(id: string): HTMLDivElement {
   const text = `QK_${id.toUpperCase()}_LONG`
 
   const card = kel("div", "empty-board")
-  card.innerHTML = `<div class="board-icon"><i class="fa-solid fa-play"></i></div><p>${lang[text]}</p><div class="btn btn-random"><span class="keyinfo">space</span> ${lang.FR_BTN_FIND}</div>`
+  card.innerHTML = `<div class="board-icon"><i class="fa-solid fa-play"></i></div><p>${lang[text]}</p><div class="btn btn-random"><span class="keyinfo">enter</span> ${lang.FR_BTN_FIND}</div>`
   return card
 }
 
