@@ -46,7 +46,7 @@
   "dependencies": {
     "connect-mongo": "^6.0.0",
     "dotenv": "^17.4.2",
-    "ejs": "^5.0.2",
+    "ejs": "^6.0.0",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "express-ws": "^5.0.2",
