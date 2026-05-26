@@ -89,12 +89,12 @@ export default class Phone implements IPMC {
     const btnClose = futor(".profile .btn-close", this.el)
     btnClose.onclick = () => {
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "phone_close", options: { id: "phone_close" } })
+      audio.emit({ action: "play", type: "ui", src: "uiclose", options: { id: "uiclose" } })
       this.destroy()
     }
     this.btnRename.onclick = async () => {
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: "phone_menu_enter" } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
       this.isLocked = true
       const nextHelp1 = await modal.confirm({
         msg: lang.ACC_PHONE_USERNAME_HELP_1,
@@ -122,7 +122,7 @@ export default class Phone implements IPMC {
     const btnUID = futor(".profile .detail .user .userid .btn-copy", this.el)
     btnUID.onclick = async () => {
       const copiedText = await copyToClipboard(db.me.id)
-      audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: "phone_menu_enter" } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
       if (copiedText) {
         const copySuccess = lang.COPY_TEXT
         btnUID.innerHTML = '<i class="fa-solid fa-check"></i>'
@@ -219,7 +219,7 @@ export default class Phone implements IPMC {
       }
 
       card.onclick = async () => {
-        audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: "phone_menu_enter" } })
+        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
         if (this.isLocked) return
         await this.destroy(k)
       }
@@ -227,7 +227,7 @@ export default class Phone implements IPMC {
         eapplist.querySelectorAll(".active").forEach((btnActive) => {
           btnActive.classList.remove("active")
         })
-        audio.emit({ action: "play", type: "ui", src: "phone_menu_move", options: { id: Date.now().toString() } })
+        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
         card.classList.add("active")
       }
     })
@@ -288,7 +288,7 @@ export default class Phone implements IPMC {
       }
 
       if (nextCard) {
-        audio.emit({ action: "play", type: "ui", src: "phone_menu_move", options: { id: Date.now().toString() } })
+        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
         currentFocused.classList.remove("active")
         nextCard.classList.add("active")
 
@@ -336,7 +336,7 @@ export default class Phone implements IPMC {
   async init(): Promise<void> {
     this.isLocked = true
     db.pmc = this
-    audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
+    audio.emit({ action: "play", type: "ui", src: "uiopen", options: { id: "uiopen" } })
     this.createElement()
     this.createScoreBoard()
     // this.updatePos()

@@ -285,6 +285,11 @@ export class GameEvent {
     if (!who || !x || !y) return resolve()
 
     const person = this.game.map.gameObjects[who]
+    const mapId = this.game.map.mapId
+
+    MapList[mapId].configObjects[who].x = x
+    MapList[mapId].configObjects[who].y = y
+    MapList[mapId].configObjects[who].direction = direction
 
     if (person instanceof Person) {
       person.x = x * TILE_SIZE
@@ -293,7 +298,7 @@ export class GameEvent {
 
       if (who === "hero") {
         peers.send("playerMapChange", {
-          mapId: this.game.map.mapId,
+          mapId,
           x: x * TILE_SIZE,
           y: y * TILE_SIZE,
           direction: direction

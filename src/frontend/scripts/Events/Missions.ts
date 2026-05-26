@@ -199,7 +199,7 @@ export default class Missions implements IPMC {
       const card = missionCard(s)
       card.onclick = () => {
         if (this.isFirst || this.isLocked) return
-        audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: Date.now().toString() } })
+        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
         this.updateChoices(card, s)
       }
       eboard.append(card)
@@ -214,7 +214,7 @@ export default class Missions implements IPMC {
       const card = missionCard(s)
       card.onclick = () => {
         if (this.isFirst || this.isLocked) return
-        audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: Date.now().toString() } })
+        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
         this.updateChoices(card, s)
       }
       eboard.append(card)
@@ -308,7 +308,7 @@ export default class Missions implements IPMC {
   }
   async destroy(next?: IPMC): Promise<void> {
     if (this.isLocked) return
-    audio.emit({ action: "play", type: "ui", src: "phone_close", options: { id: "phone_close" } })
+    audio.emit({ action: "play", type: "ui", src: "uiclose", options: { id: "uiclose" } })
     this.isLocked = true
     this.el.classList.add("out")
     this.choosen = undefined
@@ -331,7 +331,7 @@ export default class Missions implements IPMC {
   }
   init(): void {
     db.pmc = this
-    audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
+    audio.emit({ action: "play", type: "ui", src: "uiopen", options: { id: "uiopen" } })
     this.game.pause()
     this.createElement()
     eroot().append(this.el)

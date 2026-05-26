@@ -160,7 +160,7 @@ export default class FingerprintCloner implements IPMC {
 
           const arrow_left = futor(".aleft.arrow", imgcover)
           arrow_left.onclick = () => {
-            audio.emit({ action: "play", type: "ui", src: "hack_selector", options: { id: Date.now().toString() } })
+            audio.emit({ action: "play", type: "ui", src: "hack_move", options: { id: Date.now().toString() } })
 
             let oCoor = Number(imgcover.getAttribute("data-coor"))
             oCoor--
@@ -171,7 +171,7 @@ export default class FingerprintCloner implements IPMC {
           }
           const arrow_right = futor(".aright.arrow", imgcover)
           arrow_right.onclick = () => {
-            audio.emit({ action: "play", type: "ui", src: "hack_selector", options: { id: Date.now().toString() } })
+            audio.emit({ action: "play", type: "ui", src: "hack_move", options: { id: Date.now().toString() } })
 
             let oCoor = Number(imgcover.getAttribute("data-coor"))
             oCoor++
@@ -199,7 +199,7 @@ export default class FingerprintCloner implements IPMC {
       this.isLocked = true
       const scanningId = "scan_" + Date.now().toString()
 
-      audio.emit({ action: "play", type: "sfx", src: "hack_scanning", options: { id: scanningId } })
+      audio.emit({ action: "play", type: "sfx", src: "hack_scan", options: { id: scanningId } })
       const fingscan = kel("div", "fingscan")
       fingscan.innerHTML = `
       <div class="content">
@@ -310,7 +310,7 @@ export default class FingerprintCloner implements IPMC {
         allCovers[nextIndex].classList.add("selected")
         allCovers[nextIndex].scrollIntoView({ behavior: "smooth", block: "center" })
 
-        audio.emit({ action: "play", type: "ui", src: "phone_menu_move", options: { id: Date.now().toString() } })
+        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
       } else if (key === "ArrowLeft" || key === "ArrowRight") {
         const activeCover = currentIndex > -1 ? allCovers[currentIndex] : allCovers[0]
 
@@ -365,7 +365,7 @@ export default class FingerprintCloner implements IPMC {
     db.pmc = this
 
     audio.emit({ action: "play", type: "sfx", src: "hack_intro", options: { id: Date.now().toString() } })
-    audio.emit({ action: "play", type: "bgm", src: "hacking_amb", options: { fadeIn: 1000 } })
+    audio.emit({ action: "play", type: "bgm", src: "hack01", options: { fadeIn: 1000 } })
 
     this.shuffleImg()
     this.createElement()

@@ -67,7 +67,7 @@ class Notip {
     this.createElement()
     this.writeData()
     eroot().append(this.el)
-    audio.emit({ action: "play", type: "ui", src: "phone_notification", options: { id: "notip" + Date.now().toString() } })
+    audio.emit({ action: "play", type: "ui", src: "uialert", options: { id: "notip" + Date.now().toString() } })
     nshowtime = setTimeout(() => {
       this.destroy()
     }, 3995)

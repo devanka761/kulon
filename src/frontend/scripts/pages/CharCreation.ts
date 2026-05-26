@@ -40,7 +40,7 @@ export default class CharCreation extends Appearance {
         this.isLocked = false
         return
       }
-      audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
       if (uname.trim().length < 1) {
         await modal.alert(lang.ACC_NO_USERNAME)
         this.isLocked = false
@@ -85,7 +85,7 @@ export default class CharCreation extends Appearance {
     this.doodle = doodle
     this.nextMap = nextMap
     this.init()
-    audio.emit({ action: "play", type: "ambient", src: "sidestreet_amb", options: { fadeIn: 5000, volume: 0.1 } })
+    audio.emit({ action: "play", type: "ambient", src: "outside01", options: { fadeIn: 5000, volume: 0.1 } })
     backsong.switch(2)
     backsong.start(2000)
     const btnCancel = qutor(".btn-cancel", this.el)

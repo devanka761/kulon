@@ -77,8 +77,8 @@ export default class RevealingText {
     audio.emit({
       action: "play",
       type: "ui",
-      src: "dialogue_revealing",
-      options: { id: this.revealId }
+      src: "dialogue_loop",
+      options: { id: this.revealId, loop: true }
     })
   }
 }

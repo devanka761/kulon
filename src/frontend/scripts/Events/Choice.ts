@@ -59,7 +59,7 @@ export default class Choices implements IPMC {
       this.eChoices.appendChild(eChoice)
       this.choiceElements.push(eChoice)
       eChoice.onclick = () => {
-        audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
         if (opt.cancel) this.destroy()
         else this.destroy(true)
       }
@@ -94,7 +94,7 @@ export default class Choices implements IPMC {
       nextIndex = (currentIndex - 1 + this.choiceElements.length) % this.choiceElements.length
     }
 
-    audio.emit({ action: "play", type: "ui", src: "phone_menu_move", options: { id: Date.now().toString() } })
+    audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
     this.choiceElements[nextIndex].focus()
   }
 

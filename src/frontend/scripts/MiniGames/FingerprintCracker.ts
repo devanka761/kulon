@@ -224,13 +224,13 @@ export default class FingerprintCracker implements IPMC {
         const imgcovers = elConn.querySelectorAll(".enabled")
 
         if (imgcover.classList.contains("enabled")) {
-          audio.emit({ src: "hack_selector", action: "play", type: "ui", options: { id: Date.now().toString() } })
+          audio.emit({ src: "hack_move", action: "play", type: "ui", options: { id: Date.now().toString() } })
 
           imgcover.classList.remove("enabled")
           this.puzzle.attempt = this.puzzle.attempt.filter((_n) => _n !== conID)
         } else {
           if (imgcovers.length < 4) {
-            audio.emit({ src: "hack_selector", action: "play", type: "ui", options: { id: Date.now().toString() } })
+            audio.emit({ src: "hack_move", action: "play", type: "ui", options: { id: Date.now().toString() } })
 
             imgcover.classList.add("enabled")
             this.puzzle.attempt.push(conID)
@@ -282,7 +282,7 @@ export default class FingerprintCracker implements IPMC {
     this.btnCheck = futor("[data-check]", this.el)
     this.btnCheck.onclick = async () => {
       if (this.btnCheck.classList.contains("disabled")) return
-      audio.emit({ src: "hack_selector", action: "play", type: "ui", options: { id: Date.now().toString() } })
+      audio.emit({ src: "hack_move", action: "play", type: "ui", options: { id: Date.now().toString() } })
 
       const corrects = this.puzzle.crack.filter((key) => !this.puzzle.attempt.includes(key))
       if (corrects.length > 0) {
@@ -305,7 +305,7 @@ export default class FingerprintCracker implements IPMC {
       fingscan_img.src = asset[this.nFingImg[this.imgpar]].src
       await new Promise((resolve: (...args: IAny) => void) => {
         fingscan_img.onload = () => {
-          audio.emit({ src: "hack_scanning", action: "play", type: "sfx", options: { id: scanningId } })
+          audio.emit({ src: "hack_scan", action: "play", type: "sfx", options: { id: scanningId } })
 
           const fingscan_box = document.createElement("div")
           fingscan_box.classList.add("box")
@@ -435,7 +435,7 @@ export default class FingerprintCracker implements IPMC {
       }
 
       allCovers[nextIndex]?.classList.add("selected")
-      audio.emit({ action: "play", type: "ui", src: "phone_menu_move", options: { id: Date.now().toString() } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
     }
     document.addEventListener("keydown", this.navKeyHandler)
   }
@@ -456,7 +456,7 @@ export default class FingerprintCracker implements IPMC {
     db.pmc = this
 
     audio.emit({ src: "hack_intro", action: "play", type: "sfx", options: { id: Date.now().toString() } })
-    audio.emit({ src: "hacking_amb", action: "play", type: "bgm", options: { fadeIn: 1000 } })
+    audio.emit({ src: "hack01", action: "play", type: "bgm", options: { fadeIn: 1000 } })
 
     this.shuffleImg()
     this.createElement()

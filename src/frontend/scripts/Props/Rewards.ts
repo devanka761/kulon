@@ -64,7 +64,7 @@ export default class Rewards implements IPMC {
     eroot().append(this.el)
     this.writeRewards()
     await waittime(700)
-    audio.emit({ action: "play", type: "ui", src: "item_collected", options: { id: "item_collected" } })
+    audio.emit({ action: "play", type: "ui", src: "collect", options: { id: "collect" } })
     await waittime(300)
     this.el.onclick = () => {
       if (this.isLocked) return

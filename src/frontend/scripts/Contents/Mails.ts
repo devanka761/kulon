@@ -190,7 +190,7 @@ export default class Mails implements IPMC {
       this.boxMail.push(k.id)
       const card = cardOnList(k)
       card.onclick = () => {
-        audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
         this.writeMail(k.id)
         this.cardlist.querySelector(".ck")?.classList.remove("ck")
         card.classList.add("ck")
@@ -227,7 +227,7 @@ export default class Mails implements IPMC {
 
     btn.onclick = async () => {
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
       this.isLocked = true
 
       const updateMail = await modal.loading(xhr.post(`/x/account/mail-claim/${s.id}`))
@@ -265,7 +265,7 @@ export default class Mails implements IPMC {
   }
   async destroy(next?: IPMC): Promise<void> {
     if (this.isLocked) return
-    audio.emit({ action: "play", type: "ui", src: "phone_close", options: { id: "phone_close" } })
+    audio.emit({ action: "play", type: "ui", src: "uiclose", options: { id: "uiclose" } })
     this.isLocked = true
     this.el.classList.add("out")
     this.enter?.unbind()
@@ -281,7 +281,7 @@ export default class Mails implements IPMC {
   }
   init(): void {
     db.pmc = this
-    audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
+    audio.emit({ action: "play", type: "ui", src: "uiopen", options: { id: "uiopen" } })
     this.createElement()
     eroot().append(this.el)
     this.btnListener()

@@ -140,8 +140,8 @@ class PeerMessage {
     const myMap = this.game.map.mapId
 
     if (MapList[data.mapId] && MapList[data.mapId].configObjects[data.npcId]) {
-      MapList[data.mapId].configObjects[data.npcId].x = data.x / 16
-      MapList[data.mapId].configObjects[data.npcId].y = data.y / 16
+      MapList[data.mapId].configObjects[data.npcId].x = Math.floor(data.x / 16)
+      MapList[data.mapId].configObjects[data.npcId].y = Math.floor(data.y / 16)
       MapList[data.mapId].configObjects[data.npcId].direction = data.direction
       MapList[data.mapId].configObjects[data.npcId].health = data.health
       MapList[data.mapId].configObjects[data.npcId].following = data.following

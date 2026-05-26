@@ -200,7 +200,7 @@ export default class Setting implements IPMC {
         this.selectedBtn().forEach((oldbtn) => oldbtn.classList.remove("selected"))
         card.classList.add("selected")
 
-        audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: Date.now().toString() } })
+        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
         this.writeList()
       }
     })
@@ -237,7 +237,7 @@ export default class Setting implements IPMC {
     card.onclick = async () => {
       if (this.isLocked) return
       this.isLocked = true
-      audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
       await modal.alert(lang.ST_NOT_READY)
       this.isLocked = false
     }
@@ -258,7 +258,7 @@ export default class Setting implements IPMC {
       // @ts-expect-error no default types
       if (s.func) this[s.func](s.id, newValue)
       localSave.save()
-      audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
     }
   }
   private audioSettings(id: string, newValue: number): void {
@@ -273,7 +273,7 @@ export default class Setting implements IPMC {
   }
   private writeRestoreDefault(card: HTMLDivElement): void {
     card.onclick = async () => {
-      audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
       if (this.isLocked) return
       this.isLocked = true
       await modal.alert(lang.ST_NOT_READY)
@@ -290,7 +290,7 @@ export default class Setting implements IPMC {
     }
     card.onclick = (e) => {
       if (e.target instanceof Node && inp.contains(e.target)) return
-      audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
       inp.click()
     }
   }
@@ -318,7 +318,7 @@ export default class Setting implements IPMC {
 
     card.onclick = async () => {
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
       this.isLocked = true
       const confLogout = await modal.confirm(lang.ST_TXT_LOGOUT)
       if (!confLogout) {
@@ -333,7 +333,7 @@ export default class Setting implements IPMC {
   private writeLunaSetting(card: HTMLDivElement): void {
     card.onclick = async () => {
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
       this.isLocked = true
 
       if (!db.provider.method) {
@@ -362,7 +362,7 @@ export default class Setting implements IPMC {
 
     card.onclick = async () => {
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
       this.isLocked = true
       const newLang = await modal.select({
         ic: "language",
@@ -405,7 +405,7 @@ export default class Setting implements IPMC {
     }
     card.onclick = (e) => {
       if (e.target instanceof Node && inp.contains(e.target)) return
-      audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
       inp.click()
     }
   }
@@ -479,7 +479,7 @@ export default class Setting implements IPMC {
         nextIndex = currentIndex <= 0 ? items.length - 1 : currentIndex - 1
       }
 
-      audio.emit({ action: "play", type: "ui", src: "phone_menu_move", options: { id: Date.now().toString() } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
 
       items[currentIndex]?.classList.remove("selected")
       const nextItem = items[nextIndex]
@@ -497,7 +497,7 @@ export default class Setting implements IPMC {
     this.navKeyHandler = undefined
     this.esc?.unbind()
     this.el.classList.add("out")
-    audio.emit({ action: "play", type: "ui", src: "phone_close", options: { id: "phone_close" } })
+    audio.emit({ action: "play", type: "ui", src: "uiclose", options: { id: "uiclose" } })
     await waittime()
     this.el.remove()
     this.isLocked = false
@@ -508,7 +508,7 @@ export default class Setting implements IPMC {
   async init(): Promise<void> {
     this.isLocked = true
     db.pmc = this
-    audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
+    audio.emit({ action: "play", type: "ui", src: "uiopen", options: { id: "uiopen" } })
     this.createElement()
     eroot().append(this.el)
     this.writeBar()

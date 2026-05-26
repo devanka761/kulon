@@ -565,8 +565,8 @@ export class Person {
 
     const mapId = game.map.mapId
     if (MapList[mapId] && MapList[mapId].configObjects[this.id]) {
-      MapList[mapId].configObjects[this.id].x = this.x / 16
-      MapList[mapId].configObjects[this.id].y = this.y / 16
+      MapList[mapId].configObjects[this.id].x = Math.floor(this.x / 16)
+      MapList[mapId].configObjects[this.id].y = Math.floor(this.y / 16)
       MapList[mapId].configObjects[this.id].direction = this.direction
       MapList[mapId].configObjects[this.id].health = this.health
       MapList[mapId].configObjects[this.id].following = this.following

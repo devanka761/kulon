@@ -55,7 +55,7 @@ async function processQueue(): Promise<void> {
 
   container.appendChild(notification)
   eroot().append(container)
-  audio.emit({ action: "play", type: "sfx", src: "text_intro", options: { id: Date.now().toString() } })
+  audio.emit({ action: "play", type: "sfx", src: "achievement_drop", options: { id: Date.now().toString() } })
 
   await waittime(7000)
   closeNotification(notification.id)

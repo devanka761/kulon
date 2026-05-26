@@ -220,7 +220,7 @@ export default class Jobs implements IPMC {
       this.boxInvite.push(k.user.id)
       const card = cardOnList(k.user, k.job)
       card.onclick = () => {
-        audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
         this.writeInvite(k)
         this.cardlist.querySelector(".ck")?.classList.remove("ck")
         card.classList.add("ck")
@@ -251,7 +251,7 @@ export default class Jobs implements IPMC {
     const btnIgnore = futor(".btn-ignore", field)
     btnIgnore.onclick = async () => {
       if (this.isLocked || !db.pmc) return
-      audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
       this.isLocked = true
       const conmsg = {
         id: "Tolak undangan?",
@@ -272,7 +272,7 @@ export default class Jobs implements IPMC {
     const btnAccept = futor(".btn-accept", field)
     btnAccept.onclick = () => {
       if (this.isLocked || !db.pmc) return
-      audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
       db.invites.remove(job.id, user.id)
       this.destroy(
         itemRun.run("joinJob", {
@@ -308,7 +308,7 @@ export default class Jobs implements IPMC {
   }
   async destroy(next?: IPMC) {
     if (this.isLocked) return
-    audio.emit({ action: "play", type: "ui", src: "phone_close", options: { id: "phone_close" } })
+    audio.emit({ action: "play", type: "ui", src: "uiclose", options: { id: "uiclose" } })
     this.isLocked = true
     this.el.classList.add("out")
     this.enter?.unbind()
@@ -329,7 +329,7 @@ export default class Jobs implements IPMC {
   }
   init() {
     db.pmc = this
-    audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
+    audio.emit({ action: "play", type: "ui", src: "uiopen", options: { id: "uiopen" } })
     this.createElement()
     eroot().append(this.el)
     this.writeEmpty()

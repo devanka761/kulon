@@ -47,6 +47,7 @@ export class Game {
 
   lastTime: number = 0
   animationFrameId: number | null = null
+  private boundResizeCanvas: () => void
 
   constructor(
     private canvas: HTMLCanvasElement,
@@ -56,7 +57,8 @@ export class Game {
     this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D
     this.ctx.imageSmoothingEnabled = false
 
-    window.addEventListener("resize", this.resizeCanvas.bind(this))
+    this.boundResizeCanvas = this.resizeCanvas.bind(this)
+    window.addEventListener("resize", this.boundResizeCanvas)
   }
 
   private keypressAction(): void {
@@ -338,14 +340,23 @@ export class Game {
     this.map.addGameObject(configObject)
   }
   destroy(): void {
-    window.removeEventListener("resize", this.resizeCanvas.bind(this))
+    window.removeEventListener("resize", this.boundResizeCanvas)
     this.inputHandler.destroy()
     this.kulonPad.destroy()
     this.kulonUI.destroy()
     this.keyListeners.forEach((listener) => listener.unbind())
     this.keyListeners = []
+
     if (typeof this.animationFrameId === "number") {
       cancelAnimationFrame(this.animationFrameId)
+      this.animationFrameId = null
+    }
+
+    if (this.map) {
+      const oldGameObjects = this.map.gameObjects
+      const oldWalls = this.map.walls
+      Object.keys(oldGameObjects).forEach((k) => delete this.map.gameObjects[k])
+      Object.keys(oldWalls).forEach((k) => delete this.map.walls[k])
     }
   }
   async init(): Promise<void> {

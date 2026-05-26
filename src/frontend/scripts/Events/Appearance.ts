@@ -304,7 +304,7 @@ export default class Appearance implements IPMC {
     btnContinue.onclick = async (e) => {
       e.preventDefault()
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
       this.isLocked = true
       const confirmEdit = await modal.confirm({
         msg: lang.CHAR_APR_CONFIRM,
@@ -353,7 +353,7 @@ export default class Appearance implements IPMC {
 
         currentIndex = e.key === "ArrowUp" ? (currentIndex > 0 ? currentIndex - 1 : allActs.length - 1) : currentIndex < allActs.length - 1 ? currentIndex + 1 : 0
 
-        audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
         const nextActive = allActs[currentIndex]
         nextActive.classList.add("active")
         nextActive.scrollIntoView({ behavior: "smooth", block: "center" })
@@ -389,7 +389,7 @@ export default class Appearance implements IPMC {
 
   async destroy(next?: IAny): Promise<void> {
     if (this.isLocked) return
-    audio.emit({ action: "play", type: "ui", src: "phone_close", options: { id: "phone_close" } })
+    audio.emit({ action: "play", type: "ui", src: "uiclose", options: { id: "uiclose" } })
     this.isLocked = true
     this.el.classList.add("out")
     this.esc?.unbind()
@@ -407,7 +407,7 @@ export default class Appearance implements IPMC {
 
   init(): void {
     db.pmc = this
-    audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
+    audio.emit({ action: "play", type: "ui", src: "uiopen", options: { id: "uiopen" } })
     if (this.game) this.game.pause()
     this.createElement()
     eroot().append(this.el)

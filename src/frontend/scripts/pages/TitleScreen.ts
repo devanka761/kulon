@@ -73,9 +73,9 @@ export default class TitleScreen implements IPMC {
       if (this.isLocked) return
       this.isLocked = true
       if (this.keyListeners.enter) this.keyListeners.enter.unbind()
-      audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
       setTimeout(() => {
-        audio.emit({ action: "play", type: "ui", src: "act_done", options: { id: "act_done" } })
+        audio.emit({ action: "play", type: "ui", src: "enter_commit", options: { id: "enter_commit" } })
       }, 100)
 
       await this.destroy()
@@ -85,7 +85,7 @@ export default class TitleScreen implements IPMC {
       if (this.isLocked) return
       this.isLocked = true
       if (this.keyListeners.enter) this.keyListeners.enter.unbind()
-      audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
       const setting = new Setting({ onComplete: this.onComplete, game: this.game, classBefore: this })
       this.destroy(setting)
     }
@@ -106,7 +106,7 @@ export default class TitleScreen implements IPMC {
       buttons[selectedIndex].classList.remove("selected")
       selectedIndex = newIndex
       buttons[selectedIndex].classList.add("selected")
-      audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
     }
 
     buttons.forEach((btn, index) => {

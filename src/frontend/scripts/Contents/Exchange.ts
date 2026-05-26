@@ -203,7 +203,7 @@ export class Exchange implements IPMC {
       return
     }
 
-    audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+    audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
 
     const transactionCount = Number(this.erange.value)
     const amountToReceive = transactionCount * this.amount
@@ -261,7 +261,7 @@ export class Exchange implements IPMC {
     const btnSubmit = futor(".outer-ok", this.el)
     btnSubmit.onclick = async () => {
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
       this.isLocked = true
       if (this.maxTransactions < 1) {
         await modal.alert(lang.EXC_NOT_ENOUGH.replace("{price}", this.item_src2.name[LocalList.lang!]))
@@ -324,7 +324,7 @@ export class Exchange implements IPMC {
   }
   async destroy(next?: IPMC): Promise<void> {
     if (this.isLocked) return
-    audio.emit({ action: "play", type: "ui", src: "phone_close", options: { id: "phone_close" } })
+    audio.emit({ action: "play", type: "ui", src: "uiclose", options: { id: "uiclose" } })
     this.isLocked = true
     this.item_n = 0
     this.req_n = 0
@@ -341,7 +341,7 @@ export class Exchange implements IPMC {
   }
   init(): void {
     db.pmc = this
-    audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
+    audio.emit({ action: "play", type: "ui", src: "uiopen", options: { id: "uiopen" } })
     this.createElement()
     eroot().append(this.el)
     this.btnListener()
