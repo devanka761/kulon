@@ -143,6 +143,9 @@ class PeerMessage {
       MapList[data.mapId].configObjects[data.npcId].x = data.x / 16
       MapList[data.mapId].configObjects[data.npcId].y = data.y / 16
       MapList[data.mapId].configObjects[data.npcId].direction = data.direction
+      MapList[data.mapId].configObjects[data.npcId].health = data.health
+      MapList[data.mapId].configObjects[data.npcId].following = data.following
+      MapList[data.mapId].configObjects[data.npcId].enemy = data.enemy
     }
 
     if (data.mapId !== myMap) return
@@ -154,6 +157,37 @@ class PeerMessage {
       npc.direction = data.direction
       npc.targetX = data.targetX
       npc.targetY = data.targetY
+      npc.health = data.health
+      npc.following = data.following
+      npc.enemy = data.enemy
+    }
+  }
+
+  npcDefeat(data: IAny): void {
+    if (data.npcId === "hero") return
+
+    const myMap = this.game.map.mapId
+
+    if (MapList[data.mapId] && MapList[data.mapId].configObjects[data.npcId]) {
+      MapList[data.mapId].configObjects[data.npcId].x = -1000
+      MapList[data.mapId].configObjects[data.npcId].y = -1000
+      MapList[data.mapId].configObjects[data.npcId].direction = "down"
+      MapList[data.mapId].configObjects[data.npcId].following = false
+      MapList[data.mapId].configObjects[data.npcId].health = undefined
+      delete MapList[data.mapId].configObjects[data.npcId].health
+    }
+
+    if (data.mapId !== myMap) return
+
+    const npc = this.game.map.gameObjects[data.npcId] as Person
+    if (npc) {
+      npc.x = -1000
+      npc.y = -1000
+      npc.targetX = -1000
+      npc.targetY = -1000
+      npc.direction = "down"
+      npc.following = false
+      npc.health = undefined
     }
   }
 

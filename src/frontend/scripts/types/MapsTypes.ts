@@ -72,6 +72,8 @@ export interface IGameObjectPerson extends IGameObject {
   src: GameObjectSrc
   shadow?: boolean
   talk?: IObjectTalk[]
+  drops?: IObjectTalk[]
+  health?: number
   direction?: DirectionType
   isRemote?: boolean
   canControlled?: boolean
@@ -113,6 +115,8 @@ export interface IGameObjectData {
   src?: GameObjectSrc
   shadow?: boolean
   talk?: IObjectTalk[]
+  drops?: IObjectTalk[]
+  health?: number
   offset?: number[]
   collision?: number[]
   states?: string[]

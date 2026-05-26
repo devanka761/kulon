@@ -301,7 +301,7 @@ export class Game {
     }
   }
 
-  private findAndStartScenario(scenarios: IObjectTalk[], targetKey?: string): void {
+  findAndStartScenario(scenarios: IObjectTalk[], targetKey?: string): void {
     for (let i = 0; i < scenarios.length; i++) {
       const reqMet = (scenarios[i].local_req || scenarios[i].required || []).every((state) => {
         return SaveList[state]

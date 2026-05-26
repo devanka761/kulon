@@ -215,7 +215,10 @@ export class GameMap {
             y: obj.y,
             direction: obj.direction,
             targetX: obj.x,
-            targetY: obj.y
+            targetY: obj.y,
+            health: obj.health,
+            following: obj.following,
+            enemy: obj.enemy
           })
         }
       }

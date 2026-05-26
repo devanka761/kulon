@@ -43,6 +43,7 @@ export class Person {
   isLoaded: boolean = false
   images: GameObjectImages = {}
   talk?: IObjectTalk[]
+  drops?: IObjectTalk[]
   speed = 60
   isRemote: boolean
   targetX: number = 0
@@ -92,6 +93,7 @@ export class Person {
   swordImage!: HTMLImageElement
   following: boolean = false
   enemy: boolean = false
+  health?: number
 
   footstep: "a" | "b"
   constructor(config: IGameObjectPerson, footstep: "a" | "b") {
@@ -133,6 +135,8 @@ export class Person {
       this.speed = 60 * 0.5
     }
     this.enemy = config.enemy || false
+    this.health = config.health
+    this.drops = config.drops
 
     this.frameX = 18
     this.frameY = 1
@@ -432,6 +436,12 @@ export class Person {
 
             if (player.isAttacking && isFacingNPC) {
               npc.hurt()
+              if (npc.health !== undefined && npc.health > 0) {
+                npc.health -= 40
+                if (npc.health <= 0 && npc.drops && game) {
+                  npc.defeated(gameObjects, game, true)
+                }
+              }
             } else {
               player.hurt()
             }
@@ -489,6 +499,33 @@ export class Person {
     return false
   }
 
+  defeated(gameObjects: MapGameObjects, game: Game, isCast?: boolean): void {
+    const mapId = game.map.mapId
+    const npcId = this.id
+
+    if (!npcId) return
+
+    if (isCast) peers.send("npcDefeat", { npcId, mapId })
+
+    if (MapList[mapId] && MapList[mapId].configObjects[npcId]) {
+      MapList[mapId].configObjects[npcId].x = -1000
+      MapList[mapId].configObjects[npcId].y = -1000
+      MapList[mapId].configObjects[npcId].direction = "down"
+      MapList[mapId].configObjects[npcId].following = false
+      MapList[mapId].configObjects[npcId].health = undefined
+      delete MapList[mapId].configObjects[npcId].health
+    }
+
+    this.x = -1000
+    this.y = -1000
+    this.direction = "down"
+    this.following = false
+    this.health = undefined
+
+    const targetKey = Object.keys(gameObjects).find((k) => gameObjects[k] === this)
+    if (this.drops) game.findAndStartScenario(this.drops, targetKey)
+  }
+
   isNextTileColliding(game: Game): boolean {
     let nextX = this.x
     let nextY = this.y
@@ -531,6 +568,9 @@ export class Person {
       MapList[mapId].configObjects[this.id].x = this.x / 16
       MapList[mapId].configObjects[this.id].y = this.y / 16
       MapList[mapId].configObjects[this.id].direction = this.direction
+      MapList[mapId].configObjects[this.id].health = this.health
+      MapList[mapId].configObjects[this.id].following = this.following
+      MapList[mapId].configObjects[this.id].enemy = this.enemy
     }
 
     peers.send("npcMove", {
@@ -540,7 +580,10 @@ export class Person {
       y: this.y,
       direction: this.direction,
       targetX,
-      targetY
+      targetY,
+      health: this.health,
+      following: this.following,
+      enemy: this.enemy
     })
   }
 
