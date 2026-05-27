@@ -172,7 +172,7 @@ export default class QuickJoin implements IPMC {
     const btnRandom = futor(".btn-random", field)
     btnRandom.onclick = async () => {
       if (this.isLocked || !db.pmc) return
-      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
+      audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
       this.isLocked = true
       this.writeLoading()
 

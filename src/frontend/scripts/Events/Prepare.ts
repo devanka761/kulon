@@ -137,7 +137,7 @@ export default class Prepare implements IPMC {
 
     eready.onclick = () => {
       if (this.isLocked || chat.formOpened) return
-      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
+      audio.emit({ action: "play", type: "ui", src: "ui03", options: { id: "ui03" } })
       this.getMeReady()
     }
 
@@ -215,7 +215,7 @@ export default class Prepare implements IPMC {
       mission: this.mission,
       startTime: this.startTime
     })
-    audio.emit({ action: "play", type: "bgm", src: "statshow01", options: { fadeIn: 1000, fadeOut: 1000, volume: 1 } })
+    audio.emit({ action: "play", type: "bgm", src: "statshow01", options: { fadeIn: 1000, fadeOut: 1000 } })
     audio.emit({ action: "play", type: "ui", src: "enter_commit", options: { id: "enter_commit" } })
     this.destroy(prologue)
   }

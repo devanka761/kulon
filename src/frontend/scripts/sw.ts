@@ -4,7 +4,7 @@ import dvnkz_v from "../../config/version.json"
 import dvnkz_b from "../../../public/json/build/buildNumber.json"
 
 const DVNKZ_CACHE_NAME = `kulon-cache-${dvnkz_v.version}-${dvnkz_b.buildNumber}`
-const DVNKZ_ASSET_BL = ["json", "Kulon_Hero", "outdoor_amb"]
+const DVNKZ_ASSET_BL = ["json", "Kulon_Hero"]
 const DVNKZ_ASSET_WL = ["/audio/", "/assets/characters/", "/assets/maps/mp_ehek/", "/assets/maps/props/", "/assets/items/", "/assets/minigames/", "/assets/unlisted/jumpscare/"]
 
 self.addEventListener("install", (event) => {

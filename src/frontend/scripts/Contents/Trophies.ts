@@ -240,13 +240,16 @@ export default class Trophies implements IPMC {
           if (boardList) {
             const cards = Array.from(boardList.querySelectorAll(".card")) as HTMLDivElement[]
             if (cards.length >= 1) {
+              audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
+
               let activeBefore = cards.find((card) => card.classList.contains("active"))
               if (!activeBefore) {
                 activeBefore = cards[0]
                 activeBefore.classList.add("active")
               }
+
+              this.setFocus("right")
             }
-            this.setFocus("right")
           }
         }
       } else if (this.currentFocus === "right") {
@@ -275,6 +278,7 @@ export default class Trophies implements IPMC {
             nextCard.scrollIntoView({ behavior: "smooth", block: "center", container: "nearest" })
           }
         } else if (e.key === "ArrowLeft") {
+          audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
           this.setFocus("left")
         }
       }

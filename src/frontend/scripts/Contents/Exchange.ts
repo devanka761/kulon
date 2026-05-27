@@ -261,7 +261,7 @@ export class Exchange implements IPMC {
     const btnSubmit = futor(".outer-ok", this.el)
     btnSubmit.onclick = async () => {
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
+      audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
       this.isLocked = true
       if (this.maxTransactions < 1) {
         await modal.alert(lang.EXC_NOT_ENOUGH.replace("{price}", this.item_src2.name[LocalList.lang!]))

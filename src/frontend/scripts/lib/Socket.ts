@@ -76,8 +76,12 @@ class Socket {
     peers.closeAll()
 
     let oldPmcId: string = "none"
+    const forceWaitPmcIds: string[] = ["payout"]
     const checkPmc = async (resolve: IAny) => {
-      if (db.pmc && db.pmc.id === oldPmcId) {
+      if (forceWaitPmcIds.find((k) => k === db.pmc?.id)) {
+        await waittime(500)
+        return await checkPmc(resolve)
+      } else if (db.pmc && db.pmc.id === oldPmcId) {
         await waittime(500)
         return resolve()
       } else if (db.pmc && db.pmc.destroy) {

@@ -1,6 +1,6 @@
 import asset from "../data/assets"
 import peers from "../data/Peers"
-import { playRandomFootstep } from "../manager/randomPlays"
+import { playRandomFootstep, playRandomOf } from "../manager/randomPlays"
 import { IAny } from "../types/LibTypes"
 import { DirectionType, IGameObjectPerson, IObjectEvent, IObjectTalk, MapGameObjects, MapWalls } from "../types/MapsTypes"
 import { Game } from "./Game"
@@ -132,7 +132,7 @@ export class Person {
 
     this.following = config.following || false
     if (this.following) {
-      this.speed = 60 * 0.5
+      this.speed = 60 * 0.6
     }
     this.enemy = config.enemy || false
     this.health = config.health
@@ -438,7 +438,7 @@ export class Person {
               npc.hurt()
               if (npc.health !== undefined && npc.health > 0) {
                 npc.health -= 40
-                if (npc.health <= 0 && npc.drops && game) {
+                if (npc.health <= 0 && game) {
                   npc.defeated(gameObjects, game, true)
                 }
               }
@@ -548,6 +548,7 @@ export class Person {
     this.frameTimer = 0
     this.currentAnimationName = `hit-${this.direction}`
     this.frameX = this.animationFrames[this.currentAnimationName].start
+    playRandomOf("ui", ["swing01", "swing02", "swing03", "swing04"])
   }
 
   hurt(): void {
@@ -556,6 +557,7 @@ export class Person {
     this.frameTimer = 0
     this.currentAnimationName = `hurt-${this.direction}`
     this.frameX = this.animationFrames[this.currentAnimationName].start
+    playRandomOf("ui", ["hit01", "hit02", "hit03"])
   }
 
   broadcastNpcMove(game: Game, targetX: number, targetY: number): void {

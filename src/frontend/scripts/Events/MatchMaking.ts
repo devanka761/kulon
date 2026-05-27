@@ -306,7 +306,7 @@ export default class MatchMaking implements IPMC {
     const btnCancel = futor(".btn-cancel", this.el)
     btnCancel.onclick = async () => {
       if (this.isLocked || chat.formOpened) return
-      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
+      audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
       this.isLocked = true
       const exitMsg = db.job.host === db.me.id ? "MM_NOTIP_DISBAND" : "MM_NOTIP_EXIT"
       const exitConfirm = await modal.confirm(lang[exitMsg])
@@ -364,7 +364,7 @@ export default class MatchMaking implements IPMC {
 
     this.btnStart.onclick = async () => {
       if (this.isLocked || chat.formOpened) return
-      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
+      audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
       this.isLocked = true
       if (db.job.host !== db.me.id) {
         await modal.alert(lang.MM_NOTIP_WAITING_HOST)

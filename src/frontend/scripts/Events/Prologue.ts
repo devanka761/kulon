@@ -169,9 +169,9 @@ export default class Prologue implements IPMC {
     const p = kel("p")
     p.innerHTML = this.mission.name
 
-    await waittime(1000)
+    await waittime(900)
     audio.emit({ action: "play", type: "sfx", src: "stat04", options: { id: "stat04" } })
-    await waittime(100)
+    await waittime(200)
     this.title.append(text)
     text.append(bg, p)
     this.box.append(this.title)

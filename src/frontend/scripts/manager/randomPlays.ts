@@ -1,7 +1,7 @@
 import audio from "../lib/AudioHandler"
 
 export function playRandomFootstep(type: "a" | "b" = "a", isPlayer: boolean = false): void {
-  const steps = type === "a" ? ["1", "2"] : ["1", "2", "3"]
+  const steps = type === "a" ? ["1", "2", "3"] : ["1", "2", "3", "4"]
   const step = steps[Math.floor(Math.random() * steps.length)]
 
   audio.emit({ action: "play", type: isPlayer ? "footstep" : "peerfootstep", src: `step_${type}${step}`, options: { id: Date.now().toString() } })

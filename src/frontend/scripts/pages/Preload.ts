@@ -18,6 +18,7 @@ import { IAssets, IAssetSkins, IRepB } from "../types/LibTypes"
 import Doodles from "../lib/Doodle"
 import { IMapList } from "../types/MapsTypes"
 import screenfull from "screenfull"
+import ForceClose from "./ForceClose"
 
 const preloadIcons = ['<i class="fa-jelly fa-regular fa-cloud"></i>', '<i class="fa-solid fa-compact-disc"></i>', '<i class="fa-duotone fa-solid fa-circle-xmark"></i>', '<i class="fa-duotone fa-regular fa-gem"></i>', '<i class="fa-regular fa-briefcase"></i>', '<i class="fa-sharp-duotone fa-solid fa-address-book"></i>', '<i class="fa-etch fa-solid fa-mobile"></i>', '<i class="fa-jelly-fill fa-regular fa-gamepad"></i>']
 
@@ -42,6 +43,8 @@ async function forceFullScreen() {
     }
   }
 }
+
+const assetsMissing: string[] = []
 
 interface IConfig {
   skins: IAssetSkins[]
@@ -192,6 +195,19 @@ export default class Preload {
   readSkins(): IAssets[] {
     return this.skins.map((skin) => ({ id: skin.id, content: skin.path, type: "image" }))
   }
+  unhandledAssets(fileID: string, fileName: string, progress: IAssetProgress, fileType: number): void {
+    this.propsToLoad++
+    this.propsLoaded--
+
+    const fileBefore = assetsMissing.find((k) => k === fileID)
+    if (!fileBefore) assetsMissing.push(fileID)
+
+    if (fileType === 2) {
+      this.beginLoadingAudio(fileID, fileName, progress)
+    } else {
+      this.beginLoadingImage(fileID, fileName, progress)
+    }
+  }
   launchIfReady(assetProgress: IAssetProgress, fileID: string): void {
     if (fileID === "null") fileID = "Koruptor"
     this.propsToLoad--
@@ -211,10 +227,14 @@ export default class Preload {
     const img = new Image()
     img.classList.add("hidden-preload")
     img.onerror = () => {
+      this.unhandledAssets(fileID, fileName, assetProgress, 1)
       this.launchIfReady(assetProgress, fileID)
       img.remove()
     }
     img.onload = () => {
+      const fileBefore = assetsMissing.findIndex((k) => k === fileID)
+      if (fileBefore !== -1) assetsMissing.splice(fileBefore, 1)
+
       this.launchIfReady(assetProgress, fileID)
       img.remove()
     }
@@ -238,7 +258,10 @@ export default class Preload {
 
       const audioBuffer = await audioContext.decodeAudioData(arrayBuffer)
       sound[fileID] = { buffer: audioBuffer, src: fileName }
+      const fileBefore = assetsMissing.findIndex((k) => k === fileID)
+      if (fileBefore !== -1) assetsMissing.splice(fileBefore, 1)
     } catch (_error) {
+      this.unhandledAssets(fileID, fileName, assetProgress, 2)
       // console.error(`Error audio decoded: ${fileName}`, error)
     } finally {
       this.launchIfReady(assetProgress, fileID)
@@ -270,6 +293,29 @@ export default class Preload {
 
     const user = await modal.smloading(this.getUser(), "Getting User Data")
 
+    audio.emit({ action: "play", type: "ui", src: "dialogue_end", options: { id: "dialogue_end", lossVol: 50 } })
+
+    const buildNumber = Number(user.data?.build) || -69
+    const buildVersion = user.data?.package || "-0.0.1"
+
+    if (dvnkz_b.buildNumber !== buildNumber || dvnkz_v.version !== buildVersion) {
+      await this.destroy()
+      if (this.doodle) this.doodle.end()
+
+      await waittime(1000)
+
+      audio.emit({ action: "play", type: "ui", src: "uialert", options: { id: "uialert" } })
+      const icon = "sign-posts-wrench"
+      const text = "UPDATE APP"
+      new ForceClose({
+        msg_1: `<i class="fa-duotone fa-solid fa-${icon}"></i>`,
+        msg_2: lang["CLOUD_OUTDATED"],
+        action_url: "/app",
+        action_text: text
+      })
+      return
+    }
+
     const hasSkin = Object.keys(user?.data?.me?.skin || {}).length
     if (!hasSkin) {
       await this.destroy()
@@ -280,7 +326,6 @@ export default class Preload {
       }).start(this.doodle, nextMap)
     }
 
-    audio.emit({ action: "play", type: "ui", src: "dialogue_end", options: { id: "dialogue_end" } })
     await this.destroy()
 
     if (this.doodle) this.doodle.end()

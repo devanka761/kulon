@@ -203,7 +203,7 @@ export default class Shop implements IPMC {
       btnBuy.innerHTML = lang.SHP_USE
       const itmAct = futor(".item-actions", field)
       btnBuy.onclick = async () => {
-        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
+        audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
         if (s.group === "0") {
           const exchange = new Exchange({
             onComplete: this.onComplete,
@@ -257,6 +257,8 @@ export default class Shop implements IPMC {
         } else if (e.key === "ArrowRight") {
           const cards = Array.from(this.el.querySelectorAll(".item-list .card")) as HTMLDivElement[]
           if (cards.length >= 1) {
+            audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
+
             const selectedBefore = cards.find((card) => card.classList.contains("selected"))
             if (selectedBefore) {
               selectedBefore.click()
@@ -285,6 +287,7 @@ export default class Shop implements IPMC {
           }
         } else if (e.key === "ArrowLeft") {
           if (currentIndex % 4 === 0) {
+            audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
             this.setFocus("left")
           } else {
             const nextIndex = currentIndex - 1

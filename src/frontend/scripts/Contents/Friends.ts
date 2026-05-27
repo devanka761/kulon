@@ -175,7 +175,7 @@ export default class Friends {
       if (this.isLocked) return
       inp.readOnly = true
 
-      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
+      audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
       this.isLocked = true
 
       const searchUID = inp.value.replace(/\s/g, "")
@@ -298,6 +298,7 @@ export default class Friends {
         cards[nextIndex].scrollIntoView({ behavior: "smooth", block: "center", container: "nearest" })
       } else if (key === "Enter") {
         if (document.activeElement instanceof HTMLElement && document.activeElement.matches(".card")) {
+          audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: Date.now().toString() } })
           document.activeElement.click()
         }
       }

@@ -227,7 +227,7 @@ export default class Mails implements IPMC {
 
     btn.onclick = async () => {
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
+      audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
       this.isLocked = true
 
       const updateMail = await modal.loading(xhr.post(`/x/account/mail-claim/${s.id}`))

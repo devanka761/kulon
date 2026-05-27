@@ -120,7 +120,7 @@ export default class Find implements IPMC {
     playerSearch.onsubmit = async (e) => {
       e.preventDefault()
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
+      audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
       this.isLocked = true
       const searchUID = inp.value.replace(/\s/g, "")
 

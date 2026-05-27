@@ -304,7 +304,7 @@ export default class Appearance implements IPMC {
     btnContinue.onclick = async (e) => {
       e.preventDefault()
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
+      audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
       this.isLocked = true
       const confirmEdit = await modal.confirm({
         msg: lang.CHAR_APR_CONFIRM,

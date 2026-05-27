@@ -59,7 +59,7 @@ export default class Choices implements IPMC {
       this.eChoices.appendChild(eChoice)
       this.choiceElements.push(eChoice)
       eChoice.onclick = () => {
-        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
+        audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
         if (opt.cancel) this.destroy()
         else this.destroy(true)
       }

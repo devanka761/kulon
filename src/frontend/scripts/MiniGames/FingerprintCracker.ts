@@ -282,7 +282,7 @@ export default class FingerprintCracker implements IPMC {
     this.btnCheck = futor("[data-check]", this.el)
     this.btnCheck.onclick = async () => {
       if (this.btnCheck.classList.contains("disabled")) return
-      audio.emit({ src: "hack_move", action: "play", type: "ui", options: { id: Date.now().toString() } })
+      audio.emit({ src: "ui05", action: "play", type: "ui", options: { id: Date.now().toString() } })
 
       const corrects = this.puzzle.crack.filter((key) => !this.puzzle.attempt.includes(key))
       if (corrects.length > 0) {
@@ -305,7 +305,7 @@ export default class FingerprintCracker implements IPMC {
       fingscan_img.src = asset[this.nFingImg[this.imgpar]].src
       await new Promise((resolve: (...args: IAny) => void) => {
         fingscan_img.onload = () => {
-          audio.emit({ src: "hack_scan", action: "play", type: "sfx", options: { id: scanningId } })
+          audio.emit({ src: "hack_scan", action: "play", type: "sfx", options: { id: scanningId, lossVol: 50 } })
 
           const fingscan_box = document.createElement("div")
           fingscan_box.classList.add("box")
@@ -320,7 +320,7 @@ export default class FingerprintCracker implements IPMC {
       audio.emit({ action: "stop", type: "sfx", id: scanningId })
       const fingscan_desc = futor(".desc", fingscan)
       if (isCorrect) {
-        audio.emit({ src: "hack_match", action: "play", type: "sfx", options: { id: Date.now().toString() } })
+        audio.emit({ src: "hack_match", action: "play", type: "sfx", options: { id: Date.now().toString(), lossVol: 50 } })
 
         fingscan.classList.add("true")
         fingscan_desc.innerHTML = "GRANTED"
@@ -339,9 +339,9 @@ export default class FingerprintCracker implements IPMC {
         this.puzzle.crack = []
         this.puzzle.attempt = []
         this.placeConnections()
-        audio.emit({ src: "hack_next", action: "play", type: "sfx", options: { id: Date.now().toString() } })
+        audio.emit({ src: "hack_next", action: "play", type: "sfx", options: { id: Date.now().toString(), lossVol: 50 } })
       } else {
-        audio.emit({ src: "hack_error", action: "play", type: "sfx", options: { id: Date.now().toString() } })
+        audio.emit({ src: "hack_error", action: "play", type: "sfx", options: { id: Date.now().toString(), lossVol: 50 } })
 
         fingscan.classList.add("false")
         fingscan_desc.innerHTML = "DENIED"
@@ -377,9 +377,9 @@ export default class FingerprintCracker implements IPMC {
     </div>`
     this.el.appendChild(elLastCheck)
     if (condition) {
-      audio.emit({ src: "hack_success", action: "play", type: "sfx", options: { id: Date.now().toString() } })
+      audio.emit({ src: "hack_success", action: "play", type: "sfx", options: { id: Date.now().toString(), lossVol: 50 } })
     } else {
-      audio.emit({ src: "hack_failed", action: "play", type: "sfx", options: { id: Date.now().toString() } })
+      audio.emit({ src: "hack_failed", action: "play", type: "sfx", options: { id: Date.now().toString(), lossVol: 50 } })
     }
     await waittime(2500)
     elLastCheck.classList.add("out")
@@ -435,7 +435,7 @@ export default class FingerprintCracker implements IPMC {
       }
 
       allCovers[nextIndex]?.classList.add("selected")
-      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
+      audio.emit({ action: "play", type: "ui", src: "hack_move", options: { id: Date.now().toString() } })
     }
     document.addEventListener("keydown", this.navKeyHandler)
   }
@@ -455,8 +455,8 @@ export default class FingerprintCracker implements IPMC {
   init(): void {
     db.pmc = this
 
-    audio.emit({ src: "hack_intro", action: "play", type: "sfx", options: { id: Date.now().toString() } })
-    audio.emit({ src: "hack01", action: "play", type: "bgm", options: { fadeIn: 1000 } })
+    audio.emit({ src: "hack_intro", action: "play", type: "sfx", options: { id: Date.now().toString(), lossVol: 50 } })
+    audio.emit({ src: "hack01", action: "play", type: "bgm", options: { fadeIn: 1000, lossVol: 30 } })
 
     this.shuffleImg()
     this.createElement()

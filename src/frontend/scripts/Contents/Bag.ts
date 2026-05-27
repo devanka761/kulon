@@ -174,6 +174,8 @@ export class Bag implements IPMC {
         } else if (e.key === "ArrowRight") {
           const cards = Array.from(this.el.querySelectorAll(".item-list .card")) as HTMLDivElement[]
           if (cards.length >= 1) {
+            audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
+
             const selectedBefore = cards.find((card) => card.classList.contains("selected"))
             if (selectedBefore) {
               selectedBefore.click()
@@ -202,6 +204,7 @@ export class Bag implements IPMC {
           }
         } else if (e.key === "ArrowLeft") {
           if (currentIndex % 4 === 0) {
+            audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
             this.setFocus("left")
           } else {
             const nextIndex = currentIndex - 1
@@ -313,7 +316,7 @@ export class Bag implements IPMC {
       const itmAct = futor(".item-actions", field)
       btnBuy.onclick = async () => {
         if (this.isLocked) return
-        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
+        audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
         this.destroy(
           itemRun.run(item.run, {
             onComplete: this.onComplete,

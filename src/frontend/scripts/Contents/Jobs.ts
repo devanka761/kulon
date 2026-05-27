@@ -251,7 +251,7 @@ export default class Jobs implements IPMC {
     const btnIgnore = futor(".btn-ignore", field)
     btnIgnore.onclick = async () => {
       if (this.isLocked || !db.pmc) return
-      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
+      audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
       this.isLocked = true
       const conmsg = {
         id: "Tolak undangan?",
@@ -272,7 +272,7 @@ export default class Jobs implements IPMC {
     const btnAccept = futor(".btn-accept", field)
     btnAccept.onclick = () => {
       if (this.isLocked || !db.pmc) return
-      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
+      audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
       db.invites.remove(job.id, user.id)
       this.destroy(
         itemRun.run("joinJob", {

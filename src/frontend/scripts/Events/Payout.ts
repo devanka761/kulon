@@ -113,8 +113,8 @@ export default class Payout implements IPMC {
     this.currCrew = this.crews.length
     this.ecos = this.el.querySelectorAll(".eco")
     this.currEco = this.ecos.length
-    audio.emit({ action: "play", type: "sfx", src: "stat03", options: { id: "stat03" } })
-    audio.emit({ action: "play", type: "bgm", src: "statshow01", options: { id: "statshow01", fadeIn: 1000, volume: 1 } })
+    audio.emit({ action: "play", type: "sfx", src: "stat03", options: { id: "stat03", volume: 0.6 } })
+    audio.emit({ action: "play", type: "bgm", src: "statshow01", options: { id: "statshow01", fadeIn: 1000, volume: 0.8 } })
     await waittime(1000)
     await new Promise((resolve) => this.setTitle(resolve))
     await new Promise((resolve) => this.setCrew(resolve))
@@ -143,7 +143,7 @@ export default class Payout implements IPMC {
   private async setTitle(done: (val?: unknown) => unknown): Promise<void> {
     this.el.style.opacity = "1"
     await waittime(2000)
-    audio.emit({ action: "play", type: "sfx", src: "stat01", options: { id: "stat01_" + Date.now() } })
+    audio.emit({ action: "play", type: "sfx", src: "stat01", options: { id: "stat01_" + Date.now(), volume: 0.8 } })
     await waittime(150)
     this.etitle.style.transform = "translateY(0)"
     await waittime(1500)
@@ -154,7 +154,7 @@ export default class Payout implements IPMC {
       await waittime(1000)
       return done()
     }
-    audio.emit({ action: "play", type: "sfx", src: "stat01", options: { id: "stat01_" + Date.now() } })
+    audio.emit({ action: "play", type: "sfx", src: "stat01", options: { id: "stat01_" + Date.now(), volume: 0.8 } })
     await waittime(100)
     const currTranslate = Math.floor(((this.currCrew - 1) / this.crews.length) * 100)
     this.elcrews.style.transform = "translateY(-" + currTranslate + "%)"
@@ -166,12 +166,12 @@ export default class Payout implements IPMC {
   }
   private async setEco(done: (val?: unknown) => unknown): Promise<unknown | void> {
     if (this.currEco <= 0) {
-      audio.emit({ action: "play", type: "sfx", src: "stat02", options: { id: "stat02" } })
+      audio.emit({ action: "play", type: "sfx", src: "stat02", options: { id: "stat02", volume: 0.6 } })
       this.box.style.transform = "scale(1)"
       await waittime(1500)
       return done()
     }
-    audio.emit({ action: "play", type: "sfx", src: "stat01", options: { id: "stat01_" + Date.now() } })
+    audio.emit({ action: "play", type: "sfx", src: "stat01", options: { id: "stat01_" + Date.now(), volume: 0.8 } })
     this.ecos[this.currEco - 1].style.transform = "translateY(-50vh)"
     await waittime(250)
     this.ecos[this.currEco - 1].style.transition = "0.1s"
@@ -187,7 +187,7 @@ export default class Payout implements IPMC {
     audio.emit({ action: "stop", type: "bgm", options: { fadeOut: 1000 } })
   }
   private setBoxDown(): void {
-    audio.emit({ action: "play", type: "sfx", src: "statout", options: { id: "statout" } })
+    audio.emit({ action: "play", type: "sfx", src: "statout", options: { id: "statout", volume: 0.7 } })
     this.box.style.transform = "translateY(100vh)"
   }
   private async backToOffline(): Promise<void> {

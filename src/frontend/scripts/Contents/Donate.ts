@@ -108,7 +108,7 @@ export default class Donate implements IPMC {
     const btnSubmit = futor(".btn-submit", this.el)
     btnSubmit.onclick = async () => {
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
+      audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
       this.isLocked = true
       const createInvoice = await modal.loading(xhr.post(`/x/donate/create/${this.item_id}`))
       if (createInvoice?.msg === "DN_PENDING") {
