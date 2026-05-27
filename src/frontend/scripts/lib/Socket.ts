@@ -33,7 +33,7 @@ class Socket {
   private game!: Game
   private host!: string
   private id!: string
-  private _start(): void {
+  start(): void {
     this.ws = new WebSocket(`ws${window.location.protocol === "https:" ? "s" : ""}://${this.host}/socket?id=${this.id}`)
 
     this.ws.addEventListener("error", socketError)
@@ -188,7 +188,7 @@ class Socket {
       db.job.reset()
     }
   }
-  updateData(s: IAny): void {
+  updateData(s: IAny, immi?: boolean): void {
     if (s.socket) {
       this.id = s.socket.id
       this.host = s.socket.host
@@ -202,7 +202,7 @@ class Socket {
     if (s.peer) setPeerConfig(s.peer)
     if (s.build) db.version = s.build
 
-    this._start()
+    if (!immi) this.start()
   }
   init(game: Game) {
     this.game = game

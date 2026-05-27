@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import Account from "../models/AccountModel"
 import User from "../models/UserModel"
+import clientBuild from "../lib/clientBuild"
 
 const userCDs = new Map()
 
@@ -24,7 +25,16 @@ export async function isUser(req: Request, res: Response, next: NextFunction) {
   if (!req.user || !req.user.id) return res.status(401).json({ ok: false, code: 401, msg: "UNAUTHORIZED" })
 
   const userExists = await User.exists({ id: req.user.id })
-  if (!userExists) return res.status(401).json({ ok: false, code: 401, msg: "UNAUTHORIZED" })
+  if (!userExists)
+    return res.status(401).json({
+      ok: false,
+      code: 401,
+      msg: "UNAUTHORIZED",
+      data: {
+        package: clientBuild.packageVersion,
+        build: clientBuild.buildVersion
+      }
+    })
 
   next()
 }

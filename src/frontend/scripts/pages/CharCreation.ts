@@ -1,15 +1,14 @@
 import backsong from "../APIs/BackSongAPI"
 import lang from "../data/language"
+import MapList from "../data/MapList"
 import Appearance from "../Events/Appearance"
 import audio from "../lib/AudioHandler"
-import Doodles from "../lib/Doodle"
 import { qutor } from "../lib/kel"
 import modal from "../lib/modal"
+import socket from "../lib/Socket"
 import xhr from "../lib/xhr"
 import { KeyPressListener } from "../main/KeyPressListener"
-import startGame from "../manager/startGame"
 import { IPMCConfig } from "../types/DBTypes"
-import { IMapList } from "../types/MapsTypes"
 
 interface IAppearanceConfig extends IPMCConfig {
   item_id?: string
@@ -18,8 +17,6 @@ interface IAppearanceConfig extends IPMCConfig {
 }
 
 export default class CharCreation extends Appearance {
-  private doodle?: Doodles
-  private nextMap?: IMapList
   constructor(config: IAppearanceConfig) {
     super(config)
   }
@@ -70,28 +67,31 @@ export default class CharCreation extends Appearance {
         btnContinue.click()
         return
       }
+
+      socket.updateData(saveChar.data, true)
+      Object.keys(MapList).forEach((k) => {
+        if (MapList[k].configObjects["hero"]) {
+          MapList[k].configObjects["hero"].src = Object.values(saveChar.data.me.skin)
+        }
+      })
+
       this.isLocked = false
-      backsong.destroy()
-      backsong.switch(1)
+      backsong.switch(2, 2)
+      backsong.start(1000)
+      this.resumeMap()
       await this.destroy()
-      if (this.doodle) this.doodle.end()
-      startGame(saveChar.data, this.nextMap!, true)
     }
     this.enter = new KeyPressListener("enter", () => {
       btnContinue.click()
     })
   }
-  start(doodle: Doodles, nextMap: IMapList): void {
-    this.doodle = doodle
-    this.nextMap = nextMap
+  start(): void {
     this.init()
-    audio.emit({ action: "play", type: "ambient", src: "outside01", options: { fadeIn: 5000, volume: 0.1 } })
-    backsong.switch(2)
-    backsong.start(2000)
+    backsong.switch(0, 5)
+    backsong.start(1000)
     const btnCancel = qutor(".btn-cancel", this.el)
     if (btnCancel) btnCancel.remove()
     const helpCancel = qutor(".help-cancel", this.el)
     if (helpCancel) helpCancel.remove()
-    this.el.classList.remove("appearance")
   }
 }

@@ -36,6 +36,10 @@ import { Interactable } from "./Interactable"
 import xhr from "../lib/xhr"
 import { IUser } from "../types/DBTypes"
 import { checkHint, setHint } from "../Events/Hint"
+import CharCreation from "../pages/CharCreation"
+import LoadAssets from "../lib/LoadAssets"
+import { getOfflineAssets, getOfflineMaps } from "../manager/initialWorld"
+import setNewGame from "../manager/setNewGame"
 
 type Resolve = (val?: string) => void
 
@@ -98,6 +102,43 @@ export class GameEvent {
       // console.warn(`Game object '${who}' is not found.`)
       resolve()
     }
+  }
+
+  characterCreation(resolve: Resolve): void {
+    db.me.skin = {
+      Bodies: "Body_01",
+      Outfits: "Outfit_01_01"
+    }
+    const charCreation = new CharCreation({
+      game: this.game,
+      pmcTitle: "CHAR_CREATION_TITLE",
+      pmcContinue: "CHAR_CREATION_CONTINUE",
+      onComplete: () => resolve()
+    })
+    charCreation.start()
+  }
+
+  async newWorld(resolve: Resolve): Promise<void> {
+    if (this.game) this.game.pause()
+    await waittime(500)
+    await modal.loading(new LoadAssets({ skins: getOfflineAssets() }).run())
+    if (this.game) {
+      this.game.pause()
+      this.game.resume()
+    }
+    socket.start()
+    await waittime(500)
+    resolve()
+
+    audio.emit({ action: "play", type: "sfx", src: "door_open" })
+
+    const sceneTransition = new SceneTransition()
+    sceneTransition.init(eroot(), async () => {
+      setNewGame(getOfflineMaps(), this.game)
+
+      sceneTransition.fadeOut()
+      audio.emit({ action: "play", type: "sfx", src: "door_close" })
+    })
   }
 
   changeMap(resolve: Resolve): void {
@@ -174,6 +215,11 @@ export class GameEvent {
     socket.send("addClaims", { states })
 
     checkHint(states)
+
+    resolve()
+  }
+  addTutorDone(resolve: Resolve): void {
+    socket.send("addTutorDone")
 
     resolve()
   }
@@ -536,7 +582,7 @@ export class GameEvent {
     })
 
     const key = session.data.key
-    backsong.switch(2, 1)
+    backsong.switch(2, 3)
     backsong.start(5000)
     notip({ a: `LOBBY ${key}`, b: "Entered Random Public Lobby", ic: "users-rays" })
   }

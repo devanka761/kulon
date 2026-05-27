@@ -55,6 +55,20 @@
       "id": "Selesaikan job untuk pertama kalinya sebagai crew (Story Mode)"
     }
   },
+  "tutordone": {
+    "taken": 1,
+    "display": 761,
+    "reward": 5,
+    "group": "1",
+    "title": {
+      "en": "Hell Tutorial",
+      "id": "Tutorial Meresahkan"
+    },
+    "desc": {
+      "en": "Finish the tutorial and introduction",
+      "id": "Menyelesaikan tutorial dan perkenalan"
+    }
+  },
   "reborn": {
     "taken": 1,
     "display": 1,

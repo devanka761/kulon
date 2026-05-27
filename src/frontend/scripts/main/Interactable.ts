@@ -81,14 +81,20 @@ export class Interactable {
 
     this.collisionHeight = config.collision?.[3] || 1
 
-    this.collisionBox = !config.collision
-      ? undefined
-      : {
-          xOffset: this.collisionXStart * TILE_SIZE,
-          yOffset: this.collisionYStart * TILE_SIZE,
-          width: this.collisionWidth * TILE_SIZE,
-          height: this.collisionHeight * TILE_SIZE
-        }
+    // this.collisionBox = !config.collision
+    //   ? undefined
+    //   : {
+    //       xOffset: this.collisionXStart * TILE_SIZE,
+    //       yOffset: this.collisionYStart * TILE_SIZE,
+    //       width: this.collisionWidth * TILE_SIZE,
+    //       height: this.collisionHeight * TILE_SIZE
+    //     }
+    this.collisionBox = {
+      xOffset: this.collisionXStart * TILE_SIZE,
+      yOffset: this.collisionYStart * TILE_SIZE,
+      width: this.collisionWidth * TILE_SIZE,
+      height: this.collisionHeight * TILE_SIZE
+    }
   }
 
   update(deltaTime: number): void {

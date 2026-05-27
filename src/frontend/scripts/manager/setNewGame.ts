@@ -5,7 +5,7 @@ import { IMapList, ISpawnRule } from "../types/MapsTypes"
 import SetNextMap from "./SetNextMap"
 import localSave from "./storage"
 
-export default async function setNewGame(nextMap: IMapList, gameInstance: Game | null = null, isfirst: boolean = false, spawnRule: ISpawnRule | null = null): Promise<Game> {
+export default async function setNewGame(nextMap: IMapList, gameInstance: Game | null = null, isfirst: boolean = false, spawnRule: ISpawnRule | null = null, immi?: boolean): Promise<Game> {
   gameInstance?.destroy()
 
   SetNextMap(nextMap, spawnRule)
@@ -17,6 +17,6 @@ export default async function setNewGame(nextMap: IMapList, gameInstance: Game |
 
   const canvas = futor("#game-canvas") as HTMLCanvasElement
   const game = new Game(canvas, canvasSize)
-  await game.init()
+  await game.init(immi)
   return game
 }

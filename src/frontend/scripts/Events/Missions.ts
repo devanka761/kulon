@@ -300,7 +300,7 @@ export default class Missions implements IPMC {
   }
 
   private async tutorial(): Promise<void> {
-    await waittime(2000)
+    await waittime(1000)
     await modal.alert(lang.MB_TR_01)
     await waittime(750)
     await modal.alert(lang.MB_TR_02)

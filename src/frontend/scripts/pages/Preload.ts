@@ -8,8 +8,7 @@ import modal from "../lib/modal"
 import waittime from "../lib/waittime"
 import xhr from "../lib/xhr"
 import { setOfflineAssets, setOfflineMaps } from "../manager/initialWorld"
-import startGame from "../manager/startGame"
-import CharCreation from "./CharCreation"
+import { startGame } from "../manager/startGame"
 import assetSize from "../../../../public/json/skins/size.json"
 import audio from "../lib/AudioHandler"
 import { sound, audioContext } from "../data/sound"
@@ -286,19 +285,18 @@ export default class Preload {
     setOfflineAssets(initialSkins)
 
     await modal.smloading(new LoadAssets({ skins: initialSkins }).run(), "Loading Character Data")
-
-    const nextMap = await xhr.forceGet(`/json/maps/mp_ehek.json?v=${Date.now()}`)
+    const nextMap = await modal.smloading(xhr.forceGet(`/json/maps/mp_ehek.json?v=${Date.now()}`), "Getting Map Ready")
 
     setOfflineMaps(nextMap as IMapList)
 
     const user = await modal.smloading(this.getUser(), "Getting User Data")
 
-    audio.emit({ action: "play", type: "ui", src: "dialogue_end", options: { id: "dialogue_end", lossVol: 50 } })
-
     const buildNumber = Number(user.data?.build) || -69
     const buildVersion = user.data?.package || "-0.0.1"
 
     if (dvnkz_b.buildNumber !== buildNumber || dvnkz_v.version !== buildVersion) {
+      audio.emit({ action: "play", type: "ui", src: "dialogue_end", options: { id: "dialogue_end", lossVol: 50 } })
+
       await this.destroy()
       if (this.doodle) this.doodle.end()
 
@@ -318,13 +316,27 @@ export default class Preload {
 
     const hasSkin = Object.keys(user?.data?.me?.skin || {}).length
     if (!hasSkin) {
+      // return new CharCreation({
+      //   pmcTitle: "CHAR_CREATION_TITLE",
+      //   pmcContinue: "CHAR_CREATION_CONTINUE",
+      //   onComplete: () => {}
+      // }).start(this.doodle, nextMap)
+
+      const immiSkins = await modal.smloading(xhr.forceGet("/json/assets/st_immigration.json?v=" + Date.now()), "Getting Immigration Ready")
+
+      await modal.smloading(new LoadAssets({ skins: immiSkins }).run(), "Loading Character Data")
+
+      const immiMap = await modal.smloading(xhr.forceGet(`/json/maps/mp_immigration.json?v=${Date.now()}`), "Setting Up Immigration")
+      audio.emit({ action: "play", type: "ui", src: "dialogue_end", options: { id: "dialogue_end", lossVol: 50 } })
+
       await this.destroy()
-      return new CharCreation({
-        pmcTitle: "CHAR_CREATION_TITLE",
-        pmcContinue: "CHAR_CREATION_CONTINUE",
-        onComplete: () => {}
-      }).start(this.doodle, nextMap)
+      if (this.doodle) this.doodle.end()
+
+      startGame(user.data, immiMap, false, true)
+      return
     }
+
+    audio.emit({ action: "play", type: "ui", src: "dialogue_end", options: { id: "dialogue_end", lossVol: 50 } })
 
     await this.destroy()
 

@@ -316,6 +316,9 @@ const socketMessage: SocketHandler = {
     if (!mission || mission.mode !== 2) return
     const reqs = mission.reqs || []
     if (dbjob.hasStates(job.id, reqs)) calculateWinner(job, mission)
+  },
+  addTutorDone(uid) {
+    if (!prog.isDone(uid, "tutordone")) prog.update(uid, "tutordone", 1)
   }
 }
 

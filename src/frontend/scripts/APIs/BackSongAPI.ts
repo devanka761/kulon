@@ -19,10 +19,10 @@ const bgms: BackSongArr = [
     { artist: "ConcernedApe", title: "A Stillness In The Rain (Abigail's Melody)", id: "a_stillness_in_the_rain" },
     { artist: "ConcernedApe", title: "Buttercup Melody", id: "buttercup_melody" },
     { artist: "ConcernedApe", title: "Distant Banjo", id: "distant_banjo" },
-    { artist: "ConcernedApe", title: "Echos (Sebastian's Theme)", id: "echos" },
     { artist: "ConcernedApe", title: "Fall (Raven's Descent)", id: "fall_ravens_descent" },
     { artist: "ConcernedApe", title: "In the Deep Woods", id: "in_the_deep_woods" },
     { artist: "ConcernedApe", title: "Leo's Song", id: "leos_song" },
+    { artist: "ConcernedApe", title: "Echos (Sebastian's Theme)", id: "echos" },
     { artist: "ConcernedApe", title: "Playful", id: "playful" },
     { artist: "ConcernedApe", title: "Pleasant Memory (Penny's Theme)", id: "pleasant_memory" }
   ],
@@ -31,10 +31,17 @@ const bgms: BackSongArr = [
     { artist: "Crow Shade", title: "Mind's Eye", id: "minds_eye" }
   ],
   [
-    { artist: "ConcernedApe", title: "Distant Banjo", id: "distant_banjo" },
     { artist: "ConcernedApe", title: "Playful", id: "playful" },
+    { artist: "ConcernedApe", title: "Distant Banjo", id: "distant_banjo" },
+    { artist: "ConcernedApe", title: "Fall (The Smell of Mushroom)", id: "fall_the_smell_of_mushroom" },
+    { artist: "ConcernedApe", title: "Buttercup Melody", id: "buttercup_melody" },
+    { artist: "ConcernedApe", title: "Echos (Sebastian's Theme)", id: "echos" },
+    { artist: "ConcernedApe", title: "Fall (Raven's Descent)", id: "fall_ravens_descent" },
     { artist: "ConcernedApe", title: "In the Deep Woods", id: "in_the_deep_woods" },
-    { artist: "ConcernedApe", title: "Fall (The Smell of Mushroom)", id: "fall_the_smell_of_mushroom" }
+    { artist: "ConcernedApe", title: "Leo's Song", id: "leos_song" },
+    { artist: "ConcernedApe", title: "Playful", id: "playful" },
+    { artist: "ConcernedApe", title: "Pleasant Memory (Penny's Theme)", id: "pleasant_memory" },
+    { artist: "ConcernedApe", title: "A Stillness In The Rain (Abigail's Melody)", id: "a_stillness_in_the_rain" }
   ]
 ]
 
