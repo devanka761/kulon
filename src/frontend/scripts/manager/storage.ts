@@ -18,7 +18,7 @@ interface ISaveData extends IStorageData {
 
 class LocalSave implements ILocalSave, IStorageData {
   mapId: string = "kulonSafeHouse"
-  saveVersion: string = "761"
+  saveVersion: string = "xKULONp48zu"
   private saveFileKey: string = "Kulon_Save"
   save(): void {
     const saveData: ISaveData = {
