@@ -19,6 +19,7 @@ import { Prop } from "./Prop"
 import { Player } from "./Player"
 import { IGameObjectData, IObjectEvent, IObjectTalk } from "../types/MapsTypes"
 import backsong from "../APIs/BackSongAPI"
+import { helpHowTo } from "../manager/HelpHowTo"
 
 export interface GameObjectMain {
   update: (deltaTime: number, keys: InputHandler["keys"], walls: GameMap["walls"], game: Game) => void
@@ -110,6 +111,7 @@ export class Game {
     backsong.start(1000)
 
     await this.startCutscene(MapList["kulonimmigration"].cutscenes["2,12"][0].events as IObjectEvent[])
+    helpHowTo.init()
   }
 
   async startGame(immi?: boolean): Promise<void> {

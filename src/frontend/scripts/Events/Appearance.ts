@@ -149,7 +149,7 @@ export default class Appearance implements IPMC {
   protected cardEditor(k: string, n: number = 0): HTMLDivElement {
     const card = kel("div", "field") as HTMLDivElement
     card.innerHTML = `
-    <div class="text">${k}${n ? '<br><i class="fa-solid fa-arrow-turn-down-right variety"></i> variety' : ""}</div>
+    <div class="text">${k}${n ? '<br><i class="fa-solid fa-arrow-turn-down-right variety"></i> color' : ""}</div>
     <div class="actions">
       <div class="act primary">
         <button class="left"><i class="fa-solid fa-chevron-left"></i></button>

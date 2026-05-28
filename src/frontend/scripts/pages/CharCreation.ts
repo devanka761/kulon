@@ -8,6 +8,7 @@ import modal from "../lib/modal"
 import socket from "../lib/Socket"
 import xhr from "../lib/xhr"
 import { KeyPressListener } from "../main/KeyPressListener"
+import { helpHowTo } from "../manager/HelpHowTo"
 import { IPMCConfig } from "../types/DBTypes"
 
 interface IAppearanceConfig extends IPMCConfig {
@@ -86,6 +87,7 @@ export default class CharCreation extends Appearance {
     })
   }
   start(): void {
+    helpHowTo.destroy()
     this.init()
     backsong.switch(0, 5)
     backsong.start(1000)

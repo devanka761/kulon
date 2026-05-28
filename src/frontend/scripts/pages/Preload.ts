@@ -14,7 +14,6 @@ import audio from "../lib/AudioHandler"
 import { sound, audioContext } from "../data/sound"
 import { KeyPressListener } from "../main/KeyPressListener"
 import { IAssets, IAssetSkins, IRepB } from "../types/LibTypes"
-import Doodles from "../lib/Doodle"
 import { IMapList } from "../types/MapsTypes"
 import screenfull from "screenfull"
 import ForceClose from "./ForceClose"
@@ -48,7 +47,6 @@ const assetsMissing: string[] = []
 interface IConfig {
   skins: IAssetSkins[]
   sounds: IAssetSkins[]
-  doodle: Doodles
 }
 
 interface IAssetProgress {
@@ -57,8 +55,6 @@ interface IAssetProgress {
 }
 
 export default class Preload {
-  private doodle: Doodles
-
   private skins: IAssetSkins[]
   private sounds: IAssetSkins[]
   private assets: IAssets[] = []
@@ -71,10 +67,9 @@ export default class Preload {
   private el: HTMLDivElement = kel("div", "Preload")
 
   private enter?: KeyPressListener
-  constructor({ skins, sounds, doodle }: IConfig) {
+  constructor({ skins, sounds }: IConfig) {
     this.skins = skins
     this.sounds = sounds
-    this.doodle = doodle
   }
   createElement(): void {
     this.el.innerHTML = `
@@ -108,27 +103,6 @@ export default class Preload {
     card.innerHTML = `<b>${convertedSize} MB</b>`
     loadList.prepend(card)
   }
-  async removeOldCache(): Promise<void> {
-    const CACHE_WHITELIST = `kulon-cache-${dvnkz_v.version}-${dvnkz_b.buildNumber}`
-    await caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (CACHE_WHITELIST !== cacheName) {
-            return caches.delete(cacheName)
-          }
-          return Promise.resolve()
-        })
-      )
-    })
-
-    if ("serviceWorker" in navigator) {
-      try {
-        await navigator.serviceWorker.register("/sw.js", { scope: "/" })
-      } catch (_error) {
-        // -
-      }
-    }
-  }
   btnListener(): void {
     const btnLoad = futor(".assetload-action", this.el)
     btnLoad.onclick = async () => {
@@ -146,7 +120,6 @@ export default class Preload {
         <div class="inner-loader"></div>
       </div>`
       this.el.append(eloadel)
-      await this.removeOldCache()
       await waittime(200)
       this.loadPrepare()
     }
@@ -298,7 +271,6 @@ export default class Preload {
       audio.emit({ action: "play", type: "ui", src: "dialogue_end", options: { id: "dialogue_end", lossVol: 50 } })
 
       await this.destroy()
-      if (this.doodle) this.doodle.end()
 
       await waittime(1000)
 
@@ -316,12 +288,6 @@ export default class Preload {
 
     const hasSkin = Object.keys(user?.data?.me?.skin || {}).length
     if (!hasSkin) {
-      // return new CharCreation({
-      //   pmcTitle: "CHAR_CREATION_TITLE",
-      //   pmcContinue: "CHAR_CREATION_CONTINUE",
-      //   onComplete: () => {}
-      // }).start(this.doodle, nextMap)
-
       const immiSkins = await modal.smloading(xhr.forceGet("/json/assets/st_immigration.json?v=" + Date.now()), "Getting Immigration Ready")
 
       await modal.smloading(new LoadAssets({ skins: immiSkins }).run(), "Loading Character Data")
@@ -330,7 +296,6 @@ export default class Preload {
       audio.emit({ action: "play", type: "ui", src: "dialogue_end", options: { id: "dialogue_end", lossVol: 50 } })
 
       await this.destroy()
-      if (this.doodle) this.doodle.end()
 
       startGame(user.data, immiMap, false, true)
       return
@@ -339,8 +304,6 @@ export default class Preload {
     audio.emit({ action: "play", type: "ui", src: "dialogue_end", options: { id: "dialogue_end", lossVol: 50 } })
 
     await this.destroy()
-
-    if (this.doodle) this.doodle.end()
 
     startGame(user.data, nextMap, true)
   }

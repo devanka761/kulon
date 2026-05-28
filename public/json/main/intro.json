@@ -455,12 +455,6 @@
       "who": "devanka761"
     },
     {
-      "type": "stand",
-      "direction": "down",
-      "who": "hero",
-      "time": 5
-    },
-    {
       "type": "walk",
       "direction": "down",
       "who": "devanka761"
@@ -474,17 +468,6 @@
       "type": "walk",
       "direction": "down",
       "who": "devanka761"
-    },
-    {
-      "type": "walk",
-      "direction": "down",
-      "who": "devanka761"
-    },
-    {
-      "type": "stand",
-      "direction": "down",
-      "who": "devanka761",
-      "time": 100
     },
     {
       "type": "stand",

@@ -1,0 +1,55 @@
+@use "../variables" as v;
+
+.helphowto {
+  position: absolute;
+  top: v.$bigPadding;
+  right: v.$bigPadding;
+  padding: v.$bigPadding;
+  border-radius: v.$mediumPadding;
+  background-color: v.$px1;
+  border: 4px solid v.$pm1;
+  box-shadow:
+    0 0 0 4px v.$px1,
+    0 8px 16px rgba(0, 0, 0, 0.5);
+  animation: slide_left_in 0.3s;
+  p {
+    line-height: 2;
+    .keyinfo {
+      padding: 2px 7px;
+      display: inline;
+    }
+  }
+  &.out {
+    animation: slide_left_out 0.3s forwards;
+  }
+}
+
+.objective {
+  position: absolute;
+  bottom: v.$bigPadding;
+  padding: v.$mediumPadding v.$bigPadding;
+  background-color: rgba(v.$px1, 0.5);
+  animation: objectiveIn 1s;
+  p {
+    color: v.$white;
+    text-shadow: v.$textoutline;
+    span {
+      color: v.$yellow;
+    }
+  }
+}
+
+@keyframes objectiveIn {
+  0% {
+    font-size: calc(v.$dialogueSize * 1.1);
+    transform: translateY(-100%);
+  }
+  80% {
+    font-size: calc(v.$dialogueSize * 1.1);
+    transform: translateY(-100%);
+  }
+  100% {
+    font-size: v.$defaultSize;
+    transform: translateY(0);
+  }
+}

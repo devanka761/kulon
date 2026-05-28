@@ -35,7 +35,7 @@ interface IFriendsConfig {
   classBefore: IPMC
 }
 
-export default class Friends {
+export default class Friends implements IPMC {
   id: string = "friends"
   isLocked: boolean = false
   onComplete: () => void

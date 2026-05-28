@@ -53,6 +53,7 @@ export default class Choices implements IPMC {
       eChoice.role = "button"
       eChoice.innerHTML = opt.text[LocalList.lang!]
       eChoice.onmouseover = () => {
+        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
         eChoice.focus()
       }
 

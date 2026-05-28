@@ -40,6 +40,7 @@ import CharCreation from "../pages/CharCreation"
 import LoadAssets from "../lib/LoadAssets"
 import { getOfflineAssets, getOfflineMaps } from "../manager/initialWorld"
 import setNewGame from "../manager/setNewGame"
+import { objective } from "../manager/Objectives"
 
 type Resolve = (val?: string) => void
 
@@ -315,6 +316,15 @@ export class GameEvent {
       index: this.targetIdx
     })
 
+    resolve()
+  }
+  objectives(resolve: Resolve): void {
+    const { text } = this.event
+    if (!text) {
+      objective.destroy()
+      return resolve()
+    }
+    objective.update(text)
     resolve()
   }
   phone(resolve: Resolve): void {
