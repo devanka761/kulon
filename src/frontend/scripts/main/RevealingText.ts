@@ -39,7 +39,7 @@ export default class RevealingText {
         action: "play",
         type: "ui",
         src: "dialogue_end",
-        options: { id: "dialogend" + Date.now().toString() }
+        options: { id: "dialogend" + Date.now().toString(), lossVol: 50 }
       })
       this.isDone = true
     }
@@ -52,7 +52,7 @@ export default class RevealingText {
       action: "play",
       type: "ui",
       src: "dialogue_end",
-      options: { id: "dialogend" + Date.now().toString() }
+      options: { id: "dialogend" + Date.now().toString(), lossVol: 50 }
     })
     this.isDone = true
     this.el.querySelectorAll("span").forEach((s) => {
@@ -77,8 +77,8 @@ export default class RevealingText {
     audio.emit({
       action: "play",
       type: "ui",
-      src: "dialogue_revealing",
-      options: { id: this.revealId }
+      src: "dialogue_loop",
+      options: { id: this.revealId, loop: true }
     })
   }
 }

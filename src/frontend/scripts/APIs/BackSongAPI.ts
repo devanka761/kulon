@@ -15,24 +15,33 @@ const bgms: BackSongArr = [
   [
     { artist: "unknown", title: "Field Theme 1", id: "field_theme_1" },
     { artist: "unknown", title: "Night Theme 1", id: "night_theme_1" },
-    { artist: "unknown", title: "Night Theme 1", id: "night_theme_1" },
-    { artist: "unknown", title: "Cave Theme 2", id: "cave_theme_2" },
-    { artist: "unknown", title: "Cave Theme 1", id: "cave_theme_1" },
-    { artist: "unknown", title: "Field Theme 2", id: "field_theme_2" },
     { artist: "ConcernedApe", title: "Fall (The Smell of Mushroom)", id: "fall_the_smell_of_mushroom" },
-    { artist: "unknown", title: "Field Theme 1", id: "field_theme_1" }
-  ],
-  [
-    { artist: "Crow Shade", title: "The Veil of Night", id: "the_veil_of_night_theme" },
-    { artist: "Crow Shade", title: "Mind's Eye", id: "minds_eye_theme" }
-  ],
-  [
+    { artist: "ConcernedApe", title: "A Stillness In The Rain (Abigail's Melody)", id: "a_stillness_in_the_rain" },
+    { artist: "ConcernedApe", title: "Buttercup Melody", id: "buttercup_melody" },
     { artist: "ConcernedApe", title: "Distant Banjo", id: "distant_banjo" },
-    { artist: "ConcernedApe", title: "Playful", id: "playful" },
+    { artist: "ConcernedApe", title: "Fall (Raven's Descent)", id: "fall_ravens_descent" },
     { artist: "ConcernedApe", title: "In the Deep Woods", id: "in_the_deep_woods" },
+    { artist: "ConcernedApe", title: "Leo's Song", id: "leos_song" },
+    { artist: "ConcernedApe", title: "Echos (Sebastian's Theme)", id: "echos" },
+    { artist: "ConcernedApe", title: "Playful", id: "playful" },
+    { artist: "ConcernedApe", title: "Pleasant Memory (Penny's Theme)", id: "pleasant_memory" }
+  ],
+  [
+    { artist: "Crow Shade", title: "The Veil of Night", id: "the_veil_of_night" },
+    { artist: "Crow Shade", title: "Mind's Eye", id: "minds_eye" }
+  ],
+  [
+    { artist: "ConcernedApe", title: "Playful", id: "playful" },
+    { artist: "ConcernedApe", title: "Distant Banjo", id: "distant_banjo" },
     { artist: "ConcernedApe", title: "Fall (The Smell of Mushroom)", id: "fall_the_smell_of_mushroom" },
-    { artist: "ConcernedApe", title: "Pelican Town", id: "pelican_town" },
-    { artist: "ConcernedApe", title: "Spring (Wild Horseradish Jam)", id: "spring_wild_horseradish_jam" }
+    { artist: "ConcernedApe", title: "Buttercup Melody", id: "buttercup_melody" },
+    { artist: "ConcernedApe", title: "Echos (Sebastian's Theme)", id: "echos" },
+    { artist: "ConcernedApe", title: "Fall (Raven's Descent)", id: "fall_ravens_descent" },
+    { artist: "ConcernedApe", title: "In the Deep Woods", id: "in_the_deep_woods" },
+    { artist: "ConcernedApe", title: "Leo's Song", id: "leos_song" },
+    { artist: "ConcernedApe", title: "Playful", id: "playful" },
+    { artist: "ConcernedApe", title: "Pleasant Memory (Penny's Theme)", id: "pleasant_memory" },
+    { artist: "ConcernedApe", title: "A Stillness In The Rain (Abigail's Melody)", id: "a_stillness_in_the_rain" }
   ]
 ]
 
@@ -57,7 +66,7 @@ async function showInfo(info: IBackSongInfo): Promise<void> {
   el.append(icon1, einfo, icon2)
 
   eroot().append(el)
-  await waittime(4000)
+  await waittime(2500)
   el.classList.add("out")
   await waittime(1000)
   el.remove()
@@ -77,7 +86,7 @@ class BackSongAPI {
       this.audio.remove()
       this.audio = null
     }
-    const audioVolume = LocalList.bgm_volume <= 10 && LocalList.bgm_volume >= 0 ? LocalList.bgm_volume / 10 : 0.8
+    const audioVolume = LocalList.bgm_volume <= 10 && LocalList.bgm_volume > 0 ? LocalList.bgm_volume / 10 : 0.8
 
     const info = bgms[this.type][this.index]
 

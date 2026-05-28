@@ -4,6 +4,8 @@ import { eroot } from "./kel"
 
 type IAnyFunc = (val?: unknown) => void
 
+const assetsMissing: string[] = []
+
 export default class LoadAssets {
   private skins: IAssetSkins[]
   private assets: IAssets[]
@@ -41,6 +43,15 @@ export default class LoadAssets {
     }
     return allSkin
   }
+  unhandledAssets(fileID: string, fileName: string): void {
+    this.assetsToLoad++
+    this.assetsLoaded--
+
+    const fileBefore = assetsMissing.find((k) => k === fileID)
+    if (!fileBefore) assetsMissing.push(fileID)
+
+    this.beginLoadingImage(fileID, fileName)
+  }
   launchIfReady(): void {
     this.assetsToLoad--
     this.assetsLoaded++
@@ -52,10 +63,14 @@ export default class LoadAssets {
     const img = new Image()
     img.classList.add("hidden-preload")
     img.onerror = () => {
+      this.unhandledAssets(fileID, fileName)
       this.launchIfReady()
       img.remove()
     }
     img.onload = () => {
+      const fileBefore = assetsMissing.findIndex((k) => k === fileID)
+      if (fileBefore !== -1) assetsMissing.splice(fileBefore, 1)
+
       this.launchIfReady()
       img.remove()
     }

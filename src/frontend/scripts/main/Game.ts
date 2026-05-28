@@ -10,8 +10,8 @@ import itemRun from "../Props/itemRun"
 import peerMessage from "../lib/PeerMessage"
 import db from "../data/db"
 import chat from "../manager/Chat"
+import peers from "../data/Peers"
 import introEvents from "../../../../public/json/main/intro.json"
-import LocalList from "../data/LocalList"
 import socket from "../lib/Socket"
 import KulonUI from "../manager/KulonUI"
 import KulonPad from "./KulonPad"
@@ -19,6 +19,7 @@ import { Prop } from "./Prop"
 import { Player } from "./Player"
 import { IGameObjectData, IObjectEvent, IObjectTalk } from "../types/MapsTypes"
 import backsong from "../APIs/BackSongAPI"
+import { helpHowTo } from "../manager/HelpHowTo"
 
 export interface GameObjectMain {
   update: (deltaTime: number, keys: InputHandler["keys"], walls: GameMap["walls"], game: Game) => void
@@ -46,6 +47,7 @@ export class Game {
 
   lastTime: number = 0
   animationFrameId: number | null = null
+  private boundResizeCanvas: () => void
 
   constructor(
     private canvas: HTMLCanvasElement,
@@ -55,11 +57,27 @@ export class Game {
     this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D
     this.ctx.imageSmoothingEnabled = false
 
-    window.addEventListener("resize", this.resizeCanvas.bind(this))
+    this.boundResizeCanvas = this.resizeCanvas.bind(this)
+    window.addEventListener("resize", this.boundResizeCanvas)
   }
 
   private keypressAction(): void {
-    this.keyListeners.push(new KeyPressListener("escape", () => this.openPhone()), new KeyPressListener("t", () => chat.open()), new KeyPressListener("e", this.checkForInteraction.bind(this)))
+    this.keyListeners.push(
+      new KeyPressListener("escape", () => this.openPhone()),
+      new KeyPressListener("t", () => chat.open()),
+      new KeyPressListener("e", this.checkForInteraction.bind(this)),
+      new KeyPressListener("k", () => {
+        if (!this.isPaused && !this.isCutscenePlaying) {
+          this.player.attack()
+          peers.send("playerAttack", {
+            x: this.player.x,
+            y: this.player.y,
+            mapId: this.map.mapId,
+            direction: this.player.direction
+          })
+        }
+      })
+    )
 
     this.kulonUI.phone.onClick(() => this.openPhone())
     this.kulonUI.chat.onClick(() => chat.open())
@@ -84,10 +102,27 @@ export class Game {
     }
   }
 
-  async startGame(): Promise<void> {
+  async startTutorial(): Promise<void> {
+    this.player.x = 160
+    this.player.y = 160
+    this.player.direction = "up"
+
+    backsong.switch(2, 0)
+    backsong.start(1000)
+
+    await this.startCutscene(MapList["kulonimmigration"].cutscenes["2,12"][0].events as IObjectEvent[])
+    helpHowTo.init()
+  }
+
+  async startGame(immi?: boolean): Promise<void> {
     this.inputHandler.init()
 
-    this.map = new GameMap(MapList[Object.keys(MapList)[0]])
+    const isNoDuty = db.onduty < 1
+    const isTutorDone = db.trophies.isDone("tutordone")
+
+    const mapName = isNoDuty && !isTutorDone && !immi ? "kulonVilla" : Object.keys(MapList)[0]
+
+    this.map = new GameMap(MapList[mapName])
     await this.map.loadPromise
 
     this.player = this.map.getPlayer()
@@ -105,18 +140,19 @@ export class Game {
     this.kulonUI.init()
     this.keypressAction()
 
-    if (db.onduty < 1) {
+    if (immi) return this.startTutorial()
+
+    if (isNoDuty) {
       db.onduty = 1
-      const isDone = LocalList["KULON_INTRO"]
       // this.player.x = isDone ? 224 : 48
-      this.player.x = isDone ? 96 : 48
-      this.player.y = isDone ? 64 : 96
-      if (!isDone) {
+      this.player.x = isTutorDone ? 96 : 448
+      this.player.y = isTutorDone ? 96 : 576
+      if (!isTutorDone) {
         backsong.switch(2, 1)
         backsong.start(1000)
       }
-      await this.startCutscene(introEvents[isDone ? "DONE" : "FIRST"] as IObjectEvent[])
-      if (!isDone) {
+      await this.startCutscene(introEvents[isTutorDone ? "DONE" : "FIRST"] as IObjectEvent[])
+      if (!isTutorDone) {
         if (db.mails.getAll.length >= 1) {
           await this.startCutscene(introEvents.MAIL_INITIAL as IObjectEvent[])
         }
@@ -285,7 +321,7 @@ export class Game {
     }
   }
 
-  private findAndStartScenario(scenarios: IObjectTalk[], targetKey?: string): void {
+  findAndStartScenario(scenarios: IObjectTalk[], targetKey?: string): void {
     for (let i = 0; i < scenarios.length; i++) {
       const reqMet = (scenarios[i].local_req || scenarios[i].required || []).every((state) => {
         return SaveList[state]
@@ -322,17 +358,26 @@ export class Game {
     this.map.addGameObject(configObject)
   }
   destroy(): void {
-    window.removeEventListener("resize", this.resizeCanvas.bind(this))
+    window.removeEventListener("resize", this.boundResizeCanvas)
     this.inputHandler.destroy()
     this.kulonPad.destroy()
     this.kulonUI.destroy()
     this.keyListeners.forEach((listener) => listener.unbind())
     this.keyListeners = []
+
     if (typeof this.animationFrameId === "number") {
       cancelAnimationFrame(this.animationFrameId)
+      this.animationFrameId = null
+    }
+
+    if (this.map) {
+      const oldGameObjects = this.map.gameObjects
+      const oldWalls = this.map.walls
+      Object.keys(oldGameObjects).forEach((k) => delete this.map.gameObjects[k])
+      Object.keys(oldWalls).forEach((k) => delete this.map.walls[k])
     }
   }
-  async init(): Promise<void> {
-    await this.startGame()
+  async init(immi?: boolean): Promise<void> {
+    await this.startGame(immi)
   }
 }

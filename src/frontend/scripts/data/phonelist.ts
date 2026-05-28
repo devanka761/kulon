@@ -15,6 +15,16 @@ import db from "./db"
 
 const phonelist: IPhoneApp[] = [
   {
+    id: "tutor_ongoing",
+    g: [0],
+    n: "PHONE_TUTOR",
+    cl: { "0": "b-tutor-0", "1": "b-tutor-1", "2": "b-tutor-2" },
+    ic: "fa-brands fa-readme",
+    r(config) {
+      config.classBefore?.destroy?.()
+    }
+  },
+  {
     id: "hint",
     g: [2],
     n: "PHONE_HINT",
@@ -58,7 +68,7 @@ const phonelist: IPhoneApp[] = [
     g: [1, 2],
     n: "PHONE_SHOP",
     ic: "fa-sharp-duotone fa-solid fa-shopping-bag",
-    cl: { 1: "b-shop-1", 2: "b-shop-2" },
+    cl: { 0: "b-shop-0", 1: "b-shop-1", 2: "b-shop-2" },
     r(config) {
       new Shop(config).init()
     }
@@ -68,7 +78,7 @@ const phonelist: IPhoneApp[] = [
     g: [1, 2],
     n: "PHONE_TROPHY",
     ic: "fa-sharp-duotone fa-solid fa-trophy-star",
-    cl: { 1: "b-trophies-1", 2: "b-trophies-2" },
+    cl: { "0": "b-trophies-0", 1: "b-trophies-1", 2: "b-trophies-2" },
     hasUnread: () => db.trophies.unclaimeds.length >= 1,
     r(config) {
       new Trophies(config).init()
@@ -124,7 +134,7 @@ const phonelist: IPhoneApp[] = [
   },
   {
     id: "setting",
-    g: [1, 2],
+    g: [0, 1, 2],
     n: "PHONE_SETTING",
     ic: "fa-sharp-duotone fa-solid fa-gear",
     r(config) {

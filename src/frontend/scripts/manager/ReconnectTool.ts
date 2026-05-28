@@ -57,7 +57,7 @@ export default class ReconnectTool {
     }
 
     await waittime(3000)
-    audio.emit({ action: "play", type: "ui", src: "phone_notification", options: { id: "reconnecting" } })
+    audio.emit({ action: "play", type: "ui", src: "uialert", options: { id: "reconnecting" } })
     this.updateStatus(1)
     await waittime(3000)
     await this.destroy()
@@ -71,7 +71,7 @@ export default class ReconnectTool {
   async run(): Promise<IRepB> {
     this.createElement()
     eroot().append(this.el)
-    audio.emit({ action: "play", type: "ui", src: "phone_notification", options: { id: "reconnecting" } })
+    audio.emit({ action: "play", type: "ui", src: "uialert", options: { id: "reconnecting" } })
     return await this._startReconnect()
   }
 }

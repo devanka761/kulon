@@ -1,10 +1,13 @@
 import asset from "../data/assets"
-import { playRandomFootstep } from "../manager/randomPlays"
+import peers from "../data/Peers"
+import { playRandomFootstep, playRandomOf } from "../manager/randomPlays"
+import { IAny } from "../types/LibTypes"
 import { DirectionType, IGameObjectPerson, IObjectEvent, IObjectTalk, MapGameObjects, MapWalls } from "../types/MapsTypes"
 import { Game } from "./Game"
 import { GameMap } from "./GameMap"
 import { IKeyHold } from "./InputHandler"
 import { Prop } from "./Prop"
+import MapList from "../data/MapList"
 
 const TILE_SIZE = 16
 
@@ -32,6 +35,7 @@ interface IPersonBehavior extends IObjectEvent {
 }
 
 export class Person {
+  id?: string
   x: number
   y: number
   width = 16
@@ -39,6 +43,7 @@ export class Person {
   isLoaded: boolean = false
   images: GameObjectImages = {}
   talk?: IObjectTalk[]
+  drops?: IObjectTalk[]
   speed = 60
   isRemote: boolean
   targetX: number = 0
@@ -57,7 +62,21 @@ export class Person {
     "walk-right": { start: 0, end: 5, row: 2, interval: 0.14 },
     "walk-up": { start: 6, end: 11, row: 2, interval: 0.14 },
     "walk-left": { start: 12, end: 17, row: 2, interval: 0.14 },
-    "walk-down": { start: 18, end: 23, row: 2, interval: 0.14 }
+    "walk-down": { start: 18, end: 23, row: 2, interval: 0.14 },
+
+    "hit-right": { start: 0, end: 5, row: 15, interval: 0.07 },
+    "sword-right": { start: 0, end: 5, row: 0, interval: 0.07 },
+    "hit-up": { start: 6, end: 11, row: 15, interval: 0.07 },
+    "sword-up": { start: 6, end: 11, row: 0, interval: 0.07 },
+    "hit-left": { start: 12, end: 17, row: 15, interval: 0.07 },
+    "sword-left": { start: 12, end: 17, row: 0, interval: 0.07 },
+    "hit-down": { start: 18, end: 23, row: 15, interval: 0.07 },
+    "sword-down": { start: 18, end: 23, row: 0, interval: 0.07 },
+
+    "hurt-right": { start: 0, end: 2, row: 19, interval: 0.1 },
+    "hurt-up": { start: 3, end: 5, row: 19, interval: 0.1 },
+    "hurt-left": { start: 6, end: 8, row: 19, interval: 0.1 },
+    "hurt-down": { start: 9, end: 11, row: 19, interval: 0.1 }
   }
   private idleAnimationInterval: number = 0.18
   private frameTimer: number = 0
@@ -68,14 +87,27 @@ export class Person {
   movingProgressRemaining: number = 0
   currentAnimationName: string
   walkStopTimer: ReturnType<typeof setTimeout> | null = null
+  isHurting: boolean = false
+  isAttacking: boolean = false
+  hasLunged: boolean = false
+  swordImage!: HTMLImageElement
+  following: boolean = false
+  enemy: boolean = false
+  health?: number
 
   footstep: "a" | "b"
   constructor(config: IGameObjectPerson, footstep: "a" | "b") {
+    this.id = config.id
     this.x = config.x || 0
     this.y = config.y || 0
     this.footstep = footstep
 
     const images = typeof config.src === "string" ? [config.src] : config.src
+
+    const swordImage = new Image()
+    swordImage.src = asset.Sword.src
+    this.swordImage = swordImage
+
     const imagePromises = images
       .filter((src) => src)
       .map((src, i) => {
@@ -95,10 +127,16 @@ export class Person {
     this.speed = 60
 
     this.isRemote = config.isRemote || false
-    if (this.isRemote) {
-      this.targetX = this.x
-      this.targetY = this.y
+    this.targetX = this.x
+    this.targetY = this.y
+
+    this.following = config.following || false
+    if (this.following) {
+      this.speed = 60 * 0.6
     }
+    this.enemy = config.enemy || false
+    this.health = config.health
+    this.drops = config.drops
 
     this.frameX = 18
     this.frameY = 1
@@ -122,24 +160,32 @@ export class Person {
   }
 
   update(deltaTime: number, keys: IKeyHold, walls: MapWalls, game: Game): void {
-    if (this.isRemote) {
+    let actingRemote = this.isRemote
+    const isPlayer = (this as IAny).isPlayer
+    if (!isPlayer && !this.isRemote) {
+      actingRemote = !game.map.isHost()
+    }
+
+    if (actingRemote) {
       this.updateRemote(deltaTime)
     } else {
       this.updateBehavior(deltaTime, game)
+      this.targetX = this.x
+      this.targetY = this.y
     }
-    this.animate(deltaTime)
+    this.animate(deltaTime, game)
   }
 
-  updateRemote(_deltaTime: number): void {
+  updateRemote(deltaTime: number): void {
     const dx = this.targetX - this.x
     const dy = this.targetY - this.y
     const distance = Math.sqrt(dx * dx + dy * dy)
 
-    const lerpFactor = 0.2
-
     if (distance > 1) {
-      this.x += dx * lerpFactor
-      this.y += dy * lerpFactor
+      const moveAmount = Math.min(this.speed * deltaTime, distance)
+      const ratio = moveAmount / distance
+      this.x += dx * ratio
+      this.y += dy * ratio
       this.isMoving = true
       if (this.walkStopTimer) {
         clearTimeout(this.walkStopTimer)
@@ -149,9 +195,6 @@ export class Person {
         this.isMoving = false
       }, 100)
     }
-    // else {
-    //   setTimeout(() => (this.isMoving = false), 150)
-    // }
   }
 
   updateBehavior(deltaTime: number, game: Game): void {
@@ -161,6 +204,9 @@ export class Person {
     }
 
     if (this.behaviorLoop.length === 0) {
+      if (this.following) {
+        this.updateAI(game)
+      }
       return
     }
 
@@ -174,6 +220,9 @@ export class Person {
           this.walkStopTimer = null
         }
         this.movingProgressRemaining = TILE_SIZE
+        const targetX = this.x + (this.direction === "right" ? TILE_SIZE : this.direction === "left" ? -TILE_SIZE : 0)
+        const targetY = this.y + (this.direction === "down" ? TILE_SIZE : this.direction === "up" ? -TILE_SIZE : 0)
+        this.broadcastNpcMove(game, targetX, targetY)
       }
     } else if (behavior.type === "stand") {
       this.direction = behavior.direction!
@@ -181,6 +230,7 @@ export class Person {
 
       if (!behavior.isTimerStarted) {
         behavior.isTimerStarted = true
+        this.broadcastNpcMove(game, this.x, this.y)
         setTimeout(() => {
           const completedBehavior = this.behaviorLoop.shift()
           if (completedBehavior && completedBehavior.onComplete) {
@@ -224,11 +274,29 @@ export class Person {
     Object.values(this.images).forEach((image) => {
       ctx.drawImage(image, this.width * this.frameX, this.height * this.frameY, this.width, this.height, Math.round(this.x), Math.round(drawY), this.width, this.height)
     })
+
+    if (this.isAttacking && this.swordImage) {
+      const swordAnimName = `sword-${this.direction}`
+      const swordAnim = this.animationFrames[swordAnimName]
+      if (swordAnim) {
+        const hitAnimName = `hit-${this.direction}`
+        const hitAnim = this.animationFrames[hitAnimName]
+        const progress = this.frameX - hitAnim.start
+        const swordFrameX = swordAnim.start + progress
+        ctx.drawImage(this.swordImage, this.width * swordFrameX, this.height * swordAnim.row, this.width, this.height, Math.round(this.x), Math.round(drawY), this.width, this.height)
+      }
+    }
   }
 
-  animate(deltaTime: number): void {
+  animate(deltaTime: number, game: Game): void {
     this.frameTimer += deltaTime
-    const animationName: keyof IAnimationFrames = this.isMoving ? `walk-${this.direction}` : `idle-${this.direction}`
+    let animationName: keyof IAnimationFrames = this.isMoving ? `walk-${this.direction}` : `idle-${this.direction}`
+
+    if (this.isAttacking) {
+      animationName = `hit-${this.direction}`
+    } else if (this.isHurting) {
+      animationName = `hurt-${this.direction}`
+    }
 
     if (this.currentAnimationName !== animationName) {
       this.currentAnimationName = animationName
@@ -236,17 +304,42 @@ export class Person {
       this.frameX = this.animationFrames[animationName].start
     }
     const currentAnimation = this.animationFrames[animationName]
-    const interval = this.isMoving ? currentAnimation.interval : this.idleAnimationInterval
+    const interval = this.isMoving || this.isAttacking || this.isHurting ? currentAnimation.interval : this.idleAnimationInterval
 
     this.frameY = currentAnimation.row
     if (this.frameTimer >= interval) {
       this.frameTimer = 0
       this.frameX++
       if (this.frameX > currentAnimation.end) {
-        this.frameX = currentAnimation.start
+        if (this.isAttacking) {
+          this.isAttacking = false
+          this.frameX = currentAnimation.end
+        } else if (this.isHurting) {
+          this.isHurting = false
+          this.frameX = currentAnimation.end
+        } else {
+          this.frameX = currentAnimation.start
+        }
       }
 
-      if (this.isMoving && footsteps.includes(this.frameX)) {
+      if (this.isAttacking && !this.hasLunged) {
+        if (this.frameX === currentAnimation.start + 4) {
+          this.hasLunged = true
+          let nextX = this.x
+          let nextY = this.y
+          if (this.direction === "up") nextY -= 3
+          if (this.direction === "down") nextY += 3
+          if (this.direction === "left") nextX -= 3
+          if (this.direction === "right") nextX += 3
+
+          if (game && game.map && !this.isColliding(nextX, nextY, game.map.walls, game.map.gameObjects, game)) {
+            this.x = nextX
+            this.y = nextY
+          }
+        }
+      }
+
+      if (this.isMoving && !this.isAttacking && !this.isHurting && footsteps.includes(this.frameX)) {
         this.audioFootSteps()
       }
     }
@@ -272,7 +365,7 @@ export class Person {
     }
   }
 
-  isColliding(nextX: number, nextY: number, walls: MapWalls, gameObjects: MapGameObjects): boolean {
+  isColliding(nextX: number, nextY: number, walls: MapWalls, gameObjects: MapGameObjects, game?: Game, ignoreTriggers?: boolean): boolean {
     const characterBox = {
       x: nextX + this.collisionBox.xOffset,
       y: nextY + this.collisionBox.yOffset,
@@ -300,19 +393,137 @@ export class Person {
         continue
       }
 
-      const objBox = {
-        x: obj.x - 3,
-        y: obj.y,
-        width: obj.collisionBox.width + 6,
-        height: obj.collisionBox.height + 1
+      let objBox
+      if (obj instanceof Person) {
+        objBox = {
+          x: obj.x + obj.collisionBox.xOffset,
+          y: obj.y + obj.collisionBox.yOffset,
+          width: obj.collisionBox.width,
+          height: obj.collisionBox.height
+        }
+      } else {
+        objBox = {
+          x: obj.x - 3,
+          y: obj.y,
+          width: obj.collisionBox.width + 6,
+          height: obj.collisionBox.height + 1
+        }
       }
 
       if (characterBox.x < objBox.x + objBox.width && characterBox.x + characterBox.width > objBox.x && characterBox.y < objBox.y + objBox.height && characterBox.y + characterBox.height > objBox.y) {
+        if (ignoreTriggers) return true
+
+        const isThisPlayer = (this as IAny).isPlayer
+        const isObjPlayer = (obj as IAny).isPlayer
+
+        if (obj instanceof Person) {
+          const isThisNPC = !isThisPlayer
+          const isObjNPC = !isObjPlayer
+
+          if ((isThisPlayer && isObjNPC) || (isThisNPC && isObjPlayer)) {
+            const player = isThisPlayer ? this : obj
+            const npc = isThisPlayer ? obj : this
+            if (!npc.enemy) break
+
+            const dx = player.x - npc.x
+            const dy = player.y - npc.y
+
+            let isFacingNPC = false
+            if (player.direction === "up" && dy > 0 && Math.abs(dx) <= 16) isFacingNPC = true
+            else if (player.direction === "down" && dy < 0 && Math.abs(dx) <= 16) isFacingNPC = true
+            else if (player.direction === "left" && dx > 0 && Math.abs(dy) <= 16) isFacingNPC = true
+            else if (player.direction === "right" && dx < 0 && Math.abs(dy) <= 16) isFacingNPC = true
+
+            if (player.isAttacking && isFacingNPC) {
+              npc.hurt()
+              if (npc.health !== undefined && npc.health > 0) {
+                npc.health -= 40
+                if (npc.health <= 0 && game) {
+                  npc.defeated(gameObjects, game, true)
+                }
+              }
+            } else {
+              player.hurt()
+            }
+
+            if (Math.abs(dx) > Math.abs(dy)) {
+              const dir = dx >= 0 ? 1 : -1
+              const pNextX = player.x + 16 * dir
+              const nNextX = npc.x - 32 * dir
+
+              if (!player.isColliding(pNextX, player.y, walls, gameObjects, game, true)) {
+                player.x = pNextX
+                player.targetX = player.x
+              }
+              if (!npc.isColliding(nNextX, npc.y, walls, gameObjects, game, true)) {
+                npc.x = nNextX
+                npc.targetX = npc.x
+              }
+            } else {
+              const dir = dy >= 0 ? 1 : -1
+              const pNextY = player.y + 16 * dir
+              const nNextY = npc.y - 32 * dir
+
+              if (!player.isColliding(player.x, pNextY, walls, gameObjects, game, true)) {
+                player.y = pNextY
+                player.targetY = player.y
+              }
+              if (!npc.isColliding(npc.x, nNextY, walls, gameObjects, game, true)) {
+                npc.y = nNextY
+                npc.targetY = npc.y
+              }
+            }
+
+            if (game) {
+              npc.broadcastNpcMove(game, npc.targetX, npc.targetY)
+            }
+          }
+        }
+
+        if (isThisPlayer && obj instanceof Person && obj.following) {
+          if (typeof (this as IAny).onFollowingCollision === "function") {
+            ;(this as IAny).onFollowingCollision(obj)
+          }
+          return true
+        } else if (this.following && isObjPlayer) {
+          if (typeof (obj as IAny).onFollowingCollision === "function") {
+            ;(obj as IAny).onFollowingCollision(this)
+          }
+          return true
+        }
+
         return true
       }
     }
 
     return false
+  }
+
+  defeated(gameObjects: MapGameObjects, game: Game, isCast?: boolean): void {
+    const mapId = game.map.mapId
+    const npcId = this.id
+
+    if (!npcId) return
+
+    if (isCast) peers.send("npcDefeat", { npcId, mapId })
+
+    if (MapList[mapId] && MapList[mapId].configObjects[npcId]) {
+      MapList[mapId].configObjects[npcId].x = -1000
+      MapList[mapId].configObjects[npcId].y = -1000
+      MapList[mapId].configObjects[npcId].direction = "down"
+      MapList[mapId].configObjects[npcId].following = false
+      MapList[mapId].configObjects[npcId].health = undefined
+      delete MapList[mapId].configObjects[npcId].health
+    }
+
+    this.x = -1000
+    this.y = -1000
+    this.direction = "down"
+    this.following = false
+    this.health = undefined
+
+    const targetKey = Object.keys(gameObjects).find((k) => gameObjects[k] === this)
+    if (this.drops) game.findAndStartScenario(this.drops, targetKey)
   }
 
   isNextTileColliding(game: Game): boolean {
@@ -323,10 +534,128 @@ export class Person {
     if (this.direction === "down") nextY += TILE_SIZE / 2
     if (this.direction === "left") nextX -= TILE_SIZE / 2
     if (this.direction === "right") nextX += TILE_SIZE / 2
-    return this.isColliding(nextX, nextY, game.map.walls, game.map.gameObjects)
+    return this.isColliding(nextX, nextY, game.map.walls, game.map.gameObjects, game)
   }
 
   startBehavior(_state: { map: GameMap }, behavior: IPersonBehavior): void {
     this.behaviorLoop.push(behavior)
+  }
+
+  attack(): void {
+    if (this.isAttacking || this.isHurting) return
+    this.isAttacking = true
+    this.hasLunged = false
+    this.frameTimer = 0
+    this.currentAnimationName = `hit-${this.direction}`
+    this.frameX = this.animationFrames[this.currentAnimationName].start
+    playRandomOf("ui", ["swing01", "swing02", "swing03", "swing04"])
+  }
+
+  hurt(): void {
+    if (this.isHurting || this.isAttacking) return
+    this.isHurting = true
+    this.frameTimer = 0
+    this.currentAnimationName = `hurt-${this.direction}`
+    this.frameX = this.animationFrames[this.currentAnimationName].start
+    playRandomOf("ui", ["hit01", "hit02", "hit03"])
+  }
+
+  broadcastNpcMove(game: Game, targetX: number, targetY: number): void {
+    if (!this.id) return
+    const isPlayer = (this as IAny).isPlayer
+    if (isPlayer || this.id === "hero") return
+
+    const mapId = game.map.mapId
+    if (MapList[mapId] && MapList[mapId].configObjects[this.id]) {
+      MapList[mapId].configObjects[this.id].x = Math.round(this.x / 16)
+      MapList[mapId].configObjects[this.id].y = Math.round(this.y / 16)
+      MapList[mapId].configObjects[this.id].direction = this.direction
+      MapList[mapId].configObjects[this.id].health = this.health
+      MapList[mapId].configObjects[this.id].following = this.following
+      MapList[mapId].configObjects[this.id].enemy = this.enemy
+    }
+
+    peers.send("npcMove", {
+      npcId: this.id,
+      mapId: mapId,
+      x: this.x,
+      y: this.y,
+      direction: this.direction,
+      targetX,
+      targetY,
+      health: this.health,
+      following: this.following,
+      enemy: this.enemy
+    })
+  }
+
+  updateAI(game: Game): void {
+    if (!game.player || game.isCutscenePlaying || game.isPaused || this.isRemote) return
+
+    let closestPlayer: { x: number; y: number } | null = null
+    let minDistance = 120
+
+    const checkPlayer = (p: { x: number; y: number }) => {
+      const dx = p.x - this.x
+      const dy = p.y - this.y
+      const distance = Math.sqrt(dx * dx + dy * dy)
+      if (distance < minDistance) {
+        minDistance = distance
+        closestPlayer = p
+      }
+    }
+
+    if (game.player) checkPlayer(game.player)
+
+    for (const key in game.map.gameObjects) {
+      if (key.startsWith("crew_")) {
+        const remotePlayer = game.map.gameObjects[key]
+        if (remotePlayer) checkPlayer(remotePlayer)
+      }
+    }
+
+    if (closestPlayer) {
+      const p = closestPlayer as { x: number; y: number }
+      const dx = p.x - this.x
+      const dy = p.y - this.y
+      const preferredDir: DirectionType = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "right" : "left") : dy > 0 ? "down" : "up"
+
+      if (minDistance <= 8) {
+        if (minDistance > 0) {
+          this.direction = preferredDir
+        }
+        return
+      }
+
+      if (preferredDir) {
+        this.direction = preferredDir
+        if (!this.isNextTileColliding(game)) {
+          if (this.walkStopTimer) {
+            clearTimeout(this.walkStopTimer)
+            this.walkStopTimer = null
+          }
+          this.movingProgressRemaining = TILE_SIZE
+          const targetX = this.x + (this.direction === "right" ? TILE_SIZE : this.direction === "left" ? -TILE_SIZE : 0)
+          const targetY = this.y + (this.direction === "down" ? TILE_SIZE : this.direction === "up" ? -TILE_SIZE : 0)
+          this.broadcastNpcMove(game, targetX, targetY)
+        } else {
+          const secondaryDir: DirectionType = preferredDir === "right" || preferredDir === "left" ? (dy > 0 ? "down" : "up") : dx > 0 ? "right" : "left"
+
+          this.direction = secondaryDir
+          if (!this.isNextTileColliding(game)) {
+            if (this.walkStopTimer) {
+              clearTimeout(this.walkStopTimer)
+              this.walkStopTimer = null
+            }
+            this.movingProgressRemaining = TILE_SIZE
+            const targetX = this.x + (this.direction === "right" ? TILE_SIZE : this.direction === "left" ? -TILE_SIZE : 0)
+            const targetY = this.y + (this.direction === "down" ? TILE_SIZE : this.direction === "up" ? -TILE_SIZE : 0)
+            this.broadcastNpcMove(game, targetX, targetY)
+          } else {
+            this.direction = preferredDir
+          }
+        }
+      }
+    }
   }
 }

@@ -16,6 +16,7 @@ interface IOptionsConfig {
   id?: string
   volume?: number
   loop?: boolean
+  lossVol?: number
 }
 
 interface IEventConfig {
@@ -100,7 +101,7 @@ export class AudioHandler {
     }
   }
 
-  private _createAndPlaySource(fileID: string, options: IOptionsConfig, defaultVolume: number): PlayingSound | null {
+  private _createAndPlaySource(fileID: string, options: IOptionsConfig, setVol: number): PlayingSound | null {
     const audioData = sound[fileID]
     if (!audioData?.buffer) return null
 
@@ -109,7 +110,17 @@ export class AudioHandler {
     source.loop = options.loop ?? false
 
     const gainNode = audioContext.createGain()
-    const volume = options.volume ?? (defaultVolume <= 10 && defaultVolume >= 0 ? defaultVolume / 10 : 0.8)
+    let volume
+    if (options.volume) {
+      volume = options.volume
+    } else if (options.lossVol && setVol <= 10 && setVol > 0) {
+      const defVol = setVol / 10
+      volume = defVol - defVol * (options.lossVol / 100)
+    } else if (setVol <= 10 && setVol > 0) {
+      volume = setVol / 10
+    } else {
+      volume = 0
+    }
     gainNode.gain.value = volume
 
     source.connect(gainNode)

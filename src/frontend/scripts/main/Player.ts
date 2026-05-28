@@ -8,6 +8,8 @@ import { IKeyHold } from "./InputHandler"
 
 export class Player extends Person {
   footstep: "a" | "b"
+  isPlayer: boolean = true
+
   constructor(config: IGameObjectPerson, footstep: "a" | "b") {
     super(config, footstep)
     this.footstep = footstep
@@ -16,13 +18,17 @@ export class Player extends Person {
   update(deltaTime: number, keys: IKeyHold, walls: MapWalls, game: Game): void {
     if (game.isCutscenePlaying) {
       this.updateBehavior(deltaTime, game)
-      this.animate(deltaTime)
+      this.animate(deltaTime, game)
       return
     }
 
     const handlePlayerMovement = () => {
-      if (chat.formOpened) {
-        this.isMoving = false
+      const oldX = this.x
+      const oldY = this.y
+
+      if (chat.formOpened || this.isAttacking) {
+        this.isColliding(this.x, this.y, walls, game.map.gameObjects, game)
+        this.isMoving = this.x !== oldX || this.y !== oldY
         return
       }
       let moveX = 0
@@ -42,11 +48,9 @@ export class Player extends Person {
         this.direction = "right"
       }
 
-      const oldX = this.x
-      const oldY = this.y
-
       if (moveX === 0 && moveY === 0) {
-        this.isMoving = false
+        this.isColliding(this.x, this.y, walls, game.map.gameObjects, game)
+        this.isMoving = this.x !== oldX || this.y !== oldY
         return
       }
 
@@ -59,10 +63,10 @@ export class Player extends Person {
       const desiredNextX = this.x + moveX * this.speed * deltaTime
       const desiredNextY = this.y + moveY * this.speed * deltaTime
 
-      if (!this.isColliding(desiredNextX, this.y, walls, game.map.gameObjects)) {
+      if (!this.isColliding(desiredNextX, this.y, walls, game.map.gameObjects, game)) {
         this.x = desiredNextX
       }
-      if (!this.isColliding(this.x, desiredNextY, walls, game.map.gameObjects)) {
+      if (!this.isColliding(this.x, desiredNextY, walls, game.map.gameObjects, game)) {
         this.y = desiredNextY
       }
 
@@ -75,7 +79,7 @@ export class Player extends Person {
       handlePlayerMovement()
     }
 
-    this.animate(deltaTime)
+    this.animate(deltaTime, game)
 
     const now = Date.now()
 
@@ -93,5 +97,10 @@ export class Player extends Person {
   }
   audioFootSteps(): void {
     playRandomFootstep(this.footstep, true)
+  }
+
+  onEnemyCollision(_enemy: Person): void {
+    // sabar dulu ges, cape.
+    // fiturnya lagi dipikirin
   }
 }

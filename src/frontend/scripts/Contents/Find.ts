@@ -120,7 +120,7 @@ export default class Find implements IPMC {
     playerSearch.onsubmit = async (e) => {
       e.preventDefault()
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+      audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
       this.isLocked = true
       const searchUID = inp.value.replace(/\s/g, "")
 
@@ -220,7 +220,7 @@ export default class Find implements IPMC {
         if (!nextIndex || nextIndex < 0) nextIndex = 0
         if (nextIndex >= cards.length) nextIndex = cards.length - 1
 
-        audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
         cards[nextIndex].focus()
 
         // @ts-expect-error no default types
@@ -235,7 +235,7 @@ export default class Find implements IPMC {
   }
   async destroy(next?: IPMC): Promise<void> {
     if (this.isLocked) return
-    audio.emit({ action: "play", type: "ui", src: "phone_close", options: { id: "phone_close" } })
+    audio.emit({ action: "play", type: "ui", src: "uiclose", options: { id: "uiclose" } })
     this.isLocked = true
     this.el.classList.add("out")
     document.removeEventListener("keydown", this.navKeyHandler!)
@@ -250,7 +250,7 @@ export default class Find implements IPMC {
   }
   init(): void {
     db.pmc = this
-    audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
+    audio.emit({ action: "play", type: "ui", src: "uiopen", options: { id: "uiopen" } })
     this.createElement()
     eroot().append(this.el)
     this.btnListener()

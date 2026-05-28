@@ -141,7 +141,7 @@ export default class Trophies implements IPMC {
       btn.onclick = () => {
         if (btn.getAttribute("k-type") === currentPage) return
         this.setFocus("left")
-        audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: Date.now().toString() } })
+        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
         const attr = btn.getAttribute("k-type")!
         currentPage = attr
         this.activatedBtn(btn)
@@ -240,13 +240,16 @@ export default class Trophies implements IPMC {
           if (boardList) {
             const cards = Array.from(boardList.querySelectorAll(".card")) as HTMLDivElement[]
             if (cards.length >= 1) {
+              audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
+
               let activeBefore = cards.find((card) => card.classList.contains("active"))
               if (!activeBefore) {
                 activeBefore = cards[0]
                 activeBefore.classList.add("active")
               }
+
+              this.setFocus("right")
             }
-            this.setFocus("right")
           }
         }
       } else if (this.currentFocus === "right") {
@@ -269,12 +272,13 @@ export default class Trophies implements IPMC {
           cards[currentIndex]?.classList.remove("active")
           const nextCard = cards[nextIndex]
           if (nextCard) {
-            audio.emit({ action: "play", type: "ui", src: "phone_menu_move", options: { id: Date.now().toString() } })
+            audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
             nextCard.classList.add("active")
             // @ts-expect-error no default types
             nextCard.scrollIntoView({ behavior: "smooth", block: "center", container: "nearest" })
           }
         } else if (e.key === "ArrowLeft") {
+          audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
           this.setFocus("left")
         }
       }
@@ -283,7 +287,7 @@ export default class Trophies implements IPMC {
   }
   async setClaim(itm_id: string, card: HTMLDivElement): Promise<void> {
     if (this.isLocked) return
-    audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+    audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
     this.isLocked = true
     const trophyClaim = await modal.loading(xhr.post(`/x/account/trophy-claim/${itm_id}`))
     if (!trophyClaim.ok) {
@@ -321,7 +325,7 @@ export default class Trophies implements IPMC {
   }
   async destroy(next?: IPMC): Promise<void> {
     if (this.isLocked) return
-    audio.emit({ action: "play", type: "ui", src: "phone_close", options: { id: "phone_close" } })
+    audio.emit({ action: "play", type: "ui", src: "uiclose", options: { id: "uiclose" } })
     this.isLocked = true
     document.removeEventListener("keydown", this.navKeyHandler!)
     this.navKeyHandler = undefined
@@ -335,7 +339,7 @@ export default class Trophies implements IPMC {
   }
   init(): void {
     db.pmc = this
-    audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
+    audio.emit({ action: "play", type: "ui", src: "uiopen", options: { id: "uiopen" } })
     this.createElement()
     this.setFocus("left")
     eroot().append(this.el)

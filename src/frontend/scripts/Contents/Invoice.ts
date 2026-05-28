@@ -112,7 +112,7 @@ export default class Invoice implements IPMC {
   }
   async destroy(next?: IPMC): Promise<void> {
     if (this.isLocked) return
-    audio.emit({ action: "play", type: "ui", src: "phone_close", options: { id: "phone_close" } })
+    audio.emit({ action: "play", type: "ui", src: "uiclose", options: { id: "uiclose" } })
     this.isLocked = true
     this.el.classList.add("out")
     this.esc?.unbind()
@@ -125,7 +125,7 @@ export default class Invoice implements IPMC {
   }
   init(): void {
     db.pmc = this
-    audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
+    audio.emit({ action: "play", type: "ui", src: "uiopen", options: { id: "uiopen" } })
     this.createElement()
     eroot().append(this.el)
     this.writeDetail()

@@ -140,7 +140,7 @@ export default class TeleportMachine implements IPMC {
 
       const nextButton = buttons[nextIndex]
       if (nextButton) {
-        audio.emit({ action: "play", type: "ui", src: "phone_menu_move", options: { id: Date.now().toString() } })
+        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
         nextButton.classList.add("selected")
 
         // @ts-expect-error no default types

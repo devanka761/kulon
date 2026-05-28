@@ -12,6 +12,7 @@ import { Game } from "../main/Game"
 import { IAny } from "./LibTypes"
 
 export interface ICustomColor {
+  0: string
   1: string
   2: string
 }

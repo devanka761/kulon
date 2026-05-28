@@ -223,7 +223,7 @@ export default class MatchMaking implements IPMC {
 
     const membersInBoard = this.members.getMembersByBoard(this.activeBoardIndex)
     if (membersInBoard.length > 0) {
-      audio.emit({ action: "play", type: "ui", src: "phone_menu_move", options: { id: Date.now().toString() } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
       this.selectedIndices[this.activeBoardIndex] = 0
       const memberToSelect = membersInBoard[0]
       memberToSelect.select()
@@ -268,7 +268,7 @@ export default class MatchMaking implements IPMC {
 
     this.selectedIndices[this.activeBoardIndex] = currentIndex
     if (currentIndex > -1 && currentBoardMembers[currentIndex]) {
-      audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
       const newSelectedMember = currentBoardMembers[currentIndex]
       newSelectedMember.select()
 
@@ -306,7 +306,7 @@ export default class MatchMaking implements IPMC {
     const btnCancel = futor(".btn-cancel", this.el)
     btnCancel.onclick = async () => {
       if (this.isLocked || chat.formOpened) return
-      audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+      audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
       this.isLocked = true
       const exitMsg = db.job.host === db.me.id ? "MM_NOTIP_DISBAND" : "MM_NOTIP_EXIT"
       const exitConfirm = await modal.confirm(lang[exitMsg])
@@ -326,7 +326,7 @@ export default class MatchMaking implements IPMC {
     })
     this.btnInvType.onclick = async () => {
       if (this.isLocked || chat.formOpened) return
-      audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
       if (db.job.host !== db.me.id) {
         this.isLocked = true
         await modal.alert(lang.MM_NOTIP_HOST_FUNC)
@@ -364,7 +364,7 @@ export default class MatchMaking implements IPMC {
 
     this.btnStart.onclick = async () => {
       if (this.isLocked || chat.formOpened) return
-      audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+      audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
       this.isLocked = true
       if (db.job.host !== db.me.id) {
         await modal.alert(lang.MM_NOTIP_WAITING_HOST)
@@ -528,7 +528,7 @@ export default class MatchMaking implements IPMC {
   }
   async destroy(next?: IPMC): Promise<void> {
     if (this.isLocked) return
-    audio.emit({ action: "play", type: "ui", src: "phone_close", options: { id: "phone_close" } })
+    audio.emit({ action: "play", type: "ui", src: "uiclose", options: { id: "uiclose" } })
     if (chat.formOpened) chat.hide()
     this.isLocked = true
     this.el.classList.add("out")
@@ -554,7 +554,7 @@ export default class MatchMaking implements IPMC {
   }
   init(): void {
     db.pmc = this
-    audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
+    audio.emit({ action: "play", type: "ui", src: "uiopen", options: { id: "uiopen" } })
     this.game.pause()
     this.createElement()
     eroot().append(this.el)

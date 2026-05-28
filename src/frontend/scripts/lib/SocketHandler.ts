@@ -385,7 +385,7 @@ class SocketHandler {
     if (!states || !owner) return
     if (!Array.isArray(states)) return
 
-    audio.emit({ action: "play", type: "sfx", src: "item_collected", options: { id: Date.now().toString() } })
+    audio.emit({ action: "play", type: "sfx", src: "collect", options: { id: Date.now().toString() } })
 
     states.forEach((state) => db.pmx!.addClaim(state, owner))
 

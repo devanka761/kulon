@@ -12,16 +12,18 @@ export default function SetNextMap(nextMap: IMapList, spawnRule: ISpawnRule | nu
     delete MapList[previousMap]
   })
   Object.keys(nextMap).forEach((key) => {
+    const clonedMap = JSON.parse(JSON.stringify(nextMap[key]))
+
     MapList[key] = {
-      id: nextMap[key].id,
-      lowerSrc: nextMap[key].lowerSrc,
-      upperSrc: nextMap[key].upperSrc,
-      sound: nextMap[key].sound,
-      configObjects: nextMap[key].configObjects,
-      walls: nextMap[key].walls || {},
-      cutscenes: nextMap[key].cutscenes || {},
-      safeZone: nextMap[key].safeZone,
-      footstep: nextMap[key].footstep
+      id: clonedMap.id,
+      lowerSrc: clonedMap.lowerSrc,
+      upperSrc: clonedMap.upperSrc,
+      sound: clonedMap.sound,
+      configObjects: clonedMap.configObjects,
+      walls: clonedMap.walls || {},
+      cutscenes: clonedMap.cutscenes || {},
+      safeZone: clonedMap.safeZone,
+      footstep: clonedMap.footstep
     }
 
     Object.values(MapList[key].configObjects).forEach((obj: IGameObjectData) => {
@@ -38,6 +40,31 @@ export default function SetNextMap(nextMap: IMapList, spawnRule: ISpawnRule | nu
           convertedTemplates.forEach((fg) => tlk[reqs]?.push(fg))
         }
         tlk.events.forEach((evt) => {
+          if (userMe && (evt.type === "addStates" || evt.type === "removeStates")) {
+            const hasTemplate = evt.states?.filter((fg) => fg.includes("{ME}"))
+            const convertedTemplates: string[] = []
+            hasTemplate?.forEach((fg) => {
+              const txt = fg.replace("{ME}", "")
+              convertedTemplates.push(`${txt}${userMe}`)
+              evt.states = evt.states?.filter((old_fg) => old_fg !== fg)
+            })
+            convertedTemplates.forEach((fg) => evt.states?.push(fg))
+          }
+        })
+      })
+      obj.drops?.forEach((drops) => {
+        const reqs = drops.required ? "required" : drops.local_req ? "local_req" : null
+        if (reqs && userIds) {
+          const hasTemplate = drops[reqs]?.filter((fg) => fg.includes("{UID}"))
+          const convertedTemplates: string[] = []
+          hasTemplate?.forEach((fg) => {
+            const txt = fg.replace("{UID}", "")
+            userIds.forEach((uid) => convertedTemplates.push(`${txt}${uid}`))
+            drops[reqs] = drops[reqs]?.filter((old_fg) => old_fg !== fg)
+          })
+          convertedTemplates.forEach((fg) => drops[reqs]?.push(fg))
+        }
+        drops.events.forEach((evt) => {
           if (userMe && (evt.type === "addStates" || evt.type === "removeStates")) {
             const hasTemplate = evt.states?.filter((fg) => fg.includes("{ME}"))
             const convertedTemplates: string[] = []

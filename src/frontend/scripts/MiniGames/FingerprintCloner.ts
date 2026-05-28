@@ -76,7 +76,7 @@ export default class FingerprintCloner implements IPMC {
 <li>Tekan "ABORT" untuk membatalkan</li>
 </ol>
 <ul>
-<li>Cloner memiliki 3 koneksi yang harus diselesaikan</li>
+<li>Cloner memiliki 2 koneksi yang harus diselesaikan</li>
 </ul>`)
     this.isLocked = false
   }
@@ -160,7 +160,7 @@ export default class FingerprintCloner implements IPMC {
 
           const arrow_left = futor(".aleft.arrow", imgcover)
           arrow_left.onclick = () => {
-            audio.emit({ action: "play", type: "ui", src: "hack_selector", options: { id: Date.now().toString() } })
+            audio.emit({ action: "play", type: "ui", src: "hack_move", options: { id: Date.now().toString() } })
 
             let oCoor = Number(imgcover.getAttribute("data-coor"))
             oCoor--
@@ -171,7 +171,7 @@ export default class FingerprintCloner implements IPMC {
           }
           const arrow_right = futor(".aright.arrow", imgcover)
           arrow_right.onclick = () => {
-            audio.emit({ action: "play", type: "ui", src: "hack_selector", options: { id: Date.now().toString() } })
+            audio.emit({ action: "play", type: "ui", src: "hack_move", options: { id: Date.now().toString() } })
 
             let oCoor = Number(imgcover.getAttribute("data-coor"))
             oCoor++
@@ -199,7 +199,7 @@ export default class FingerprintCloner implements IPMC {
       this.isLocked = true
       const scanningId = "scan_" + Date.now().toString()
 
-      audio.emit({ action: "play", type: "sfx", src: "hack_scanning", options: { id: scanningId } })
+      audio.emit({ action: "play", type: "sfx", src: "hack_scan", options: { id: scanningId, lossVol: 50 } })
       const fingscan = kel("div", "fingscan")
       fingscan.innerHTML = `
       <div class="content">
@@ -216,7 +216,7 @@ export default class FingerprintCloner implements IPMC {
       await waittime(1500)
       audio.emit({ action: "stop", type: "sfx", id: scanningId })
 
-      audio.emit({ src: "hack_match", action: "play", type: "sfx", options: { id: Date.now().toString() } })
+      audio.emit({ src: "hack_match", action: "play", type: "sfx", options: { id: Date.now().toString(), lossVol: 50 } })
 
       futor(".desc", fingscan).innerHTML = "CONNECTED"
       futor(".desc", fingscan).classList.add("cyan")
@@ -243,15 +243,15 @@ export default class FingerprintCloner implements IPMC {
 
       this.placeConnections()
 
-      audio.emit({ src: "hack_next", action: "play", type: "sfx", options: { id: Date.now().toString() } })
+      audio.emit({ src: "hack_next", action: "play", type: "sfx", options: { id: Date.now().toString(), lossVol: 50 } })
     }
   }
   private async onLastCheck(condition?: boolean): Promise<void> {
     this.isLocked = true
     if (condition) {
-      audio.emit({ src: "hack_success", action: "play", type: "sfx", options: { id: Date.now().toString() } })
+      audio.emit({ src: "hack_success", action: "play", type: "sfx", options: { id: Date.now().toString(), lossVol: 50 } })
     } else {
-      audio.emit({ src: "hack_failed", action: "play", type: "sfx", options: { id: Date.now().toString() } })
+      audio.emit({ src: "hack_failed", action: "play", type: "sfx", options: { id: Date.now().toString(), lossVol: 50 } })
     }
     const elLastCheck = kel("div", `fingscan ${condition ? "true" : "false"}`)
     elLastCheck.innerHTML = `
@@ -310,7 +310,7 @@ export default class FingerprintCloner implements IPMC {
         allCovers[nextIndex].classList.add("selected")
         allCovers[nextIndex].scrollIntoView({ behavior: "smooth", block: "center" })
 
-        audio.emit({ action: "play", type: "ui", src: "phone_menu_move", options: { id: Date.now().toString() } })
+        audio.emit({ action: "play", type: "ui", src: "hack_move", options: { id: Date.now().toString() } })
       } else if (key === "ArrowLeft" || key === "ArrowRight") {
         const activeCover = currentIndex > -1 ? allCovers[currentIndex] : allCovers[0]
 
@@ -364,8 +364,8 @@ export default class FingerprintCloner implements IPMC {
   init(): void {
     db.pmc = this
 
-    audio.emit({ action: "play", type: "sfx", src: "hack_intro", options: { id: Date.now().toString() } })
-    audio.emit({ action: "play", type: "bgm", src: "hacking_amb", options: { fadeIn: 1000 } })
+    audio.emit({ action: "play", type: "sfx", src: "hack_intro", options: { id: Date.now().toString(), lossVol: 50 } })
+    audio.emit({ action: "play", type: "bgm", src: "hack01", options: { fadeIn: 1000, lossVol: 30 } })
 
     this.shuffleImg()
     this.createElement()

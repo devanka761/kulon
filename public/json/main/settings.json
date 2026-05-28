@@ -255,6 +255,16 @@
       }
     },
     {
+      "id": "combat",
+      "group": "2",
+      "type": "string",
+      "default": "k",
+      "name": {
+        "id": "Pukul",
+        "en": "Punch"
+      }
+    },
+    {
       "id": "dialogue_skip",
       "group": "2",
       "type": "string",

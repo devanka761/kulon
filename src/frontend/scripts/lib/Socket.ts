@@ -33,7 +33,7 @@ class Socket {
   private game!: Game
   private host!: string
   private id!: string
-  private _start(): void {
+  start(): void {
     this.ws = new WebSocket(`ws${window.location.protocol === "https:" ? "s" : ""}://${this.host}/socket?id=${this.id}`)
 
     this.ws.addEventListener("error", socketError)
@@ -76,8 +76,12 @@ class Socket {
     peers.closeAll()
 
     let oldPmcId: string = "none"
+    const forceWaitPmcIds: string[] = ["payout"]
     const checkPmc = async (resolve: IAny) => {
-      if (db.pmc && db.pmc.id === oldPmcId) {
+      if (forceWaitPmcIds.find((k) => k === db.pmc?.id)) {
+        await waittime(500)
+        return await checkPmc(resolve)
+      } else if (db.pmc && db.pmc.id === oldPmcId) {
         await waittime(500)
         return resolve()
       } else if (db.pmc && db.pmc.destroy) {
@@ -145,7 +149,6 @@ class Socket {
       }
     }
 
-    this._resetOldData()
     this.updateData(newUser.data)
   }
   private async _onClosed(): Promise<void> {
@@ -184,7 +187,8 @@ class Socket {
       db.job.reset()
     }
   }
-  updateData(s: IAny): void {
+  updateData(s: IAny, immi?: boolean): void {
+    this._resetOldData()
     if (s.socket) {
       this.id = s.socket.id
       this.host = s.socket.host
@@ -198,7 +202,7 @@ class Socket {
     if (s.peer) setPeerConfig(s.peer)
     if (s.build) db.version = s.build
 
-    this._start()
+    if (!immi) this.start()
   }
   init(game: Game) {
     this.game = game

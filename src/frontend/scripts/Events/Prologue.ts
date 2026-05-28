@@ -101,7 +101,7 @@ export default class Prologue implements IPMC {
       return
     }
     if (this.skipped.find((usr) => usr === userId)) return
-    audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+    audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
     this.skipped.push(userId)
     this.writeSkipped()
   }
@@ -135,7 +135,7 @@ export default class Prologue implements IPMC {
     let remainTime = 9
 
     skipInterval = setInterval(() => {
-      const timingText = `0:0${remainTime}`
+      const timingText = `0${remainTime}`
       const skipText = `<div class="keyinfo">enter</div> ${lang.CHAR_CREATION_CONTINUE}`
       const actionText = this.skipped.find((usr) => usr === db.me.id) ? lang.PRP_WAITING : skipText
       if (remainTime <= 0) {
@@ -169,9 +169,9 @@ export default class Prologue implements IPMC {
     const p = kel("p")
     p.innerHTML = this.mission.name
 
-    await waittime(1000)
-    audio.emit({ action: "play", type: "sfx", src: "text_intro", options: { id: "text_intro" } })
-    await waittime(100)
+    await waittime(900)
+    audio.emit({ action: "play", type: "sfx", src: "stat04", options: { id: "stat04" } })
+    await waittime(200)
     this.title.append(text)
     text.append(bg, p)
     this.box.append(this.title)
@@ -186,13 +186,13 @@ export default class Prologue implements IPMC {
     }
     const nextMap = db.job.nextMap
     audio.emit({ action: "stop", type: "bgm", options: { fadeOut: 1000 } })
-    audio.emit({ action: "play", type: "ui", src: "act_done", options: { id: "act_done" } })
+    audio.emit({ action: "play", type: "ui", src: "enter_commit", options: { id: "enter_commit" } })
     this.isLaunching = true
     this.enter?.unbind()
     this.actions.classList.add("out")
     this.sub.classList.add("out")
     await waittime(1000)
-    audio.emit({ action: "play", type: "ui", src: "act_start", options: { id: "act_start" } })
+    audio.emit({ action: "play", type: "ui", src: "starting01", options: { id: "starting01" } })
     this.actions.remove()
     this.sub.remove()
     await waittime(2000)

@@ -36,6 +36,11 @@ import { Interactable } from "./Interactable"
 import xhr from "../lib/xhr"
 import { IUser } from "../types/DBTypes"
 import { checkHint, setHint } from "../Events/Hint"
+import CharCreation from "../pages/CharCreation"
+import LoadAssets from "../lib/LoadAssets"
+import { getOfflineAssets, getOfflineMaps } from "../manager/initialWorld"
+import setNewGame from "../manager/setNewGame"
+import { objective } from "../manager/Objectives"
 
 type Resolve = (val?: string) => void
 
@@ -98,6 +103,47 @@ export class GameEvent {
       // console.warn(`Game object '${who}' is not found.`)
       resolve()
     }
+  }
+
+  characterCreation(resolve: Resolve): void {
+    db.me.skin = {
+      Bodies: "Body_01",
+      Outfits: "Outfit_01_01"
+    }
+    const charCreation = new CharCreation({
+      game: this.game,
+      pmcTitle: "CHAR_CREATION_TITLE",
+      pmcContinue: "CHAR_CREATION_CONTINUE",
+      onComplete: () => resolve()
+    })
+    charCreation.start()
+  }
+
+  async newWorld(resolve: Resolve): Promise<void> {
+    if (this.game) this.game.pause()
+    await modal.smloading(new LoadAssets({ skins: getOfflineAssets() }).run(), "Updating Your New Skin")
+    const user = await modal.smloading(xhr.get("/x/account/me"), "Saving Your Character")
+    if (!user.ok) {
+      await modal.alert(lang["UNAUTHORIZED"])
+      window.location.href = "/app?s=1"
+      return
+    }
+    socket.updateData(user.data)
+    if (this.game) {
+      this.game.pause()
+      this.game.resume()
+    }
+
+    audio.emit({ action: "play", type: "sfx", src: "door_open" })
+
+    const sceneTransition = new SceneTransition()
+    sceneTransition.init(eroot(), async () => {
+      resolve()
+      setNewGame(getOfflineMaps(), this.game)
+
+      sceneTransition.fadeOut()
+      audio.emit({ action: "play", type: "sfx", src: "door_close" })
+    })
   }
 
   changeMap(resolve: Resolve): void {
@@ -174,6 +220,11 @@ export class GameEvent {
     socket.send("addClaims", { states })
 
     checkHint(states)
+
+    resolve()
+  }
+  addTutorDone(resolve: Resolve): void {
+    socket.send("addTutorDone")
 
     resolve()
   }
@@ -267,6 +318,15 @@ export class GameEvent {
 
     resolve()
   }
+  objectives(resolve: Resolve): void {
+    const { text } = this.event
+    if (!text) {
+      objective.destroy()
+      return resolve()
+    }
+    objective.update(text)
+    resolve()
+  }
   phone(resolve: Resolve): void {
     if (db.pmc || chat.formOpened) return resolve()
     const menu = new Phone({
@@ -285,6 +345,11 @@ export class GameEvent {
     if (!who || !x || !y) return resolve()
 
     const person = this.game.map.gameObjects[who]
+    const mapId = this.game.map.mapId
+
+    MapList[mapId].configObjects[who].x = x
+    MapList[mapId].configObjects[who].y = y
+    MapList[mapId].configObjects[who].direction = direction
 
     if (person instanceof Person) {
       person.x = x * TILE_SIZE
@@ -293,7 +358,7 @@ export class GameEvent {
 
       if (who === "hero") {
         peers.send("playerMapChange", {
-          mapId: this.game.map.mapId,
+          mapId,
           x: x * TILE_SIZE,
           y: y * TILE_SIZE,
           direction: direction
@@ -531,7 +596,7 @@ export class GameEvent {
     })
 
     const key = session.data.key
-    backsong.switch(2, 1)
+    backsong.switch(2, 3)
     backsong.start(5000)
     notip({ a: `LOBBY ${key}`, b: "Entered Random Public Lobby", ic: "users-rays" })
   }

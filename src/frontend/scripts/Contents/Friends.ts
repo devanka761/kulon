@@ -35,7 +35,7 @@ interface IFriendsConfig {
   classBefore: IPMC
 }
 
-export default class Friends {
+export default class Friends implements IPMC {
   id: string = "friends"
   isLocked: boolean = false
   onComplete: () => void
@@ -175,7 +175,7 @@ export default class Friends {
       if (this.isLocked) return
       inp.readOnly = true
 
-      audio.emit({ action: "play", type: "ui", src: "menu_enter", options: { id: "menu_enter" } })
+      audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
       this.isLocked = true
 
       const searchUID = inp.value.replace(/\s/g, "")
@@ -267,7 +267,7 @@ export default class Friends {
           this.activeBoardIndex = Number(!this.activeBoardIndex)
           return
         }
-        audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
         firstCard?.focus()
       } else if (key === "ArrowUp" || key === "ArrowDown") {
         const activeBoard = this.boards[this.activeBoardIndex]
@@ -291,13 +291,14 @@ export default class Friends {
         if (nextIndex < 0) nextIndex = cards.length - 1
         if (nextIndex >= cards.length) nextIndex = 0
 
-        audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
         cards[nextIndex].focus()
 
         // @ts-expect-error no default types
         cards[nextIndex].scrollIntoView({ behavior: "smooth", block: "center", container: "nearest" })
       } else if (key === "Enter") {
         if (document.activeElement instanceof HTMLElement && document.activeElement.matches(".card")) {
+          audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: Date.now().toString() } })
           document.activeElement.click()
         }
       }
@@ -342,7 +343,7 @@ export default class Friends {
   }
   async destroy(next?: IPMC): Promise<void> {
     if (this.isLocked) return
-    audio.emit({ action: "play", type: "ui", src: "phone_close", options: { id: "phone_close" } })
+    audio.emit({ action: "play", type: "ui", src: "uiclose", options: { id: "uiclose" } })
     document.removeEventListener("keydown", this.navKeyHandler!)
     this.navKeyHandler = undefined
     this.isLocked = true
@@ -360,7 +361,7 @@ export default class Friends {
   }
   init(): void {
     db.pmc = this
-    audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
+    audio.emit({ action: "play", type: "ui", src: "uiopen", options: { id: "uiopen" } })
     this.createElement()
     eroot().append(this.el)
     this.writeReqData()

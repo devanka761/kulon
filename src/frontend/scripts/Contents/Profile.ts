@@ -130,7 +130,7 @@ export default class Profile implements IPMC {
     this.eactions.append(btn)
     btn.onclick = async () => {
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
       await this.ActionXHR("addfriend")
       this.renderActions()
     }
@@ -144,7 +144,7 @@ export default class Profile implements IPMC {
     this.eactions.append(btn)
     btn.onclick = async () => {
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
       await this.ActionXHR("unfriend", "PROF_CONF_UNFRIEND")
       this.renderActions()
     }
@@ -161,13 +161,13 @@ export default class Profile implements IPMC {
     this.eactions.append(btn_a, btn_b)
     btn_a.onclick = async () => {
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
       await this.ActionXHR("acceptfriend")
       this.renderActions()
     }
     btn_b.onclick = async () => {
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
       await this.ActionXHR("ignorefriend", "PROF_CONF_IGNORE")
       this.renderActions()
     }
@@ -185,7 +185,7 @@ export default class Profile implements IPMC {
     this.eactions.append(btn)
     btn.onclick = async () => {
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
       await this.ActionXHR("cancelfriend", "PROF_CONF_CANCEL")
       this.renderActions()
     }
@@ -259,7 +259,7 @@ export default class Profile implements IPMC {
   }
   async destroy(next?: IPMC): Promise<void> {
     if (this.isLocked) return
-    audio.emit({ action: "play", type: "ui", src: "phone_close", options: { id: "phone_close" } })
+    audio.emit({ action: "play", type: "ui", src: "uiclose", options: { id: "uiclose" } })
     this.isLocked = true
     this.el.classList.add("out")
     this.enter?.unbind()
@@ -274,7 +274,7 @@ export default class Profile implements IPMC {
   }
   init(): void {
     db.pmc = this
-    audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
+    audio.emit({ action: "play", type: "ui", src: "uiopen", options: { id: "uiopen" } })
     this.createElement()
     eroot().append(this.el)
     this.writeData()

@@ -1,10 +1,10 @@
 import db from "../data/db"
 import lang from "../data/language"
 import peers from "../data/Peers"
-import audio from "../lib/AudioHandler"
 import { eroot, futor, kel, qutor } from "../lib/kel"
 import socket from "../lib/Socket"
 import waittime from "../lib/waittime"
+import { playRandomOf } from "./randomPlays"
 
 const pmcWhiteList = ["prepare", "matchmaking", "minigame", "payout", "prologue"]
 let hideTimeout: ReturnType<typeof setTimeout> | null = null
@@ -50,7 +50,7 @@ class Chat {
 
   add(usr_id: string, usr_txt: string, isSystem: boolean = false): void {
     if (isSystem) {
-      audio.emit({ action: "play", type: "ui", src: "addstate_2", options: { id: Date.now().toString() } })
+      playRandomOf("ui", ["goodnews01", "goodnews02"])
     }
 
     const emptyEl = qutor(".empty", this.elist)

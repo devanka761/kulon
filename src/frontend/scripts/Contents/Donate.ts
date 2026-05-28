@@ -108,7 +108,7 @@ export default class Donate implements IPMC {
     const btnSubmit = futor(".btn-submit", this.el)
     btnSubmit.onclick = async () => {
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+      audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
       this.isLocked = true
       const createInvoice = await modal.loading(xhr.post(`/x/donate/create/${this.item_id}`))
       if (createInvoice?.msg === "DN_PENDING") {
@@ -154,7 +154,7 @@ export default class Donate implements IPMC {
     this.el.classList.add("out")
     this.esc?.unbind()
     this.enter?.unbind()
-    audio.emit({ action: "play", type: "ui", src: "phone_close", options: { id: "phone_close" } })
+    audio.emit({ action: "play", type: "ui", src: "uiclose", options: { id: "uiclose" } })
     await waittime()
     this.el.remove()
     this.isLocked = false
@@ -164,7 +164,7 @@ export default class Donate implements IPMC {
   }
   init(): void {
     db.pmc = this
-    audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
+    audio.emit({ action: "play", type: "ui", src: "uiopen", options: { id: "uiopen" } })
     this.createElement()
     eroot().append(this.el)
     this.writeDetail()

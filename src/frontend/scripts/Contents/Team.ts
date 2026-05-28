@@ -136,7 +136,7 @@ export default class Team implements IPMC {
     this.form.onsubmit = async (e) => {
       e.preventDefault()
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+      audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
       if (this.inpSearch.value.length !== 4) return this.writeEmpty("TM_HOW_TO", "people-group")
       this.isLocked = true
       this.writeEmpty("LOADING", "circle-notch fa-spin")
@@ -242,7 +242,7 @@ export default class Team implements IPMC {
   }
   async destroy(next?: IPMC): Promise<void> {
     if (this.isLocked) return
-    audio.emit({ action: "play", type: "ui", src: "phone_close", options: { id: "phone_close" } })
+    audio.emit({ action: "play", type: "ui", src: "uiclose", options: { id: "uiclose" } })
     this.isLocked = true
     this.el.classList.add("out")
     this.esc?.unbind()
@@ -258,7 +258,7 @@ export default class Team implements IPMC {
   }
   init(): void {
     db.pmc = this
-    audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
+    audio.emit({ action: "play", type: "ui", src: "uiopen", options: { id: "uiopen" } })
     this.createElement()
     eroot().append(this.el)
     this.resetInput()

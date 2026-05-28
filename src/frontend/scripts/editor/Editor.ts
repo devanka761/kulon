@@ -453,8 +453,8 @@ export default class Editor {
     this.currTiles = document.createElement("div")
     this.currTiles.classList.add("tiles")
 
-    const img_coloumns = img.width / 16
-    const img_rows = img.height / 16
+    const img_coloumns = Math.floor(img.width / 16)
+    const img_rows = Math.floor(img.height / 16)
     const img_tile_total = img_coloumns * img_rows
 
     this.currTiles.style.gridTemplateColumns = `repeat(${img_coloumns}, 16px)`

@@ -8,7 +8,7 @@ import waittime from "./waittime"
 
 const modal = {
   async loading(newfunc: IAny, msg = "LOADING"): Promise<IAny> {
-    audio.emit({ action: "play", type: "ui", src: "dialogue_process", options: { id: "dialogue_process" } })
+    audio.emit({ action: "play", type: "ui", src: "ui01", options: { id: "ui01" } })
     const el = kel("div", "loading", {
       e: kel("div", "box", {
         e: [kel("div", "spinner", { e: kel("i", "fa-solid fa-circle-notch fa-spin") }), kel("div", "msg", { e: kel("p", null, { e: msg }) })]
@@ -33,7 +33,7 @@ const modal = {
       })
   },
   async smloading(newfunc: IAny, msg = "LOADING"): Promise<IAny> {
-    audio.emit({ action: "play", type: "ui", src: "dialogue_process", options: { id: "dialogue_process" } })
+    audio.emit({ action: "play", type: "ui", src: "ui01", options: { id: "ui01" } })
     const el = kel("div", "sm-loading")
     el.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>${msg}</span>`
     eroot().append(el)
@@ -51,7 +51,7 @@ const modal = {
       })
   },
   element() {
-    audio.emit({ action: "play", type: "ui", src: "dialogue_process", options: { id: "dialogue_process" } })
+    audio.emit({ action: "play", type: "ui", src: "ui01", options: { id: "ui01" } })
     return kel("div", "modal")
   },
   alert(options: Partial<IModalAlertConfig> | string): Promise<boolean> {
@@ -102,7 +102,7 @@ const modal = {
           el.classList.add("out")
           keyEnter?.unbind()
           keyEscape?.unbind()
-          audio.emit({ action: "play", type: "ui", src: "dialogue_process", options: { id: "dialogue_process" } })
+          audio.emit({ action: "play", type: "ui", src: "ui01", options: { id: "ui01" } })
           await waittime()
           el.remove()
           resolve(false)
@@ -171,7 +171,7 @@ const modal = {
           el.classList.add("out")
           keyEnter?.unbind()
           keyEscape?.unbind()
-          audio.emit({ action: "play", type: "ui", src: "dialogue_process", options: { id: "dialogue_process" } })
+          audio.emit({ action: "play", type: "ui", src: "ui01", options: { id: "ui01" } })
           await waittime()
           el.remove()
           resolve(true)
@@ -188,7 +188,7 @@ const modal = {
           el.classList.add("out")
           keyEnter?.unbind()
           keyEscape?.unbind()
-          audio.emit({ action: "play", type: "ui", src: "dialogue_process", options: { id: "dialogue_process" } })
+          audio.emit({ action: "play", type: "ui", src: "ui01", options: { id: "ui01" } })
           await waittime()
           el.remove()
           resolve(false)
@@ -279,7 +279,7 @@ const modal = {
           el.classList.add("out")
           keyEnter?.unbind()
           keyEscape?.unbind()
-          audio.emit({ action: "play", type: "ui", src: "dialogue_process", options: { id: "dialogue_process" } })
+          audio.emit({ action: "play", type: "ui", src: "ui01", options: { id: "ui01" } })
           await waittime()
           el.remove()
           resolve(inp.value)
@@ -296,7 +296,7 @@ const modal = {
           el.classList.add("out")
           keyEnter?.unbind()
           keyEscape?.unbind()
-          audio.emit({ action: "play", type: "ui", src: "dialogue_process", options: { id: "dialogue_process" } })
+          audio.emit({ action: "play", type: "ui", src: "ui01", options: { id: "ui01" } })
           await waittime()
           el.remove()
           resolve(null)
@@ -399,7 +399,7 @@ const modal = {
         }
 
         if (radioInputs[nextIndex]) {
-          audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: "phone_menu_enter" } })
+          audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
           radioInputs[nextIndex].querySelector("input")?.click()
         }
       }
@@ -415,7 +415,7 @@ const modal = {
           keyEnter?.unbind()
           keyEscape?.unbind()
           keyArrowHandler?.()
-          audio.emit({ action: "play", type: "ui", src: "dialogue_process", options: { id: "dialogue_process" } })
+          audio.emit({ action: "play", type: "ui", src: "ui01", options: { id: "ui01" } })
           await waittime()
           el.remove()
           resolve(data)
@@ -433,7 +433,7 @@ const modal = {
           keyEnter?.unbind()
           keyEscape?.unbind()
           keyArrowHandler?.()
-          audio.emit({ action: "play", type: "ui", src: "dialogue_process", options: { id: "dialogue_process" } })
+          audio.emit({ action: "play", type: "ui", src: "ui01", options: { id: "ui01" } })
           await waittime()
           el.remove()
           resolve(null)

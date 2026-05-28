@@ -8,16 +8,15 @@ import modal from "../lib/modal"
 import waittime from "../lib/waittime"
 import xhr from "../lib/xhr"
 import { setOfflineAssets, setOfflineMaps } from "../manager/initialWorld"
-import startGame from "../manager/startGame"
-import CharCreation from "./CharCreation"
+import { startGame } from "../manager/startGame"
 import assetSize from "../../../../public/json/skins/size.json"
 import audio from "../lib/AudioHandler"
 import { sound, audioContext } from "../data/sound"
 import { KeyPressListener } from "../main/KeyPressListener"
 import { IAssets, IAssetSkins, IRepB } from "../types/LibTypes"
-import Doodles from "../lib/Doodle"
 import { IMapList } from "../types/MapsTypes"
 import screenfull from "screenfull"
+import ForceClose from "./ForceClose"
 
 const preloadIcons = ['<i class="fa-jelly fa-regular fa-cloud"></i>', '<i class="fa-solid fa-compact-disc"></i>', '<i class="fa-duotone fa-solid fa-circle-xmark"></i>', '<i class="fa-duotone fa-regular fa-gem"></i>', '<i class="fa-regular fa-briefcase"></i>', '<i class="fa-sharp-duotone fa-solid fa-address-book"></i>', '<i class="fa-etch fa-solid fa-mobile"></i>', '<i class="fa-jelly-fill fa-regular fa-gamepad"></i>']
 
@@ -43,10 +42,11 @@ async function forceFullScreen() {
   }
 }
 
+const assetsMissing: string[] = []
+
 interface IConfig {
   skins: IAssetSkins[]
   sounds: IAssetSkins[]
-  doodle: Doodles
 }
 
 interface IAssetProgress {
@@ -55,8 +55,6 @@ interface IAssetProgress {
 }
 
 export default class Preload {
-  private doodle: Doodles
-
   private skins: IAssetSkins[]
   private sounds: IAssetSkins[]
   private assets: IAssets[] = []
@@ -69,10 +67,9 @@ export default class Preload {
   private el: HTMLDivElement = kel("div", "Preload")
 
   private enter?: KeyPressListener
-  constructor({ skins, sounds, doodle }: IConfig) {
+  constructor({ skins, sounds }: IConfig) {
     this.skins = skins
     this.sounds = sounds
-    this.doodle = doodle
   }
   createElement(): void {
     this.el.innerHTML = `
@@ -106,27 +103,6 @@ export default class Preload {
     card.innerHTML = `<b>${convertedSize} MB</b>`
     loadList.prepend(card)
   }
-  async removeOldCache(): Promise<void> {
-    const CACHE_WHITELIST = `kulon-cache-${dvnkz_v.version}-${dvnkz_b.buildNumber}`
-    await caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (CACHE_WHITELIST !== cacheName) {
-            return caches.delete(cacheName)
-          }
-          return Promise.resolve()
-        })
-      )
-    })
-
-    if ("serviceWorker" in navigator) {
-      try {
-        await navigator.serviceWorker.register("/sw.js", { scope: "/" })
-      } catch (_error) {
-        // -
-      }
-    }
-  }
   btnListener(): void {
     const btnLoad = futor(".assetload-action", this.el)
     btnLoad.onclick = async () => {
@@ -144,7 +120,6 @@ export default class Preload {
         <div class="inner-loader"></div>
       </div>`
       this.el.append(eloadel)
-      await this.removeOldCache()
       await waittime(200)
       this.loadPrepare()
     }
@@ -192,6 +167,19 @@ export default class Preload {
   readSkins(): IAssets[] {
     return this.skins.map((skin) => ({ id: skin.id, content: skin.path, type: "image" }))
   }
+  unhandledAssets(fileID: string, fileName: string, progress: IAssetProgress, fileType: number): void {
+    this.propsToLoad++
+    this.propsLoaded--
+
+    const fileBefore = assetsMissing.find((k) => k === fileID)
+    if (!fileBefore) assetsMissing.push(fileID)
+
+    if (fileType === 2) {
+      this.beginLoadingAudio(fileID, fileName, progress)
+    } else {
+      this.beginLoadingImage(fileID, fileName, progress)
+    }
+  }
   launchIfReady(assetProgress: IAssetProgress, fileID: string): void {
     if (fileID === "null") fileID = "Koruptor"
     this.propsToLoad--
@@ -211,10 +199,14 @@ export default class Preload {
     const img = new Image()
     img.classList.add("hidden-preload")
     img.onerror = () => {
+      this.unhandledAssets(fileID, fileName, assetProgress, 1)
       this.launchIfReady(assetProgress, fileID)
       img.remove()
     }
     img.onload = () => {
+      const fileBefore = assetsMissing.findIndex((k) => k === fileID)
+      if (fileBefore !== -1) assetsMissing.splice(fileBefore, 1)
+
       this.launchIfReady(assetProgress, fileID)
       img.remove()
     }
@@ -238,7 +230,10 @@ export default class Preload {
 
       const audioBuffer = await audioContext.decodeAudioData(arrayBuffer)
       sound[fileID] = { buffer: audioBuffer, src: fileName }
+      const fileBefore = assetsMissing.findIndex((k) => k === fileID)
+      if (fileBefore !== -1) assetsMissing.splice(fileBefore, 1)
     } catch (_error) {
+      this.unhandledAssets(fileID, fileName, assetProgress, 2)
       // console.error(`Error audio decoded: ${fileName}`, error)
     } finally {
       this.launchIfReady(assetProgress, fileID)
@@ -263,27 +258,52 @@ export default class Preload {
     setOfflineAssets(initialSkins)
 
     await modal.smloading(new LoadAssets({ skins: initialSkins }).run(), "Loading Character Data")
-
-    const nextMap = await xhr.forceGet(`/json/maps/mp_ehek.json?v=${Date.now()}`)
+    const nextMap = await modal.smloading(xhr.forceGet(`/json/maps/mp_ehek.json?v=${Date.now()}`), "Getting Map Ready")
 
     setOfflineMaps(nextMap as IMapList)
 
     const user = await modal.smloading(this.getUser(), "Getting User Data")
 
-    const hasSkin = Object.keys(user?.data?.me?.skin || {}).length
-    if (!hasSkin) {
+    const buildNumber = Number(user.data?.build) || -69
+    const buildVersion = user.data?.package || "-0.0.1"
+
+    if (dvnkz_b.buildNumber !== buildNumber || dvnkz_v.version !== buildVersion) {
+      audio.emit({ action: "play", type: "ui", src: "dialogue_end", options: { id: "dialogue_end", lossVol: 50 } })
+
       await this.destroy()
-      return new CharCreation({
-        pmcTitle: "CHAR_CREATION_TITLE",
-        pmcContinue: "CHAR_CREATION_CONTINUE",
-        onComplete: () => {}
-      }).start(this.doodle, nextMap)
+
+      await waittime(1000)
+
+      audio.emit({ action: "play", type: "ui", src: "uialert", options: { id: "uialert" } })
+      const icon = "sign-posts-wrench"
+      const text = "UPDATE APP"
+      new ForceClose({
+        msg_1: `<i class="fa-duotone fa-solid fa-${icon}"></i>`,
+        msg_2: lang["CLOUD_OUTDATED"],
+        action_url: "/app",
+        action_text: text
+      })
+      return
     }
 
-    audio.emit({ action: "play", type: "ui", src: "dialogue_end", options: { id: "dialogue_end" } })
-    await this.destroy()
+    const hasSkin = Object.keys(user?.data?.me?.skin || {}).length
+    if (!hasSkin) {
+      const immiSkins = await modal.smloading(xhr.forceGet("/json/assets/st_immigration.json?v=" + Date.now()), "Getting Immigration Ready")
 
-    if (this.doodle) this.doodle.end()
+      await modal.smloading(new LoadAssets({ skins: immiSkins }).run(), "Loading Character Data")
+
+      const immiMap = await modal.smloading(xhr.forceGet(`/json/maps/mp_immigration.json?v=${Date.now()}`), "Setting Up Immigration")
+      audio.emit({ action: "play", type: "ui", src: "dialogue_end", options: { id: "dialogue_end", lossVol: 50 } })
+
+      await this.destroy()
+
+      startGame(user.data, immiMap, false, true)
+      return
+    }
+
+    audio.emit({ action: "play", type: "ui", src: "dialogue_end", options: { id: "dialogue_end", lossVol: 50 } })
+
+    await this.destroy()
 
     startGame(user.data, nextMap, true)
   }

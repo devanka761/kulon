@@ -125,7 +125,7 @@ export class Bag implements IPMC {
 
     btnClose.onclick = () => {
       if (this.isLocked) return
-      audio.emit({ action: "play", type: "ui", src: "phone_close", options: { id: "phone_close" } })
+      audio.emit({ action: "play", type: "ui", src: "uiclose", options: { id: "uiclose" } })
       this.destroy(this.classBefore)
     }
 
@@ -134,7 +134,7 @@ export class Bag implements IPMC {
       btn.onclick = () => {
         if (btn.getAttribute("k-type") === currentPage) return
         this.setFocus("left")
-        audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: Date.now().toString() } })
+        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
         currentPage = btn.getAttribute("k-type")!
         this.activatedBtn(btn)
         this.writeItems(btn.getAttribute("k-type")!)
@@ -174,6 +174,8 @@ export class Bag implements IPMC {
         } else if (e.key === "ArrowRight") {
           const cards = Array.from(this.el.querySelectorAll(".item-list .card")) as HTMLDivElement[]
           if (cards.length >= 1) {
+            audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
+
             const selectedBefore = cards.find((card) => card.classList.contains("selected"))
             if (selectedBefore) {
               selectedBefore.click()
@@ -202,6 +204,7 @@ export class Bag implements IPMC {
           }
         } else if (e.key === "ArrowLeft") {
           if (currentIndex % 4 === 0) {
+            audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
             this.setFocus("left")
           } else {
             const nextIndex = currentIndex - 1
@@ -251,7 +254,7 @@ export class Bag implements IPMC {
       const card = itemCard(this.items![itm])
       card.onclick = () => {
         this.setFocus("right")
-        audio.emit({ action: "play", type: "ui", src: "phone_menu_enter", options: { id: Date.now().toString() } })
+        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
         const cardSelecteds = this.el.querySelectorAll(".item-list .card.selected")
         cardSelecteds.forEach((el) => el.classList.remove("selected"))
         card.classList.add("selected")
@@ -313,7 +316,7 @@ export class Bag implements IPMC {
       const itmAct = futor(".item-actions", field)
       btnBuy.onclick = async () => {
         if (this.isLocked) return
-        audio.emit({ action: "play", type: "ui", src: "menu_select", options: { id: "menu_select" } })
+        audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
         this.destroy(
           itemRun.run(item.run, {
             onComplete: this.onComplete,
@@ -354,7 +357,7 @@ export class Bag implements IPMC {
   }
   async init(): Promise<void> {
     db.pmc = this
-    audio.emit({ action: "play", type: "ui", src: "phone_open", options: { id: "phone_open" } })
+    audio.emit({ action: "play", type: "ui", src: "uiopen", options: { id: "uiopen" } })
     this.createElement()
     this.setFocus("left")
     eroot().append(this.el)
