@@ -156,7 +156,7 @@ export default class Phone implements IPMC {
 
     applist.forEach((k, _index) => {
       const card = kel("button", "btn")
-      const classList = k.cl ? k.cl?.[db.onduty as keyof typeof k.cl] : null
+      const classList = typeof k.cl !== "undefined" ? k.cl?.[db.onduty as keyof typeof k.cl] : null
       if (classList) card.classList.add("b-custom", classList)
       if (k.hasUnread?.() || false) card.classList.add("unread")
 
@@ -169,6 +169,10 @@ export default class Phone implements IPMC {
       if (classList) {
         if (["b-shop-1", "b-shop-2"].includes(classList)) rowspan = 2
         if (["b-trophies-1", "b-trophies-2"].includes(classList)) colspan = 2
+        if (["b-tutor-0"].includes(classList)) {
+          colspan = 3
+          rowspan = 3
+        }
       }
 
       while (true) {

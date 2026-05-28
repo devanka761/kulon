@@ -121,12 +121,6 @@
       "type": "changeMap"
     },
     {
-      "type": "stand",
-      "direction": "up",
-      "who": "hero",
-      "time": 500
-    },
-    {
       "type": "teleport",
       "x": 4,
       "y": 6,
@@ -456,6 +450,11 @@
       "who": "devanka761"
     },
     {
+      "type": "walk",
+      "direction": "down",
+      "who": "devanka761"
+    },
+    {
       "type": "stand",
       "direction": "down",
       "who": "hero",
@@ -520,21 +519,6 @@
       "direction": "right",
       "who": "devanka761",
       "time": 250
-    },
-    {
-      "type": "walk",
-      "direction": "right",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "right",
-      "who": "hero"
-    },
-    {
-      "type": "walk",
-      "direction": "right",
-      "who": "hero"
     },
     {
       "type": "walk",

@@ -149,7 +149,6 @@ class Socket {
       }
     }
 
-    this._resetOldData()
     this.updateData(newUser.data)
   }
   private async _onClosed(): Promise<void> {
@@ -189,6 +188,7 @@ class Socket {
     }
   }
   updateData(s: IAny, immi?: boolean): void {
+    this._resetOldData()
     if (s.socket) {
       this.id = s.socket.id
       this.host = s.socket.host

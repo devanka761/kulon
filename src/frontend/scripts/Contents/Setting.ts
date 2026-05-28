@@ -189,7 +189,10 @@ export default class Setting implements IPMC {
     }
   }
   private writeBar(): void {
-    setting_list.groups.forEach((itm) => {
+    const settingGroups = setting_list.groups.filter((gr) => {
+      return db.onduty < 1 ? gr.id !== "4" : gr
+    })
+    settingGroups.forEach((itm) => {
       const card = kel("div", "btn")
       if (itm.id === this.page) card.classList.add("selected")
       card.innerHTML = `<i class="${itm.icon}"></i> ${itm.name[LocalList.lang!]}`

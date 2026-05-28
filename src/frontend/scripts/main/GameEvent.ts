@@ -120,20 +120,24 @@ export class GameEvent {
 
   async newWorld(resolve: Resolve): Promise<void> {
     if (this.game) this.game.pause()
-    await waittime(500)
-    await modal.loading(new LoadAssets({ skins: getOfflineAssets() }).run())
+    await modal.smloading(new LoadAssets({ skins: getOfflineAssets() }).run(), "Updating Your New Skin")
+    const user = await modal.smloading(xhr.get("/x/account/me"), "Saving Your Character")
+    if (!user.ok) {
+      await modal.alert(lang["UNAUTHORIZED"])
+      window.location.href = "/app?s=1"
+      return
+    }
+    socket.updateData(user.data)
     if (this.game) {
       this.game.pause()
       this.game.resume()
     }
-    socket.start()
-    await waittime(500)
-    resolve()
 
     audio.emit({ action: "play", type: "sfx", src: "door_open" })
 
     const sceneTransition = new SceneTransition()
     sceneTransition.init(eroot(), async () => {
+      resolve()
       setNewGame(getOfflineMaps(), this.game)
 
       sceneTransition.fadeOut()

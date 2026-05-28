@@ -15,9 +15,9 @@ export function startGame(data: IAny, nextMap: IMapList, isFirst: boolean = fals
 
   if (immi) {
     db.me.skin = {
-      Bodies: "Body_02",
+      Bodies: "Body_03",
       Outfits: "Outfit_16_01",
-      Glasses: "Glasses_01"
+      Hairstyles: "Hairstyle_26_07"
     }
   }
 
