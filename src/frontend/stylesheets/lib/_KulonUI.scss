@@ -85,14 +85,13 @@
     transition: none;
   }
 }
-.KulonInteract {
+.KulonInteract,
+.KulonAttack {
   visibility: visible;
   position: absolute;
   z-index: 18;
   width: 75px;
   height: 75px;
-  bottom: 100px;
-  right: 100px;
   border-radius: 50%;
   animation: fade_in 0.3s;
   transition: 0.3s;
@@ -105,26 +104,33 @@
   justify-content: center;
   align-items: center;
   cursor: c.$cursorPointer;
+  &.hide {
+    visibility: hidden;
+    animation: fade_out 0.3s;
+  }
+  &.disabled {
+    visibility: hidden;
+    transition: none;
+  }
+}
+
+.KulonInteract {
+  bottom: 110px;
+  right: 80px;
   &::before {
     content: " \21";
     font-family: "Font Awesome 7 Pro";
     font-size: v.$dialogueSize;
   }
-  &.hide {
-    visibility: hidden;
-    animation: fade_out 0.3s;
-  }
-  &.waiting {
-    transition: none;
-    opacity: 0.3;
-    background-color: #18223690;
-    border: 2px solid v.$sgray;
-    box-shadow: 0 0 0 4px v.$sgray;
-    color: v.$sgray;
-  }
-  &.disabled {
-    visibility: hidden;
-    transition: none;
+}
+
+.KulonAttack {
+  bottom: 20px;
+  right: 120px;
+  &::before {
+    content: " \f6de";
+    font-family: "Font Awesome 7 Pro";
+    font-size: v.$dialogueSize;
   }
 }
 

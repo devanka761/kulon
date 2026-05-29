@@ -20,7 +20,8 @@ type TouchCallBack = (direction: DirectionType) => void
 type DirectionType = "up" | "down" | "left" | "right"
 
 export default class KulonPad {
-  private el: HTMLDivElement = kel("div", "KulonInteract")
+  private elInteract: HTMLDivElement = kel("div", "KulonInteract")
+  private elAttack: HTMLDivElement = kel("div", "KulonAttack")
   private canvas: HTMLCanvasElement = kel("canvas", "KulonPad")
   private ctx: CanvasRenderingContext2D = this.canvas.getContext("2d") as CanvasRenderingContext2D
 
@@ -55,7 +56,7 @@ export default class KulonPad {
   }
 
   private _createElement(): void {
-    eroot().append(this.canvas, this.el)
+    eroot().append(this.canvas, this.elInteract, this.elAttack)
   }
   private _setupCanvas(): void {
     this.radius = this.size / 2
@@ -117,7 +118,6 @@ export default class KulonPad {
     const distance = Math.sqrt(dx * dx + dy * dy)
 
     if (distance <= this.radius) {
-      this.el.classList.add("waiting")
       this.isActive = true
       if (!this.animationFrameId) {
         this._startAnimationLoop()
@@ -149,7 +149,6 @@ export default class KulonPad {
   }
 
   private _handleUp(): void {
-    this.el.classList.remove("waiting")
     if (!this.isActive) return
 
     this.isActive = false
@@ -217,8 +216,12 @@ export default class KulonPad {
     this._draw()
   }
   updateInteract(): void {
-    this.el.style.bottom = (LocalList["kulonbutton_y"] || 100) + "px"
-    this.el.style.right = (LocalList["kulonbutton_x"] || 100) + "px"
+    this.elInteract.style.bottom = (LocalList["kuloninteract_y"] || 110) + "px"
+    this.elInteract.style.right = (LocalList["kuloninteract_x"] || 80) + "px"
+  }
+  updateAttack(): void {
+    this.elAttack.style.bottom = (LocalList["kulonattack_y"] || 20) + "px"
+    this.elAttack.style.right = (LocalList["kulonattack_x"] || 120) + "px"
   }
   private _draw(): void {
     this.ctx.beginPath()
@@ -258,25 +261,57 @@ export default class KulonPad {
     this.onRelease = fn
   }
   setOnInteract(fn: () => void): void {
-    this.el.onpointerdown = null
-    this.el.onpointerdown = () => fn()
+    this.elInteract.onpointerdown = null
+    this.elInteract.ontouchstart = null
+    this.elInteract.onmousedown = null
+
+    this.elInteract.ontouchstart = (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      fn()
+    }
+    this.elInteract.onmousedown = (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      fn()
+    }
+  }
+  setOnAttact(fn: () => void): void {
+    this.elAttack.onpointerdown = null
+    this.elAttack.ontouchstart = null
+    this.elAttack.onmousedown = null
+
+    this.elAttack.ontouchstart = (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      fn()
+    }
+    this.elAttack.onmousedown = (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      fn()
+    }
   }
   hide(): void {
     this.canvas.classList.add("hide")
-    this.el.classList.add("hide")
+    this.elInteract.classList.add("hide")
+    this.elAttack.classList.add("hide")
   }
   show(): void {
     this.canvas.classList.remove("hide")
-    this.el.classList.remove("hide")
+    this.elInteract.classList.remove("hide")
+    this.elAttack.classList.remove("hide")
   }
   setEnable(): void {
     if (LocalList["kulonpad_disabled"]) {
       this.canvas.classList.add("disabled")
-      this.el.classList.add("disabled")
+      this.elInteract.classList.add("disabled")
+      this.elAttack.classList.add("disabled")
       return
     }
     this.canvas.classList.remove("disabled")
-    this.el.classList.remove("disabled")
+    this.elInteract.classList.remove("disabled")
+    this.elAttack.classList.remove("disabled")
   }
   toggle(): void {
     LocalList["kulonpad_disabled"] = !LocalList["kulonpad_disabled"]
@@ -306,10 +341,17 @@ export default class KulonPad {
     this.canvas.removeEventListener("touchmove", this.boundHandleMove)
     this.canvas.removeEventListener("touchend", this.boundHandleUp)
 
-    this.el.onpointerdown = null
+    this.elInteract.onpointerdown = null
+    this.elInteract.ontouchstart = null
+    this.elInteract.onmousedown = null
+
+    this.elAttack.onpointerdown = null
+    this.elAttack.ontouchstart = null
+    this.elAttack.onmousedown = null
 
     this.canvas.remove()
-    this.el.remove()
+    this.elInteract.remove()
+    this.elAttack.remove()
     this.onMove = undefined
     this.onRelease = undefined
   }

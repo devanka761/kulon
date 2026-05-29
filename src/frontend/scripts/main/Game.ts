@@ -86,6 +86,17 @@ export class Game {
     this.kulonPad.setOnMove((direction) => this.inputHandler.movePad(direction))
     this.kulonPad.setOnRelease((direction) => this.inputHandler.releasePad(direction))
     this.kulonPad.setOnInteract(this.checkForInteraction.bind(this))
+    this.kulonPad.setOnAttact(() => {
+      if (!this.isPaused && !this.isCutscenePlaying) {
+        this.player.attack()
+        peers.send("playerAttack", {
+          x: this.player.x,
+          y: this.player.y,
+          mapId: this.map.mapId,
+          direction: this.player.direction
+        })
+      }
+    })
   }
 
   pause(): void {

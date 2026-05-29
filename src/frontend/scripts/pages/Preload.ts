@@ -156,7 +156,7 @@ export default class Preload {
             this.beginLoadingAudio(this.audios[i].id, this.audios[i].content, assetProgress)
           }
         }
-      }, 3000)
+      }, 1000)
     }
 
     this.allProps = (this.audios.length || 0) + (this.assets.length || 0)

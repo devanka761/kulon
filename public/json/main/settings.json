@@ -157,13 +157,13 @@
       }
     },
     {
-      "id": "kulonbutton_x",
+      "id": "kuloninteract_x",
       "group": "2",
       "type": "range",
       "min": 0,
       "max": 500,
       "step": 10,
-      "default": 150,
+      "default": 100,
       "func": "interactSettings",
       "name": {
         "id": "Posisi Tombol Interaksi Horizontal",
@@ -171,17 +171,45 @@
       }
     },
     {
-      "id": "kulonbutton_y",
+      "id": "kuloninteract_y",
       "group": "2",
       "type": "range",
       "min": 0,
       "max": 500,
       "step": 10,
-      "default": 90,
+      "default": 180,
       "func": "interactSettings",
       "name": {
         "id": "Posisi Tombol Interaksi Vertikal",
         "en": "Vertical Interaction Button Position"
+      }
+    },
+    {
+      "id": "kulonattack_x",
+      "group": "2",
+      "type": "range",
+      "min": 0,
+      "max": 500,
+      "step": 10,
+      "default": 140,
+      "func": "attackSettings",
+      "name": {
+        "id": "Posisi Tombol Serangan Horizontal",
+        "en": "Horizontal Attack Button Position"
+      }
+    },
+    {
+      "id": "kulonattack_y",
+      "group": "2",
+      "type": "range",
+      "min": 0,
+      "max": 500,
+      "step": 10,
+      "default": 80,
+      "func": "attackSettings",
+      "name": {
+        "id": "Posisi Tombol Serangan Vertikal",
+        "en": "Vertical Attack Button Position"
       }
     },
     {

@@ -86,7 +86,9 @@ class BackSongAPI {
       this.audio.remove()
       this.audio = null
     }
-    const audioVolume = LocalList.bgm_volume <= 10 && LocalList.bgm_volume > 0 ? LocalList.bgm_volume / 10 : 0.8
+
+    const setVol = LocalList.bgm_volume
+    const audioVolume = setVol <= 10 && setVol > 0 ? setVol / 10 : 0
 
     const info = bgms[this.type][this.index]
 
@@ -128,7 +130,10 @@ class BackSongAPI {
       this._next()
       return
     }
-    const audioVolume = LocalList.bgm_volume <= 10 && LocalList.bgm_volume >= 0 ? LocalList.bgm_volume / 10 : 0.8
+
+    const setVol = LocalList.bgm_volume
+    const audioVolume = setVol <= 10 && setVol > 0 ? setVol / 10 : 0
+
     const audio = this.audio
     audio.play()
     this._fade(audio, audioVolume, 2000)
