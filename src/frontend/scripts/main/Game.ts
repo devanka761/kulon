@@ -20,6 +20,7 @@ import { Player } from "./Player"
 import { IGameObjectData, IObjectEvent, IObjectTalk } from "../types/MapsTypes"
 import backsong from "../APIs/BackSongAPI"
 import { helpHowTo } from "../manager/HelpHowTo"
+import { WeatherControl } from "../Weather/WeatherControl"
 
 export interface GameObjectMain {
   update: (deltaTime: number, keys: InputHandler["keys"], walls: GameMap["walls"], game: Game) => void
@@ -49,9 +50,11 @@ export class Game {
   animationFrameId: number | null = null
   private boundResizeCanvas: () => void
 
+  weatherControl: WeatherControl = new WeatherControl()
+
   constructor(
-    private canvas: HTMLCanvasElement,
-    private VIEWPORT_WIDTH: number
+    public canvas: HTMLCanvasElement,
+    public VIEWPORT_WIDTH: number
   ) {
     this.canvas = canvas
     this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D
@@ -140,6 +143,8 @@ export class Game {
     this.camera = new Camera(this.canvas, this.map.bottomImage.width, this.map.bottomImage.height)
     this.resizeCanvas()
 
+    this.weatherControl.init(this)
+
     this.gameLoop()
 
     socket.init(this)
@@ -208,6 +213,8 @@ export class Game {
       obj.update(deltaTime, this.inputHandler.keys, this.map.walls, this)
     })
     this.camera.update(this.player)
+
+    this.weatherControl.update(deltaTime)
 
     this.checkForCutscene()
   }
@@ -286,6 +293,7 @@ export class Game {
     sortedGameObjects.forEach((obj) => obj.draw(this.ctx))
 
     this.map.drawTopImage(this.ctx)
+    this.weatherControl.draw(this.ctx)
     this.ctx.restore()
   }
 

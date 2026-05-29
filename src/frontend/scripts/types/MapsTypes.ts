@@ -156,6 +156,7 @@ export interface IMapConfig {
   upperSrc: string
   sound?: string
   footstep?: "a" | "b"
+  useWeather?: boolean
   configObjects: IGameObjects
   walls: IWalls
   cutscenes: ICutscenes
