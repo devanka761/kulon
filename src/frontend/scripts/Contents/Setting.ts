@@ -16,6 +16,8 @@ import { Game } from "../main/Game"
 import { ISettingList } from "../types/SettingTypes"
 import { IAny, SSKelement } from "../types/LibTypes"
 import chat from "../manager/Chat"
+import { objective } from "../manager/Objectives"
+import { helpHowTo } from "../manager/HelpHowTo"
 
 interface IItemCard {
   [key: string]: (s: ISettingList) => HTMLDivElement
@@ -274,6 +276,9 @@ export default class Setting implements IPMC {
   private interactSettings(_card: string, __: string): void {
     this.game.kulonPad.updateInteract()
   }
+  private attackSettings(_card: string, __: string): void {
+    this.game.kulonPad.updateAttack()
+  }
   private writeRestoreDefault(card: HTMLDivElement): void {
     card.onclick = async () => {
       audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
@@ -386,6 +391,8 @@ export default class Setting implements IPMC {
       localSave.save()
       await modal.loading(localeChanger())
       chat.changeLang()
+      objective.restore()
+      helpHowTo.updateText()
       this.isLocked = false
 
       const updateSetting = new Setting({

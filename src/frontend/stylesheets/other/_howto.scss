@@ -6,13 +6,14 @@
   right: v.$bigPadding;
   padding: v.$bigPadding;
   border-radius: v.$mediumPadding;
-  background-color: v.$px1;
+  background-color: rgba(v.$px1, 0.5);
   border: 4px solid v.$pm1;
   box-shadow:
     0 0 0 4px v.$px1,
     0 8px 16px rgba(0, 0, 0, 0.5);
   animation: slide_left_in 0.3s;
   p {
+    color: v.$white;
     line-height: 2;
     .keyinfo {
       padding: 2px 7px;

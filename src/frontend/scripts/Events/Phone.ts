@@ -231,7 +231,6 @@ export default class Phone implements IPMC {
         eapplist.querySelectorAll(".active").forEach((btnActive) => {
           btnActive.classList.remove("active")
         })
-        audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
         card.classList.add("active")
       }
     })

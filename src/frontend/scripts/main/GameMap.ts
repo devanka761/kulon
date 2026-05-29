@@ -22,6 +22,7 @@ export class GameMap {
   mapId: string
   sound?: string
   footstep: "a" | "b"
+  useWeather?: boolean
 
   bottomImage: HTMLImageElement = new Image()
   topImage: HTMLImageElement = new Image()
@@ -33,6 +34,7 @@ export class GameMap {
     this.mapId = config.id
     this.sound = config.sound
     this.footstep = config.footstep || "a"
+    this.useWeather = config.useWeather || false
 
     this.bottomImage.src = asset[config.lowerSrc].src
 

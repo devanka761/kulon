@@ -7,6 +7,10 @@ export class HelpHowTo {
   private el!: HTMLDivElement
   private createElement(): void {
     this.el = kel("div", "helphowto")
+    this.updateText()
+  }
+  updateText(): void {
+    if (!this.el) return
     this.el.innerHTML = `<p><span class="keyinfo">W</span><span class="keyinfo">A</span><span class="keyinfo">S</span><span class="keyinfo">D</span> <span>${lang.HELP_MOVE}</span></p><p><span class="keyinfo">E</span> <span>${lang.HELP_TALK}</span></p><p><span class="keyinfo">Esc</span> <span>${lang.HELP_PAUSE}</span></p>`
   }
   async destroy(): Promise<void> {

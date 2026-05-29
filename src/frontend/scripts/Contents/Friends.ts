@@ -298,7 +298,6 @@ export default class Friends implements IPMC {
         cards[nextIndex].scrollIntoView({ behavior: "smooth", block: "center", container: "nearest" })
       } else if (key === "Enter") {
         if (document.activeElement instanceof HTMLElement && document.activeElement.matches(".card")) {
-          audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: Date.now().toString() } })
           document.activeElement.click()
         }
       }

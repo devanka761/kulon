@@ -20,6 +20,7 @@ import { Player } from "./Player"
 import { IGameObjectData, IObjectEvent, IObjectTalk } from "../types/MapsTypes"
 import backsong from "../APIs/BackSongAPI"
 import { helpHowTo } from "../manager/HelpHowTo"
+import { WeatherControl } from "../Weather/WeatherControl"
 
 export interface GameObjectMain {
   update: (deltaTime: number, keys: InputHandler["keys"], walls: GameMap["walls"], game: Game) => void
@@ -49,9 +50,11 @@ export class Game {
   animationFrameId: number | null = null
   private boundResizeCanvas: () => void
 
+  weatherControl: WeatherControl = new WeatherControl()
+
   constructor(
-    private canvas: HTMLCanvasElement,
-    private VIEWPORT_WIDTH: number
+    public canvas: HTMLCanvasElement,
+    public VIEWPORT_WIDTH: number
   ) {
     this.canvas = canvas
     this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D
@@ -86,6 +89,17 @@ export class Game {
     this.kulonPad.setOnMove((direction) => this.inputHandler.movePad(direction))
     this.kulonPad.setOnRelease((direction) => this.inputHandler.releasePad(direction))
     this.kulonPad.setOnInteract(this.checkForInteraction.bind(this))
+    this.kulonPad.setOnAttact(() => {
+      if (!this.isPaused && !this.isCutscenePlaying) {
+        this.player.attack()
+        peers.send("playerAttack", {
+          x: this.player.x,
+          y: this.player.y,
+          mapId: this.map.mapId,
+          direction: this.player.direction
+        })
+      }
+    })
   }
 
   pause(): void {
@@ -128,6 +142,8 @@ export class Game {
     this.player = this.map.getPlayer()
     this.camera = new Camera(this.canvas, this.map.bottomImage.width, this.map.bottomImage.height)
     this.resizeCanvas()
+
+    this.weatherControl.init(this)
 
     this.gameLoop()
 
@@ -197,6 +213,8 @@ export class Game {
       obj.update(deltaTime, this.inputHandler.keys, this.map.walls, this)
     })
     this.camera.update(this.player)
+
+    this.weatherControl.update(deltaTime)
 
     this.checkForCutscene()
   }
@@ -275,6 +293,7 @@ export class Game {
     sortedGameObjects.forEach((obj) => obj.draw(this.ctx))
 
     this.map.drawTopImage(this.ctx)
+    this.weatherControl.draw(this.ctx)
     this.ctx.restore()
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "kulon",
-  "version": "1.0.2",
+  "version": "1.0.3-wip.1",
   "description": "Multiplayer 2D Pixel Survival Puzzle Game",
   "main": "dist/backend/server.js",
   "scripts": {
@@ -24,6 +24,7 @@
     "preminor": "npm --no-git-tag-version version preminor && npm --no-git-tag-version version prerelease --preid wip",
     "premajor": "npm --no-git-tag-version version premajor && npm --no-git-tag-version version prerelease --preid wip",
     "prerelease": "npm --no-git-tag-version version prerelease",
+    "bump": "tsx zzzBump.ts",
     "prepare": "husky"
   },
   "husky": {
@@ -46,20 +47,20 @@
   "dependencies": {
     "connect-mongo": "^6.0.0",
     "dotenv": "^17.4.2",
-    "ejs": "^5.0.2",
+    "ejs": "^6.0.1",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "express-ws": "^5.0.2",
-    "mongoose": "^9.6.2",
+    "mongoose": "^9.6.3",
     "qrcode": "^1.5.4",
     "screenfull": "^6.0.2",
     "webfont-awesome-pro": "1.2.7",
     "webrtc-adapter": "^9.0.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.0",
-    "@babel/preset-env": "^7.29.5",
-    "@babel/preset-typescript": "^7.28.5",
+    "@babel/core": "^7.29.7",
+    "@babel/preset-env": "^7.29.7",
+    "@babel/preset-typescript": "^7.29.7",
     "@eslint/js": "^10.0.1",
     "@types/express": "^5.0.6",
     "@types/express-session": "^1.19.0",
@@ -77,12 +78,12 @@
     "prettier": "^3.8.3",
     "pretty-quick": "^4.2.2",
     "raw-loader": "^4.0.2",
-    "sass": "^1.99.0",
+    "sass": "^1.100.0",
     "sass-loader": "^17.0.0",
     "tsx": "^4.22.3",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.59.4",
-    "webpack": "^5.107.0",
-    "webpack-cli": "^7.0.2"
+    "typescript-eslint": "^8.60.0",
+    "webpack": "^5.107.2",
+    "webpack-cli": "^7.0.3"
   }
 }

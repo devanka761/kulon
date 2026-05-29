@@ -23,7 +23,8 @@ export default function SetNextMap(nextMap: IMapList, spawnRule: ISpawnRule | nu
       walls: clonedMap.walls || {},
       cutscenes: clonedMap.cutscenes || {},
       safeZone: clonedMap.safeZone,
-      footstep: clonedMap.footstep
+      footstep: clonedMap.footstep,
+      useWeather: clonedMap.useWeather
     }
 
     Object.values(MapList[key].configObjects).forEach((obj: IGameObjectData) => {

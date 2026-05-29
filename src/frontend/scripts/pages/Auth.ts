@@ -82,7 +82,6 @@ export default class Auth {
     preload.init()
   }
   async writeForm(): Promise<void> {
-    await checkScreenSize()
     auth_container = this.el
     new SignIn(auth_container).init()
   }
