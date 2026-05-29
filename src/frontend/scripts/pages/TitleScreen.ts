@@ -73,10 +73,7 @@ export default class TitleScreen implements IPMC {
       if (this.isLocked) return
       this.isLocked = true
       if (this.keyListeners.enter) this.keyListeners.enter.unbind()
-      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
-      setTimeout(() => {
-        audio.emit({ action: "play", type: "ui", src: "enter_commit", options: { id: "enter_commit" } })
-      }, 100)
+      audio.emit({ action: "play", type: "ui", src: "enter_commit", options: { id: "enter_commit" } })
 
       await this.destroy()
     }
@@ -85,7 +82,7 @@ export default class TitleScreen implements IPMC {
       if (this.isLocked) return
       this.isLocked = true
       if (this.keyListeners.enter) this.keyListeners.enter.unbind()
-      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: "ui02" } })
+      audio.emit({ action: "play", type: "ui", src: "ui05", options: { id: "ui05" } })
       const setting = new Setting({ onComplete: this.onComplete, game: this.game, classBefore: this })
       this.destroy(setting)
     }
@@ -106,7 +103,6 @@ export default class TitleScreen implements IPMC {
       buttons[selectedIndex].classList.remove("selected")
       selectedIndex = newIndex
       buttons[selectedIndex].classList.add("selected")
-      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
     }
 
     buttons.forEach((btn, index) => {
@@ -119,10 +115,12 @@ export default class TitleScreen implements IPMC {
 
     this.keyListeners.arrowUp = new KeyPressListener("arrowup", () => {
       const newIndex = selectedIndex > 0 ? selectedIndex - 1 : buttons.length - 1
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
       changeSelection(newIndex)
     })
     this.keyListeners.arrowDown = new KeyPressListener("arrowdown", () => {
       const newIndex = selectedIndex < buttons.length - 1 ? selectedIndex + 1 : 0
+      audio.emit({ action: "play", type: "ui", src: "ui02", options: { id: Date.now().toString() } })
       changeSelection(newIndex)
     })
     this.keyListeners.enter = new KeyPressListener("enter", () => {
