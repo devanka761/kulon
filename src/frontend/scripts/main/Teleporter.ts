@@ -1,12 +1,12 @@
 import { IGameObjectTeleporter, IGameObjectTeleporterType } from "../types/MapsTypes"
-import { Person } from "./Person"
+import { Interactable } from "./Interactable"
 
 const TILE_SIZE = 16
 
-export class Teleporter extends Person {
+export class Teleporter extends Interactable {
   from: IGameObjectTeleporterType
   constructor(config: IGameObjectTeleporter) {
-    super({ ...config, src: "null" }, "a")
+    super({ ...config, src: "null" })
     this.from = config.from
 
     this.talk = [

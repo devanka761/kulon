@@ -96,17 +96,37 @@ export class Person {
   health?: number
 
   footstep: "a" | "b"
+  shadow?: boolean
+  shadowImage?: HTMLImageElement
+
   constructor(config: IGameObjectPerson, footstep: "a" | "b") {
     this.id = config.id
     this.x = config.x || 0
     this.y = config.y || 0
     this.footstep = footstep
+    this.shadow = config.shadow === false ? false : true
 
     const images = typeof config.src === "string" ? [config.src] : config.src
 
     const swordImage = new Image()
     swordImage.src = asset.Sword.src
+    const propImages: HTMLImageElement[] = [swordImage]
+
     this.swordImage = swordImage
+
+    if (this.shadow === true) {
+      const shadowImage = new Image()
+      shadowImage.src = asset.shadow.src
+      propImages.push(shadowImage)
+      this.shadowImage = shadowImage
+    }
+
+    const propPromises = propImages.map((img) => {
+      return new Promise((resolve) => {
+        img.onload = resolve
+        img.onerror = resolve
+      })
+    })
 
     const imagePromises = images
       .filter((src) => src)
@@ -120,7 +140,7 @@ export class Person {
         })
       })
 
-    Promise.all(imagePromises).then(() => {
+    Promise.all([...imagePromises, ...propPromises]).then(() => {
       this.isLoaded = true
     })
     this.talk = config.talk
@@ -271,6 +291,11 @@ export class Person {
     if (!this.isLoaded) return
 
     const drawY = this.y - 16
+
+    if (this.shadow && this.shadowImage) {
+      ctx.drawImage(this.shadowImage, 0, 0, 16, 32, Math.round(this.x), Math.round(drawY + 1), 16, 32)
+    }
+
     Object.values(this.images).forEach((image) => {
       ctx.drawImage(image, this.width * this.frameX, this.height * this.frameY, this.width, this.height, Math.round(this.x), Math.round(drawY), this.width, this.height)
     })
