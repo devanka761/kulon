@@ -64,7 +64,6 @@ export default class Xoxo implements IPMX {
     })
   }
   setInitialBoard(): void {}
-  addClaim(_state: string, _status: boolean | string): void {}
   onInteract(posX: number, posY: number, isRemote: boolean = false, data?: IAny): void {
     if (!this.game || (!isRemote && this.currPlayer !== this.me)) return
 

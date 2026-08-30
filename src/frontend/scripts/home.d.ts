@@ -3,15 +3,11 @@ type UserChoice = Promise<{
   platform: string
 }>
 
-declare global {
-  interface BeforeInstallPromptEvent extends Event {
-    readonly platforms: string[]
-    readonly userChoice: UserChoice
-    prompt(): Promise<UserChoice>
-  }
-  interface WindowEventMap {
-    beforeinstallprompt: BeforeInstallPromptEvent
-  }
+declare interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[]
+  readonly userChoice: UserChoice
+  prompt(): Promise<UserChoice>
 }
-
-export {}
+declare interface WindowEventMap {
+  beforeinstallprompt: BeforeInstallPromptEvent
+}

@@ -15,6 +15,7 @@ import webSocketApp from "./routes/SocketRouter"
 import clientBuild from "./lib/clientBuild"
 import { version } from "../config/version.json"
 import mapEditor from "./main/mapEditor"
+import mongoose from "mongoose"
 
 const deps = JSON.parse(fs.readFileSync("./public/json/build/deps.json", "utf-8") || "{}")
 
@@ -24,15 +25,20 @@ mapEditor.load()
 const server = expressWs(express())
 const { app, getWss } = server
 
+const storePromise = mongoose.connection.asPromise().then((conn) => conn.getClient())
+
 app.use(
   session({
+    name: "kulon",
     secret: cfg.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 1000 * 60 * 60 * 24 * 30, sameSite: "strict" },
     store: MongoStore.create({
-      mongoUrl: cfg.DB_URI,
+      clientPromise: storePromise,
       dbName: cfg.DB_NAME,
+      stringify: false,
+      autoRemove: "native",
       collectionName: "sessions"
     })
   })

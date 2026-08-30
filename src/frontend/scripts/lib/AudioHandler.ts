@@ -192,7 +192,7 @@ export class AudioHandler {
   }
 
   private _stopAllUI(): void {
-    this.ui.forEach((sound) => sound.source.stop())
+    this.ui.forEach((sound) => this._fadeAndStop(sound))
     this.ui.clear()
   }
 
@@ -218,7 +218,7 @@ export class AudioHandler {
   }
 
   private _stopAllSFX(): void {
-    this.sfx.forEach((sound) => sound.source.stop())
+    this.sfx.forEach((sound) => this._fadeAndStop(sound))
     this.sfx.clear()
   }
 
@@ -257,30 +257,24 @@ export class AudioHandler {
   }
 
   private _stopAllFootstep(): void {
-    this.footstep.forEach((sound) => sound.source.stop())
+    this.footstep.forEach((sound) => this._fadeAndStop(sound))
     this.footstep.clear()
   }
 
   private _fadeAndStop(sound: PlayingSound, duration?: number): void {
-    if (!duration) {
-      try {
-        sound.source.stop()
-      } catch (_e) {
-        // -
-      }
-      return
-    }
     sound.isFading = true
     const { gainNode, playTime } = sound
     const currentTime = audioContext.currentTime
     const elapsed = currentTime - playTime
     if (elapsed < 0) return
 
+    const fadeOutDuration = duration && duration > 0 ? duration : 15
+
     gainNode.gain.cancelScheduledValues(currentTime)
     gainNode.gain.setValueAtTime(gainNode.gain.value, currentTime)
-    gainNode.gain.linearRampToValueAtTime(0, currentTime + duration / 1000)
+    gainNode.gain.linearRampToValueAtTime(0, currentTime + fadeOutDuration / 1000)
     try {
-      sound.source.stop(currentTime + duration / 1000)
+      sound.source.stop(currentTime + fadeOutDuration / 1000)
     } catch (_e) {
       // -
     }

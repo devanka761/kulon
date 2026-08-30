@@ -171,7 +171,9 @@ export class SignIn {
       const formData = new FormData(form)
       formData.forEach((val, k) => (data[k] = val.toString()))
 
-      const userLogin = await modal.loading(xhr.post("/x/auth/sign-in", data))
+      const queryString = `locale=${LocalList.lang || "id"}&${this.queries}`
+
+      const userLogin = await modal.loading(xhr.post(`/x/auth/sign-in?${queryString}`, data))
 
       if (!userLogin.ok) {
         await modal.alert(lang[userLogin.msg] || lang.ERROR)

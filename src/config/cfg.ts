@@ -31,6 +31,8 @@ export default {
   SESSION_SECRET: process.env.SESSION_SECRET ?? "secret",
 
   LUNA_SECRET: process.env.LUNA_SECRET ?? "secret",
+  LUNA_CLIENT_ID: process.env.LUNA_CLIENT_ID ?? "secret",
+  LUNA_CLIENT_SECRET: process.env.LUNA_CLIENT_SECRET ?? "secret",
 
   USE_WEBHOOK: discord.USE_WEBHOOK,
   DISCORD_DONATION: discord.DISCORD_DONATION,

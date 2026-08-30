@@ -268,7 +268,7 @@ export async function trophyClaim(uid: string, trophyId: string): Promise<IRepTe
         itemId: "69"
       }
     },
-    { upsert: true, new: true }
+    { upsert: true, returnDocument: "after" }
   ).lean()
 
   const newData = { ...prog.get(uid, trophyId) }
@@ -292,7 +292,7 @@ export async function itemExchange(uid: string, s: IExchange): Promise<IRepTempB
 
   const addedAmount = onPrice ? Math.floor(amount / (item_selling.price / item_selling.amount)) : amount * item_selling.amount
 
-  const newReqItem = await Item.findOneAndUpdate({ owner: uid, itemId: item_selling.req, expiry: { $exists: false } }, { $inc: { amount: -amount } }, { new: true }).lean()
+  const newReqItem = await Item.findOneAndUpdate({ owner: uid, itemId: item_selling.req, expiry: { $exists: false } }, { $inc: { amount: -amount } }, { returnDocument: "after" }).lean()
   if (!newReqItem) return { code: 404, msg: "EXC_NOT_ENOUGH" }
 
   const newSellingItem = await Item.findOneAndUpdate(
@@ -305,7 +305,7 @@ export async function itemExchange(uid: string, s: IExchange): Promise<IRepTempB
         itemId: item_selling.id
       }
     },
-    { upsert: true, new: true }
+    { upsert: true, returnDocument: "after" }
   ).lean()
 
   const itemToReturn: IReturnItem[] = [
@@ -361,7 +361,7 @@ export async function changeUsername(uid: string, s: IAny): Promise<IRepTempB> {
       $or: [{ expiry: { $exists: false } }, { expiry: { $gt: Date.now() } }]
     },
     { $inc: { amount: -1 } },
-    { new: true }
+    { returnDocument: "after" }
   ).lean()
 
   if (!updatedCard) return { code: 404, msg: "ACC_NO_NAME_CARD_TICKET" }
@@ -426,7 +426,7 @@ export async function changeSkin(uid: string, s: IAny): Promise<IRepTempB> {
       $or: [{ expiry: { $exists: false } }, { expiry: { $gt: Date.now() } }]
     },
     { $inc: { amount: -1 } },
-    { new: true }
+    { returnDocument: "after" }
   ).lean()
 
   if (!updatedCard) return { code: 404, msg: "CHAR_NO_APPR_CARD_TICKET" }

@@ -3,7 +3,7 @@ import fs from "fs"
 
 async function revertPackage(): Promise<boolean> {
   return new Promise((resolve) => {
-    const revertetd = spawn(`git checkout HEAD -- package.json}`, {
+    const revertetd = spawn(`git checkout HEAD -- package.json`, {
       shell: true,
       stdio: "inherit"
     })
