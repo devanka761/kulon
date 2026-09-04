@@ -55,7 +55,7 @@ export interface IPMXConfig {
 
 export interface IPMX {
   readonly id: string
-  addClaim(state: string, status: boolean | string): void
+  addClaim?(state: string, status: boolean | string): void
   onInteract?(x: number, y: number, isRemote?: boolean, data?: IAny): void
   destroy(): void | Promise<void>
   setGame?(game: Game): void

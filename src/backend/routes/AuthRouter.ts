@@ -16,7 +16,8 @@ router.get("/isUser", isAccount, (req: Request, res: Response) => {
 })
 
 router.post("/sign-in", async (req: Request, res: Response) => {
-  const signIn = rep(await authLogin(req.body))
+  const signIn = rep(await authLogin(req.body, req.query))
+
   res.status(signIn.code).json(signIn)
   return
 })
@@ -47,11 +48,12 @@ router.get("/luunna/redirect", async (req: Request, res: Response) => {
   code = code.toString()
 
   const user = await getOAuthUser(code)
+
   if (!user || !user.ok || user.error || user.errors) {
     return res.render("autherror")
   }
 
-  const verifyUser = rep(await processThirdParty(user.data))
+  const verifyUser = rep(await processThirdParty(user))
 
   if (!verifyUser.ok || verifyUser.code !== 200) {
     return res.render("autherror")

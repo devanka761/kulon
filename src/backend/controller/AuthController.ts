@@ -8,23 +8,25 @@ import guest from "../main/guests"
 import webhook from "../lib/webhook"
 
 const HOST: string = isProd ? `https://${cfg.APP_HOST}` : `http://localhost:${cfg.APP_PORT}`
+const PROV_HOST = isProd ? "https://devanka.id" : "http://localhost:3000"
 
-export async function authLogin(s: IAny): Promise<IRepTempB> {
+export async function authLogin(s: IAny, q: IAny): Promise<IRepTempB> {
   if (!validate(["email"], s)) return { code: 400, msg: "AUTH_ERR_01" }
   s.email = s.email.toString().toLowerCase()
   const mailValid = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g
   if (!s.email.match(mailValid)) return { code: 400, msg: "AUTH_ERR_02" }
 
   const stateData = {
-    client: `${HOST}/x/auth/luunna/redirect`,
+    client_id: cfg.LUNA_CLIENT_ID,
+    redirect_uri: `${HOST}/x/auth/luunna/redirect`,
     initialEmail: s.email,
     lang: typeof s.lang === "string" && s.lang === "en" ? "en" : "id",
-    s: "1"
+    state: toBase64(q)
   }
 
-  const state = toBase64(stateData)
+  const queryString = new URLSearchParams(stateData).toString()
 
-  const url = `https://devanka.id/luunna/portal?luna=${state}`
+  const url = `${PROV_HOST}/luna/authorize?${queryString}`
 
   return { code: 200, msg: "OK", data: { url } }
 }
@@ -46,11 +48,9 @@ export async function processThirdParty(usr: IExternalAccount): Promise<IRepTemp
   }
   await Account.create(newAccount)
 
-  const providersText = usr.data.map((data) => `**ID** ${data.externalId}\n**Email** (${data.provider})\n${data.email}\n**Nickname**\n${data.name || "-"}`)
-
-  webhook("accounts", {
+  webhook(cfg.DISCORD_ACCOUNTLOG, {
     title: "Registered",
-    description: `**ID** ${userId}\n**Luna** ${usr.id}\n\n${providersText.join("\n\n")}`,
+    description: `**ID** ${userId}\n**Luna** ${usr.id}`,
     theme: "LIME",
     ts: true
   })
